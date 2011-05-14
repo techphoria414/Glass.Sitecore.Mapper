@@ -1,0 +1,129 @@
+﻿/*
+   Copyright 2011 Michael Edwards
+ 
+   Licensed under the Apache License, Version 2.0 (the "License");
+   you may not use this file except in compliance with the License.
+   You may obtain a copy of the License at
+
+       http://www.apache.org/licenses/LICENSE-2.0
+
+   Unless required by applicable law or agreed to in writing, software
+   distributed under the License is distributed on an "AS IS" BASIS,
+   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   See the License for the specific language governing permissions and
+   limitations under the License.
+ 
+*/
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Glass.Sitecore.Persistence.Configuration.Attributes;
+using Glass.Sitecore.Persistence.Configuration;
+using System.Reflection;
+using System.Collections;
+using Sitecore.Data.Items;
+
+namespace Glass.Sitecore.Persistence.Data
+{
+    public class SitecoreFieldIEnumerableHandler : AbstractSitecoreField
+    {
+        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+        {
+            Type type = property.Property.PropertyType;
+            //Get generic type
+            Type pType = Utility.GetGenericArgument(type);
+
+            AbstractSitecoreField handler = GetSubHandler(pType, context);
+
+            //The enumerator only works with piped lists
+            IEnumerable<string> parts = fieldValue.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
+
+            //replace any pipe encoding with an actual pipe
+            parts = parts.Select(x => x.Replace(Settings.PipeEncoding, "|")).ToArray();
+
+
+            SitecoreProperty fProperty = new SitecoreProperty()
+            {
+                Attribute = property.Attribute,
+                Property = new FakePropertyInfo(pType)
+            };
+
+
+
+
+            IEnumerable<object> items = parts.Select(x => handler.GetFieldValue(x, parent, item, fProperty, context)).ToArray();
+            var list = Utility.CreateGenericType(typeof(List<>), new Type[] { pType }) ;
+            Utility.CallAddMethod(items, list);
+
+            return list;
+            
+
+
+        }
+
+        public override string SetFieldValue(Type returnType, object value, InstanceContext context)
+        {
+            Type type = returnType;
+            //Get generic type
+            Type pType = Utility.GetGenericArgument(type);
+
+            IEnumerable list = value as IEnumerable;
+            AbstractSitecoreField handler = GetSubHandler(pType, context);
+
+            List<string> sList = new List<string>();
+
+            foreach (object obj in list)
+            {
+                string result = handler.SetFieldValue(pType, obj, context);
+                if (!result.IsNullOrEmpty())
+                    sList.Add(result);
+            }
+
+
+            StringBuilder sb = new StringBuilder();
+            sList.ForEach(x => sb.AppendFormat("{0}|", x.Replace("|", Settings.PipeEncoding)));
+            sb.Remove(sb.Length - 1, 1);
+            return sb.ToString();
+        }
+
+        public override bool WillHandle(Glass.Sitecore.Persistence.Configuration.SitecoreProperty property, InstanceContext context)
+        {
+
+            if(!(property.Attribute is SitecoreFieldAttribute)) return false;
+
+            Type type = property.Property.PropertyType;
+
+            if (!type.IsGenericType) return false;
+
+
+            if (type.GetGenericTypeDefinition() != typeof(IEnumerable<>))
+                return false;
+            
+            return true;
+            
+        }
+      
+
+        public override Type TypeHandled
+        {
+            get { return typeof(object); }
+        }
+
+        private AbstractSitecoreField GetSubHandler(Type type, InstanceContext context)
+        {
+            SitecoreProperty fakeProp = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(type)
+            };
+
+            var handler = context.Datas.FirstOrDefault(x => x.WillHandle(fakeProp, context)) as AbstractSitecoreField;
+            if (handler == null) throw new NotSupportedException("No handler to support field type {0}".Formatted(type.FullName));
+
+            return handler;
+
+
+        }
+    }
+}

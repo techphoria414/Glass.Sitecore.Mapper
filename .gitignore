@@ -1,0 +1,14 @@
+Depends/
+Source/Glass.Sitecore.Persistence/bin/
+Source/Glass.Sitecore.Persistence/obj/
+Source/Glass.Sitecore.Persistence.Tests/App_Config/
+Source/Glass.Sitecore.Persistence.Tests/bin/
+Source/Glass.Sitecore.Persistence.Tests/obj/
+Source/Glass.Sitecore.Persistence.Demo/bin/
+Source/Glass.Sitecore.Persistence.Demo/App_Config/
+Source/Glass.Sitecore.Persistence.Demo/App_Data/
+Source/Glass.Sitecore.Persistence.Demo/data/
+Source/Glass.Sitecore.Persistence.Demo/indexes/
+Source/Glass.Sitecore.Persistence.Demo/obj/
+Source/Glass.Sitecore.Persistence.Demo/temp/
+Source/Glass.Sitecore.Persistence.Demo/Layouts/debug

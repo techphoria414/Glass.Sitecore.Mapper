@@ -1,0 +1,7 @@
+<PartCoverSettings>
+  <Target>C:\Program Files\NUnit 2.5.7\bin\net-2.0\nunit-console.exe</Target>
+  <TargetWorkDir>C:\Program Files\NUnit 2.5.7\bin\net-2.0</TargetWorkDir>
+  <TargetArgs>D:\projects\Glass\Main\Source\Glass.Sitecore.Persistence.Tests\bin\Debug\Glass.Persistence.Sitecore.Tests.dll</TargetArgs>
+  <LogLevel>6</LogLevel>
+  <Rule>+[Glass*]*</Rule>
+</PartCoverSettings>
