@@ -38,6 +38,7 @@ namespace Glass.Sitecore.Persistence.Demo.Application.Domain
         [SitecoreField]
         public virtual IEnumerable<DemoClass> Links { get; set; }
 
-
     }
+
+    
 }

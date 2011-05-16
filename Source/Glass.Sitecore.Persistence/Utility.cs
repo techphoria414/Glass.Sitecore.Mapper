@@ -89,6 +89,6 @@ namespace Glass.Sitecore.Persistence
             return info.IsSpecialName && info.Name.StartsWith("get_");
         }
 
-       
+        
     }
 }

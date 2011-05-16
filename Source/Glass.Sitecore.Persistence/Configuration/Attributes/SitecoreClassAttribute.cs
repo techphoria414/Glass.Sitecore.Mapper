@@ -28,7 +28,7 @@ namespace Glass.Sitecore.Persistence.Configuration.Attributes
         {
         }
         
-        public Guid TemplateId { get; set; }
-        public Guid BranchId { get; set; }
+        public string TemplateId { get; set; }
+        public string BranchId { get; set; }
     }
 }

@@ -103,11 +103,28 @@ namespace Glass.Sitecore.Persistence
                 throw new PersistenceException("Could not find parent item");
 
             SitecoreClassConfig scClass = _context.GetSitecoreClass(typeof(T));
-            
-            if (scClass.ClassAttribute.TemplateId == Guid.Empty)
-                throw new PersistenceException("Type {0} does not have a template Id".Formatted(typeof(T).FullName));
 
-            Item item = pItem.Add(name, new TemplateID(new ID(scClass.ClassAttribute.TemplateId)));
+            string templateSt = scClass.ClassAttribute.TemplateId;
+            string branchSt = scClass.ClassAttribute.BranchId;
+            
+            Guid templateId = Guid.Empty;
+            Guid branchId = Guid.Empty;
+
+            Item item = null;
+
+            if (templateSt.GuidTryParse(out templateId))
+            {
+                item = pItem.Add(name, new TemplateID(new ID(templateId)));
+            }
+            else if (branchSt.GuidTryParse(out branchId))
+            {
+                item = pItem.Add(name, new BranchId(new ID(branchId)));
+            }
+            else
+            {
+                throw new PersistenceException("Type {0} does not have a Template ID or Branch ID".Formatted(typeof(T).FullName));
+            }
+
 
             if (item == null)
                 throw new PersistenceException("Failed to create child with name {0} and parent {1}".Formatted(name, item.Paths.FullPath));
