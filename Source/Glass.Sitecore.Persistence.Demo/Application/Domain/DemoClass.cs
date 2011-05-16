@@ -22,7 +22,7 @@ using Glass.Sitecore.Persistence.Configuration.Attributes;
 
 namespace Glass.Sitecore.Persistence.Demo.Application.Domain
 {
-    [SitecoreClass]
+    [SitecoreClass(TemplateId="{D3F8D040-C346-4154-9AEA-847583FBD364}")]
     public class DemoClass
     {
 
@@ -39,6 +39,20 @@ namespace Glass.Sitecore.Persistence.Demo.Application.Domain
         public virtual IEnumerable<DemoClass> Links { get; set; }
 
     }
+
+    [SitecoreClass]
+    public class ItemA
+    {
+        [SitecoreChildren]
+        public virtual IEnumerable<ItemB> Children { get; set; }
+
+    }
+
+    [SitecoreClass]
+    public class ItemB
+    {
+    }
+
 
     
 }
