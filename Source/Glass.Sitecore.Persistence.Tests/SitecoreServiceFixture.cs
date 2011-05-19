@@ -25,6 +25,7 @@ using Glass.Sitecore.Persistence.Configuration.Attributes;
 using Glass.Sitecore.Persistence.Data;
 using Sitecore.Data.Items;
 using Sitecore.Data;
+using Sitecore.SecurityModel;
 
 namespace Glass.Sitecore.Persistence.Tests
 {
@@ -185,7 +186,56 @@ namespace Glass.Sitecore.Persistence.Tests
 
         #endregion
 
+        #region Create
 
+        [Test]
+        [ExpectedException(typeof(PersistenceException))]
+        public void Create_NoTemplateId_ThrowsException()
+        {
+            //Assign
+            TestClass test3 = _sitecore.GetItem<TestClass>("/sitecore/content/Glass/Test1/Test3");
+
+            using (new SecurityDisabler())
+            {
+                //Act
+                _sitecore.Create<TestClass>(test3, "Test4");
+
+
+                //Assert
+                //N/A
+            }
+        }
+
+        [Test]
+        public void Create_CreatesAnItem()
+        {
+            //Assign
+            TestClass test3 = _sitecore.GetItem<TestClass>("/sitecore/content/Glass/Test1/Test3");
+
+            using (new SecurityDisabler())
+            {
+                //Act
+                CreateClass newItem = _sitecore.Create<CreateClass>(test3, "Test4");
+
+
+                //Assert
+                Item item = _db.GetItem("/sitecore/content/Glass/Test1/Test3/Test4");
+                Assert.IsNotNull(item);
+                Assert.AreNotEqual(item.ID, newItem.Id);
+
+                try
+                {
+                    //Clean up
+                    item.Delete();
+                }
+                catch (NullReferenceException ex)
+                {
+                    //this expection is thrown by Sitecore.Tasks.ItemEventHandler.OnItemDeleted
+                }
+            }
+        }
+
+        #endregion
     }
     namespace SitecoreServiceFixtureNS
     {
@@ -195,5 +245,14 @@ namespace Glass.Sitecore.Persistence.Tests
             [SitecoreId]
             public virtual Guid Id { get; set; }
         }
+
+        [SitecoreClass(TemplateId = "{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")]
+        public class CreateClass
+        {
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+        
+
     }
 }

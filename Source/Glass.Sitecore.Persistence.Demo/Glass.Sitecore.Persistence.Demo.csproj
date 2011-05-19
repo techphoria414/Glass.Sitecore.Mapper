@@ -155,7 +155,10 @@
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Application\Domain\Address.cs" />
+    <Compile Include="Application\Domain\Company.cs" />
     <Compile Include="Application\Domain\DemoClass.cs" />
+    <Compile Include="Application\Domain\Employee.cs" />
     <Compile Include="Default.aspx.cs">
       <SubType>ASPXCodeBehind</SubType>
       <DependentUpon>Default.aspx</DependentUpon>
@@ -211,6 +214,11 @@
     <Content Include="Global.asax" />
     <Content Include="Layouts\Content.ascx" />
     <Content Include="Layouts\MainLayout.aspx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Include\Glass.config">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

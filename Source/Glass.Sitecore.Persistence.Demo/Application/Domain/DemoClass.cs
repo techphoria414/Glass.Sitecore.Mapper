@@ -40,19 +40,7 @@ namespace Glass.Sitecore.Persistence.Demo.Application.Domain
 
     }
 
-    [SitecoreClass]
-    public class ItemA
-    {
-        [SitecoreChildren]
-        public virtual IEnumerable<ItemB> Children { get; set; }
-
-    }
-
-    [SitecoreClass]
-    public class ItemB
-    {
-    }
-
+   
 
     
 }

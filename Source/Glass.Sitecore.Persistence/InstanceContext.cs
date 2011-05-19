@@ -164,7 +164,7 @@ namespace Glass.Sitecore.Persistence
         }
         public Guid GetClassId<T>(T target) where T : class
         {
-            return GetClassId(typeof(T), target);
+            return GetClassId(target.GetType(), target);
         }
         public Guid GetClassId(Type type, object target){
             var scClass = GetSitecoreClass(type);
