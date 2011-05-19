@@ -39,7 +39,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
             _context = new InstanceContext(
-                new SitecoreClassConfig[]{
+                (new SitecoreClassConfig[]{
                     new SitecoreClassConfig(){
                         ClassAttribute = new SitecoreClassAttribute(),
                         Properties = new SitecoreProperty[]{
@@ -51,7 +51,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                         },
                         Type = typeof(SitecoreQueryHandlerFixtureNS.TestClass)
                     }
-                },
+                }).ToDictionary(),
                 new ISitecoreDataHandler[] { });
 
             _handler = new SitecoreQueryHandler();

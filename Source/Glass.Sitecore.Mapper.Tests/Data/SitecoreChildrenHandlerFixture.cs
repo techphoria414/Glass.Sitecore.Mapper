@@ -40,13 +40,15 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void Setup()
         {
             _context = new InstanceContext(
-              new SitecoreClassConfig[]{
+              (new SitecoreClassConfig[]{
                    new SitecoreClassConfig(){
                        ClassAttribute = new SitecoreClassAttribute(),
                        Properties = new SitecoreProperty[]{},
                        Type = typeof(SitecoreChildrenHandlerFixtureNS.SubClass)
                    }
-               }, new ISitecoreDataHandler[] { });
+               }).ToDictionary(), new ISitecoreDataHandler[] { });
+
+
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 

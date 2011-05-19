@@ -31,11 +31,12 @@ namespace Glass.Sitecore.Mapper
     public class InstanceContext : ICloneable
     {
 
-        public IEnumerable<SitecoreClassConfig> Classes { get; private set; }
+        public Dictionary<Type, SitecoreClassConfig> Classes { get; private set; }
         public IEnumerable<ISitecoreDataHandler> Datas { get; private set; }
 
-        public InstanceContext(IEnumerable<SitecoreClassConfig> classes, IEnumerable<ISitecoreDataHandler> datas)
+        public InstanceContext(Dictionary<Type, SitecoreClassConfig> classes, IEnumerable<ISitecoreDataHandler> datas)
         {
+           
             Classes = classes;
             Datas = LoadDataHandlers(datas);
         }
@@ -179,11 +180,12 @@ namespace Glass.Sitecore.Mapper
 
         public SitecoreClassConfig GetSitecoreClass(Type type)
         {
-            SitecoreClassConfig scClass = Classes.FirstOrDefault(x => x.Type == type);
-            if (scClass == null)
+            
+           
+            if (!Classes.ContainsKey(type) || Classes[type] == null)
                 throw new MapperException("Type {0} has not been loaded".Formatted(type.FullName));
 
-            return scClass;
+            return Classes[type];
         }
 
         private void SetProperty(object target, SitecoreProperty property, Item item)

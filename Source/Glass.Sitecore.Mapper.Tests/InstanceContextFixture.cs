@@ -41,7 +41,7 @@ namespace Glass.Sitecore.Mapper.Tests
         [SetUp]
         public void Setup()
         {
-            _context = new InstanceContext(new SitecoreClassConfig[]{
+            _context = new InstanceContext((new SitecoreClassConfig[]{
                 new SitecoreClassConfig(){
                     ClassAttribute = new SitecoreClassAttribute(),
                     Properties = new SitecoreProperty[]{
@@ -70,7 +70,7 @@ namespace Glass.Sitecore.Mapper.Tests
                     Type = typeof(InstanceContextFixtureNS.TestClass4)
                 }
             
-            }, new ISitecoreDataHandler[] { });
+            }).ToDictionary(), new ISitecoreDataHandler[] { });
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");

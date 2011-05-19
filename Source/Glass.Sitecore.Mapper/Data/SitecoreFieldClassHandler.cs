@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
         public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
         {
             if (!(property.Attribute is SitecoreFieldAttribute)) return false;
-            return context.Classes.Any(x => x.Type == property.Property.PropertyType);
+            return context.Classes.ContainsKey(property.Property.PropertyType);
         }
 
 

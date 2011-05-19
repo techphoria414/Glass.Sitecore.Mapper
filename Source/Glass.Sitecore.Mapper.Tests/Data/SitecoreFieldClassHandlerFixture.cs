@@ -41,7 +41,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             _handler = new SitecoreFieldClassHandler();
             _context = new InstanceContext(
-                new SitecoreClassConfig[]{
+                (new SitecoreClassConfig[]{
                     new SitecoreClassConfig(){
                          ClassAttribute = new SitecoreClassAttribute(),
                          Properties = new SitecoreProperty[]{
@@ -54,7 +54,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                          Type = typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass)
                     },
                     
-                },
+                }).ToDictionary(),
                 new ISitecoreDataHandler[] { }
                 );
 

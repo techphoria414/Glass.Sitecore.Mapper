@@ -74,7 +74,9 @@ namespace Glass.Sitecore.Mapper
                         Log.Info("Context loading");
 
                         var classes = loader.Load();
-                        InstanceContext instance = new InstanceContext(classes, datas);
+                        
+
+                        InstanceContext instance = new InstanceContext(classes.ToDictionary(), datas);
                         StaticContext = instance;
 
                         Log.Info("Context loaded");

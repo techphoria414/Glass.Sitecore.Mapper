@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -53,6 +54,18 @@ namespace Glass.Sitecore.Mapper
                 return false;
 
             }
+        }
+
+        public static Dictionary<Type, SitecoreClassConfig> ToDictionary(this IEnumerable<SitecoreClassConfig> classes)
+        {
+            Dictionary<Type, SitecoreClassConfig> dicClasses = new Dictionary<Type, SitecoreClassConfig>();
+            foreach (var cls in classes)
+            {
+                dicClasses.Add(cls.Type, cls);
+            }
+
+            return dicClasses;
+
         }
     }
   
