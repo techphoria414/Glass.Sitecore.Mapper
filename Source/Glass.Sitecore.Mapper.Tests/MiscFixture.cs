@@ -239,10 +239,14 @@ namespace Glass.Sitecore.Mapper.Tests
 
             #region SitecoreQuery
 
-            Assert.AreEqual(2, test.Query.Count());
-            Assert.AreEqual(_test1.ID.Guid, test.Query.First().Id);
-            Assert.AreEqual(_test2.ID.Guid, test.Query.Last().Id);
-
+            //we have to use the security disabler because we are outside of an ASP.NET context
+            //if you do this without the disabler the role manager throws an exception
+            using (new SecurityDisabler())
+            {
+                Assert.AreEqual(2, test.Query.Count());
+                Assert.AreEqual(_test1.ID.Guid, test.Query.First().Id);
+                Assert.AreEqual(_test2.ID.Guid, test.Query.Last().Id);
+            }
             #endregion
 
         }
@@ -541,7 +545,7 @@ namespace Glass.Sitecore.Mapper.Tests
 
             #region SitecoreQuery
 
-            [SitecoreQuery("/sitecore/content/Glass/*")]
+            [SitecoreQuery("/sitecore/content/Glass/*[@@TemplateName='BasicTemplate']")]
             public virtual IEnumerable<SubClass> Query { get; set; }
 
             #endregion

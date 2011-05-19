@@ -50,7 +50,7 @@ namespace Glass.Sitecore.Mapper.Tests
             InstanceContext instance = Context.GetContext();
             
             //Assert
-            Assert.AreEqual(1, instance.Classes.Count());
+            Assert.AreEqual(2, instance.Classes.Count());
         }
 
         #endregion
