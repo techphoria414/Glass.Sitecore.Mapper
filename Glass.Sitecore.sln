@@ -1,13 +1,13 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 10.00
 # Visual Studio 2008
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glass.Sitecore.Persistence", "Source\Glass.Sitecore.Persistence\Glass.Sitecore.Persistence.csproj", "{564CDD78-0939-436B-9C90-7AF9D95B9024}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glass.Sitecore.Mapper", "Source\Glass.Sitecore.Mapper\Glass.Sitecore.Mapper.csproj", "{564CDD78-0939-436B-9C90-7AF9D95B9024}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Source", "Source", "{7D464095-7E51-40CD-9C8A-29B0821A7494}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{F3EE438A-FEE6-439C-9083-F52449C0C4BB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glass.Sitecore.Persistence.Tests", "Source\Glass.Sitecore.Persistence.Tests\Glass.Sitecore.Persistence.Tests.csproj", "{D88371AA-7461-4945-B8DE-998EAA9257D4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glass.Sitecore.Mapper.Tests", "Source\Glass.Sitecore.Mapper.Tests\Glass.Sitecore.Mapper.Tests.csproj", "{D88371AA-7461-4945-B8DE-998EAA9257D4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution Items", "{FC33CBB8-8A04-4D29-A735-E3762B905F20}"
 	ProjectSection(SolutionItems) = preProject
@@ -15,7 +15,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		License.txt = License.txt
 	EndProjectSection
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glass.Sitecore.Persistence.Demo", "Source\Glass.Sitecore.Persistence.Demo\Glass.Sitecore.Persistence.Demo.csproj", "{A74AE99B-D389-4060-937A-D19F08EBF7C9}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Glass.Sitecore.Mapper.Demo", "Source\Glass.Sitecore.Mapper.Demo\Glass.Sitecore.Mapper.Demo.csproj", "{A74AE99B-D389-4060-937A-D19F08EBF7C9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
