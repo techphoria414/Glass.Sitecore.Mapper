@@ -236,6 +236,52 @@ namespace Glass.Sitecore.Mapper.Tests
         }
 
         #endregion
+
+        #region Delete
+
+        [Test]
+        public void Delete_DoesDeleteItem()
+        {
+            //Assign
+            string parentPath = "/sitecore/content/Glass";
+            string itemName = "Test4";
+            Item parent = _db.GetItem(parentPath);
+            Guid templateId = new Guid("{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}");
+            Item child = null;
+            using (new SecurityDisabler())
+            {
+                 child = parent.Add(itemName, new TemplateID(new ID(templateId)));
+            }
+
+            Assert.IsNotNull(child);
+            Guid childId = child.ID.Guid;
+
+            TestClass childClass = _sitecore.GetItem<TestClass>("/sitecore/content/Glass/Test4");
+            Assert.IsNotNull(childClass);
+            Assert.AreEqual(childId, childClass.Id);
+
+            //Act
+            using (new SecurityDisabler())
+            {
+                try
+                {
+                    _sitecore.Delete<TestClass>(childClass);
+                }
+                catch (NullReferenceException ex)
+                {
+                    //we need to catch a null reference exception raised by the Sitecore.Tasks.ItemEventHandler.OnItemDeleted
+                }
+            }
+
+            //Assert
+
+            Item check = _db.GetItem("/sitecore/content/Glass/Test4");
+            Assert.IsNull(check);
+
+
+        }
+
+        #endregion
     }
     namespace SitecoreServiceFixtureNS
     {
