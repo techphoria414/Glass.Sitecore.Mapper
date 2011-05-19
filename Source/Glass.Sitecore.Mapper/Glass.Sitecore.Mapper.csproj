@@ -1,0 +1,135 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{564CDD78-0939-436B-9C90-7AF9D95B9024}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Glass.Sitecore.Mapper</RootNamespace>
+    <AssemblyName>Glass.Sitecore.Mapper</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Depends\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Castle.DynamicProxy2, Version=2.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Depends\Castle.DynamicProxy2.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Depends\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.Kernel, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Depends\Sitecore.Kernel.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\Attributes\AttributeConfigurationLoader.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreChildrenAttribute.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreClassAttribute.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreFieldAttribute.cs" />
+    <Compile Include="Configuration\Attributes\AbstractSitecorePropertyAttribute.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreIdAttribute.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreParentAttribute.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreInfoAttribute.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreInfoType.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreQueryAttribute.cs" />
+    <Compile Include="Configuration\IConfigurationLoader.cs" />
+    <Compile Include="Configuration\SitecoreMember.cs" />
+    <Compile Include="Configuration\SitecoreClass.cs" />
+    <Compile Include="Context.cs" />
+    <Compile Include="Data\SitecoreChildrenHandler.cs" />
+    <Compile Include="Data\SitecoreFieldEnumHandler.cs" />
+    <Compile Include="Data\SitecoreFieldStreamHandler.cs" />
+    <Compile Include="Data\SitecoreFieldClassHandler.cs" />
+    <Compile Include="Data\SitecoreFieldDecimalHandler.cs" />
+    <Compile Include="Data\ISitecoreDataHandler.cs" />
+    <Compile Include="Data\AbstractSitecoreField.cs" />
+    <Compile Include="Data\SitecoreFieldBooleanHandler.cs" />
+    <Compile Include="Data\SitecoreFieldDateTimeHandler.cs" />
+    <Compile Include="Data\SitecoreFieldDoubleHandler.cs" />
+    <Compile Include="Data\SitecoreFieldFileHandler.cs" />
+    <Compile Include="Data\SitecoreFieldFloatHandler.cs" />
+    <Compile Include="Data\SitecoreFieldGuidHandler.cs" />
+    <Compile Include="Data\SitecoreFieldIEnumerableHandler.cs" />
+    <Compile Include="Data\SitecoreFieldImageHandler.cs" />
+    <Compile Include="Data\SitecoreFieldIntegerHandler.cs" />
+    <Compile Include="Data\SitecoreFieldLinkHandler.cs" />
+    <Compile Include="Data\SitecoreFieldTriStateHandler.cs" />
+    <Compile Include="Data\SitecoreParentHandler.cs" />
+    <Compile Include="Data\SitecoreIdDataHandler.cs" />
+    <Compile Include="Data\SitecoreFieldStringHandler.cs" />
+    <Compile Include="Data\SitecoreInfoHandler.cs" />
+    <Compile Include="Data\SitecoreQueryHandler.cs" />
+    <Compile Include="ExtensionMethods.cs" />
+    <Compile Include="FakePropertyInfo.cs" />
+    <Compile Include="FieldTypes\Blob.cs" />
+    <Compile Include="FieldTypes\File.cs" />
+    <Compile Include="FieldTypes\Image.cs" />
+    <Compile Include="FieldTypes\Link.cs" />
+    <Compile Include="FieldTypes\TriState.cs" />
+    <Compile Include="InstanceContext.cs" />
+    <Compile Include="ISitecoreContext.cs" />
+    <Compile Include="ISitecoreService.cs" />
+    <Compile Include="LazyEnumerable.cs" />
+    <Compile Include="NullLog.cs" />
+    <Compile Include="PersistenceException.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxies\ProxyBlobInterceptor.cs" />
+    <Compile Include="Proxies\ProxyClassInterceptor.cs" />
+    <Compile Include="Proxies\ProxyGenerator.cs" />
+    <Compile Include="Proxies\ProxyGeneratorHook.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="SitecoreContext.cs" />
+    <Compile Include="SitecoreIdException.cs" />
+    <Compile Include="SitecoreService.cs" />
+    <Compile Include="Utility.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
