@@ -263,6 +263,17 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.IsNull(parent.Child);
         }
 
+        [Test]
+        public void GetFieldValue_IsLazyTrue_ProxyIsReturned()
+        {
+            //need to test that if SitecoreFieldAttribute.IsLazy is true return a proxy
+        }
+        [Test]
+        public void GetFieldValue_IsLazyFalse_ReturnsConcrete()
+        {
+            //need to test that if SitecoreFieldAttribute.IsLazy is flase return a concrete class
+        }
+
      
 
         #endregion

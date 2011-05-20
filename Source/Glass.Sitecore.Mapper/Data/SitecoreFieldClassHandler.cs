@@ -39,6 +39,8 @@ namespace Glass.Sitecore.Mapper.Data
         {
             Item target = null;
 
+            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
+
             try
             {
                 Guid id = Guid.Empty;
@@ -52,7 +54,8 @@ namespace Glass.Sitecore.Mapper.Data
 
             if (target == null) return null;
 
-            return Proxies.ProxyGenerator.CreateProxy(property.Property.PropertyType, context, target);
+            return context.CreateClass(attr.IsLazy, property.Property.PropertyType, target);
+            
         }
 
         public override string SetFieldValue(Type returnType, object value, InstanceContext context)

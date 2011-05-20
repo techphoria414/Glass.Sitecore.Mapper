@@ -21,6 +21,7 @@ using System.Text;
 using Sitecore.Web.UI.WebControls;
 using Glass.Sitecore.Mapper.Configuration;
 using Sitecore.Data.Items;
+using Glass.Sitecore.Mapper.Configuration.Attributes;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -29,9 +30,11 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override object GetValue(object parent, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
         {
+            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
+
             string fieldName = GetFieldName(property);
 
-            if (item.Fields[fieldName].Type.StartsWith("Rich Text"))
+            if (item.Fields[fieldName].Type.StartsWith("Rich Text") && !attr.ReturnRaw)
             {
                 FieldRenderer renderer = new FieldRenderer();
                 renderer.Item = item;

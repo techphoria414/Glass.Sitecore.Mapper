@@ -24,6 +24,7 @@ using Sitecore.Data;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
+using Sitecore.SecurityModel;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -33,15 +34,39 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         SitecoreFieldStringHandler _handler;
         Database _db;
         Guid _itemId;
+        Item _item;
 
-        string originalText= "<p>This is a test with <a href=\"~/link.aspx?_id=98F907F7CD1A4C88AF118F38A21A7FE1&amp;_z=z\">link</a></p>";
-        
+        string _richTextContent= "<p>This is a test with <a href=\"~/link.aspx?_id=98F907F7CD1A4C88AF118F38A21A7FE1&amp;_z=z\">link</a></p>";
+        string _richTextOriginal = "";
+
         [SetUp]
         public void Setup()
         {
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
             _handler = new SitecoreFieldStringHandler();
+
+            _item = _db.GetItem(new ID(_itemId));
+            _richTextOriginal = _item["RichText"];
+
+            using (new SecurityDisabler())
+            {
+                _item.Editing.BeginEdit();
+                _item["RichText"] = _richTextContent;
+                _item.Editing.EndEdit();
+            }
+
+        }
+
+        [TearDown]
+        public void TearDown()
+        {
+            using (new SecurityDisabler())
+            {
+                _item.Editing.BeginEdit();
+                _item["RichText"] = _richTextOriginal;
+                _item.Editing.EndEdit();
+            }
         }
 
         #region GetValue
@@ -50,7 +75,6 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void GetValue_SingleLineText_GetsRawString()
         {
             //Assign
-            Item item = _db.GetItem(new ID(_itemId));
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreFieldAttribute(),
@@ -58,7 +82,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.GetValue(null, item, property, null);
+            var result = _handler.GetValue(null, _item, property, null);
 
             //Assert
             Assert.AreEqual("test single line text", result);
@@ -74,7 +98,6 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //in express edition the website database is set to web instead of master
             global::Sitecore.Context.Site = global::Sitecore.Configuration.Factory.GetSite("website");
 
-            Item item = _db.GetItem(new ID(_itemId));
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreFieldAttribute(),
@@ -82,10 +105,33 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
+            var result = _handler.GetValue(null, _item, property, null);
+
+            //Assert
+            Assert.AreNotEqual(_richTextContent, result);
+        }
+
+        [Test]
+        public void GetValue_RichText_ReturnRawTrue_ReturnsRawContent()
+        {
+            //Assign
+            //for the render method we have to set a site context for link replacement.
+            //this also required a change in the app.config for the website site config, database changed to master 
+            //in express edition the website database is set to web instead of master
+            global::Sitecore.Context.Site = global::Sitecore.Configuration.Factory.GetSite("website");
+
+            Item item = _db.GetItem(new ID(_itemId));
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(){ReturnRaw = true},
+                Property = new FakePropertyInfo(typeof(string), "RichText")
+            };
+
+            //Act
             var result = _handler.GetValue(null, item, property, null);
 
             //Assert
-            Assert.AreNotEqual(originalText, result);
+            Assert.AreEqual(_richTextContent, result);
         }
 
         #endregion
