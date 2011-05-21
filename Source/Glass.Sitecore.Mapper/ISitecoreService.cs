@@ -32,7 +32,9 @@ namespace Glass.Sitecore.Mapper
         T GetItem<T>(Guid id) where T : class;
         
         void Save<T>(T item) where T : class;
-        T Create<T>(object parent, string name) where T : class;
+        T Create<T, K>(K parent, string name)
+            where T : class
+            where K : class;
         
         void Delete<T>(T item) where T : class;
     }

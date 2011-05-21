@@ -82,7 +82,7 @@ namespace Glass.Sitecore.Mapper
             
         }
 
-        public T Create<T>(object parent, string name)  where T: class
+        public T Create<T, K>(K parent, string name)  where T: class where K: class
         {
             Guid guid = Guid.Empty;
             try

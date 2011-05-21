@@ -198,7 +198,7 @@ namespace Glass.Sitecore.Mapper.Tests
             using (new SecurityDisabler())
             {
                 //Act
-                _sitecore.Create<TestClass>(test3, "Test4");
+                _sitecore.Create<TestClass, TestClass>(test3, "Test4");
 
 
                 //Assert
@@ -215,7 +215,7 @@ namespace Glass.Sitecore.Mapper.Tests
             using (new SecurityDisabler())
             {
                 //Act
-                CreateClass newItem = _sitecore.Create<CreateClass>(test3, "Test4");
+                CreateClass newItem = _sitecore.Create<CreateClass, TestClass>(test3, "Test4");
 
 
                 //Assert
