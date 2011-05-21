@@ -21,11 +21,33 @@ using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Data.Items;
 using System.Collections;
+using Glass.Sitecore.Mapper.Data.QueryParameters;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreQueryHandler : ISitecoreDataHandler
     {
+
+        List<ISitecoreQueryParameter> _parameters;
+
+        public SitecoreQueryHandler(IEnumerable<ISitecoreQueryParameter> parameters)
+        {
+
+            _parameters = new List<ISitecoreQueryParameter>();
+            if(parameters !=null)
+                _parameters.AddRange(parameters);
+
+            //default parameters
+            _parameters.Add(new ItemDateNowParameter());
+            _parameters.Add(new ItemIdParameter());
+            _parameters.Add(new ItemPathParameter());
+
+        }
+        public SitecoreQueryHandler():this(null)
+        {
+
+        }
 
         #region ISitecoreDataHandler Members
 
@@ -38,7 +60,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             SitecoreQueryAttribute attr = property.Attribute as SitecoreQueryAttribute;
 
-            string query = ParseQuery(attr.Query);
+            string query = ParseQuery(attr.Query, item, property);
 
 
             if (property.Property.PropertyType.IsGenericType)
@@ -66,9 +88,14 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        private string ParseQuery(string query)
+        public string ParseQuery(string query, Item item, SitecoreProperty property)
         {
-            return query;
+            StringBuilder sb = new StringBuilder(query);
+            foreach (var param in _parameters)
+            {
+                sb.Replace("{"+param.Name+"}", param.GetValue(item, property));
+            }
+            return sb.ToString();
         }
 
         public void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)

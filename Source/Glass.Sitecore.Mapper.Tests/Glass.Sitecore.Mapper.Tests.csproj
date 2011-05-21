@@ -76,6 +76,9 @@
   <ItemGroup>
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoaderFixture.cs" />
     <Compile Include="ContextFixture.cs" />
+    <Compile Include="Data\QueryParameters\ItemDateNowParameterFixture.cs" />
+    <Compile Include="Data\QueryParameters\ItemIdParameterFixture.cs" />
+    <Compile Include="Data\QueryParameters\ItemPathParameterFixture.cs" />
     <Compile Include="Data\SitecoreChildrenHandlerFixture.cs" />
     <Compile Include="Data\SitecoreFieldEnumHandlerFixture.cs" />
     <Compile Include="Data\SitecoreFieldStreamHandlerFixture.cs" />

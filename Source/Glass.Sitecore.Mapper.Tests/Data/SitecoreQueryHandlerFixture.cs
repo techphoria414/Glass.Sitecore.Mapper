@@ -34,6 +34,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         InstanceContext _context;
         SitecoreQueryHandler _handler;
         Guid _itemId;
+        Item _item;
+
         [SetUp]
         public void Setup()
         {
@@ -55,7 +57,11 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 new ISitecoreDataHandler[] { });
 
             _handler = new SitecoreQueryHandler();
+
+
             _itemId = new Guid("{D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}");
+
+            _item = _db.GetItem(new ID(_itemId));
         }
 
         #region GetValue
@@ -64,8 +70,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            string query = item.Paths.FullPath + "/*";
+            string query = _item.Paths.FullPath + "/*";
 
             SitecoreProperty property = new SitecoreProperty(){
                 Attribute = new  SitecoreQueryAttribute(query){IsLazy= true},
@@ -73,10 +78,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.GetValue(null, item, property, _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue(null, _item, property, _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
 
             //Assert
-            Assert.AreEqual(item.Children.Count, result.Count());
+            Assert.AreEqual(_item.Children.Count, result.Count());
             Assert.AreNotEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.First().GetType());
             Assert.IsTrue(result.First() is SitecoreQueryHandlerFixtureNS.TestClass);
 
@@ -87,8 +92,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            string query = item.Paths.FullPath + "/*";
+            string query = _item.Paths.FullPath + "/*";
 
             SitecoreProperty property = new SitecoreProperty()
             {
@@ -97,10 +101,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.GetValue(null, item, property, _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue(null, _item, property, _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
 
             //Assert
-            Assert.AreEqual(item.Children.Count, result.Count());
+            Assert.AreEqual(_item.Children.Count, result.Count());
             Assert.AreEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.First().GetType());
 
         }
@@ -110,8 +114,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            string query = item.Paths.FullPath + "/*";
+            string query = _item.Paths.FullPath + "/*";
 
             SitecoreProperty property = new SitecoreProperty()
             {
@@ -120,7 +123,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.GetValue(null, item, property, _context) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue(null, _item, property, _context) as SitecoreQueryHandlerFixtureNS.TestClass;
 
             //Assert
             Assert.AreNotEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.GetType());
@@ -133,8 +136,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            string query = item.Paths.FullPath + "/*";
+            string query = _item.Paths.FullPath + "/*";
 
             SitecoreProperty property = new SitecoreProperty()
             {
@@ -143,13 +145,32 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.GetValue(null, item, property, _context) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue(null, _item, property, _context) as SitecoreQueryHandlerFixtureNS.TestClass;
 
             //Assert
             
             Assert.AreEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.GetType());
 
         }
+        #endregion
+
+        #region SetValue
+
+        [Test]
+        public void ParseQuery_ReplacesParameters()
+        {
+            //Assign
+            SitecoreQueryHandler handler =new SitecoreQueryHandler();
+            string query = "/sitecore/content/home/*[@@id='{id}']";
+
+            //Act
+            var result = handler.ParseQuery(query, _item, null);
+
+            //Assert
+            string expected = "/sitecore/content/home/*[@@id='" + _item.ID.ToString() + "']";
+            Assert.AreEqual(expected, result);
+        }
+
         #endregion
     }
     namespace SitecoreQueryHandlerFixtureNS

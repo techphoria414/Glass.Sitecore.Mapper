@@ -18,22 +18,24 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Sitecore.Data.Items;
 
-namespace Glass.Sitecore.Mapper
+namespace Glass.Sitecore.Mapper.Data.QueryParameters
 {
-    public interface ISitecoreService
+    public class ItemDateNowParameter:ISitecoreQueryParameter
     {
-        IEnumerable<T> Query<T>(string query) where T: class;
-        IEnumerable<T> Query<T>(string query, bool isLazy) where T : class;
-        T QuerySingle<T>(string query) where T : class;
 
-        T GetItem<T>(string path) where T : class;
-        T GetItem<T>(Guid id) where T : class;
-        
-        void Save<T>(T item) where T : class;
-        T Create<T>(object parent, string name) where T : class;
-        
-        void Delete<T>(T item) where T : class;
+        #region ISitecoreQueryParameter Members
+
+        public string Name
+        {
+            get { return "dataNow"; }
+        }
+
+        public string GetValue(global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property)
+        {
+            return global::Sitecore.DateUtil.ToIsoDate(DateTime.Now);
+        }
+
+        #endregion
     }
 }

@@ -77,6 +77,10 @@
     <Compile Include="Configuration\SitecoreMember.cs" />
     <Compile Include="Configuration\SitecoreClass.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Data\QueryParameters\ISitecoreQueryParameter.cs" />
+    <Compile Include="Data\QueryParameters\ItemDateNowParameter.cs" />
+    <Compile Include="Data\QueryParameters\ItemIdParameter.cs" />
+    <Compile Include="Data\QueryParameters\ItemPathParameter.cs" />
     <Compile Include="Data\SitecoreChildrenHandler.cs" />
     <Compile Include="Data\SitecoreFieldEnumHandler.cs" />
     <Compile Include="Data\SitecoreFieldStreamHandler.cs" />
