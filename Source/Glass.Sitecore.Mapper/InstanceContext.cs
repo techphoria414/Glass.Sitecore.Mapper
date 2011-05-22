@@ -87,34 +87,30 @@ namespace Glass.Sitecore.Mapper
         /// <returns></returns>
         public IEnumerable CreateClasses(bool isLazy, Type type, Func<IEnumerable<Item>> getItems)
         {
-            if (isLazy)
-            {
-                return Utility.CreateGenericType(typeof(LazyEnumerable<>), new Type[] { type }, getItems, this) as IEnumerable;
-            }
-            else
-            {
-                IList list = Utility.CreateGenericType(typeof(List<>), new Type[] { type }) as IList;
-
-                foreach (Item item in getItems.Invoke().Where(x=>x != null))
-                {
-                    var result = this.MakeClass(item, type);
-                    list.Add(result);
-                }
-
-                return list;
-            }
+            return Utility.CreateGenericType(typeof(Enumerable<>), new Type[] { type }, getItems, this, isLazy) as IEnumerable;
         }
 
         public object CreateClass(bool isLazy, Type type, Item item)
         {
             if (item == null) return null;
-            if (isLazy)
+            if (isLazy || type.IsInterface)
             {
                 return ProxyGenerator.CreateProxy(type, this, item);
             }
             else
             {
-                return this.MakeClass(item, type);
+                if (item == null) return null;
+
+                //get the class information
+                var scClass = GetSitecoreClass(type);
+                object t = scClass.Type.Assembly.CreateInstance(scClass.Type.FullName);
+
+                foreach (var property in scClass.Properties)
+                {
+                    SetProperty(t, property, item);
+                }
+
+                return t;
             }
         }
 
@@ -131,22 +127,7 @@ namespace Glass.Sitecore.Mapper
         {
             return CreateClass(isLazy, typeof(T),  item) as T;
         }
-
-
-        public object MakeClass(Item item, Type type){
-            if (item == null) return null;
-
-            //get the class information
-            var scClass = GetSitecoreClass(type);
-            object t = scClass.Type.Assembly.CreateInstance(scClass.Type.FullName);
-
-            foreach (var property in scClass.Properties)
-            {
-                SetProperty(t, property, item); 
-            }
-                        
-            return t;
-        }
+       
         public void SaveClass<T>(T target, Item item)
         {
             var scClass = GetSitecoreClass(typeof(T));

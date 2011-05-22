@@ -49,7 +49,7 @@ namespace Glass.Sitecore.Mapper.Proxies
             //create class
             if (_actual == null)
             {
-                _actual = _context.MakeClass(_item, _type);
+                _actual = _context.CreateClass(false, _type, _item);
             }
 
             invocation.ReturnValue = invocation.Method.Invoke(_actual, invocation.Arguments);

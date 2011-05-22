@@ -70,7 +70,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.GetValue(null, item, property, _context) as LazyEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
+            var result = _handler.GetValue(null, item, property, _context) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
             SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
             assignTest.Children = result;
             //Assert
