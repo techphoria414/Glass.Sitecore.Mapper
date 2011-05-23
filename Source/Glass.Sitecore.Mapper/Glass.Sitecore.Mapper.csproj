@@ -68,6 +68,7 @@
     <Compile Include="Configuration\Attributes\SitecoreClassAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreFieldAttribute.cs" />
     <Compile Include="Configuration\Attributes\AbstractSitecorePropertyAttribute.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreFieldSettings.cs" />
     <Compile Include="Configuration\Attributes\SitecoreIdAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreParentAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreInfoAttribute.cs" />

@@ -26,28 +26,17 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
     /// </summary>
     public class SitecoreFieldAttribute: AbstractSitecorePropertyAttribute
     {
+
         public SitecoreFieldAttribute()
         {
-            IsLazy = true;
+            Settings = SitecoreFieldSettings.Default;
         }
-        public SitecoreFieldAttribute(string fieldName)
+        public SitecoreFieldAttribute(string fieldName):this()
         {
-            IsLazy = true;
             FieldName = fieldName;
         }
         public string FieldName { get; set; }
-        
-        /// <summary>
-        /// Used on properties that load other classes loaded by Glass Sitecore Mapper. Indicates that the class should be 
-        /// loaded lazyily. Be default this is true.
-        /// </summary>
-        public bool IsLazy { get; set; }
 
-        /// <summary>
-        /// Where a field data is manipulated before being returned setting this to true will return the fields raw value.
-        /// For example if the property returns string and the data is coming from a Rich Text field it stops the contents
-        /// going through the renderField pipeline. False by default.
-        /// </summary>
-        public bool ReturnRaw { get; set; }
+        public SitecoreFieldSettings Settings { get; set; }
     }
 }
