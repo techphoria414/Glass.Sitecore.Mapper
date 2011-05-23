@@ -29,7 +29,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
         public SitecoreFieldAttribute()
         {
-            Settings = SitecoreFieldSettings.Default;
+            Setting = SitecoreFieldSettings.Default;
         }
         public SitecoreFieldAttribute(string fieldName):this()
         {
@@ -37,6 +37,6 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         }
         public string FieldName { get; set; }
 
-        public SitecoreFieldSettings Settings { get; set; }
+        public SitecoreFieldSettings Setting { get; set; }
     }
 }

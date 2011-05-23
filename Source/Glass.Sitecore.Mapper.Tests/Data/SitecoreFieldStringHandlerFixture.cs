@@ -123,7 +123,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Item item = _db.GetItem(new ID(_itemId));
             SitecoreProperty property = new SitecoreProperty()
             {
-                Attribute = new SitecoreFieldAttribute(){Settings = SitecoreFieldSettings.RichTextRaw},
+                Attribute = new SitecoreFieldAttribute(){Setting = SitecoreFieldSettings.RichTextRaw},
                 Property = new FakePropertyInfo(typeof(string), "RichText")
             };
 

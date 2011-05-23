@@ -34,7 +34,7 @@ namespace Glass.Sitecore.Mapper.Data
 
             string fieldName = GetFieldName(property);
 
-            if (item.Fields[fieldName].Type.StartsWith("Rich Text") && attr.Settings != SitecoreFieldSettings.RichTextRaw )
+            if (item.Fields[fieldName].Type.StartsWith("Rich Text") && attr.Setting != SitecoreFieldSettings.RichTextRaw )
             {
                 FieldRenderer renderer = new FieldRenderer();
                 renderer.Item = item;

@@ -53,7 +53,7 @@ namespace Glass.Sitecore.Mapper.Data
             }
 
             if (target == null) return null;
-            bool isLazy = attr.Settings != SitecoreFieldSettings.DontLoadLazily;
+            bool isLazy = attr.Setting != SitecoreFieldSettings.DontLoadLazily;
 
             return context.CreateClass(isLazy, property.Property.PropertyType, target);
             
