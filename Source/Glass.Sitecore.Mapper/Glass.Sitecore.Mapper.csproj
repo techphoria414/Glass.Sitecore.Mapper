@@ -78,6 +78,7 @@
     <Compile Include="Configuration\SitecoreMember.cs" />
     <Compile Include="Configuration\SitecoreClass.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Data\QueryParameters\ItemIdNoBracketsParameter.cs" />
     <Compile Include="Data\QueryParameters\ISitecoreQueryParameter.cs" />
     <Compile Include="Data\QueryParameters\ItemDateNowParameter.cs" />
     <Compile Include="Data\QueryParameters\ItemIdParameter.cs" />

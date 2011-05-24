@@ -82,8 +82,32 @@ namespace Glass.Sitecore.Mapper
             
         }
 
-        public T Create<T, K>(K parent, string name)  where T: class where K: class
+        public T Create<T, K>(K parent, string name)
+            where T : class
+            where K : class
         {
+            return Create<T, K>(parent, name, null);
+        }
+
+        public T Create<T, K>(K parent, string name, T data)  where T: class where K: class
+        {
+
+            //check that the data is not null and if it has an ID check that it is empty
+            if (data != null)
+            {
+                try
+                {
+                    Guid id = _context.GetClassId<T>(data);
+                    if (id != Guid.Empty) throw new MapperException("You are trying to create an item on a class that doesn't have an empty ID value");
+                }
+                catch (SitecoreIdException ex)
+                {
+                    //we can swallow this exception for now
+                    //should look to do this beeter
+                }
+
+            }
+            
             Guid guid = Guid.Empty;
             try
             {
@@ -112,11 +136,11 @@ namespace Glass.Sitecore.Mapper
 
             Item item = null;
 
-            if (templateSt.GuidTryParse(out templateId))
+            if (!templateSt.IsNullOrEmpty() && templateSt.GuidTryParse(out templateId))
             {
                 item = pItem.Add(name, new TemplateID(new ID(templateId)));
             }
-            else if (branchSt.GuidTryParse(out branchId))
+            else if (!branchSt.IsNullOrEmpty() && branchSt.GuidTryParse(out branchId))
             {
                 item = pItem.Add(name, new BranchId(new ID(branchId)));
             }
@@ -126,9 +150,17 @@ namespace Glass.Sitecore.Mapper
             }
 
 
+
             if (item == null)
                 throw new MapperException("Failed to create child with name {0} and parent {1}".Formatted(name, item.Paths.FullPath));
 
+            //if we have data save it to the item
+            if (data != null)
+            {
+                item.Editing.BeginEdit();
+                _context.SaveClass<T>(data, item);
+                item.Editing.EndEdit();
+            }
             return _context.CreateClass<T>(false, item);
 
         }

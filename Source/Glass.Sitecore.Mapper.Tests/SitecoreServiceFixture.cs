@@ -235,6 +235,39 @@ namespace Glass.Sitecore.Mapper.Tests
             }
         }
 
+        [Test]
+        public void Create_CreatesAnItem_PrePopulates()
+        {
+            //Assign
+            TestClass test3 = _sitecore.GetItem<TestClass>("/sitecore/content/Glass/Test1/Test3");
+            CreateClass preClass = new CreateClass() { SingleLineText = "some test data" };
+
+            using (new SecurityDisabler())
+            {
+
+
+                //Act
+                CreateClass newItem = _sitecore.Create<CreateClass, TestClass>(test3, "Test5", preClass);
+
+
+                //Assert
+                Item item = _db.GetItem("/sitecore/content/Glass/Test1/Test3/Test5");
+                Assert.IsNotNull(item);
+                Assert.AreNotEqual(item.ID, newItem.Id);
+                Assert.AreEqual(preClass.SingleLineText, item["SingleLineText"]);
+
+                try
+                {
+                    //Clean up
+                    item.Delete();
+                }
+                catch (NullReferenceException ex)
+                {
+                    //this expection is thrown by Sitecore.Tasks.ItemEventHandler.OnItemDeleted
+                }
+            }
+        }
+
         #endregion
 
         #region Delete
@@ -297,6 +330,9 @@ namespace Glass.Sitecore.Mapper.Tests
         {
             [SitecoreId]
             public virtual Guid Id { get; set; }
+
+            [SitecoreField]
+            public virtual string SingleLineText { get; set; }
         }
         
 

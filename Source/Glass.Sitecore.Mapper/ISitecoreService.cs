@@ -32,7 +32,29 @@ namespace Glass.Sitecore.Mapper
         T GetItem<T>(Guid id) where T : class;
         
         void Save<T>(T item) where T : class;
+        
+        /// <summary>
+        /// Create a blank Sitecore item
+        /// </summary>
+        /// <typeparam name="T">The type to create</typeparam>
+        /// <typeparam name="K">The type of the parent</typeparam>
+        /// <param name="parent">The parent item. This item must have been load by Glass Sitecore Mapper</param>
+        /// <param name="name">The name of the item</param>
+        /// <returns></returns>
         T Create<T, K>(K parent, string name)
+            where T : class
+            where K : class;
+
+        /// <summary>
+        /// Create an item with pre-populated data
+        /// </summary>
+        /// <typeparam name="T">The type to create</typeparam>
+        /// <typeparam name="K">The type of the parent</typeparam>
+        /// <param name="parent">The parent item. This item must have been load by Glass Sitecore Mapper</param>
+        /// <param name="name">The name of the item</param>
+        /// <param name="data">The data to pre-populate the item with</param>
+        /// <returns></returns>
+        T Create<T, K>(K parent, string name, T data)
             where T : class
             where K : class;
         

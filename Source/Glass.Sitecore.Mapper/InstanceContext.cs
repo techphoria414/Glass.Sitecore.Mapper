@@ -135,6 +135,8 @@ namespace Glass.Sitecore.Mapper
 
             foreach (var property in scClass.Properties)
             {
+                SetDataHandler(property);
+
                 if (property.DataHandler.CanSetValue)
                 {
                     PropertyInfo info = property.Property;
@@ -159,6 +161,7 @@ namespace Glass.Sitecore.Mapper
             return guid;
         }
 
+
         public SitecoreClassConfig GetSitecoreClass(Type type)
         {
             
@@ -179,7 +182,11 @@ namespace Glass.Sitecore.Mapper
 
             property.Property.SetValue(target, value, null);
         }
-
+        /// <summary>
+        /// Can we move this so that it happens when the instance context is created
+        /// 
+        /// </summary>
+        /// <param name="property"></param>
         private void SetDataHandler(SitecoreProperty property)
         {
             if (property.DataHandler == null)
