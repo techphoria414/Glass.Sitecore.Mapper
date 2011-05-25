@@ -42,6 +42,7 @@ namespace Glass.Sitecore.Mapper.Data
             _parameters.Add(new ItemDateNowParameter());
             _parameters.Add(new ItemIdParameter());
             _parameters.Add(new ItemPathParameter());
+            _parameters.Add(new ItemIdNoBracketsParameter());
 
         }
         public SitecoreQueryHandler():this(null)
@@ -63,6 +64,7 @@ namespace Glass.Sitecore.Mapper.Data
             string query = ParseQuery(attr.Query, item, property);
 
 
+
             if (property.Property.PropertyType.IsGenericType)
             {
                 Type outerType = Utility.GetGenericOuter(property.Property.PropertyType);
@@ -70,19 +72,38 @@ namespace Glass.Sitecore.Mapper.Data
                 if (typeof(IEnumerable<>) == outerType)
                 {
                     Type genericType = Utility.GetGenericArgument(property.Property.PropertyType);
-
-                    Func<IEnumerable<Item>> getItems = new Func<IEnumerable<Item>>(() =>
+                    
+                    Func<IEnumerable<Item>> getItems = null;
+                    if (attr.IsRelative)
                     {
-                        return item.Database.SelectItems(query);
-                    });
+                        getItems = new Func<IEnumerable<Item>>(() =>
+                        {
+                            return item.Axes.SelectItems(query);
+                        });
+                    }
+                    else
+                    {
+                        getItems = new Func<IEnumerable<Item>>(() =>
+                        {
+                            return item.Database.SelectItems(query);
+                        });
+                    }
 
                     return context.CreateClasses(attr.IsLazy, genericType, getItems);
                 }
-                else throw new NotSupportedException("Generic type not supported {0}".Formatted(outerType.FullName));
+                else throw new NotSupportedException("Generic type not supported {0}. Must be IEnumerable<>.".Formatted(outerType.FullName));
             }
             else
             {
-                var result = item.Database.SelectSingleItem(query);
+                Item result = null;
+                if (attr.IsRelative)
+                {
+                    item.Axes.SelectSingleItem(query);
+                }
+                else
+                {
+                    item.Database.SelectSingleItem(query);
+                }
                 return context.CreateClass(attr.IsLazy, property.Property.PropertyType, result);
             }
 

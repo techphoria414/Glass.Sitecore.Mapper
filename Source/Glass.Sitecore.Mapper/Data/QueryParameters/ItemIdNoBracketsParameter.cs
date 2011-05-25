@@ -29,14 +29,14 @@ namespace Glass.Sitecore.Mapper.Data.QueryParameters
         {
             get
             {
-                return "idNoBrackets";
+                return "{id:N}";
             }
            
         }
 
         public string GetValue(global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property)
         {
-            return item.ID.Guid.ToString("D");
+            return item.ID.Guid.ToString("N");
         }
 
         #endregion

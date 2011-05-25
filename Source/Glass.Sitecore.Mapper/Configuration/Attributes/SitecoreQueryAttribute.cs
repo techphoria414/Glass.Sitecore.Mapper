@@ -23,9 +23,19 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
     public class SitecoreQueryAttribute : AbstractSitecorePropertyAttribute
     {
+        /// <summary>
+        /// The query to execute
+        /// </summary>
         public string Query { get; set; }
-        public bool IsLazy { get; set; }
 
+        /// <summary>
+        /// Indicates that the results should be loaded lazily
+        /// </summary>
+        public bool IsLazy { get; set; }
+        /// <summary>
+        /// Indicates that the field is relative to the current item.
+        /// </summary>
+        public bool IsRelative { get; set; }
         
         public SitecoreQueryAttribute(string query)
         {
