@@ -37,6 +37,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// </summary>
         public bool IsRelative { get; set; }
         
+
+        /// <summary>
+        /// Indicates that the property should be populated with the result of a query.
+        /// </summary>
+        /// <param name="query">The query to execute</param>
         public SitecoreQueryAttribute(string query)
         {
             Query = query;

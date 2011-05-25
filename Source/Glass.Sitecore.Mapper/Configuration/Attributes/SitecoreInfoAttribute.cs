@@ -23,7 +23,15 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
     public class SitecoreInfoAttribute:AbstractSitecorePropertyAttribute
     {
+        /// <summary>
+        /// The type of information that should populate the property
+        /// </summary>
         public SitecoreInfoType Type{get;set;}
+        
+        /// <summary>
+        /// Indicates that the property should be populated with data about the item such as URL, ID, etc.
+        /// </summary>
+        /// <param name="type">The type of information that should populate the property</param>
         public SitecoreInfoAttribute(SitecoreInfoType type)
         {
             Type = type;

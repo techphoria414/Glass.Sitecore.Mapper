@@ -26,17 +26,28 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
     /// </summary>
     public class SitecoreFieldAttribute: AbstractSitecorePropertyAttribute
     {
-
+        /// <summary>
+        /// Indicates that the property should pull data from a Sitecore field.
+        /// </summary>
         public SitecoreFieldAttribute()
         {
             Setting = SitecoreFieldSettings.Default;
         }
+        /// <summary>
+        /// Indicates that the property should pull data from a Sitecore field.
+        /// </summary>
+        /// <param name="fieldName">The name of the field  to use if it is different to the property name</param>
         public SitecoreFieldAttribute(string fieldName):this()
         {
             FieldName = fieldName;
         }
+        /// <summary>
+        /// The name of the field  to use if it is different to the property name
+        /// </summary>
         public string FieldName { get; set; }
-
+        /// <summary>
+        /// Options to override the behaviour of certain fields.
+        /// </summary>
         public SitecoreFieldSettings Setting { get; set; }
     }
 }

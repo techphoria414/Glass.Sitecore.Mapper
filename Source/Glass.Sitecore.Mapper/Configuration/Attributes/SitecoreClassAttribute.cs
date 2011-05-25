@@ -24,11 +24,20 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
     [AttributeUsage(AttributeTargets.Class)]
     public class SitecoreClassAttribute : Attribute
     {
+        /// <summary>
+        /// Indicates that the class can be used by Glass Sitecore Mapper
+        /// </summary>
         public SitecoreClassAttribute()
         {
         }
         
+        /// <summary>
+        /// Indicates the template to use when trying to create an item
+        /// </summary>
         public string TemplateId { get; set; }
+        /// <summary>
+        /// Indicates the branch to use when trying to create and item. If a template id is also specified the template Id will be use instead.
+        /// </summary>
         public string BranchId { get; set; }
     }
 }

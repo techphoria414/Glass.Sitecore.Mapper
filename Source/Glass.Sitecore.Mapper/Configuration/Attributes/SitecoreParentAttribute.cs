@@ -23,6 +23,9 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
     public class SitecoreParentAttribute : AbstractSitecorePropertyAttribute
     {
+        /// <summary>
+        /// Indicates that the property should be populated with the parent item.
+        /// </summary>
         public SitecoreParentAttribute()
         {
             IsLazy = true;
