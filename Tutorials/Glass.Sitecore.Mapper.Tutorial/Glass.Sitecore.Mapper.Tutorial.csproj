@@ -1,0 +1,310 @@
+﻿<Project ToolsVersion="3.5" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{A15B98EB-9A60-4E91-BBFF-8ABDA819C601}</ProjectGuid>
+    <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Glass.Sitecore.Mapper.Tutorial</RootNamespace>
+    <AssemblyName>Glass.Sitecore.Mapper.Tutorial</AssemblyName>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Core">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Data.DataSetExtensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Web.Extensions">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Xml.Linq">
+      <RequiredTargetFramework>3.5</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Xml" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Web.Services" />
+    <Reference Include="System.EnterpriseServices" />
+    <Reference Include="System.Web.Mobile" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Security\Domains.config.xml" />
+    <Content Include="App_Config\Security\GlobalRoles.config.xml" />
+    <Content Include="App_Data\MediaCache\shell\121\12bf2ccfd02640b0bc1dcb55284190fc.png" />
+    <Content Include="App_Data\MediaCache\shell\121\d0349aa0554d419792f84f21e3e2cc41.png" />
+    <Content Include="App_Data\MediaCache\shell\127\2a099c18780848e4848c0b2b8964953d.png" />
+    <Content Include="App_Data\MediaCache\shell\135\1191dfad241e402d9085b0eace3f7953.png" />
+    <Content Include="App_Data\MediaCache\shell\147\3222e71afcc0402d98aa6eb2c53042dc.png" />
+    <Content Include="App_Data\MediaCache\shell\169\3dd1bfa2962d4d89a653b0f68a4e9302.png" />
+    <Content Include="App_Data\MediaCache\shell\173\f23bdabf814a46d6be7aa5925eaa25e1.png" />
+    <Content Include="App_Data\MediaCache\shell\220\1536fda7025a49f08edfa8f1ac13c02b.png" />
+    <Content Include="App_Data\MediaCache\shell\220\669f48fbad2e43c1a9eb1aa588b31063.png" />
+    <Content Include="App_Data\MediaCache\shell\220\aba78d306c4444ffbd492379386e4706.jpg" />
+    <Content Include="App_Data\MediaCache\shell\229\00d1c82b3e9a46b5884293129d82b827.png" />
+    <Content Include="App_Data\MediaCache\shell\229\09d64f0afe40469d9e7debe4259dfb6d.png" />
+    <Content Include="App_Data\MediaCache\shell\229\436a4f1eccbd4c4389aa7d383ffea1dc.png" />
+    <Content Include="App_Data\MediaCache\shell\229\cb209c3151084519aad65faf23bdfa73.png" />
+    <Content Include="App_Data\MediaCache\shell\233\9674b73921ce4be590353c7743492063.png" />
+    <Content Include="App_Data\MediaCache\shell\233\ce297ebe33314da7898d521e4dcf9c6e.png" />
+    <Content Include="App_Data\MediaCache\shell\244\bcd6c852297f4ea6bc08bb8eb079197c.gif" />
+    <Content Include="App_Data\MediaCache\shell\38\95ea78347a9b4a9d9f8b93f03060504a.png" />
+    <Content Include="App_Data\MediaCache\shell\38\be48998ddb664663baa88099938230db.png" />
+    <Content Include="App_Data\MediaCache\shell\44\4a6a459a94db4d5483fd107b47396ee3.png" />
+    <Content Include="App_Data\MediaCache\shell\44\6350d5fc5f3a492a82f7ab7cfef65b96.png" />
+    <Content Include="App_Data\MediaCache\shell\79\7d0d4c5360404bf885d20e96c79ca151.png" />
+    <Content Include="App_Data\MediaCache\shell\83\3a857b7dcc0b4480891ea4fa0588dfc2.png" />
+    <Content Include="App_Data\MediaCache\shell\96\82d20d67e5ef4e37a415e559dc2ff690.jpg" />
+    <Content Include="App_Data\MediaCache\shell\99\590c0f5ec9844d9a83ceae7e183d00f8.jpg" />
+    <Content Include="App_Data\MediaCache\website\220\5534bdc189c1494da53c60455f43d1e2.jpg" />
+    <Content Include="App_Data\MediaCache\website\220\f784fb81b485463daf69286d062a436e.jpg" />
+    <Content Include="Default.aspx" />
+    <Content Include="Web.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Default.aspx.cs">
+      <SubType>ASPXCodeBehind</SubType>
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Default.aspx.designer.cs">
+      <DependentUpon>Default.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Config\Commands.config" />
+    <Content Include="App_Config\ConnectionStrings.config" />
+    <Content Include="App_Config\ConnectionStringsSQLite.config" />
+    <Content Include="App_Config\FieldTypes.config" />
+    <Content Include="App_Config\Icons.config" />
+    <Content Include="App_Config\Include\CheckIgnoreFlag.config" />
+    <Content Include="App_Config\Include\CustomItem.config" />
+    <Content Include="App_Config\Include\eventsubscriber.config" />
+    <Content Include="App_Config\Include\Glass.config" />
+    <Content Include="App_Config\Include\livemode.config" />
+    <Content Include="App_Config\Include\webstylesheet.config" />
+    <Content Include="App_Config\LanguageDefinitions.config" />
+    <Content Include="App_Config\MimeTypes.config" />
+    <Content Include="App_Config\Portraits.config" />
+    <Content Include="App_Config\Prefetch\Common.config" />
+    <Content Include="App_Config\Prefetch\Core.config" />
+    <Content Include="App_Config\Prefetch\Master.config" />
+    <Content Include="App_Config\Prefetch\Web.config" />
+    <Content Include="App_Config\Prototypes.config" />
+    <Content Include="App_Config\Sitecore.config" />
+    <Content Include="App_Config\XamlSharp.config" />
+    <Content Include="Global.asax" />
+    <Content Include="temp\checkbox_disabled24x24.png" />
+    <Content Include="temp\column_disabled24x24.png" />
+    <Content Include="temp\copy_to_folder_disabled16x16.png" />
+    <Content Include="temp\delete2_disabled24x24.png" />
+    <Content Include="temp\disk_blue_disabled24x24.png" />
+    <Content Include="temp\documents_disabled24x24.png" />
+    <Content Include="temp\document_certificate_disabled24x24.png" />
+    <Content Include="temp\Document_disabled16x16.png" />
+    <Content Include="temp\document_gear_disabled16x16.png" />
+    <Content Include="temp\document_time_disabled24x24.png" />
+    <Content Include="temp\elements_selection_disabled16x16.png" />
+    <Content Include="temp\fileicon_asax_16x16.png" />
+    <Content Include="temp\fileicon_asax_24x24.png" />
+    <Content Include="temp\fileicon_asax_32x32.png" />
+    <Content Include="temp\fileicon_asax_48x48.png" />
+    <Content Include="temp\fileicon_ascx_16x16.png" />
+    <Content Include="temp\fileicon_ascx_24x24.png" />
+    <Content Include="temp\fileicon_ascx_32x32.png" />
+    <Content Include="temp\fileicon_ascx_48x48.png" />
+    <Content Include="temp\fileicon_aspx_16x16.png" />
+    <Content Include="temp\fileicon_aspx_24x24.png" />
+    <Content Include="temp\fileicon_aspx_32x32.png" />
+    <Content Include="temp\fileicon_aspx_48x48.png" />
+    <Content Include="temp\fileicon_config_16x16.png" />
+    <Content Include="temp\fileicon_config_24x24.png" />
+    <Content Include="temp\fileicon_config_32x32.png" />
+    <Content Include="temp\fileicon_config_48x48.png" />
+    <Content Include="temp\fileicon_csproj_16x16.png" />
+    <Content Include="temp\fileicon_csproj_24x24.png" />
+    <Content Include="temp\fileicon_csproj_32x32.png" />
+    <Content Include="temp\fileicon_csproj_48x48.png" />
+    <Content Include="temp\fileicon_cs_16x16.png" />
+    <Content Include="temp\fileicon_cs_24x24.png" />
+    <Content Include="temp\fileicon_cs_32x32.png" />
+    <Content Include="temp\fileicon_cs_48x48.png" />
+    <Content Include="temp\fileicon_dat_16x16.png" />
+    <Content Include="temp\fileicon_dat_24x24.png" />
+    <Content Include="temp\fileicon_dat_32x32.png" />
+    <Content Include="temp\fileicon_dat_48x48.png" />
+    <Content Include="temp\fileicon_dll_16x16.png" />
+    <Content Include="temp\fileicon_dll_24x24.png" />
+    <Content Include="temp\fileicon_dll_32x32.png" />
+    <Content Include="temp\fileicon_dll_48x48.png" />
+    <Content Include="temp\fileicon_pdb_16x16.png" />
+    <Content Include="temp\fileicon_pdb_24x24.png" />
+    <Content Include="temp\fileicon_pdb_32x32.png" />
+    <Content Include="temp\fileicon_pdb_48x48.png" />
+    <Content Include="temp\fileicon_png_16x16.png" />
+    <Content Include="temp\fileicon_png_24x24.png" />
+    <Content Include="temp\fileicon_png_32x32.png" />
+    <Content Include="temp\fileicon_png_48x48.png" />
+    <Content Include="temp\fileicon_status_16x16.png" />
+    <Content Include="temp\fileicon_status_24x24.png" />
+    <Content Include="temp\fileicon_status_32x32.png" />
+    <Content Include="temp\fileicon_status_48x48.png" />
+    <Content Include="temp\fileicon_txt_16x16.png" />
+    <Content Include="temp\fileicon_user_16x16.png" />
+    <Content Include="temp\fileicon_user_24x24.png" />
+    <Content Include="temp\fileicon_user_32x32.png" />
+    <Content Include="temp\fileicon_user_48x48.png" />
+    <Content Include="temp\fileicon_xml_16x16.png" />
+    <Content Include="temp\fileicon_xml_24x24.png" />
+    <Content Include="temp\fileicon_xml_32x32.png" />
+    <Content Include="temp\fileicon_xml_48x48.png" />
+    <Content Include="temp\folder_cubes_disabled24x24.png" />
+    <Content Include="temp\form_blue_disabled16x16.png" />
+    <Content Include="temp\form_green_disabled16x16.png" />
+    <Content Include="temp\form_yellow_delete_disabled16x16.png" />
+    <Content Include="temp\form_yellow_edit_disabled16x16.png" />
+    <Content Include="temp\help2_disabled16x16.png" />
+    <Content Include="temp\index_add_disabled16x16.png" />
+    <Content Include="temp\index_delete_disabled16x16.png" />
+    <Content Include="temp\layout_center_disabled16x16.png" />
+    <Content Include="temp\layout_east_disabled16x16.png" />
+    <Content Include="temp\layout_northeast_disabled16x16.png" />
+    <Content Include="temp\layout_northwest_disabled16x16.png" />
+    <Content Include="temp\layout_north_disabled16x16.png" />
+    <Content Include="temp\layout_southeast_disabled16x16.png" />
+    <Content Include="temp\layout_southwest_disabled16x16.png" />
+    <Content Include="temp\layout_south_disabled16x16.png" />
+    <Content Include="temp\layout_west_disabled16x16.png" />
+    <Content Include="temp\lock_edit_disabled24x24.png" />
+    <Content Include="temp\menu_b_disabled16x16.png" />
+    <Content Include="temp\move_to_folder_disabled16x16.png" />
+    <Content Include="temp\navigate_down2_disabled16x16.png" />
+    <Content Include="temp\navigate_down_disabled16x16.png" />
+    <Content Include="temp\navigate_up2_disabled16x16.png" />
+    <Content Include="temp\navigate_up_disabled16x16.png" />
+    <Content Include="temp\nav_left_green_disabled24x24.png" />
+    <Content Include="temp\nav_right_green_disabled24x24.png" />
+    <Content Include="temp\popup_menu_b_disabled16x16.png" />
+    <Content Include="temp\preferences_disabled24x24.png" />
+    <Content Include="temp\redo_disabled16x16.png" />
+    <Content Include="temp\rename_disabled16x16.png" />
+    <Content Include="temp\row_disabled24x24.png" />
+    <Content Include="temp\server_document_disabled24x24.png" />
+    <Content Include="temp\spell_check_disabled24x24.png" />
+    <Content Include="temp\style_formatting_b_disabled16x16.png" />
+    <Content Include="temp\table_delete_disabled24x24.png" />
+    <Content Include="temp\text_disabled16x16.png" />
+    <Content Include="temp\undo_disabled16x16.png" />
+    <Content Include="temp\up_folder_disabled24x24.png" />
+    <None Include="App_Data\MediaCache\shell\121\b576349cd6d240028235f883822c6df8.ini" />
+    <None Include="App_Data\MediaCache\shell\127\3c4964cb5bba42d183290fdabb76def5.ini" />
+    <None Include="App_Data\MediaCache\shell\135\34a2952893514b0c866b2e4bbec7a63a.ini" />
+    <None Include="App_Data\MediaCache\shell\147\391057515ff2472d9109ef97a56ef65e.ini" />
+    <None Include="App_Data\MediaCache\shell\169\495c4dd874ea410cac74b970f56bd7fa.ini" />
+    <None Include="App_Data\MediaCache\shell\173\fa71ab671ddf47bcb54547175d6108cb.ini" />
+    <None Include="App_Data\MediaCache\shell\220\d2a6888feb1147ca931b00b8253d7f9e.ini" />
+    <None Include="App_Data\MediaCache\shell\229\0b59112b5d434a15a7d9731e5f549101.ini" />
+    <None Include="App_Data\MediaCache\shell\229\bbd9bf923e8840c58adca57590ff701e.ini" />
+    <None Include="App_Data\MediaCache\shell\233\897d1f5b3e854df1bb57e15507f45aab.ini" />
+    <None Include="App_Data\MediaCache\shell\244\f6893de3d525427ab62c983e369a394a.ini" />
+    <None Include="App_Data\MediaCache\shell\38\25965c3a98da4b28ba37feb2e3b4456a.ini" />
+    <None Include="App_Data\MediaCache\shell\44\d987607a977540ad9163c9cabb34da3b.ini" />
+    <None Include="App_Data\MediaCache\shell\79\b7db98a5145c47adadaa78d488e7be1b.ini" />
+    <None Include="App_Data\MediaCache\shell\83\2b5aa082d9094820be0a4b65491cac3f.ini" />
+    <None Include="App_Data\MediaCache\shell\96\29df041b77bf4767b72ffe44e3d66a1d.ini" />
+    <None Include="App_Data\MediaCache\shell\99\d37746bef1cf446eae54425e5cbb1c19.ini" />
+    <None Include="App_Data\MediaCache\website\220\d2a6888feb1147ca931b00b8253d7f9e.ini" />
+    <None Include="data\logs\nvelocity.log" />
+    <None Include="data\logs\nvelocity.log.2011-05-14" />
+    <None Include="indexes\core\system\deletable" />
+    <None Include="indexes\core\system\segments" />
+    <None Include="indexes\core\system\_1d.del" />
+    <None Include="indexes\core\system\_1r.del" />
+    <None Include="indexes\core\system\_2v.cfs" />
+    <None Include="indexes\core\system\_t.cfs" />
+    <None Include="indexes\master\system\deletable" />
+    <None Include="indexes\master\system\segments" />
+    <None Include="indexes\master\system\_1l.cfs" />
+    <None Include="indexes\master\system\_1l.del" />
+    <None Include="indexes\master\system\_3j.cfs" />
+    <None Include="indexes\master\system\_43.cfs" />
+    <None Include="indexes\master\system\_5z.cfs" />
+    <None Include="indexes\master\system\_5z.del" />
+    <None Include="indexes\master\system\_6v.cfs" />
+    <None Include="indexes\master\system\_6v.del" />
+    <None Include="indexes\master\system\_87.cfs" />
+    <None Include="indexes\master\system\_87.del" />
+    <None Include="indexes\master\system\_9p.cfs" />
+    <None Include="indexes\master\system\_9p.del" />
+    <None Include="indexes\master\system\_ap.cfs" />
+    <None Include="indexes\__system\deletable" />
+    <None Include="indexes\__system\segments" />
+    <None Include="indexes\__system\_f6.cfs" />
+    <None Include="indexes\__system\_f6.del" />
+    <None Include="indexes\__system\_g6.cfs" />
+    <None Include="temp\dictionary.dat" />
+    <None Include="temp\E53A765923124D76966F2DB60CD21B52-files.status" />
+    <None Include="temp\installation_history\E53A765923124D76966F2DB60CD21B52-install.log" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Layouts\debug\" />
+    <Folder Include="temp\installation_history\E53A765923124D76966F2DB60CD21B52\app_config\include\" />
+    <Folder Include="temp\installation_history\E53A765923124D76966F2DB60CD21B52\bin\" />
+    <Folder Include="temp\install\E53A765923124D76966F2DB60CD21B52\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <ProjectExtensions>
+    <VisualStudio>
+      <FlavorProperties GUID="{349c5851-65df-11da-9384-00065b846f21}">
+        <WebProjectProperties>
+          <UseIIS>False</UseIIS>
+          <AutoAssignPort>True</AutoAssignPort>
+          <DevelopmentServerPort>64599</DevelopmentServerPort>
+          <DevelopmentServerVPath>/</DevelopmentServerVPath>
+          <IISUrl>
+          </IISUrl>
+          <NTLMAuthentication>False</NTLMAuthentication>
+          <UseCustomServer>False</UseCustomServer>
+          <CustomServerUrl>
+          </CustomServerUrl>
+          <SaveServerSettingsInUserFile>False</SaveServerSettingsInUserFile>
+        </WebProjectProperties>
+      </FlavorProperties>
+    </VisualStudio>
+  </ProjectExtensions>
+</Project>
