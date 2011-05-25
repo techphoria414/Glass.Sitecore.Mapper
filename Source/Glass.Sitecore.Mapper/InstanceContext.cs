@@ -148,7 +148,7 @@ namespace Glass.Sitecore.Mapper
         }
         public Guid GetClassId<T>(T target) where T : class
         {
-            return GetClassId(target.GetType(), target);
+            return GetClassId(typeof(T), target);
         }
         public Guid GetClassId(Type type, object target){
             var scClass = GetSitecoreClass(type);

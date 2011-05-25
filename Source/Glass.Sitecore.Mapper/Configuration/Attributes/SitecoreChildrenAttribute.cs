@@ -23,6 +23,9 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
     public class SitecoreChildrenAttribute :AbstractSitecorePropertyAttribute
     {
+        /// <summary>
+        /// Used to retrieve the children of an item as a specific type.
+        /// </summary>
         public SitecoreChildrenAttribute()
         {
             IsLazy = true;

@@ -111,7 +111,7 @@ namespace Glass.Sitecore.Mapper
             Guid guid = Guid.Empty;
             try
             {
-                 guid = _context.GetClassId(parent);
+                 guid = _context.GetClassId<K>(parent);
             }
             catch (SitecoreIdException ex)
             {
