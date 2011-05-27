@@ -41,5 +41,15 @@ namespace Glass.Sitecore.Mapper.Proxies
         }
 
         #endregion
+
+        #region IProxyGenerationHook Members
+
+
+        public void NonProxyableMemberNotification(Type type, System.Reflection.MemberInfo memberInfo)
+        {
+          //  throw new MapperException("Could not proxy type {0} with member {1}".Formatted(type.FullName, memberInfo.Name));
+        }
+
+        #endregion
     }
 }

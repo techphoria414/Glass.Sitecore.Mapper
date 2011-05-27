@@ -50,7 +50,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data.QueryParameters
             var result = param.GetValue(_item, null);
 
             //Assert
-            string idResult = _item.ID.Guid.ToString().Replace("{", "").Replace("}", "");
+            string idResult = _item.ID.Guid.ToString("N");
             Assert.AreEqual(idResult, result);
             Guid idGuid;
             Assert.IsTrue(result.GuidTryParse(out idGuid));

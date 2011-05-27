@@ -27,6 +27,7 @@ using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Proxies;
 using Castle.Core.Interceptor;
 using Moq;
+using Castle.DynamicProxy;
 
 namespace Glass.Sitecore.Mapper.Tests.Proxies
 {

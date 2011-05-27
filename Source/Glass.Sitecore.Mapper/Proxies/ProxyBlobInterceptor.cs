@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Castle.Core.Interceptor;
 using System.Reflection;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.FieldTypes;

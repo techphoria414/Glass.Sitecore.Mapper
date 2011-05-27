@@ -18,7 +18,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Castle.Core.Interceptor;
 using Castle.DynamicProxy;
 using System.Reflection;
 using Sitecore.Data.Items;
