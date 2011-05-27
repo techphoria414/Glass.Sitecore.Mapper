@@ -93,9 +93,6 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Global.asax.cs">
-      <DependentUpon>Global.asax</DependentUpon>
-    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -120,7 +117,6 @@
     <Content Include="App_Config\Prototypes.config" />
     <Content Include="App_Config\Sitecore.config" />
     <Content Include="App_Config\XamlSharp.config" />
-    <Content Include="Global.asax" />
     <Content Include="temp\checkbox_disabled24x24.png" />
     <Content Include="temp\column_disabled24x24.png" />
     <Content Include="temp\copy_to_folder_disabled16x16.png" />
