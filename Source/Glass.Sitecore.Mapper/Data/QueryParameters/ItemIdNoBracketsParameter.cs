@@ -29,7 +29,7 @@ namespace Glass.Sitecore.Mapper.Data.QueryParameters
         {
             get
             {
-                return "{id:N}";
+                return "id:N";
             }
            
         }

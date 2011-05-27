@@ -98,11 +98,11 @@ namespace Glass.Sitecore.Mapper.Data
                 Item result = null;
                 if (attr.IsRelative)
                 {
-                    item.Axes.SelectSingleItem(query);
+                    result = item.Axes.SelectSingleItem(query);
                 }
                 else
                 {
-                    item.Database.SelectSingleItem(query);
+                    result = item.Database.SelectSingleItem(query);
                 }
                 return context.CreateClass(attr.IsLazy, property.Property.PropertyType, result);
             }

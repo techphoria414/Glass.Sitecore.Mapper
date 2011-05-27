@@ -64,7 +64,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             return properties.Select(x =>
             {
                 var attrs = x.GetCustomAttributes(true);
-                var attr = attrs.First(y => y is AbstractSitecorePropertyAttribute) as AbstractSitecorePropertyAttribute;
+                var attr = attrs.FirstOrDefault(y => y is AbstractSitecorePropertyAttribute) as AbstractSitecorePropertyAttribute;
 
                 if (attr != null)
                 {
