@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Glass.Sitecore.Mapper.Data;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
@@ -49,5 +50,10 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// Options to override the behaviour of certain fields.
         /// </summary>
         public SitecoreFieldSettings Setting { get; set; }
+
+        /// <summary>
+        /// This is the sub handler used and set by the IEnumerableHandler
+        /// </summary>
+        internal AbstractSitecoreField EnumSubHandler { get; set; }
     }
 }

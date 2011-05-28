@@ -60,7 +60,8 @@ namespace Glass.Sitecore.Mapper
         /// <summary>
         /// The context constructor should only be called once. After the context has been created call GetContext for specific copies
         /// </summary>
-        /// <param name="loader"></param>
+        /// <param name="loader">The loader used to load classes.</param>
+        /// <param name="datas">Custom data handlers.</param>
         public Context(IConfigurationLoader loader, IEnumerable<ISitecoreDataHandler> datas)
         {
             //the setup must only run if the context has not been setup

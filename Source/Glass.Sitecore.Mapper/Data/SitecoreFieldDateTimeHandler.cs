@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
             return global::Sitecore.DateUtil.IsoDateToDateTime(fieldValue);
         }
 
-        public override string SetFieldValue(Type returnType, object value, InstanceContext context)
+        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
         {
             DateTime date = (DateTime)value;
             return global::Sitecore.DateUtil.ToIsoDate(date);

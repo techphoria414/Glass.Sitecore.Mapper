@@ -286,9 +286,14 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assign
             SitecoreFieldClassHandlerFixtureNS.LoadedClass target= new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.LoadedClass();
             target.Id = _itemId;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass))
+            };
+
 
             //Act
-            var result = _handler.SetFieldValue(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass), target, _context);
+            var result = _handler.SetFieldValue( target, property, _context);
 
             //Assert
             Assert.AreEqual(_itemId, new Guid(result));
@@ -303,8 +308,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             SitecoreFieldClassHandlerFixtureNS.NotLoadedClass target = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.NotLoadedClass();
             target.Id = _itemId;
 
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.NotLoadedClass))
+            };
+
             //Act
-            var result = _handler.SetFieldValue(typeof(SitecoreFieldClassHandlerFixtureNS.NotLoadedClass), target, _context);
+            var result = _handler.SetFieldValue( target, property, _context);
 
             //Assert
             Assert.AreEqual(_itemId, new Guid(result));

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -87,9 +88,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             Decimal value = 10.11M;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(Decimal))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(typeof(Decimal), value, null);
+            var result = _handler.SetFieldValue(value, property, null);
 
             //Assert
             Assert.AreEqual("10.11", result);

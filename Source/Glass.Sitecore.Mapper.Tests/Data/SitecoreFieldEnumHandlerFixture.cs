@@ -96,9 +96,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             SitecoreFieldEnumHandlerFixtureNS.TestEnum value = SitecoreFieldEnumHandlerFixtureNS.TestEnum.Berry;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(SitecoreFieldEnumHandlerFixtureNS.TestEnum))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(typeof(SitecoreFieldEnumHandlerFixtureNS.TestEnum), value, null);
+            var result = _handler.SetFieldValue( value, property, null);
 
             //Assert
             Assert.AreEqual("Berry", result);

@@ -21,6 +21,7 @@ using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
 using Glass.Sitecore.Mapper.Configuration;
+using Glass.Sitecore.Mapper.Configuration.Attributes;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -49,7 +50,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Act
             var result = _handler.GetFieldValue(value, null, null, new SitecoreProperty()
             {
-                Property = new FakePropertyInfo(typeof(IEnumerable<int>))
+                Property = new FakePropertyInfo(typeof(IEnumerable<int>)),
+                Attribute = new SitecoreFieldAttribute()
             }, _context);
 
             //Assert
@@ -70,7 +72,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Act
             var result = _handler.GetFieldValue(value, null, null, new SitecoreProperty()
             {
-                Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("Test")
+                Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("Test"),
+                Attribute = new SitecoreFieldAttribute()
             }, _context);
 
             //Assert
@@ -88,7 +91,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             IEnumerable<int> list = new int[] { 44, 535, 22 };
 
             //Act
-            var result = _handler.SetFieldValue(typeof(IEnumerable<int>), list, _context);
+            var result = _handler.SetFieldValue(
+                list,
+                new SitecoreProperty(){
+                    Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("IntList"),
+                    Attribute = new SitecoreFieldAttribute()
+                },
+                _context);
 
             //Assert
             Assert.AreEqual("44|535|22", result);
@@ -104,6 +113,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public class TestClass
         {
             public IEnumerable<TestType> Test{get;set;}
+            public IEnumerable<int> IntList { get; set; }
         }
         public class  TestType { }
     }

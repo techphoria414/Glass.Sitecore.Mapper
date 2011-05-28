@@ -31,8 +31,8 @@ namespace Glass.Sitecore.Mapper.Data
 
         public abstract object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context);
 
-       
-        public abstract string SetFieldValue(Type returnType, object value, InstanceContext context);
+
+        public abstract string SetFieldValue(object value, SitecoreProperty property, InstanceContext context);
 
         #region ISitecoreDataHandler Members
 
@@ -41,7 +41,7 @@ namespace Glass.Sitecore.Mapper.Data
 
             string fieldName = GetFieldName(property); 
 
-            string fieldValue = SetFieldValue(property.Property.PropertyType, value, context);
+            string fieldValue = SetFieldValue(value, property, context);
             item[fieldName] = fieldValue;
         }
 

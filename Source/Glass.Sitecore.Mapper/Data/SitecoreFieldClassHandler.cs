@@ -59,9 +59,9 @@ namespace Glass.Sitecore.Mapper.Data
             
         }
 
-        public override string SetFieldValue(Type returnType, object value, InstanceContext context)
+        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
         {
-            return context.GetClassId(returnType, value).ToString("B");
+            return context.GetClassId(property.Property.PropertyType, value).ToString("B");
         }
 
         public override Type TypeHandled

@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
             return fieldValue == "1";
         }
 
-        public override string SetFieldValue(Type returnType, object value, InstanceContext context)
+        public override string SetFieldValue( object value, SitecoreProperty property, InstanceContext context)
         {
             if ((bool)value) return "1";
             else return "0";

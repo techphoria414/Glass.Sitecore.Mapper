@@ -142,9 +142,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             string value = "some test string";
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(string))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(typeof(string), value, null);
+            var result = _handler.SetFieldValue( value, property, null);
 
             //Assert
             Assert.AreEqual(value, result);

@@ -88,7 +88,7 @@ namespace Glass.Sitecore.Mapper.Data
          
         }
 
-        public override string SetFieldValue(Type returnType, object value, InstanceContext context)
+        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
         {
             throw new NotImplementedException();
         }

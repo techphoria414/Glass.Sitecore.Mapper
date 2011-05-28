@@ -60,7 +60,7 @@ namespace Glass.Sitecore.Mapper.Tests
 
 
         [Test]
-        public void ReadingAStringFromAField()
+        public void ReadingAStringFromAField_1000()
         {
             //cache the item first
             Item preCache = _db.GetItem(itemPath);
@@ -109,6 +109,156 @@ namespace Glass.Sitecore.Mapper.Tests
             Console.WriteLine("Glass Mapper Item Average: {0}".Formatted(classAverage / tests));
         }
 
+
+        [Test]
+        public void ReadingAStringFromAField_2000()
+        {
+            //cache the item first
+            Item preCache = _db.GetItem(itemPath);
+
+            int tests = 10;
+            int loops = 2000;
+
+            long rawAverage = 0;
+            long classAverage = 0;
+
+            for (int j = 0; j < tests; j++)
+            {
+
+                Stopwatch watch1 = new Stopwatch();
+                watch1.Start();
+
+                for (int i = 0; i < loops; i++)
+                {
+                    Item item = _db.GetItem(itemPath);
+                    string value = item["SingleLineText"];
+                }
+
+                watch1.Stop();
+
+                Stopwatch watch2 = new Stopwatch();
+                watch2.Start();
+
+                for (int i = 0; i < loops; i++)
+                {
+                    LoadClass item = _sitecore.GetItem<LoadClass>(itemPath);
+                    string value = item.SingleLineText;
+
+                }
+
+                watch2.Stop();
+
+                rawAverage += watch1.ElapsedMilliseconds;
+                classAverage += watch2.ElapsedMilliseconds;
+
+                Console.WriteLine("{2} Raw Sitecore Item: Number of loops {0} Total Time: {1}".Formatted(loops, watch1.ElapsedMilliseconds, j));
+                Console.WriteLine("{2} Glass Mapper Item: Number of loops {0} Total Time: {1}".Formatted(loops, watch2.ElapsedMilliseconds, j));
+
+            }
+
+            Console.WriteLine("Raw Sitecore Item Average: {0}".Formatted(rawAverage / tests));
+            Console.WriteLine("Glass Mapper Item Average: {0}".Formatted(classAverage / tests));
+        }
+
+        [Test]
+        public void ReadingAStringFromAField_5000()
+        {
+            //cache the item first
+            Item preCache = _db.GetItem(itemPath);
+
+            int tests = 10;
+            int loops = 5000;
+
+            long rawAverage = 0;
+            long classAverage = 0;
+
+            for (int j = 0; j < tests; j++)
+            {
+
+                Stopwatch watch1 = new Stopwatch();
+                watch1.Start();
+
+                for (int i = 0; i < loops; i++)
+                {
+                    Item item = _db.GetItem(itemPath);
+                    string value = item["SingleLineText"];
+                }
+
+                watch1.Stop();
+
+                Stopwatch watch2 = new Stopwatch();
+                watch2.Start();
+
+                for (int i = 0; i < loops; i++)
+                {
+                    LoadClass item = _sitecore.GetItem<LoadClass>(itemPath);
+                    string value = item.SingleLineText;
+
+                }
+
+                watch2.Stop();
+
+                rawAverage += watch1.ElapsedMilliseconds;
+                classAverage += watch2.ElapsedMilliseconds;
+
+                Console.WriteLine("{2} Raw Sitecore Item: Number of loops {0} Total Time: {1}".Formatted(loops, watch1.ElapsedMilliseconds, j));
+                Console.WriteLine("{2} Glass Mapper Item: Number of loops {0} Total Time: {1}".Formatted(loops, watch2.ElapsedMilliseconds, j));
+
+            }
+
+            Console.WriteLine("Raw Sitecore Item Average: {0}".Formatted(rawAverage / tests));
+            Console.WriteLine("Glass Mapper Item Average: {0}".Formatted(classAverage / tests));
+        }
+
+        [Test]
+        public void ReadingAStringFromAField_10000()
+        {
+            //cache the item first
+            Item preCache = _db.GetItem(itemPath);
+
+            int tests = 10;
+            int loops = 10000;
+
+            long rawAverage = 0;
+            long classAverage = 0;
+
+            for (int j = 0; j < tests; j++)
+            {
+
+                Stopwatch watch1 = new Stopwatch();
+                watch1.Start();
+
+                for (int i = 0; i < loops; i++)
+                {
+                    Item item = _db.GetItem(itemPath);
+                    string value = item["SingleLineText"];
+                }
+
+                watch1.Stop();
+
+                Stopwatch watch2 = new Stopwatch();
+                watch2.Start();
+
+                for (int i = 0; i < loops; i++)
+                {
+                    LoadClass item = _sitecore.GetItem<LoadClass>(itemPath);
+                    string value = item.SingleLineText;
+
+                }
+
+                watch2.Stop();
+
+                rawAverage += watch1.ElapsedMilliseconds;
+                classAverage += watch2.ElapsedMilliseconds;
+
+                Console.WriteLine("{2} Raw Sitecore Item: Number of loops {0} Total Time: {1}".Formatted(loops, watch1.ElapsedMilliseconds, j));
+                Console.WriteLine("{2} Glass Mapper Item: Number of loops {0} Total Time: {1}".Formatted(loops, watch2.ElapsedMilliseconds, j));
+
+            }
+
+            Console.WriteLine("Raw Sitecore Item Average: {0}".Formatted(rawAverage / tests));
+            Console.WriteLine("Glass Mapper Item Average: {0}".Formatted(classAverage / tests));
+        }
     }
 
     namespace LoadTestingNS

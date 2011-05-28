@@ -30,12 +30,15 @@ namespace Glass.Sitecore.Mapper.Data
     {
         public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
         {
+
+            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
+
             Type type = property.Property.PropertyType;
             //Get generic type
             Type pType = Utility.GetGenericArgument(type);
 
-            AbstractSitecoreField handler = GetSubHandler(pType, context);
-
+            if (attr.EnumSubHandler == null) attr.EnumSubHandler = GetSubHandler(pType, context);
+            
             //The enumerator only works with piped lists
             IEnumerable<string> parts = fieldValue.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
 
@@ -49,10 +52,7 @@ namespace Glass.Sitecore.Mapper.Data
                 Property = new FakePropertyInfo(pType)
             };
 
-
-
-
-            IEnumerable<object> items = parts.Select(x => handler.GetFieldValue(x, parent, item, fProperty, context)).ToArray();
+            IEnumerable<object> items = parts.Select(x => attr.EnumSubHandler.GetFieldValue(x, parent, item, fProperty, context)).ToArray();
             var list = Utility.CreateGenericType(typeof(List<>), new Type[] { pType }) ;
             Utility.CallAddMethod(items, list);
 
@@ -62,28 +62,37 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override string SetFieldValue(Type returnType, object value, InstanceContext context)
+        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
         {
-            Type type = returnType;
-            //Get generic type
-            Type pType = Utility.GetGenericArgument(type);
+            Type pType = Utility.GetGenericArgument(property.Property.PropertyType);
+
+            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
+
+            if (attr.EnumSubHandler == null)
+                attr.EnumSubHandler = GetSubHandler(pType, context);
 
             IEnumerable list = value as IEnumerable;
-            AbstractSitecoreField handler = GetSubHandler(pType, context);
 
             List<string> sList = new List<string>();
 
+            SitecoreProperty fakeProp = new SitecoreProperty()
+            {
+                Attribute = property.Attribute,
+                Property =  new FakePropertyInfo(pType)
+
+            };
+
             foreach (object obj in list)
             {
-                string result = handler.SetFieldValue(pType, obj, context);
+                string result = attr.EnumSubHandler.SetFieldValue(obj, fakeProp, context);
                 if (!result.IsNullOrEmpty())
                     sList.Add(result);
             }
 
-
             StringBuilder sb = new StringBuilder();
             sList.ForEach(x => sb.AppendFormat("{0}|", x.Replace("|", Settings.PipeEncoding)));
             sb.Remove(sb.Length - 1, 1);
+
             return sb.ToString();
         }
 

@@ -23,6 +23,7 @@ using Sitecore.Data.Items;
 using Sitecore.Resources.Media;
 using Sitecore.Data.Fields;
 using System.IO;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -53,7 +54,7 @@ namespace Glass.Sitecore.Mapper.Data
             throw new NotImplementedException();
         }
 
-        public override string SetFieldValue(Type returnType, object value, InstanceContext context)
+        public override string SetFieldValue( object value, SitecoreProperty property, InstanceContext context)
         {
             throw new NotImplementedException();
         }

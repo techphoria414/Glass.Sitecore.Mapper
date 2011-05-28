@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -76,9 +77,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             DateTime date = new DateTime(2010, 09, 08, 06, 05, 04);
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(DateTime))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(typeof(DateTime), date, null);
+            var result = _handler.SetFieldValue( date, property, null);
 
             //Assert
             Assert.AreEqual("20100908T060504", result);

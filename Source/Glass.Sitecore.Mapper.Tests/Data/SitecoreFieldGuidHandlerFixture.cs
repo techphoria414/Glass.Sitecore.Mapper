@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -83,9 +84,12 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             Guid guid = new Guid("{FC1D0AFD-71CC-47e2-84B3-7F1A2973248B}");
-
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(Guid))
+            };
             //Act
-            var result = _handler.SetFieldValue(typeof(Guid), guid, null);
+            var result = _handler.SetFieldValue( guid, property, null);
 
             //Assert
             Assert.AreEqual("{FC1D0AFD-71CC-47e2-84B3-7F1A2973248B}".ToLower(), result);

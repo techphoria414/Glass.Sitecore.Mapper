@@ -21,6 +21,7 @@ using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
 using Glass.Sitecore.Mapper.FieldTypes;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -93,9 +94,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             TriState value = TriState.Default;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(TriState))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(null, value, null);
+            var result = _handler.SetFieldValue(value, property, null);
 
             //Assert
             Assert.AreEqual("", result);
@@ -105,9 +110,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             TriState value = TriState.No;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(TriState))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(null, value, null);
+            var result = _handler.SetFieldValue( value, property, null);
 
             //Assert
             Assert.AreEqual("0", result);
@@ -117,9 +126,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             TriState value = TriState.Yes;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(TriState))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(null, value, null);
+            var result = _handler.SetFieldValue( value, property, null);
 
             //Assert
             Assert.AreEqual("1", result);

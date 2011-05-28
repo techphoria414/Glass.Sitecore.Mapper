@@ -33,7 +33,7 @@ namespace Glass.Sitecore.Mapper.Data
             else throw new MapperException("Could not convert value to float");
         }
 
-        public override string SetFieldValue(Type returnType, object value, InstanceContext context)
+        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
         {
             return value.ToString();
         }

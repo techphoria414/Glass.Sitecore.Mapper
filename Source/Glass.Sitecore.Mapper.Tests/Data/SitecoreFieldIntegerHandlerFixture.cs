@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -81,9 +82,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             int value = 487;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(int))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(null, value, null);
+            var result = _handler.SetFieldValue(value,property, null);
 
             //Assert
             Assert.AreEqual("487", result);

@@ -43,9 +43,9 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override string SetFieldValue(Type returnType, object value, InstanceContext context)
+        public override string SetFieldValue(object value, SitecoreProperty property,  InstanceContext context)
         {
-            return Enum.GetName(returnType, value);
+            return Enum.GetName(property.Property.PropertyType, value);
         }
 
         public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)

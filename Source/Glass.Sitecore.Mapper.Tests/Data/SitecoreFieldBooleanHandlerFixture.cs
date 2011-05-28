@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -82,9 +83,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             bool value = true;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(Boolean))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(typeof(System.Boolean), value, null);
+            var result = _handler.SetFieldValue(value, property, null);
 
             //Assert
             Assert.AreEqual("1", result);
@@ -94,9 +99,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             bool value = false;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(Boolean))
+            };
 
             //Act
-            var result = _handler.SetFieldValue(typeof(System.Boolean), value, null);
+            var result = _handler.SetFieldValue( value, property, null);
 
             //Assert
             Assert.AreEqual("0", result);
