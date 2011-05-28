@@ -30,6 +30,19 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Castle.Core, Version=2.5.1.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Depends\Castle.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Glass.Sitecore.Mapper, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\Depends\Glass.Sitecore.Mapper.dll</HintPath>
+    </Reference>
+    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\log4net.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.Kernel, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.Core">
@@ -93,6 +106,17 @@
     <Compile Include="Default.aspx.designer.cs">
       <DependentUpon>Default.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Global.asax.cs">
+      <DependentUpon>Global.asax</DependentUpon>
+    </Compile>
+    <Compile Include="Layouts\MainLayout.aspx.cs">
+      <DependentUpon>MainLayout.aspx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\MainLayout.aspx.designer.cs">
+      <DependentUpon>MainLayout.aspx</DependentUpon>
+    </Compile>
+    <Compile Include="Model\Home.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -117,108 +141,8 @@
     <Content Include="App_Config\Prototypes.config" />
     <Content Include="App_Config\Sitecore.config" />
     <Content Include="App_Config\XamlSharp.config" />
-    <Content Include="temp\checkbox_disabled24x24.png" />
-    <Content Include="temp\column_disabled24x24.png" />
-    <Content Include="temp\copy_to_folder_disabled16x16.png" />
-    <Content Include="temp\delete2_disabled24x24.png" />
-    <Content Include="temp\disk_blue_disabled24x24.png" />
-    <Content Include="temp\documents_disabled24x24.png" />
-    <Content Include="temp\document_certificate_disabled24x24.png" />
-    <Content Include="temp\Document_disabled16x16.png" />
-    <Content Include="temp\document_gear_disabled16x16.png" />
-    <Content Include="temp\document_time_disabled24x24.png" />
-    <Content Include="temp\elements_selection_disabled16x16.png" />
-    <Content Include="temp\fileicon_asax_16x16.png" />
-    <Content Include="temp\fileicon_asax_24x24.png" />
-    <Content Include="temp\fileicon_asax_32x32.png" />
-    <Content Include="temp\fileicon_asax_48x48.png" />
-    <Content Include="temp\fileicon_ascx_16x16.png" />
-    <Content Include="temp\fileicon_ascx_24x24.png" />
-    <Content Include="temp\fileicon_ascx_32x32.png" />
-    <Content Include="temp\fileicon_ascx_48x48.png" />
-    <Content Include="temp\fileicon_aspx_16x16.png" />
-    <Content Include="temp\fileicon_aspx_24x24.png" />
-    <Content Include="temp\fileicon_aspx_32x32.png" />
-    <Content Include="temp\fileicon_aspx_48x48.png" />
-    <Content Include="temp\fileicon_config_16x16.png" />
-    <Content Include="temp\fileicon_config_24x24.png" />
-    <Content Include="temp\fileicon_config_32x32.png" />
-    <Content Include="temp\fileicon_config_48x48.png" />
-    <Content Include="temp\fileicon_csproj_16x16.png" />
-    <Content Include="temp\fileicon_csproj_24x24.png" />
-    <Content Include="temp\fileicon_csproj_32x32.png" />
-    <Content Include="temp\fileicon_csproj_48x48.png" />
-    <Content Include="temp\fileicon_cs_16x16.png" />
-    <Content Include="temp\fileicon_cs_24x24.png" />
-    <Content Include="temp\fileicon_cs_32x32.png" />
-    <Content Include="temp\fileicon_cs_48x48.png" />
-    <Content Include="temp\fileicon_dat_16x16.png" />
-    <Content Include="temp\fileicon_dat_24x24.png" />
-    <Content Include="temp\fileicon_dat_32x32.png" />
-    <Content Include="temp\fileicon_dat_48x48.png" />
-    <Content Include="temp\fileicon_dll_16x16.png" />
-    <Content Include="temp\fileicon_dll_24x24.png" />
-    <Content Include="temp\fileicon_dll_32x32.png" />
-    <Content Include="temp\fileicon_dll_48x48.png" />
-    <Content Include="temp\fileicon_pdb_16x16.png" />
-    <Content Include="temp\fileicon_pdb_24x24.png" />
-    <Content Include="temp\fileicon_pdb_32x32.png" />
-    <Content Include="temp\fileicon_pdb_48x48.png" />
-    <Content Include="temp\fileicon_png_16x16.png" />
-    <Content Include="temp\fileicon_png_24x24.png" />
-    <Content Include="temp\fileicon_png_32x32.png" />
-    <Content Include="temp\fileicon_png_48x48.png" />
-    <Content Include="temp\fileicon_status_16x16.png" />
-    <Content Include="temp\fileicon_status_24x24.png" />
-    <Content Include="temp\fileicon_status_32x32.png" />
-    <Content Include="temp\fileicon_status_48x48.png" />
-    <Content Include="temp\fileicon_txt_16x16.png" />
-    <Content Include="temp\fileicon_user_16x16.png" />
-    <Content Include="temp\fileicon_user_24x24.png" />
-    <Content Include="temp\fileicon_user_32x32.png" />
-    <Content Include="temp\fileicon_user_48x48.png" />
-    <Content Include="temp\fileicon_xml_16x16.png" />
-    <Content Include="temp\fileicon_xml_24x24.png" />
-    <Content Include="temp\fileicon_xml_32x32.png" />
-    <Content Include="temp\fileicon_xml_48x48.png" />
-    <Content Include="temp\folder_cubes_disabled24x24.png" />
-    <Content Include="temp\form_blue_disabled16x16.png" />
-    <Content Include="temp\form_green_disabled16x16.png" />
-    <Content Include="temp\form_yellow_delete_disabled16x16.png" />
-    <Content Include="temp\form_yellow_edit_disabled16x16.png" />
-    <Content Include="temp\help2_disabled16x16.png" />
-    <Content Include="temp\index_add_disabled16x16.png" />
-    <Content Include="temp\index_delete_disabled16x16.png" />
-    <Content Include="temp\layout_center_disabled16x16.png" />
-    <Content Include="temp\layout_east_disabled16x16.png" />
-    <Content Include="temp\layout_northeast_disabled16x16.png" />
-    <Content Include="temp\layout_northwest_disabled16x16.png" />
-    <Content Include="temp\layout_north_disabled16x16.png" />
-    <Content Include="temp\layout_southeast_disabled16x16.png" />
-    <Content Include="temp\layout_southwest_disabled16x16.png" />
-    <Content Include="temp\layout_south_disabled16x16.png" />
-    <Content Include="temp\layout_west_disabled16x16.png" />
-    <Content Include="temp\lock_edit_disabled24x24.png" />
-    <Content Include="temp\menu_b_disabled16x16.png" />
-    <Content Include="temp\move_to_folder_disabled16x16.png" />
-    <Content Include="temp\navigate_down2_disabled16x16.png" />
-    <Content Include="temp\navigate_down_disabled16x16.png" />
-    <Content Include="temp\navigate_up2_disabled16x16.png" />
-    <Content Include="temp\navigate_up_disabled16x16.png" />
-    <Content Include="temp\nav_left_green_disabled24x24.png" />
-    <Content Include="temp\nav_right_green_disabled24x24.png" />
-    <Content Include="temp\popup_menu_b_disabled16x16.png" />
-    <Content Include="temp\preferences_disabled24x24.png" />
-    <Content Include="temp\redo_disabled16x16.png" />
-    <Content Include="temp\rename_disabled16x16.png" />
-    <Content Include="temp\row_disabled24x24.png" />
-    <Content Include="temp\server_document_disabled24x24.png" />
-    <Content Include="temp\spell_check_disabled24x24.png" />
-    <Content Include="temp\style_formatting_b_disabled16x16.png" />
-    <Content Include="temp\table_delete_disabled24x24.png" />
-    <Content Include="temp\text_disabled16x16.png" />
-    <Content Include="temp\undo_disabled16x16.png" />
-    <Content Include="temp\up_folder_disabled24x24.png" />
+    <Content Include="Global.asax" />
+    <Content Include="Layouts\MainLayout.aspx" />
     <None Include="App_Data\MediaCache\shell\121\b576349cd6d240028235f883822c6df8.ini" />
     <None Include="App_Data\MediaCache\shell\127\3c4964cb5bba42d183290fdabb76def5.ini" />
     <None Include="App_Data\MediaCache\shell\135\34a2952893514b0c866b2e4bbec7a63a.ini" />
@@ -237,43 +161,9 @@
     <None Include="App_Data\MediaCache\shell\96\29df041b77bf4767b72ffe44e3d66a1d.ini" />
     <None Include="App_Data\MediaCache\shell\99\d37746bef1cf446eae54425e5cbb1c19.ini" />
     <None Include="App_Data\MediaCache\website\220\d2a6888feb1147ca931b00b8253d7f9e.ini" />
-    <None Include="data\logs\nvelocity.log" />
-    <None Include="data\logs\nvelocity.log.2011-05-14" />
-    <None Include="indexes\core\system\deletable" />
-    <None Include="indexes\core\system\segments" />
-    <None Include="indexes\core\system\_1d.del" />
-    <None Include="indexes\core\system\_1r.del" />
-    <None Include="indexes\core\system\_2v.cfs" />
-    <None Include="indexes\core\system\_t.cfs" />
-    <None Include="indexes\master\system\deletable" />
-    <None Include="indexes\master\system\segments" />
-    <None Include="indexes\master\system\_1l.cfs" />
-    <None Include="indexes\master\system\_1l.del" />
-    <None Include="indexes\master\system\_3j.cfs" />
-    <None Include="indexes\master\system\_43.cfs" />
-    <None Include="indexes\master\system\_5z.cfs" />
-    <None Include="indexes\master\system\_5z.del" />
-    <None Include="indexes\master\system\_6v.cfs" />
-    <None Include="indexes\master\system\_6v.del" />
-    <None Include="indexes\master\system\_87.cfs" />
-    <None Include="indexes\master\system\_87.del" />
-    <None Include="indexes\master\system\_9p.cfs" />
-    <None Include="indexes\master\system\_9p.del" />
-    <None Include="indexes\master\system\_ap.cfs" />
-    <None Include="indexes\__system\deletable" />
-    <None Include="indexes\__system\segments" />
-    <None Include="indexes\__system\_f6.cfs" />
-    <None Include="indexes\__system\_f6.del" />
-    <None Include="indexes\__system\_g6.cfs" />
-    <None Include="temp\dictionary.dat" />
-    <None Include="temp\E53A765923124D76966F2DB60CD21B52-files.status" />
-    <None Include="temp\installation_history\E53A765923124D76966F2DB60CD21B52-install.log" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Layouts\debug\" />
-    <Folder Include="temp\installation_history\E53A765923124D76966F2DB60CD21B52\app_config\include\" />
-    <Folder Include="temp\installation_history\E53A765923124D76966F2DB60CD21B52\bin\" />
-    <Folder Include="temp\install\E53A765923124D76966F2DB60CD21B52\" />
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\Microsoft\VisualStudio\v9.0\WebApplications\Microsoft.WebApplication.targets" />

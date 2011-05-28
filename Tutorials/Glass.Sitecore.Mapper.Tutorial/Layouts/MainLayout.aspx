@@ -1,15 +1,20 @@
-﻿<%@ Page language="c#" Codepage="65001" AutoEventWireup="true" %>
-<%@ OutputCache Location="None" VaryByParam="none" %>
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" >
-<html>
-  <head>
-    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <meta name="CODE_LANGUAGE" content="C#">
-    <meta name="vs_defaultClientScript" content="JavaScript">
-    <meta name="vs_targetSchema" content="http://schemas.microsoft.com/intellisense/ie5">
-    <link href="/default.css" rel="stylesheet">
-  </head>
-  <body>
-  <form method="post" runat="server" id="mainform">Insert your controls here.</form>
-  </body>
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeBehind="MainLayout.aspx.cs" Inherits="Glass.Sitecore.Mapper.Tutorial.Layouts.MainLayout" %>
+
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+<html xmlns="http://www.w3.org/1999/xhtml" >
+<head runat="server">
+    <title>Glass.Sitecore.Mapper.Tutorial</title>
+</head>
+<body>
+    <form id="form1" runat="server">
+    <div>
+        <h2><asp:Literal runat="server" ID="title" /></h2>
+        <p>
+            Created: <asp:Literal runat="server" ID="date" />
+        </p>
+        <asp:Literal runat="server" ID="body" />
+    </div>
+    </form>
+</body>
 </html>
