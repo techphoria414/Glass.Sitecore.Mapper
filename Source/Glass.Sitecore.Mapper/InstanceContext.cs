@@ -38,43 +38,10 @@ namespace Glass.Sitecore.Mapper
         {
            
             Classes = classes;
-            Datas = LoadDataHandlers(datas);
+            Datas = datas;
         }
 
 
-        private IEnumerable<ISitecoreDataHandler> LoadDataHandlers(IEnumerable<ISitecoreDataHandler> handlers)
-        {
-            if (handlers == null) handlers = new List<ISitecoreDataHandler>();
-            List<ISitecoreDataHandler> _handlers = new List<ISitecoreDataHandler>(handlers);
-            
-            //load default handlers
-            _handlers.AddRange( new List<ISitecoreDataHandler>(){
-                new SitecoreChildrenHandler(),
-                new SitecoreFieldBooleanHandler(),
-                new SitecoreFieldClassHandler(),
-                new SitecoreFieldDateTimeHandler(),
-                new SitecoreFieldDecimalHandler(),
-                new SitecoreFieldDoubleHandler(),
-                new SitecoreFieldEnumHandler(),
-                new SitecoreFieldFileHandler(),
-                new SitecoreFieldFloatHandler(),
-                new SitecoreFieldGuidHandler(),
-                new SitecoreFieldIEnumerableHandler(),
-                new SitecoreFieldImageHandler(),
-                new SitecoreFieldIntegerHandler(),
-                new SitecoreFieldLinkHandler(),
-                new SitecoreFieldStreamHandler(),
-                new SitecoreFieldStringHandler(),
-                new SitecoreFieldTriStateHandler(),
-                new SitecoreIdDataHandler(),
-                new SitecoreInfoHandler(),
-                new SitecoreParentHandler(),
-                new SitecoreQueryHandler()
-            });
-
-            return _handlers;
-
-        }
 
 
         /// <summary>
@@ -135,7 +102,7 @@ namespace Glass.Sitecore.Mapper
 
             foreach (var property in scClass.Properties)
             {
-                SetDataHandler(property);
+               // SetDataHandler(property);
 
                 if (property.DataHandler.CanSetValue)
                 {
@@ -176,30 +143,11 @@ namespace Glass.Sitecore.Mapper
         {
             object value = null;
 
-            SetDataHandler(property);
-
             value = property.DataHandler.GetValue(target, item, property, this);
 
             property.Property.SetValue(target, value, null);
         }
-        /// <summary>
-        /// Can we move this so that it happens when the instance context is created
-        /// 
-        /// </summary>
-        /// <param name="property"></param>
-        private void SetDataHandler(SitecoreProperty property)
-        {
-            if (property.DataHandler == null)
-                property.DataHandler = Datas.FirstOrDefault(x => x.WillHandle(property, this));
-
-            if (property.DataHandler == null) 
-                throw new NotSupportedException("No data handler for: \n\r Class: {0} \n\r Member: {1} \n\r Attribute: {2}"
-                    .Formatted(
-                        property.Property.ReflectedType.Name,
-                        property.Property.Name,
-                        property.Attribute.GetType().Name
-                    ));
-        }
+        
      
        
 

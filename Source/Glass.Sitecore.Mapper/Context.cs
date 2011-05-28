@@ -73,10 +73,25 @@ namespace Glass.Sitecore.Mapper
                     {
                         Log.Info("Context loading");
 
-                        var classes = loader.Load();
-                        
+                        //load all classes
+                        var classes = loader.Load().ToDictionary();
 
-                        InstanceContext instance = new InstanceContext(classes.ToDictionary(), datas);
+                        datas = LoadDefaultDataHandlers(datas);
+
+                        //now assign a data handler to each property
+                        foreach (var cls in classes)
+                        {
+                            foreach (var prop in cls.Value.Properties)
+                            {
+                                SetDataHandler(prop, datas, classes);
+                                if (prop.DataHandler == null)
+                                    throw new MapperException("No handler loaded for type {0} and member {1}".Formatted(cls.Key.ToString(), prop.Property.Name));
+
+                            }
+
+                        }
+                        
+                        InstanceContext instance = new InstanceContext(classes, datas);
                         StaticContext = instance;
 
                         Log.Info("Context loaded");
@@ -94,6 +109,59 @@ namespace Glass.Sitecore.Mapper
         internal static InstanceContext GetContext()
         {
             return StaticContext.Clone() as InstanceContext;
+        }
+
+        /// <summary>
+        /// Can we move this so that it happens when the instance context is created
+        /// 
+        /// </summary>
+        /// <param name="property"></param>
+        private void SetDataHandler(SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        {
+            if (property.DataHandler == null)
+                property.DataHandler = datas.FirstOrDefault(x => x.WillHandle(property, datas, classes));
+
+            if (property.DataHandler == null)
+                throw new NotSupportedException("No data handler for: \n\r Class: {0} \n\r Member: {1} \n\r Attribute: {2}"
+                    .Formatted(
+                        property.Property.ReflectedType.Name,
+                        property.Property.Name,
+                        property.Attribute.GetType().Name
+                    ));
+        }
+
+        private IEnumerable<ISitecoreDataHandler> LoadDefaultDataHandlers(IEnumerable<ISitecoreDataHandler> handlers)
+        {
+            if (handlers == null) handlers = new List<ISitecoreDataHandler>();
+            List<ISitecoreDataHandler> _handlers = new List<ISitecoreDataHandler>(handlers);
+
+            //load default handlers
+            _handlers.AddRange(new List<ISitecoreDataHandler>(){
+                new SitecoreChildrenHandler(),
+                new SitecoreFieldBooleanHandler(),
+                new SitecoreFieldClassHandler(),
+                new SitecoreFieldDateTimeHandler(),
+                new SitecoreFieldDecimalHandler(),
+                new SitecoreFieldDoubleHandler(),
+                new SitecoreFieldEnumHandler(),
+                new SitecoreFieldFileHandler(),
+                new SitecoreFieldFloatHandler(),
+                new SitecoreFieldGuidHandler(),
+                new SitecoreFieldIEnumerableHandler(),
+                new SitecoreFieldImageHandler(),
+                new SitecoreFieldIntegerHandler(),
+                new SitecoreFieldLinkHandler(),
+                new SitecoreFieldStreamHandler(),
+                new SitecoreFieldStringHandler(),
+                new SitecoreFieldTriStateHandler(),
+                new SitecoreIdDataHandler(),
+                new SitecoreInfoHandler(),
+                new SitecoreParentHandler(),
+                new SitecoreQueryHandler()
+            });
+
+            return _handlers;
+
         }
 
        

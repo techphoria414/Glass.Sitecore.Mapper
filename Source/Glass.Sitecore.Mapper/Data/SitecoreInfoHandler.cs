@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Links;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -27,7 +28,7 @@ namespace Glass.Sitecore.Mapper.Data
     {
         #region ISitecoreDataHandler Members
 
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreInfoAttribute;
         }

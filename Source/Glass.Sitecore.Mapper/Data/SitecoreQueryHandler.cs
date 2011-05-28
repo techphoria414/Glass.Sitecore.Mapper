@@ -52,7 +52,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         #region ISitecoreDataHandler Members
 
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreQueryAttribute;
         }

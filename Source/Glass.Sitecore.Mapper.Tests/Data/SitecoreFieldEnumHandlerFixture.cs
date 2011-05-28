@@ -49,7 +49,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             
             //Act
 
-            var result = _handler.WillHandle(_property, null);
+            var result = _handler.WillHandle(_property, null, null);
 
             //Assert
             Assert.IsTrue(result);

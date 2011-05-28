@@ -73,7 +73,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.WillHandle(property, _context);
+            var result = _handler.WillHandle(property, _context.Datas, _context.Classes);
 
             //Assert
 
@@ -90,7 +90,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.WillHandle(property, _context);
+            var result = _handler.WillHandle(property, _context.Datas, _context.Classes);
 
             //Assert
 

@@ -22,6 +22,7 @@ using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Proxies;
 using System.Collections;
 using Sitecore.Data.Items;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -29,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
     {
         #region ISitecoreDataHandler Members
 
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             if (!property.Property.PropertyType.IsGenericType) return false;
 

@@ -26,7 +26,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public interface ISitecoreDataHandler
     {
-        bool WillHandle(SitecoreProperty property, InstanceContext context);
+        bool WillHandle(SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes);
 
         /// <summary>
         /// Reads an item from the Sitecore item and returns it as the requested return type

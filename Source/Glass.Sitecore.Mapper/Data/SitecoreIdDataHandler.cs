@@ -26,7 +26,7 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreIdDataHandler : ISitecoreDataHandler
     {
 
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreIdAttribute && property.Property.PropertyType == typeof(Guid);
         }

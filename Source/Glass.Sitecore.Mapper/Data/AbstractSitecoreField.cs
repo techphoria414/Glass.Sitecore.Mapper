@@ -53,7 +53,7 @@ namespace Glass.Sitecore.Mapper.Data
             return GetFieldValue(fieldValue, parent, item,property, context);
         }
 
-        public virtual bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public virtual bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreFieldAttribute && property.Property.PropertyType == TypeHandled;
 

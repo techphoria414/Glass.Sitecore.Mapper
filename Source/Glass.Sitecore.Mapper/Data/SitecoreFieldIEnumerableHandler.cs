@@ -87,7 +87,7 @@ namespace Glass.Sitecore.Mapper.Data
             return sb.ToString();
         }
 
-        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
 
             if(!(property.Attribute is SitecoreFieldAttribute)) return false;
@@ -118,7 +118,7 @@ namespace Glass.Sitecore.Mapper.Data
                 Property = new FakePropertyInfo(type)
             };
 
-            var handler = context.Datas.FirstOrDefault(x => x.WillHandle(fakeProp, context)) as AbstractSitecoreField;
+            var handler = context.Datas.FirstOrDefault(x => x.WillHandle(fakeProp, context.Datas, context.Classes)) as AbstractSitecoreField;
             if (handler == null) throw new NotSupportedException("No handler to support field type {0}".Formatted(type.FullName));
 
             return handler;

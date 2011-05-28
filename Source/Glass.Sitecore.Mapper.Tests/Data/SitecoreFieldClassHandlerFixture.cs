@@ -76,7 +76,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             property.Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass));
 
             //Act
-            var result = _handler.WillHandle(property, _context);
+            var result = _handler.WillHandle(property, _context.Datas, _context.Classes);
 
             //Assert
             Assert.IsTrue(result);
@@ -91,7 +91,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             property.Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.NotLoadedClass));
 
             //Act
-            var result = _handler.WillHandle(property, _context);
+            var result = _handler.WillHandle(property, _context.Datas, _context.Classes);
 
             //Assert
             Assert.IsFalse(result);
