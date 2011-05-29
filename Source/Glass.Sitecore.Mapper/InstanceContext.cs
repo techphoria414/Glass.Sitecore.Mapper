@@ -104,7 +104,7 @@ namespace Glass.Sitecore.Mapper
             {
                // SetDataHandler(property);
 
-                if (property.DataHandler.CanSetValue)
+                if (property.DataHandler.CanSetValue(property))
                 {
                     PropertyInfo info = property.Property;
                     object value = info.GetValue(target, null);

@@ -41,9 +41,9 @@ namespace Glass.Sitecore.Mapper.Data
             throw new NotSupportedException("It isn't possible to write an ID field");
         }
 
-        public bool CanSetValue
+        public bool CanSetValue(SitecoreProperty property)
         {
-            get { return false; }
+             return false; 
         }
     }
 }

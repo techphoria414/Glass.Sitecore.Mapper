@@ -59,9 +59,10 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public bool CanSetValue
+        public bool CanSetValue(SitecoreProperty property)
         {
-            get { return true; }
+            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
+            return !attr.ReadOnly;
         }
 
         #endregion

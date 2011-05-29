@@ -74,9 +74,9 @@ namespace Glass.Sitecore.Mapper.Data
             throw new NotSupportedException("You can not save SitecoreInfo {0}".Formatted(attr.Type));
         }
 
-        public bool CanSetValue
+        public bool CanSetValue(SitecoreProperty property)
         {
-            get { return false; }
+             return false; 
         }
 
         #endregion

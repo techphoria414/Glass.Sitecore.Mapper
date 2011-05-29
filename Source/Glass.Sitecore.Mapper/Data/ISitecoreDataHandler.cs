@@ -51,6 +51,6 @@ namespace Glass.Sitecore.Mapper.Data
         /// <summary>
         /// Indicates the data handler can be used to set a value on a Sitecore item.
         /// </summary>
-        bool CanSetValue { get; }
+        bool CanSetValue(SitecoreProperty property);
     }
 }

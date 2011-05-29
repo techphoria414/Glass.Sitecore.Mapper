@@ -58,9 +58,9 @@ namespace Glass.Sitecore.Mapper.Data
             throw new NotImplementedException();
         }
 
-        public bool CanSetValue
+        public bool CanSetValue(SitecoreProperty property)
         {
-            get { return false; }
+            return false; 
         }
 
         #endregion

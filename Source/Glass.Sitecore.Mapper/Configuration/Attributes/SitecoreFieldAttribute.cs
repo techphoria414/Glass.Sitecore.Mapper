@@ -55,5 +55,10 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// This is the sub handler used and set by the IEnumerableHandler
         /// </summary>
         internal AbstractSitecoreField EnumSubHandler { get; set; }
+
+        /// <summary>
+        /// When true the field will not be save back to Sitecore 
+        /// </summary>
+        public bool ReadOnly { get; set; }
     }
 }
