@@ -23,11 +23,16 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
     public class FluentConfigurationLoader :IConfigurationLoader
     {
+        IEnumerable<ISitecoreClass> _configs;
+        public FluentConfigurationLoader(params ISitecoreClass [] configs)
+        {
+            _configs = configs;
+        }
         #region IConfigurationLoader Members
 
         public IEnumerable<SitecoreClassConfig> Load()
         {
-            throw new NotImplementedException();
+            return _configs.Select(x => x.Config);
         }
 
         #endregion

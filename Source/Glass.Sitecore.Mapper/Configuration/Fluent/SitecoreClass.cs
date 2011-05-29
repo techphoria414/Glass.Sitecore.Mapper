@@ -23,16 +23,34 @@ using System.Reflection;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    public class SitecoreClass<T>
+    public class SitecoreClass<T> : ISitecoreClass
     {
-        Type _type;
+       
         IList<SitecoreProperty> _properties;
+        SitecoreClassConfig _config;
+
         public SitecoreClass()
         {
             _properties = new List<SitecoreProperty>();
-            _type = typeof(T);
+            _config = new SitecoreClassConfig();
+            _config.Type = typeof(T);
+            _config.ClassAttribute = new Configuration.Attributes.SitecoreClassAttribute();
+            _config.Properties = _properties;
+
+            
         }
 
+        public SitecoreClass<T> TemplateId(Guid id)
+        {
+            _config.ClassAttribute.TemplateId = id.ToString();
+            return this;
+        }
+        public SitecoreClass<T> BranchId(Guid id)
+        {
+            _config.ClassAttribute.BranchId = id.ToString();
+            return this;
+        }
+       
 
         public SitecoreChildren<T> Children(Expression<Func<T, IEnumerable<object>>> ex)
         {
@@ -69,23 +87,28 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             AddProperty(builder.Attribute, ex.Body.ToString());
             return builder;
         }
-
-
         private void AddProperty(Configuration.Attributes.AbstractSitecorePropertyAttribute attr, string expressionBody)
         {
             SitecoreProperty property = new SitecoreProperty();
             property.Property = GetInfo(expressionBody);
             property.Attribute = attr;
         }
-
         private PropertyInfo GetInfo(string expressionBody)
         {
             string name = expressionBody.Replace("x.", "");
 
-            PropertyInfo info = _type.GetProperty(name);
+            PropertyInfo info = _config.Type.GetProperty(name);
             return info;
-
         }
+
+        #region ISitecoreClass Members
+
+        public SitecoreClassConfig Config
+        {
+            get { return _config; }
+        }
+
+        #endregion
     }
 }
  
