@@ -448,7 +448,7 @@ namespace Glass.Sitecore.Mapper.Tests
             public virtual int Number { get; set; }
             [SitecoreField]
             public virtual string Password { get; set; }
-            [SitecoreField]
+            [SitecoreField(Setting=SitecoreFieldSettings.RichTextRaw)]
             public virtual string RichText { get; set; }
             [SitecoreField]
             public virtual string SingleLineText { get; set; }

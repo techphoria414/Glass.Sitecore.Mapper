@@ -154,5 +154,71 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.AreEqual(value, result);
         }
         #endregion
+
+        #region SetValue
+
+        [Test]
+        [ExpectedException(typeof(NotSupportedException))]
+        public void SetValue_SetRichTextField_NoRaw_ThrowException()
+        {
+            //Assign
+            string value = "some test string";
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(string), "RichText"),
+                Attribute = new SitecoreFieldAttribute()
+            };
+
+            using (new SecurityDisabler())
+            {
+                //Act
+                _item.Editing.BeginEdit();
+                try
+                {
+
+                    _handler.SetValue(null, _item, value, property, null);
+                }
+                finally
+                {
+                    //Assert
+                    _item.Editing.EndEdit();
+
+                }
+            }   
+
+
+        }
+
+        [Test]
+        public void SetValue_SetRichTextField_Raw_SetsValue()
+        {
+            //Assign
+            string value = "some test string";
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(string), "RichText"),
+                Attribute = new SitecoreFieldAttribute()
+                {
+                    Setting  = SitecoreFieldSettings.RichTextRaw
+                }
+            };
+
+            using (new SecurityDisabler())
+            {
+                //Act
+
+                _item.Editing.BeginEdit();
+                _handler.SetValue(null, _item, value, property, null);
+
+                //Assert
+                Assert.AreEqual(_item["RichText"], value);
+
+                _item.Editing.EndEdit();
+
+            }
+        }
+
+
+        #endregion
     }
 }

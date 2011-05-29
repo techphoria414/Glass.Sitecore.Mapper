@@ -116,7 +116,7 @@ namespace Glass.Sitecore.Mapper
 
         public override Type ReflectedType
         {
-            get { throw new NotImplementedException(); }
+            get { return typeof(FakePropertyInfo); }
         }
     }
 }

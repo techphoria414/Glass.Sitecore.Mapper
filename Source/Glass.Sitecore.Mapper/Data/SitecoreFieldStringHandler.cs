@@ -45,16 +45,34 @@ namespace Glass.Sitecore.Mapper.Data
             else return item[fieldName];
         }
 
-        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+
+
+        public override void SetValue(object parent, Item item, object value, SitecoreProperty property, InstanceContext context)
         {
-            throw new NotImplementedException();
+            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
+            
+            string fieldName = GetFieldName(property);
+
+            if (item.Fields[fieldName] != null && item.Fields[fieldName].Type.StartsWith("Rich Text") && attr.Setting != SitecoreFieldSettings.RichTextRaw)
+            {
+                throw new NotSupportedException("It is not possible to save data from a rich text field when the data isn't raw."
+                    + "Set the SitecoreFieldAttribute setting property to SitecoreFieldSettings.RichTextRaw for property {0} on type {1}".Formatted(property.Property.Name, property.Property.ReflectedType.FullName));
+            }
+            else
+            {
+                string fieldValue = SetFieldValue(value, property, context);
+                item[fieldName] = fieldValue;
+            }
         }
 
         public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
         {
             return value.ToString();
         }
-       
+        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+        {
+            throw new NotImplementedException();
+        }
         public override Type TypeHandled
         {
             get { return typeof(System.String); }
