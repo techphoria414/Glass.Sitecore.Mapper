@@ -34,7 +34,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
         IEnumerable<string> _namespaces;
 
-        public AttributeConfigurationLoader(IEnumerable<string> namespaces)
+        public AttributeConfigurationLoader(params string [] namespaces)
         {
             _namespaces = namespaces;
         }
