@@ -47,5 +47,10 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             Query = query;
             IsLazy = true;
         }
+
+        internal SitecoreQueryAttribute()
+        {
+            IsLazy = true;
+        }
     }
 }

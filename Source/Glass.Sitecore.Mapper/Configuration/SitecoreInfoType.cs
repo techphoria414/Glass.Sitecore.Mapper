@@ -19,10 +19,14 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Glass.Sitecore.Mapper.Configuration.Attributes
+namespace Glass.Sitecore.Mapper.Configuration
 {
     public enum SitecoreInfoType
     {
+        /// <summary>
+        /// No value has been set
+        /// </summary>
+        NotSet,
         /// <summary>
         /// The item's content path. The property type must be System.String
         /// </summary>

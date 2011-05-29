@@ -27,6 +27,7 @@ using Sitecore.Data.Items;
 using Sitecore.Links;
 using Sitecore.Data.Fields;
 using Sitecore.SecurityModel;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Tests
 {

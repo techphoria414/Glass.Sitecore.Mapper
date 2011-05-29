@@ -19,27 +19,29 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Glass.Sitecore.Mapper.Configuration.Attributes
+namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    public class SitecoreInfoAttribute:AbstractSitecorePropertyAttribute
+    public class SitecoreInfo<T>: ISitecoreAttributeBuilder
     {
-        /// <summary>
-        /// The type of information that should populate the property
-        /// </summary>
-        public SitecoreInfoType Type{get;set;}
-        
-        /// <summary>
-        /// Indicates that the property should be populated with data about the item such as URL, ID, etc.
-        /// </summary>
-        /// <param name="type">The type of information that should populate the property</param>
-        public SitecoreInfoAttribute(SitecoreInfoType type)
-        {
-            Type = type;
+        Configuration.Attributes.SitecoreInfoAttribute _attr;
+
+        public SitecoreInfo(){
+            _attr = new Configuration.Attributes.SitecoreInfoAttribute();
         }
 
-        internal SitecoreInfoAttribute()
+        public SitecoreInfo<T> Type(SitecoreInfoType type)
         {
-            Type = SitecoreInfoType.NotSet;
+            _attr.Type = type;
+            return this;
         }
+
+        #region ISitecoreAttributeBuilder Members
+
+        public Glass.Sitecore.Mapper.Configuration.Attributes.AbstractSitecorePropertyAttribute Attribute
+        {
+            get { throw new NotImplementedException(); }
+        }
+
+        #endregion
     }
 }
