@@ -30,12 +30,11 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldImageHandler : AbstractSitecoreField
     {
 
-        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item,  InstanceContext context)
         {
-            string fieldName = GetFieldName(property);
 
             Image img = new Image();
-            ImageField scImg = new ImageField(item.Fields[fieldName]);
+            ImageField scImg = new ImageField(item.Fields[FieldName]);
 
             int height = 0;
             int.TryParse(scImg.Height, out height);
@@ -58,12 +57,11 @@ namespace Glass.Sitecore.Mapper.Data
 
             return img;
         }
-        public override void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value,  InstanceContext context)
         {
-            string fieldName = GetFieldName(property);
 
             Image img = value as Image;
-            ImageField scImg = new ImageField(item.Fields[fieldName]);
+            ImageField scImg = new ImageField(item.Fields[FieldName]);
 
 
             if (scImg.MediaID.Guid != img.MediaId)
@@ -100,13 +98,13 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context)
         {
             throw new NotImplementedException();
            
         }
 
-        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
+        public override string SetFieldValue(object value,  InstanceContext context)
         {
             throw new NotImplementedException();
         }

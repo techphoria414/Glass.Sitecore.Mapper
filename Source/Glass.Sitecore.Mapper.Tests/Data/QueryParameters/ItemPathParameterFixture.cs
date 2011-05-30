@@ -47,7 +47,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data.QueryParameters
             ItemPathParameter param = new ItemPathParameter();
 
             //Act
-            var result = param.GetValue(_item, null);
+            var result = param.GetValue(_item);
 
             //Assert
             Assert.AreEqual(_item.Paths.FullPath, result);

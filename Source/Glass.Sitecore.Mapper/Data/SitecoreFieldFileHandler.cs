@@ -30,12 +30,10 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldFileHandler : AbstractSitecoreField
     {
 
-        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item, InstanceContext context)
         {
 
-            string fieldName = GetFieldName(property);
-
-            FileField field = new FileField(item.Fields[fieldName]);
+            FileField field = new FileField(item.Fields[FieldName]);
             File file = new File();
             file.Src = field.Src;
             file.Id = field.MediaID.Guid;
@@ -43,12 +41,11 @@ namespace Glass.Sitecore.Mapper.Data
             return file;
         }
 
-        public override void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
         {
-            string fieldName = GetFieldName(property);
 
             File  file = value as File;
-            FileField field = new FileField(item.Fields[fieldName]);
+            FileField field = new FileField(item.Fields[FieldName]);
 
             if (field.MediaID.Guid != file.Id)
             {
@@ -73,12 +70,12 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override object GetFieldValue(string fieldValue, object parent, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, object parent, global::Sitecore.Data.Items.Item item,  InstanceContext context)
         {
             throw new NotImplementedException();
         }
 
-        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
+        public override string SetFieldValue(object value,InstanceContext context)
         {
             throw new NotImplementedException();
         }

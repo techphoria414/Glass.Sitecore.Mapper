@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data.QueryParameters
             get { return "path"; }
         }
 
-        public string GetValue(global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property)
+        public string GetValue(global::Sitecore.Data.Items.Item item)
         {
             return item.Paths.FullPath;
         }

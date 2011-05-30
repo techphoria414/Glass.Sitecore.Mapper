@@ -31,19 +31,22 @@ namespace Glass.Sitecore.Mapper.Data
             return property.Attribute is SitecoreIdAttribute && property.Property.PropertyType == typeof(Guid);
         }
 
-        public override object GetValue(object container, global::Sitecore.Data.Items.Item item, SitecoreProperty property, InstanceContext context)
+        public override object GetValue(object container, global::Sitecore.Data.Items.Item item, InstanceContext context)
         {
             return item.ID.Guid;
         }
 
-        public override void SetValue(object container, global::Sitecore.Data.Items.Item item, object value, SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object container, global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
         {
             throw new NotSupportedException("It isn't possible to write an ID field");
         }
 
-        public override bool CanSetValue(SitecoreProperty property)
+        public override bool CanSetValue
         {
-             return false; 
+            get
+            {
+                return false;
+            }
         }
     }
 }

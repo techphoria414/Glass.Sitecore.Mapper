@@ -107,7 +107,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Item item = _db.GetItem(new ID(_itemId));
 
             //Act
-            var result = _handler.GetValue(null, item, null, null);
+            var result = _handler.GetValue(null, item, null);
 
             //Assert
             Assert.AreEqual(_itemId, result);
@@ -121,7 +121,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void SetValue_ThrowsException()
         {
             //Act
-            _handler.SetValue(null, null, _itemId, null, null);
+            _handler.SetValue(null, null, _itemId, null);
         }
 
         #endregion

@@ -27,57 +27,60 @@ namespace Glass.Sitecore.Mapper.Data
     public abstract class AbstractSitecoreField : AbstractSitecoreDataHandler
     {
 
+        protected string FieldName { get; set; }
+
+        protected bool ReadOnly { get; set; }
+
+        protected SitecoreFieldSettings Setting { get; set; }
+
+        public abstract object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context);
 
 
-        public abstract object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context);
+        public abstract string SetFieldValue(object value, InstanceContext context);
 
+   
 
-        public abstract string SetFieldValue(object value, SitecoreProperty property, InstanceContext context);
-
-        #region ISitecoreDataHandler Members
-
-        public override void SetValue(object parent, Item item, object value, SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object parent, Item item, object value, InstanceContext context)
         {
-
-            string fieldName = GetFieldName(property); 
-
-            string fieldValue = SetFieldValue(value, property, context);
-            item[fieldName] = fieldValue;
+            string fieldValue = SetFieldValue(value,  context);
+            item[FieldName] = fieldValue;
         }
 
-        public override  object GetValue(object parent, Item item, SitecoreProperty property, InstanceContext context)
+        public override  object GetValue(object parent, Item item, InstanceContext context)
         {
-
-            string fieldName = GetFieldName(property);
-            string fieldValue = item[fieldName];
-            return GetFieldValue(fieldValue, parent, item,property, context);
+            string fieldValue = item[FieldName];
+            return GetFieldValue(fieldValue, parent, item, context);
         }
 
         public override  bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreFieldAttribute && property.Property.PropertyType == TypeHandled;
-
         }
 
-        public override bool CanSetValue(SitecoreProperty property)
+        public override bool CanSetValue
         {
-            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
-            return !attr.ReadOnly;
+            get
+            {
+                return !ReadOnly;
+            }
         }
 
-        #endregion
 
         public abstract Type TypeHandled { get; }
 
-        protected string GetFieldName(SitecoreProperty property)
+        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
         {
+            SitecoreFieldAttribute attr = scProperty.Attribute as SitecoreFieldAttribute;
+            
+            if (attr != null && !attr.FieldName.IsNullOrEmpty()) FieldName = attr.FieldName;
+            else FieldName = scProperty.Property.Name;
 
-            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
-            if (attr != null && !attr.FieldName.IsNullOrEmpty()) return attr.FieldName;
-            else return property.Property.Name;
+            ReadOnly = attr.ReadOnly;
+
+            Setting = attr.Setting;
+            
+            base.ConfigureDataHandler(scProperty);
         }
-
-
      
 
     }

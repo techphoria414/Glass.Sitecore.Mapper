@@ -36,7 +36,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data.QueryParameters
             ItemDateNowParameter param = new ItemDateNowParameter();
 
             //Act
-            var result = param.GetValue(null, null);
+            var result = param.GetValue(null);
 
             //Assert
             Assert.IsTrue(new Regex(@"\d{8}T\d{6}").IsMatch(result));

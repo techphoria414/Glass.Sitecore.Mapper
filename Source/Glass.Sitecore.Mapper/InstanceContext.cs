@@ -72,9 +72,9 @@ namespace Glass.Sitecore.Mapper
                 var scClass = GetSitecoreClass(type);
                 object t = scClass.Type.Assembly.CreateInstance(scClass.Type.FullName);
 
-                foreach (var property in scClass.Properties)
+                foreach (var handler in scClass.DataHandlers)
                 {
-                    SetProperty(t, property, item);
+                    handler.SetProperty(t, item, this);
                 }
 
                 return t;
@@ -100,15 +100,12 @@ namespace Glass.Sitecore.Mapper
             var scClass = GetSitecoreClass(typeof(T));
 
 
-            foreach (var property in scClass.Properties)
+            foreach (var handler in scClass.DataHandlers)
             {
-               // SetDataHandler(property);
-
-                if (property.DataHandler.CanSetValue(property))
+               
+                if (handler.CanSetValue)
                 {
-                    PropertyInfo info = property.Property;
-                    object value = info.GetValue(target, null);
-                    property.DataHandler.SetValue(target, item, value, property, this);
+                    handler.ReadProperty(target, item, this);
                 }
             }
             
@@ -138,18 +135,6 @@ namespace Glass.Sitecore.Mapper
 
             return Classes[type];
         }
-
-        private void SetProperty(object target, SitecoreProperty property, Item item)
-        {
-            object value = null;
-
-            value = property.DataHandler.GetValue(target, item, property, this);
-
-            property.Property.SetValue(target, value, null);
-        }
-        
-     
-       
 
 
         #region ICloneable Members

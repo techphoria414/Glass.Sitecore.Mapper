@@ -30,12 +30,11 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldLinkHandler : AbstractSitecoreField
     {
 
-        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item,  InstanceContext context)
         {
-            string fieldName = GetFieldName(property);
 
             Link link = new Link();
-            LinkField field = new LinkField(item.Fields[fieldName]);
+            LinkField field = new LinkField(item.Fields[FieldName]);
             link.Anchor = field.Anchor;
             link.Class = field.Class;
             link.Text = field.Text;
@@ -47,12 +46,11 @@ namespace Glass.Sitecore.Mapper.Data
             return link;
         }
 
-        public override void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value,  InstanceContext context)
         {
-            string fieldName = GetFieldName(property);
 
             Link link = value as Link;
-            LinkField field = new LinkField(item.Fields[fieldName]);
+            LinkField field = new LinkField(item.Fields[FieldName]);
 
             if (field.TargetID.Guid != link.TargetId)
             {
@@ -88,7 +86,7 @@ namespace Glass.Sitecore.Mapper.Data
          
         }
 
-        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
+        public override string SetFieldValue(object value,  InstanceContext context)
         {
             throw new NotImplementedException();
         }
@@ -98,7 +96,7 @@ namespace Glass.Sitecore.Mapper.Data
             get { return typeof(FieldTypes.Link); }
         }
 
-        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context)
         {
             throw new NotImplementedException();
         }

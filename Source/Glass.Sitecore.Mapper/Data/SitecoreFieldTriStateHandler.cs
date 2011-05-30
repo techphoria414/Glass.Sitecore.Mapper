@@ -26,7 +26,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldTriStateHandler :AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context)
         {
             switch (fieldValue)
             {
@@ -39,7 +39,7 @@ namespace Glass.Sitecore.Mapper.Data
             }
         }
 
-        public override string SetFieldValue( object value, SitecoreProperty property, InstanceContext context)
+        public override string SetFieldValue( object value, InstanceContext context)
         {
             if (value is TriState)
             {

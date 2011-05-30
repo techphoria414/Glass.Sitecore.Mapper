@@ -82,14 +82,15 @@ namespace Glass.Sitecore.Mapper
                         //now assign a data handler to each property
                         foreach (var cls in classes)
                         {
+                            IList<AbstractSitecoreDataHandler> handlers = new List<AbstractSitecoreDataHandler>();
+
                             foreach (var prop in cls.Value.Properties)
                             {
-                                SetDataHandler(prop, datas, classes);
-                                if (prop.DataHandler == null)
-                                    throw new MapperException("No handler loaded for type {0} and member {1}".Formatted(cls.Key.ToString(), prop.Property.Name));
+                                var handler = SetDataHandler(prop, datas, classes);
+                                handlers.Add(handler);
 
                             }
-
+                            cls.Value.DataHandlers = handlers;
                         }
                         
                         InstanceContext instance = new InstanceContext(classes, datas);
@@ -117,24 +118,22 @@ namespace Glass.Sitecore.Mapper
         /// 
         /// </summary>
         /// <param name="property"></param>
-        private void SetDataHandler(SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        private AbstractSitecoreDataHandler SetDataHandler(SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
+            AbstractSitecoreDataHandler handler = datas.FirstOrDefault(x => x.WillHandle(property, datas, classes));
 
-            if (property.DataHandler == null)
-            {
-                AbstractSitecoreDataHandler handler = datas.FirstOrDefault(x => x.WillHandle(property, datas, classes));
+            if (handler == null)
+                throw new NotSupportedException("No data handler for: \n\r Class: {0} \n\r Member: {1} \n\r Attribute: {2}"
+                    .Formatted(
+                        property.Property.ReflectedType.Name,
+                        property.Property.Name,
+                        property.Attribute.GetType().Name
+                    ));
 
-                if (handler == null)
-                    throw new NotSupportedException("No data handler for: \n\r Class: {0} \n\r Member: {1} \n\r Attribute: {2}"
-                        .Formatted(
-                            property.Property.ReflectedType.Name,
-                            property.Property.Name,
-                            property.Attribute.GetType().Name
-                        ));
+            var newHandler = handler.Clone() as AbstractSitecoreDataHandler;
+            newHandler.ConfigureDataHandler(property);
 
-                property.DataHandler = handler.Clone() as AbstractSitecoreDataHandler;
-
-            }
+            return newHandler;
         }
 
         private IEnumerable<AbstractSitecoreDataHandler> LoadDefaultDataHandlers(IEnumerable<AbstractSitecoreDataHandler> handlers)

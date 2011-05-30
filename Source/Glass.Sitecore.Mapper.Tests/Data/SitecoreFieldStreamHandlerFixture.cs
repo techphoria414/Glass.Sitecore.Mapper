@@ -54,14 +54,15 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             Item item = _db.GetItem(new ID(_itemId));
-            SitecoreProperty property  = new SitecoreProperty(){
+            SitecoreProperty property = new SitecoreProperty()
+            {
                 Attribute = new SitecoreFieldAttribute(),
                 Property = new FakePropertyInfo(typeof(Stream), "Attachment")
             };
 
-
+            _handler.ConfigureDataHandler(property);
             //Act
-            Stream stream = _handler.GetValue(null, item, property, null) as Stream;
+            Stream stream = _handler.GetValue(null, item, null) as Stream;
 
             //Assert
             Assert.IsNull(stream);
@@ -74,7 +75,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         [Test]
         public void SetValue()
         {
-            
+
             //Assign
             Item item = _db.GetItem(new ID(_itemId));
             SitecoreProperty property = new SitecoreProperty()
@@ -82,6 +83,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Attribute = new SitecoreFieldAttribute(),
                 Property = new FakePropertyInfo(typeof(Stream), "Attachment")
             };
+
+            _handler.ConfigureDataHandler(property);
 
             string testString = "Hello World" + DateTime.Now.ToString();
             MemoryStream stream = new MemoryStream();
@@ -91,20 +94,20 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             using (new SecurityDisabler())
             {
                 item.Editing.BeginEdit();
-                
+
                 //Act
-                _handler.SetValue(null, item, stream, property, null);
-                
+                _handler.SetValue(null, item, stream, null);
+
 
 
 
                 //Assert
-                
-                
+
+
 
                 Stream result = item.Fields["Attachment"].GetBlobStream();
                 Assert.AreEqual(data.Length, result.Length);
-                
+
                 byte[] dataOut = new byte[result.Length];
                 result.Read(dataOut, 0, dataOut.Length);
                 string text = UTF8Encoding.UTF8.GetString(dataOut);
@@ -114,7 +117,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 //tidy up
                 item.Editing.CancelEdit();
 
-                
+
             }
 
 

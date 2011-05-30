@@ -46,13 +46,15 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             string value = "45|535|22|";
+            SitecoreProperty property = new SitecoreProperty()
+                    {
+                        Property = new FakePropertyInfo(typeof(IEnumerable<int>)),
+                        Attribute = new SitecoreFieldAttribute()
+                    };
+            _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null, new SitecoreProperty()
-            {
-                Property = new FakePropertyInfo(typeof(IEnumerable<int>)),
-                Attribute = new SitecoreFieldAttribute()
-            }, _context);
+            var result = _handler.GetFieldValue(value, null, null,  _context);
 
             //Assert
             var list = result as IEnumerable<int>;
@@ -68,13 +70,15 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             string value = "45|535|22|";
+            SitecoreProperty property = new SitecoreProperty()
+                       {
+                           Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("Test"),
+                           Attribute = new SitecoreFieldAttribute()
+                       };
+            _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null, new SitecoreProperty()
-            {
-                Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("Test"),
-                Attribute = new SitecoreFieldAttribute()
-            }, _context);
+            var result = _handler.GetFieldValue(value, null, null, _context);
 
             //Assert
             //Exception thrown
@@ -90,13 +94,17 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assign
             IEnumerable<int> list = new int[] { 44, 535, 22 };
 
+            SitecoreProperty property = new SitecoreProperty()
+                {
+                    Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("IntList"),
+                    Attribute = new SitecoreFieldAttribute()
+                };
+
+            _handler.ConfigureDataHandler(property);
             //Act
             var result = _handler.SetFieldValue(
                 list,
-                new SitecoreProperty(){
-                    Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("IntList"),
-                    Attribute = new SitecoreFieldAttribute()
-                },
+                
                 _context);
 
             //Assert
@@ -106,16 +114,16 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         #endregion
 
 
- 
+
     }
     namespace SitecoreFieldIEnumerableHandlerFixtureNS
     {
         public class TestClass
         {
-            public IEnumerable<TestType> Test{get;set;}
+            public IEnumerable<TestType> Test { get; set; }
             public IEnumerable<int> IntList { get; set; }
         }
-        public class  TestType { }
+        public class TestType { }
     }
-    
+
 }

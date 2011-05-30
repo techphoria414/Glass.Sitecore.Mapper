@@ -72,7 +72,7 @@
     <Compile Include="Configuration\Attributes\SitecoreInfoType.cs" />
     <Compile Include="Configuration\Attributes\SitecoreQueryAttribute.cs" />
     <Compile Include="Configuration\IConfigurationLoader.cs" />
-    <Compile Include="Configuration\SitecoreMember.cs" />
+    <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClass.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Data\QueryParameters\ItemIdNoBracketsParameter.cs" />

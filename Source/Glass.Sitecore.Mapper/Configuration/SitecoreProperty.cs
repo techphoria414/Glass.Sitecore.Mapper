@@ -29,7 +29,6 @@ namespace Glass.Sitecore.Mapper.Configuration
     /// </summary>
     public class SitecoreProperty
     {
-        internal AbstractSitecoreDataHandler DataHandler { get; set; }
 
         public AbstractSitecorePropertyAttribute Attribute { get; set; }
         public PropertyInfo Property { get; set; }

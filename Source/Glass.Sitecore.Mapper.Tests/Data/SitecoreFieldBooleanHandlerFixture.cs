@@ -45,7 +45,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string fieldValue = "1";
 
             //Act
-            var result = _handler.GetFieldValue(fieldValue, null, null, null, null);
+            var result = _handler.GetFieldValue(fieldValue, null,  null, null);
 
             //Assert
             Assert.IsTrue((bool)result);
@@ -58,7 +58,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string fieldValue = string.Empty;
 
             //Act
-            var result = _handler.GetFieldValue(fieldValue, null, null, null, null);
+            var result = _handler.GetFieldValue(fieldValue, null, null,  null);
 
             //Assert
             Assert.IsFalse((bool)result);
@@ -70,7 +70,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string fieldValue = "0";
 
             //Act
-            var result = _handler.GetFieldValue(fieldValue, null, null, null, null);
+            var result = _handler.GetFieldValue(fieldValue, null, null, null);
             //Assert
             Assert.IsFalse((bool)result);
         }
@@ -89,7 +89,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.SetFieldValue(value, property, null);
+            var result = _handler.SetFieldValue(value,  null);
 
             //Assert
             Assert.AreEqual("1", result);
@@ -105,7 +105,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.SetFieldValue( value, property, null);
+            var result = _handler.SetFieldValue( value,  null);
 
             //Assert
             Assert.AreEqual("0", result);

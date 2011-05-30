@@ -55,14 +55,16 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             SitecoreProperty property = new SitecoreProperty()
-               {
-                   Attribute = new SitecoreFieldAttribute(),
-                   Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
-               };
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+
+            _handler.ConfigureDataHandler(property);
 
             //Act
-            Link result = _handler.GetValue(null, item, property, null) as Link;
-            
+            Link result = _handler.GetValue(null, item, null) as Link;
+
             //Assert
             Assert.AreEqual("", result.Anchor);
             Assert.AreEqual("Style Class Test", result.Class);
@@ -83,7 +85,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Item item = _db.GetItem(new ID(_itemId));
             Guid targetId = new Guid("{D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}");
 
-         
+
             Link link = new Link();
             link.Anchor = "new anchor";
             link.Class = "new class";
@@ -99,12 +101,14 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
             };
 
+            _handler.ConfigureDataHandler(property);
+
             using (new SecurityDisabler())
             {
                 item.Editing.BeginEdit();
 
                 //Act
-                _handler.SetValue(null, item, link, property, null);
+                _handler.SetValue(null, item, link, null);
 
                 //Assert
                 LinkField field = new LinkField(item.Fields["GeneralLink"]);
@@ -114,7 +118,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Assert.AreEqual(link.Text, field.Text);
                 Assert.AreEqual(link.Title, field.Title);
                 Assert.AreEqual(targetId, field.TargetItem.ID.Guid);
-                
+
                 item.Editing.CancelEdit();
             }
         }
@@ -140,14 +144,14 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Attribute = new SitecoreFieldAttribute(),
                 Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
             };
-
+            _handler.ConfigureDataHandler(property);
 
             using (new SecurityDisabler())
             {
                 item.Editing.BeginEdit();
 
                 //Act
-                _handler.SetValue(null, item, link, property, null);
+                _handler.SetValue(null, item, link, null);
 
                 //Assert
                 LinkField field = new LinkField(item.Fields["GeneralLink"]);

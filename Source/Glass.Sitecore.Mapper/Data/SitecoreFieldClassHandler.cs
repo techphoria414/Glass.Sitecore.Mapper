@@ -27,6 +27,8 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldClassHandler:AbstractSitecoreField
     {
+
+
         public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             if (!(property.Attribute is SitecoreFieldAttribute)) return false;
@@ -35,11 +37,9 @@ namespace Glass.Sitecore.Mapper.Data
 
 
 
-        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context)
         {
             Item target = null;
-
-            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
 
             try
             {
@@ -53,15 +53,15 @@ namespace Glass.Sitecore.Mapper.Data
             }
 
             if (target == null) return null;
-            bool isLazy = attr.Setting != SitecoreFieldSettings.DontLoadLazily;
+            bool isLazy = Setting != SitecoreFieldSettings.DontLoadLazily;
 
-            return context.CreateClass(isLazy, property.Property.PropertyType, target);
+            return context.CreateClass(isLazy, Property.PropertyType, target);
             
         }
 
-        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
+        public override string SetFieldValue(object value, InstanceContext context)
         {
-            return context.GetClassId(property.Property.PropertyType, value).ToString("B");
+            return context.GetClassId(Property.PropertyType, value).ToString("B");
         }
 
         public override Type TypeHandled
@@ -69,6 +69,7 @@ namespace Glass.Sitecore.Mapper.Data
             get { throw new NotImplementedException(); }
         }
 
+      
         
     }
 }

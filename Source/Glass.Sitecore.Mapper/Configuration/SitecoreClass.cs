@@ -19,12 +19,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
+using Glass.Sitecore.Mapper.Data;
 
 namespace Glass.Sitecore.Mapper.Configuration
 {
     public class SitecoreClassConfig 
     {
         public Type Type { get; set; }
+
+        internal IEnumerable<AbstractSitecoreDataHandler> DataHandlers { get; set; }
 
         public IEnumerable<SitecoreProperty> Properties { get; set; }
         public SitecoreClassAttribute ClassAttribute {get;set;}

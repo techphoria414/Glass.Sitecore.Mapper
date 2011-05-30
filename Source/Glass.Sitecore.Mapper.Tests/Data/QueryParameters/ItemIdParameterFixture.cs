@@ -47,7 +47,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data.QueryParameters
             ItemIdParameter param = new ItemIdParameter();
 
             //Act
-            var result = param.GetValue(_item, null);
+            var result = param.GetValue(_item);
 
             //Assert
             Assert.AreEqual(_item.ID.ToString(), result);

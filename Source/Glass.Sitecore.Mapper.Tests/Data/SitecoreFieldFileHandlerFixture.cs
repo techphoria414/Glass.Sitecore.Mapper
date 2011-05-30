@@ -58,8 +58,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Property = new FakePropertyInfo(typeof(File), "File")
             };
 
+            _handler.ConfigureDataHandler(property);
+
             //Act
-            var result = _handler.GetValue(null, item, property, null) as File;
+            var result = _handler.GetValue(null, item, null) as File;
 
             //Assert
             Assert.AreEqual("/~/media/Files/SimpleTextFile.ashx", result.Src);
@@ -86,13 +88,14 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Attribute = new SitecoreFieldAttribute(),
                 Property = new FakePropertyInfo(typeof(File), "File")
             };
+            _handler.ConfigureDataHandler(property);
 
             using (new SecurityDisabler())
             {
                 item.Editing.BeginEdit();
 
                 //Act
-                _handler.SetValue(null, item, file, property, null);
+                _handler.SetValue(null, item, file, null);
 
                 //Assert
                 FileField field = new FileField(item.Fields["File"]);
@@ -120,12 +123,14 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Property = new FakePropertyInfo(typeof(File), "File")
             };
 
+            _handler.ConfigureDataHandler(property);
+
             using (new SecurityDisabler())
             {
                 item.Editing.BeginEdit();
 
                 //Act
-                _handler.SetValue(null, item, file, property, null);
+                _handler.SetValue(null, item, file, null);
 
                 //Assert
                 FileField field = new FileField(item.Fields["File"]);
