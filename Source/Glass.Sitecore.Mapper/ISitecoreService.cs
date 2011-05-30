@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Sitecore.Data.Items;
+using Sitecore.Globalization;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -29,7 +30,13 @@ namespace Glass.Sitecore.Mapper
         T QuerySingle<T>(string query) where T : class;
 
         T GetItem<T>(string path) where T : class;
+        T GetItem<T>(string path, Language language) where T : class;
+        T GetItem<T>(string path, Language language, global::Sitecore.Data.Version version) where T : class;
         T GetItem<T>(Guid id) where T : class;
+        T GetItem<T>(Guid id, Language language) where T : class;
+        T GetItem<T>(Guid id, Language language, global::Sitecore.Data.Version version) where T : class;
+
+
         
         void Save<T>(T item) where T : class;
         

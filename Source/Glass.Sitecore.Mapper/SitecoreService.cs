@@ -21,6 +21,7 @@ using System.Text;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Globalization;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -64,10 +65,30 @@ namespace Glass.Sitecore.Mapper
             Item item = _database.GetItem(path);
             return _context.CreateClass<T>(false, item);
         }
+        public T GetItem<T>(string path, Language language) where T:class
+        {
+            Item item = _database.GetItem(path, language);
+            return _context.CreateClass<T>(false, item);
+        }
+        public T GetItem<T>(string path, Language language, global::Sitecore.Data.Version version) where T : class
+        {
+            Item item = _database.GetItem(path, language, version);
+            return _context.CreateClass<T>(false, item);
+        }
 
         public T GetItem<T>(Guid id)  where T: class
         {
             Item item = _database.GetItem(new  ID(id));
+            return _context.CreateClass<T>(false, item);
+        }
+        public T GetItem<T>(Guid id, Language language) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language);
+            return _context.CreateClass<T>(false, item);
+        }
+        public T GetItem<T>(Guid id, Language language, global::Sitecore.Data.Version version) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language, version);
             return _context.CreateClass<T>(false, item);
         }
 
