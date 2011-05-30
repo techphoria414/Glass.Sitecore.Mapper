@@ -55,7 +55,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                     },
                     
                 }).ToDictionary(),
-                new ISitecoreDataHandler[] { }
+                new AbstractSitecoreDataHandler[] { }
                 );
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");

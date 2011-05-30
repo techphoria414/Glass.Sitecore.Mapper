@@ -85,7 +85,7 @@
     <Compile Include="Data\SitecoreFieldStreamHandler.cs" />
     <Compile Include="Data\SitecoreFieldClassHandler.cs" />
     <Compile Include="Data\SitecoreFieldDecimalHandler.cs" />
-    <Compile Include="Data\ISitecoreDataHandler.cs" />
+    <Compile Include="Data\AbstractSitecoreDataHandler.cs" />
     <Compile Include="Data\AbstractSitecoreField.cs" />
     <Compile Include="Data\SitecoreFieldBooleanHandler.cs" />
     <Compile Include="Data\SitecoreFieldDateTimeHandler.cs" />

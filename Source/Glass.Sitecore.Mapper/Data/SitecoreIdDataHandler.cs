@@ -23,25 +23,25 @@ using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
-    public class SitecoreIdDataHandler : ISitecoreDataHandler
+    public class SitecoreIdDataHandler : AbstractSitecoreDataHandler
     {
 
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreIdAttribute && property.Property.PropertyType == typeof(Guid);
         }
 
-        public object GetValue(object container, global::Sitecore.Data.Items.Item item, SitecoreProperty property, InstanceContext context)
+        public override object GetValue(object container, global::Sitecore.Data.Items.Item item, SitecoreProperty property, InstanceContext context)
         {
             return item.ID.Guid;
         }
 
-        public void SetValue(object container, global::Sitecore.Data.Items.Item item, object value, SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object container, global::Sitecore.Data.Items.Item item, object value, SitecoreProperty property, InstanceContext context)
         {
             throw new NotSupportedException("It isn't possible to write an ID field");
         }
 
-        public bool CanSetValue(SitecoreProperty property)
+        public override bool CanSetValue(SitecoreProperty property)
         {
              return false; 
         }

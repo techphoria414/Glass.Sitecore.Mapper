@@ -24,7 +24,7 @@ using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
-    public abstract class AbstractSitecoreField : ISitecoreDataHandler
+    public abstract class AbstractSitecoreField : AbstractSitecoreDataHandler
     {
 
 
@@ -36,7 +36,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         #region ISitecoreDataHandler Members
 
-        public virtual void SetValue(object parent, Item item, object value, SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object parent, Item item, object value, SitecoreProperty property, InstanceContext context)
         {
 
             string fieldName = GetFieldName(property); 
@@ -45,7 +45,7 @@ namespace Glass.Sitecore.Mapper.Data
             item[fieldName] = fieldValue;
         }
 
-        public virtual object GetValue(object parent, Item item, SitecoreProperty property, InstanceContext context)
+        public override  object GetValue(object parent, Item item, SitecoreProperty property, InstanceContext context)
         {
 
             string fieldName = GetFieldName(property);
@@ -53,13 +53,13 @@ namespace Glass.Sitecore.Mapper.Data
             return GetFieldValue(fieldValue, parent, item,property, context);
         }
 
-        public virtual bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override  bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreFieldAttribute && property.Property.PropertyType == TypeHandled;
 
         }
 
-        public bool CanSetValue(SitecoreProperty property)
+        public override bool CanSetValue(SitecoreProperty property)
         {
             SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
             return !attr.ReadOnly;

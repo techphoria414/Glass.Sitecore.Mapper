@@ -24,28 +24,28 @@ using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
-    public class SitecoreParentHandler : ISitecoreDataHandler
+    public class SitecoreParentHandler : AbstractSitecoreDataHandler
     {
 
         #region ISitecoreDataHandler Members
 
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreParentAttribute;
         }
 
-        public object GetValue(object parent, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
         {
             SitecoreParentAttribute attr = property.Attribute as SitecoreParentAttribute;
             return context.CreateClass(attr.IsLazy, property.Property.PropertyType, item.Parent);
         }
 
-        public void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
         {
             throw new NotImplementedException();
         }
 
-        public bool CanSetValue(SitecoreProperty property)
+        public override bool CanSetValue(SitecoreProperty property)
         {
              return false; 
         }

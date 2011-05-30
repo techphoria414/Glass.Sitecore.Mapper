@@ -54,7 +54,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                         Type = typeof(SitecoreQueryHandlerFixtureNS.TestClass)
                     }
                 }).ToDictionary(),
-                new ISitecoreDataHandler[] { });
+                new AbstractSitecoreDataHandler[] { });
 
             _handler = new SitecoreQueryHandler();
 

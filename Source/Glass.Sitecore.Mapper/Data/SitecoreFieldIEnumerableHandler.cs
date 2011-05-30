@@ -96,7 +96,7 @@ namespace Glass.Sitecore.Mapper.Data
             return sb.ToString();
         }
 
-        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
 
             if(!(property.Attribute is SitecoreFieldAttribute)) return false;

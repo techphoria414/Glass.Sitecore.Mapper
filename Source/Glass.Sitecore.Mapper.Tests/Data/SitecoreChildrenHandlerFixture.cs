@@ -46,7 +46,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                        Properties = new SitecoreProperty[]{},
                        Type = typeof(SitecoreChildrenHandlerFixtureNS.SubClass)
                    }
-               }).ToDictionary(), new ISitecoreDataHandler[] { });
+               }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
 
 
 

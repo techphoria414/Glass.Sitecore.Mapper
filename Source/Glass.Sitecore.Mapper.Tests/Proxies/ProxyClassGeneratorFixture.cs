@@ -46,7 +46,7 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
                        Properties = new SitecoreProperty[]{},
                        Type = typeof(ProxyClassGeneratorFixtureNS.SubClass)
                    }
-               }).ToDictionary(), new ISitecoreDataHandler[] { });
+               }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 

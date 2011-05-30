@@ -48,7 +48,7 @@ namespace Glass.Sitecore.Mapper.Data
             return Enum.GetName(property.Property.PropertyType, value);
         }
 
-        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Property.PropertyType.IsEnum && property.Property.PropertyType != typeof(FieldTypes.TriState);
             

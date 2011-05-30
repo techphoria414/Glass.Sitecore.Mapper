@@ -27,7 +27,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldClassHandler:AbstractSitecoreField
     {
-        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             if (!(property.Attribute is SitecoreFieldAttribute)) return false;
             return classes.ContainsKey(property.Property.PropertyType);

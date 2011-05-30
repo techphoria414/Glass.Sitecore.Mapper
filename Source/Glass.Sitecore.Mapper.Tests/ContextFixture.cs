@@ -37,7 +37,7 @@ namespace Glass.Sitecore.Mapper.Tests
             AttributeConfigurationLoader loader = new AttributeConfigurationLoader(
               new string[] { "Glass.Sitecore.Mapper.Tests.SitecoreServiceFixtureNS, Glass.Sitecore.Mapper.Tests" }
               );
-            _context = new Context(loader, new ISitecoreDataHandler[] { });
+            _context = new Context(loader, new AbstractSitecoreDataHandler[] { });
         }
 
 

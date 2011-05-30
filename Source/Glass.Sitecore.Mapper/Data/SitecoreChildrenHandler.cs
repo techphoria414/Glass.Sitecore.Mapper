@@ -26,11 +26,11 @@ using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
-    public class SitecoreChildrenHandler : ISitecoreDataHandler
+    public class SitecoreChildrenHandler : AbstractSitecoreDataHandler
     {
         #region ISitecoreDataHandler Members
 
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             if (!property.Property.PropertyType.IsGenericType) return false;
 
@@ -38,7 +38,7 @@ namespace Glass.Sitecore.Mapper.Data
             return property.Attribute is SitecoreChildrenAttribute && typeof(IEnumerable<>) == type;
         }
 
-        public object GetValue(object target, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(object target, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
         {
                 int numChildren = item.Children.Count;
                 Type genericType = Utility.GetGenericArgument(property.Property.PropertyType);
@@ -53,12 +53,12 @@ namespace Glass.Sitecore.Mapper.Data
                 return context.CreateClasses(attr.IsLazy, genericType, getItems);
         }
 
-        public void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
         {
             throw new NotImplementedException();
         }
 
-        public bool CanSetValue(SitecoreProperty property)
+        public override bool CanSetValue(SitecoreProperty property)
         {
             return false; 
         }

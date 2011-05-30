@@ -24,16 +24,16 @@ using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
-    public class SitecoreInfoHandler : ISitecoreDataHandler
+    public class SitecoreInfoHandler : AbstractSitecoreDataHandler
     {
         #region ISitecoreDataHandler Members
 
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreInfoAttribute;
         }
 
-        public object GetValue(object target, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(object target, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
         {
             SitecoreInfoAttribute attr = property.Attribute as SitecoreInfoAttribute;
 
@@ -68,13 +68,13 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
         {
             SitecoreInfoAttribute attr = property.Attribute as SitecoreInfoAttribute;
             throw new NotSupportedException("You can not save SitecoreInfo {0}".Formatted(attr.Type));
         }
 
-        public bool CanSetValue(SitecoreProperty property)
+        public override bool CanSetValue(SitecoreProperty property)
         {
              return false; 
         }

@@ -49,7 +49,7 @@ namespace Glass.Sitecore.Mapper.Tests
                new string[] { "Glass.Sitecore.Mapper.Tests.MiscFixtureNS, Glass.Sitecore.Mapper.Tests" }
                );
 
-            _context = new Context(loader, new ISitecoreDataHandler[] {});
+            _context = new Context(loader, new AbstractSitecoreDataHandler[] {});
             global::Sitecore.Context.Site = global::Sitecore.Configuration.Factory.GetSite("website");
 
             _sitecore = new SitecoreService("master");
