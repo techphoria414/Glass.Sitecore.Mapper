@@ -73,7 +73,18 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
         {
-            throw new NotSupportedException("You can not save SitecoreInfo {0}".Formatted(InfoType));
+            switch (InfoType)
+            {
+                case SitecoreInfoType.DisplayName:
+                    if (value is string)
+                        item[Settings.DisplayNameFieldName] = value.ToString();
+                    else
+                        throw new NotSupportedException("Can't set DisplayName. Value is not of type System.String");
+                    break;
+                default:
+                    throw new NotSupportedException("You can not save SitecoreInfo {0}".Formatted(InfoType));
+            }
+
         }
 
         public override bool CanSetValue

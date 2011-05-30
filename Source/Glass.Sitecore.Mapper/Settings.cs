@@ -24,5 +24,7 @@ namespace Glass.Sitecore.Mapper
     public class Settings
     {
         public static string PipeEncoding { get { return "%pipe%"; } }
+
+        public static string DisplayNameFieldName { get { return "__Display name"; } }
     }
 }
