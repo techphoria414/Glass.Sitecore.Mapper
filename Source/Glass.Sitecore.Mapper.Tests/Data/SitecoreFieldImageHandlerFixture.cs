@@ -62,7 +62,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, item,
+            var result = _handler.GetValue(item,
                  null) as Image;
 
             //Assert
@@ -121,7 +121,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             {
                 item.Editing.BeginEdit();
                 //Act
-                _handler.SetValue(null, item, img, null);
+                _handler.SetValue( item, img, null);
 
 
                 //Assert
@@ -174,7 +174,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             {
                 item.Editing.BeginEdit();
                 //Act
-                _handler.SetValue(null, item, img, null);
+                _handler.SetValue( item, img, null);
 
 
                 //Assert

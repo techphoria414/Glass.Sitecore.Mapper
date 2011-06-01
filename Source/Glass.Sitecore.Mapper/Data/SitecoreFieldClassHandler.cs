@@ -37,7 +37,7 @@ namespace Glass.Sitecore.Mapper.Data
 
 
 
-        public override object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
         {
             Item target = null;
 

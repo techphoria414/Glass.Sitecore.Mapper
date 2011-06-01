@@ -44,7 +44,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "10.11";
 
             //Act
-            var result = _handler.GetFieldValue(value, null,  null, null);
+            var result = _handler.GetFieldValue(value,   null, null);
 
             //Assert
             Assert.AreEqual(result, 10.11f);
@@ -58,7 +58,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "";
 
             //Act
-            var result = _handler.GetFieldValue(value, null,  null, null);
+            var result = _handler.GetFieldValue(value,   null, null);
 
             //Assert
             Assert.AreEqual(result, 0.00f);
@@ -73,7 +73,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "help";
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null, null);
+            var result = _handler.GetFieldValue(value,  null, null);
 
             //Assert
             //exception should be shown

@@ -43,7 +43,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "45";
 
             //Act
-            var result = _handler.GetFieldValue(value, null,  null, null);
+            var result = _handler.GetFieldValue(value,   null, null);
 
             //Assert
             Assert.IsTrue(result is int);
@@ -56,7 +56,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "";
 
             //Act
-            var result = _handler.GetFieldValue(value, null,  null, null);
+            var result = _handler.GetFieldValue(value,   null, null);
 
             //Assert
             Assert.IsTrue(result is int);
@@ -70,7 +70,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "4fff5";
 
             //Act
-            var result = _handler.GetFieldValue(value, null,  null, null);
+            var result = _handler.GetFieldValue(value,   null, null);
 
             //Assert
             //error should have  been thrown

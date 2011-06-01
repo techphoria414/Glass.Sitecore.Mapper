@@ -61,7 +61,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, item, null) as File;
+            var result = _handler.GetValue(item, null) as File;
 
             //Assert
             Assert.AreEqual("/~/media/Files/SimpleTextFile.ashx", result.Src);
@@ -95,7 +95,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 item.Editing.BeginEdit();
 
                 //Act
-                _handler.SetValue(null, item, file, null);
+                _handler.SetValue(item, file, null);
 
                 //Assert
                 FileField field = new FileField(item.Fields["File"]);
@@ -130,7 +130,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 item.Editing.BeginEdit();
 
                 //Act
-                _handler.SetValue(null, item, file, null);
+                _handler.SetValue( item, file, null);
 
                 //Assert
                 FileField field = new FileField(item.Fields["File"]);

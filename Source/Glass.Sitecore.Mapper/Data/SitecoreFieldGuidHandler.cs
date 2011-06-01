@@ -26,7 +26,7 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldGuidHandler:AbstractSitecoreField
     {
 
-        public override object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
         {
             if (fieldValue.IsNullOrEmpty()) return Guid.Empty;
             try

@@ -117,7 +117,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(parent, item, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
+            var result = _handler.GetValue( item, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
             parent.Child = result;
             //Assert
 
@@ -141,7 +141,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(parent, item, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
+            var result = _handler.GetValue( item, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
             parent.Child = result;
             //Assert
 
@@ -167,7 +167,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.GetValue(parent, item, _context) as SitecoreParentHandlerFixtureNS.ChildClassNotLoaded;
+            var result = _handler.GetValue( item, _context) as SitecoreParentHandlerFixtureNS.ChildClassNotLoaded;
             parent.NotLoaded = result;
 
             parent.NotLoaded.CallMe = "";

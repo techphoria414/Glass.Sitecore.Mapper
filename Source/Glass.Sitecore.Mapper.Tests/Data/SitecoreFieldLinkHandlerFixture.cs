@@ -63,7 +63,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            Link result = _handler.GetValue(null, item, null) as Link;
+            Link result = _handler.GetValue(item, null) as Link;
 
             //Assert
             Assert.AreEqual("", result.Anchor);
@@ -108,7 +108,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 item.Editing.BeginEdit();
 
                 //Act
-                _handler.SetValue(null, item, link, null);
+                _handler.SetValue( item, link, null);
 
                 //Assert
                 LinkField field = new LinkField(item.Fields["GeneralLink"]);
@@ -151,7 +151,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 item.Editing.BeginEdit();
 
                 //Act
-                _handler.SetValue(null, item, link, null);
+                _handler.SetValue( item, link, null);
 
                 //Assert
                 LinkField field = new LinkField(item.Fields["GeneralLink"]);

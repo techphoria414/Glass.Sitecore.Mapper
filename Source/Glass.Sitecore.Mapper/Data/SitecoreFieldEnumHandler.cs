@@ -24,7 +24,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldEnumHandler:AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, object parent, global::Sitecore.Data.Items.Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, global::Sitecore.Data.Items.Item item, InstanceContext context)
         {
             Type enumType = Property.PropertyType;
 

@@ -69,7 +69,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(_property);
 
             //Act
-            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum)_handler.GetFieldValue(fieldValue, null, null, null);
+            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum)_handler.GetFieldValue(fieldValue,  null, null);
 
             //Assert
             Assert.AreEqual(SitecoreFieldEnumHandlerFixtureNS.TestEnum.Oranges, result);
@@ -85,7 +85,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(_property);
 
             //Act
-            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum)_handler.GetFieldValue(fieldValue, null, null, null);
+            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum)_handler.GetFieldValue(fieldValue,  null, null);
 
             //Assert
 

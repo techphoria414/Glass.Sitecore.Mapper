@@ -80,7 +80,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue(null, _item,  _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue( _item,  _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
 
             //Assert
             Assert.AreEqual(_item.Children.Count, result.Count());
@@ -104,7 +104,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue(null, _item,  _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue( _item,  _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
 
             //Assert
             Assert.AreEqual(_item.Children.Count, result.Count());
@@ -127,7 +127,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, _item, _context) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue( _item, _context) as SitecoreQueryHandlerFixtureNS.TestClass;
 
             //Assert
             Assert.AreNotEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.GetType());
@@ -149,7 +149,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue(null, _item,  _context) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue( _item,  _context) as SitecoreQueryHandlerFixtureNS.TestClass;
 
             //Assert
 

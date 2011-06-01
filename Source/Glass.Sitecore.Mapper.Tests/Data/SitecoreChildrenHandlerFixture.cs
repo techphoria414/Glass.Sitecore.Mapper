@@ -72,7 +72,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue(null, item, _context) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
+            var result = _handler.GetValue( item, _context) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
             SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
             assignTest.Children = result;
             //Assert
@@ -98,7 +98,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, item,  _context) as IEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
+            var result = _handler.GetValue(item,  _context) as IEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
             SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
             assignTest.Children = result;
             //Assert

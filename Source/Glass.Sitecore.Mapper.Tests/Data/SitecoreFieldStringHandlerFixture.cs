@@ -83,7 +83,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, _item, null);
+            var result = _handler.GetValue(_item, null);
 
             //Assert
             Assert.AreEqual("test single line text", result);
@@ -107,7 +107,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, _item, null);
+            var result = _handler.GetValue( _item, null);
 
             //Assert
             Assert.AreNotEqual(_richTextContent, result);
@@ -131,7 +131,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, item, null);
+            var result = _handler.GetValue( item, null);
 
             //Assert
             Assert.AreEqual(_richTextContent, result);
@@ -162,7 +162,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 try
                 {
 
-                    _handler.SetValue(null, _item, value, null);
+                    _handler.SetValue( _item, value, null);
                 }
                 finally
                 {
@@ -196,7 +196,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 //Act
 
                 _item.Editing.BeginEdit();
-                _handler.SetValue(null, _item, value, null);
+                _handler.SetValue( _item, value, null);
 
                 //Assert
                 Assert.AreEqual(_item["RichText"], value);

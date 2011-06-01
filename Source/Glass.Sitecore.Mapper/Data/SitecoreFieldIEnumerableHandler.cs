@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
     {
         protected AbstractSitecoreField EnumSubHandler { get; set; }
 
-        public override object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
         {
             Type type = Property.PropertyType;
             //Get generic type
@@ -46,7 +46,7 @@ namespace Glass.Sitecore.Mapper.Data
 
                       
 
-            IEnumerable<object> items = parts.Select(x => EnumSubHandler.GetFieldValue(x, parent, item, context)).ToArray();
+            IEnumerable<object> items = parts.Select(x => EnumSubHandler.GetFieldValue(x, item, context)).ToArray();
             var list = Utility.CreateGenericType(typeof(List<>), new Type[] { pType }) ;
             Utility.CallAddMethod(items, list);
 

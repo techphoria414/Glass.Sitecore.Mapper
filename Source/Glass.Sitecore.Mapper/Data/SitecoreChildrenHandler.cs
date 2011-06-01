@@ -40,7 +40,7 @@ namespace Glass.Sitecore.Mapper.Data
             return property.Attribute is SitecoreChildrenAttribute && typeof(IEnumerable<>) == type;
         }
 
-        public override object GetValue(object target, global::Sitecore.Data.Items.Item item,  InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item,  InstanceContext context)
         {
                 int numChildren = item.Children.Count;
                 Type genericType = Utility.GetGenericArgument(Property.PropertyType);
@@ -54,7 +54,7 @@ namespace Glass.Sitecore.Mapper.Data
                 return context.CreateClasses(IsLazy, genericType, getItems);
         }
 
-        public override void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
+        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
         {
             throw new NotImplementedException();
         }

@@ -62,7 +62,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            Stream stream = _handler.GetValue(null, item, null) as Stream;
+            Stream stream = _handler.GetValue( item, null) as Stream;
 
             //Assert
             Assert.IsNull(stream);
@@ -96,14 +96,9 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 item.Editing.BeginEdit();
 
                 //Act
-                _handler.SetValue(null, item, stream, null);
-
-
-
+                _handler.SetValue( item, stream, null);
 
                 //Assert
-
-
 
                 Stream result = item.Fields["Attachment"].GetBlobStream();
                 Assert.AreEqual(data.Length, result.Length);

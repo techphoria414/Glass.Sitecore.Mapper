@@ -45,7 +45,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "";
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null, null);
+            var result = _handler.GetFieldValue(value,  null, null);
 
             //Assert
             Assert.AreEqual(TriState.Default, result);
@@ -57,7 +57,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "1";
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null, null);
+            var result = _handler.GetFieldValue(value,  null, null);
 
             //Assert
             Assert.AreEqual(TriState.Yes, result);
@@ -69,7 +69,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "0";
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null,  null);
+            var result = _handler.GetFieldValue(value,  null,  null);
 
             //Assert
             Assert.AreEqual(TriState.No, result);
@@ -81,7 +81,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "adfgadga";
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null,  null);
+            var result = _handler.GetFieldValue(value,  null,  null);
 
             //Assert
             Assert.AreEqual(TriState.Default, result);

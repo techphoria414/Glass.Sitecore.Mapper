@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldStreamHandler : AbstractSitecoreField
     {
 
-        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item,  InstanceContext context)
+        public override object GetValue( global::Sitecore.Data.Items.Item item,  InstanceContext context)
         {
 
             Field field = item.Fields[FieldName];
@@ -38,7 +38,7 @@ namespace Glass.Sitecore.Mapper.Data
             return field.GetBlobStream();          
         }
 
-        public override void SetValue(object parent, Item item, object value, InstanceContext context)
+        public override void SetValue(Item item, object value, InstanceContext context)
         {
             if (value == null) return;
          
@@ -47,7 +47,7 @@ namespace Glass.Sitecore.Mapper.Data
             field.SetBlobStream(value as Stream);
         }
 
-        public override object GetFieldValue(string fieldValue, object parent, global::Sitecore.Data.Items.Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, global::Sitecore.Data.Items.Item item, InstanceContext context)
         {
             throw new NotImplementedException();
         }

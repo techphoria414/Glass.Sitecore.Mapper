@@ -35,12 +35,12 @@ namespace Glass.Sitecore.Mapper.Data
             return property.Attribute is SitecoreParentAttribute;
         }
 
-        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item, InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item, InstanceContext context)
         {
             return context.CreateClass(this.IsLazy, Property.PropertyType, item.Parent);
         }
 
-        public override void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
+        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
         {
             throw new NotImplementedException();
         }

@@ -44,7 +44,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string date = "20100908T060504";
 
             //Act
-            var result = (DateTime)_handler.GetFieldValue(date, null,  null, null);
+            var result = (DateTime)_handler.GetFieldValue(date,   null, null);
 
             //Assert
             Assert.AreEqual(2010, result.Year);
@@ -62,7 +62,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string date = "";
 
             //Act
-            var result = (DateTime)_handler.GetFieldValue(date, null,  null, null);
+            var result = (DateTime)_handler.GetFieldValue(date,   null, null);
 
             //Assert
             Assert.AreEqual(DateTime.MinValue, result);

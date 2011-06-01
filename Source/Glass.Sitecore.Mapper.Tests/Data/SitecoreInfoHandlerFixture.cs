@@ -25,6 +25,7 @@ using Glass.Sitecore.Mapper.Data;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Configuration;
 using Sitecore.Links;
+using Sitecore.SecurityModel;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -79,7 +80,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.GetValue(null, _item, null);
+            var result = _handler.GetValue( _item, null);
 
             //Assert
             Assert.AreEqual(_item.Paths.ContentPath, result as string);
@@ -97,7 +98,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.GetValue(null, _item, null);
+            var result = _handler.GetValue( _item, null);
 
             //Assert
             Assert.AreEqual(_item.DisplayName, result as string);
@@ -115,7 +116,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.GetValue(null, _item,  null);
+            var result = _handler.GetValue( _item,  null);
 
             //Assert
             Assert.AreEqual(_item.Paths.FullPath, result as string);
@@ -133,7 +134,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.GetValue(null, _item,  null);
+            var result = _handler.GetValue( _item,  null);
 
             //Assert
             Assert.AreEqual(_item.Key, result as string);
@@ -151,7 +152,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, _item,  null);
+            var result = _handler.GetValue( _item,  null);
 
             //Assert
             //It think this test is probably wrong
@@ -173,7 +174,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.GetValue(null, _item,  null);
+            var result = _handler.GetValue( _item,  null);
 
             //Assert
             Assert.AreEqual(_item.Paths.Path, result as string);
@@ -191,7 +192,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, _item, null);
+            var result = _handler.GetValue( _item, null);
 
             //Assert
             Assert.AreEqual(_item.TemplateID.Guid, (Guid)result);
@@ -209,7 +210,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.GetValue(null, _item,  null);
+            var result = _handler.GetValue(_item,  null);
 
             //Assert
             Assert.AreEqual(_item.TemplateName, result as string);
@@ -227,7 +228,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, _item,  null);
+            var result = _handler.GetValue( _item,  null);
 
             //Assert
             var value = LinkManager.GetItemUrl(_item);
@@ -245,7 +246,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, _item,  null);
+            var result = _handler.GetValue( _item,  null);
 
             //Assert
             Assert.AreEqual(_item.Version.Number, (int)result);
@@ -266,12 +267,11 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            _handler.SetValue(null, _item, "",  null);
+            _handler.SetValue( _item, "",  null);
 
         }
 
         [Test]
-        [ExpectedException(typeof(NotSupportedException))]
         public void SetValue_DisplayName()
         {
             //Assign
@@ -282,8 +282,23 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
 
+            
             //Act
-            _handler.SetValue(null, _item, "",  null);
+            using (new SecurityDisabler())
+            {
+                _item.Editing.BeginEdit();
+
+                _handler.SetValue(_item, "NewDisplayName", null);
+
+
+                //Assert
+                Assert.AreEqual("NewDisplayName", _item.DisplayName);
+
+                _item.Editing.EndEdit();
+
+
+            }
+
 
         }
 
@@ -298,7 +313,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            _handler.SetValue(null, _item, "",  null);
+            _handler.SetValue( _item, "",  null);
 
         }
 
@@ -313,7 +328,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            _handler.SetValue(null, _item, "",  null);
+            _handler.SetValue( _item, "",  null);
 
         }
 
@@ -328,7 +343,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            _handler.SetValue(null, _item, "",  null);
+            _handler.SetValue( _item, "",  null);
 
         }
 
@@ -343,7 +358,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            _handler.SetValue(null, _item, "",  null);
+            _handler.SetValue( _item, "",  null);
 
         }
 
@@ -358,7 +373,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            _handler.SetValue(null, _item, "",  null);
+            _handler.SetValue( _item, "",  null);
 
         }
 
@@ -373,7 +388,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            _handler.SetValue(null, _item, "",  null);
+            _handler.SetValue( _item, "",  null);
 
         }
 
@@ -388,7 +403,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            _handler.SetValue(null, _item, "", null);
+            _handler.SetValue( _item, "", null);
 
         }
 
@@ -403,7 +418,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            _handler.SetValue(null, _item, "",  null);
+            _handler.SetValue( _item, "",  null);
 
         }
 

@@ -118,10 +118,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
             //Act
             var result = _handler.GetFieldValue(
-                _itemId.ToString(),
-                parent,
-                item,
-                
+                _itemId.ToString(),                
+                item,                
                 _context);
 
             parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
@@ -148,9 +146,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Act
             var result = _handler.GetFieldValue(
                 _itemId.ToString(),
-                parent,
                 item,
-                
                 _context);
 
             parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
@@ -177,9 +173,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Act
             var result = _handler.GetFieldValue(
                 _itemId.ToString(),
-                parent,
                 item,
-               
                 _context) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
 
             parent.Child = result;
@@ -208,9 +202,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Act
             var result = _handler.GetFieldValue(
                 _itemId.ToString(),
-                parent,
                 item,
-                
                 _context) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
 
             parent.Child = result;
@@ -241,9 +233,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Act
             var result = _handler.GetFieldValue(
                 path,
-                parent,
                 item,
-               
                 _context);
 
             parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
@@ -271,7 +261,6 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Act
             var result = _handler.GetFieldValue(
                 path,
-                parent,
                 item,               
                 _context);
 

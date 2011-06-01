@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldImageHandler : AbstractSitecoreField
     {
 
-        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item,  InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item,  InstanceContext context)
         {
 
             Image img = new Image();
@@ -57,7 +57,7 @@ namespace Glass.Sitecore.Mapper.Data
 
             return img;
         }
-        public override void SetValue(object parent, global::Sitecore.Data.Items.Item item, object value,  InstanceContext context)
+        public override void SetValue( global::Sitecore.Data.Items.Item item, object value,  InstanceContext context)
         {
 
             Image img = value as Image;
@@ -98,7 +98,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue,  Item item, InstanceContext context)
         {
             throw new NotImplementedException();
            

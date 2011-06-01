@@ -26,7 +26,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldTriStateHandler :AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, object parent, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue,  Item item, InstanceContext context)
         {
             switch (fieldValue)
             {

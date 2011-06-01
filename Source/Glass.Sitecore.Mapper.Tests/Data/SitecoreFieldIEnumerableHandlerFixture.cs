@@ -54,7 +54,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null,  _context);
+            var result = _handler.GetFieldValue(value, null,  _context);
 
             //Assert
             var list = result as IEnumerable<int>;
@@ -78,7 +78,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null, _context);
+            var result = _handler.GetFieldValue(value, null, _context);
 
             //Assert
             //Exception thrown
