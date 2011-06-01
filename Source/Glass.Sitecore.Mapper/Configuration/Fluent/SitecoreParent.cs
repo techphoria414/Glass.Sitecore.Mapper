@@ -41,7 +41,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
 
         public Glass.Sitecore.Mapper.Configuration.Attributes.AbstractSitecorePropertyAttribute Attribute
         {
-            get { throw new NotImplementedException(); }
+            get { return _attr; }
         }
 
         #endregion

@@ -29,7 +29,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             _attr = new Configuration.Attributes.SitecoreInfoAttribute();
         }
 
-        public SitecoreInfo<T> Type(SitecoreInfoType type)
+        public SitecoreInfo<T> InfoType(SitecoreInfoType type)
         {
             _attr.Type = type;
             return this;
@@ -39,7 +39,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
 
         public Glass.Sitecore.Mapper.Configuration.Attributes.AbstractSitecorePropertyAttribute Attribute
         {
-            get { throw new NotImplementedException(); }
+            get { return _attr; }
         }
 
         #endregion

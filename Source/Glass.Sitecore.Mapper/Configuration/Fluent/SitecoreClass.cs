@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using System.Linq.Expressions;
 using System.Reflection;
+using System.Text.RegularExpressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
@@ -52,50 +53,60 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
         }
        
 
-        public SitecoreChildren<T> Children(Expression<Func<T, IEnumerable<object>>> ex)
+        public SitecoreChildren<T> Children(Expression<Func<T, object>> ex)
         {
             SitecoreChildren<T> builder = new SitecoreChildren<T>();
-            AddProperty(builder.Attribute, ex.Body.ToString());
+            AddProperty(builder.Attribute, ex);
             return builder;
         }
         public SitecoreField<T> Field(Expression<Func<T, object>> ex){
             SitecoreField<T> builder = new SitecoreField<T>();
-            AddProperty(builder.Attribute, ex.Body.ToString());
+            AddProperty(builder.Attribute, ex);
             return builder;
         }
-        public SitecoreId<T> Id(Expression<Func<T, Guid>> ex)
+        public SitecoreId<T> Id(Expression<Func<T, object>> ex)
         {
             SitecoreId<T> info = new SitecoreId<T>();
-            AddProperty(info.Attribute, ex.Body.ToString());
+            AddProperty(info.Attribute, ex);
             return info;
         }
         public SitecoreInfo<T> Info(Expression<Func<T, object>> ex)
         {
             SitecoreInfo<T> builder = new SitecoreInfo<T>();
-            AddProperty(builder.Attribute, ex.Body.ToString());
+            AddProperty(builder.Attribute, ex);
             return builder;
         }
         public SitecoreParent<T> Parent(Expression<Func<T, object>> ex)
         {
             SitecoreParent<T> builder = new SitecoreParent<T>();
-            AddProperty(builder.Attribute, ex.Body.ToString());
+            AddProperty(builder.Attribute, ex);
             return builder;
         }
         public SitecoreQuery<T> Query(Expression<Func<T, object>> ex)
         {
             SitecoreQuery<T> builder = new SitecoreQuery<T>();
-            AddProperty(builder.Attribute, ex.Body.ToString());
+            AddProperty(builder.Attribute, ex);
             return builder;
         }
-        private void AddProperty(Configuration.Attributes.AbstractSitecorePropertyAttribute attr, string expressionBody)
-        {
+        private void AddProperty(Configuration.Attributes.AbstractSitecorePropertyAttribute attr, Expression<Func<T, object>> ex){
             SitecoreProperty property = new SitecoreProperty();
-            property.Property = GetInfo(expressionBody);
+            if (ex.Parameters.Count > 1)
+                throw new MapperException("To many parameters in linq expression {0}".Formatted(ex.Body));
+                
+            
+            property.Property = GetInfo(ex.Body.ToString(), ex.Parameters[0].Name);
             property.Attribute = attr;
+            this._properties.Add(property);
         }
-        private PropertyInfo GetInfo(string expressionBody)
+        
+        private PropertyInfo GetInfo(string expressionBody, string parameter)
         {
-            string name = expressionBody.Replace("x.", "");
+            string regExTest = "{0}\\.(?'name'[^\\s\\)}}\\.]+)".Formatted(parameter);
+
+            Match match = Regex.Match(expressionBody, regExTest);
+            if (match == null || match.Groups["name"] == null) throw new MapperException("Can not determine property name from linq expression {0}.".Formatted(expressionBody));
+
+            string name = match.Groups["name"].Value;
 
             PropertyInfo info = _config.Type.GetProperty(name);
             return info;
