@@ -24,61 +24,86 @@ using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
-    public class SitecoreInfoHandler : ISitecoreDataHandler
+    public class SitecoreInfoHandler : AbstractSitecoreDataHandler
     {
-        #region ISitecoreDataHandler Members
-
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        protected SitecoreInfoType InfoType
+        {
+            get;
+            set;
+        }
+       
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreInfoAttribute;
         }
 
-        public object GetValue(object target, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item, InstanceContext context)
         {
-            SitecoreInfoAttribute attr = property.Attribute as SitecoreInfoAttribute;
-
-            switch (attr.Type)
+            
+            switch (InfoType)
             {
                 case SitecoreInfoType.ContentPath:
                     return item.Paths.ContentPath;
                 case SitecoreInfoType.DisplayName:
-                    return item.DisplayName;                
+                    return item.DisplayName;
                 case SitecoreInfoType.FullPath:
                     return item.Paths.FullPath;
                 case SitecoreInfoType.Key:
-                    return item.Key;                    
+                    return item.Key;
                 case SitecoreInfoType.MediaUrl:
                     global::Sitecore.Data.Items.MediaItem media = new global::Sitecore.Data.Items.MediaItem(item);
                     return global::Sitecore.Resources.Media.MediaManager.GetMediaUrl(media);
                     break;
                 case SitecoreInfoType.Path:
-                    return item.Paths.Path;                    
+                    return item.Paths.Path;
                 case SitecoreInfoType.TemplateId:
                     return item.TemplateID.Guid;
                 case SitecoreInfoType.TemplateName:
-                    return item.TemplateName;                
+                    return item.TemplateName;
                 case SitecoreInfoType.Url:
                     return LinkManager.GetItemUrl(item);
                 case SitecoreInfoType.Version:
                     return item.Version.Number;
                 default:
-                    throw new  NotSupportedException("Value {0} not supported".Formatted(attr.Type.ToString()));
+                    throw new NotSupportedException("Value {0} not supported".Formatted(InfoType.ToString()));
             }
-            
+
 
         }
 
-        public void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
         {
-            SitecoreInfoAttribute attr = property.Attribute as SitecoreInfoAttribute;
-            throw new NotSupportedException("You can not save SitecoreInfo {0}".Formatted(attr.Type));
+            switch (InfoType)
+            {
+                case SitecoreInfoType.DisplayName:
+                    if (value is string)
+                        item[Settings.DisplayNameFieldName] = value.ToString();
+                    else
+                        throw new NotSupportedException("Can't set DisplayName. Value is not of type System.String");
+                    break;
+                default:
+                    throw new NotSupportedException("You can not save SitecoreInfo {0}".Formatted(InfoType));
+            }
+
         }
 
-        public bool CanSetValue(SitecoreProperty property)
+        public override bool CanSetValue
         {
-             return false; 
+            get
+            {
+                return false;
+            }
         }
 
-        #endregion
+        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        {
+            SitecoreInfoAttribute attr = scProperty.Attribute as SitecoreInfoAttribute;
+
+            InfoType = attr.Type;
+
+            base.ConfigureDataHandler(scProperty);
+        }
+
+        
     }
 }

@@ -45,9 +45,10 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
                    new SitecoreClassConfig(){
                        ClassAttribute = new SitecoreClassAttribute(),
                        Properties = new SitecoreProperty[]{},
-                       Type = typeof(ProxyClassInterceptorFixtureNS.TestClass)
+                       Type = typeof(ProxyClassInterceptorFixtureNS.TestClass),
+                       DataHandlers = new AbstractSitecoreDataHandler[]{}
                    }
-               }).ToDictionary(), new ISitecoreDataHandler[]{});
+               }).ToDictionary(), new AbstractSitecoreDataHandler[]{});
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 

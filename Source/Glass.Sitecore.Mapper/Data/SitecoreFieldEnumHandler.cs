@@ -24,9 +24,9 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldEnumHandler:AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, object parent, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, global::Sitecore.Data.Items.Item item, InstanceContext context)
         {
-            Type enumType = property.Property.PropertyType;
+            Type enumType = Property.PropertyType;
 
             int intValue;
             if (int.TryParse(fieldValue, out intValue))
@@ -43,12 +43,12 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override string SetFieldValue(object value, SitecoreProperty property,  InstanceContext context)
+        public override string SetFieldValue(object value,  InstanceContext context)
         {
-            return Enum.GetName(property.Property.PropertyType, value);
+            return Enum.GetName(Property.PropertyType, value);
         }
 
-        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Property.PropertyType.IsEnum && property.Property.PropertyType != typeof(FieldTypes.TriState);
             

@@ -44,7 +44,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "{FC1D0AFD-71CC-47e2-84B3-7F1A2973248B}";
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null, null, null);
+            var result = _handler.GetFieldValue(value,  null, null);
 
             //Assert
             Assert.AreEqual(new Guid("{FC1D0AFD-71CC-47e2-84B3-7F1A2973248B}"), result);
@@ -56,7 +56,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "";
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null, null, null);
+            var result = _handler.GetFieldValue(value,  null, null);
 
             //Assert
             Assert.AreEqual(Guid.Empty, result);
@@ -69,7 +69,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "aefeagfea";
 
             //Act
-            var result = _handler.GetFieldValue(value, null, null, null, null);
+            var result = _handler.GetFieldValue(value,  null, null);
 
             //Assert
             //Exception thrown
@@ -84,12 +84,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             Guid guid = new Guid("{FC1D0AFD-71CC-47e2-84B3-7F1A2973248B}");
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Property = new FakePropertyInfo(typeof(Guid))
-            };
+           
+
             //Act
-            var result = _handler.SetFieldValue( guid, property, null);
+            var result = _handler.SetFieldValue( guid, null);
 
             //Assert
             Assert.AreEqual("{FC1D0AFD-71CC-47e2-84B3-7F1A2973248B}".ToLower(), result);

@@ -25,7 +25,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldDoubleHandler : AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
         {
             if (fieldValue.IsNullOrEmpty()) return 0d;
             double dValue = 0;
@@ -33,7 +33,7 @@ namespace Glass.Sitecore.Mapper.Data
             else throw new MapperException("Could not convert value to double");
         }
 
-        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
+        public override string SetFieldValue(object value, InstanceContext context)
         {
             return value.ToString();
         }

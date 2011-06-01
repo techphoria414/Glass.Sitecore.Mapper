@@ -44,7 +44,7 @@ namespace Glass.Sitecore.Mapper.Tests
                 new string []{"Glass.Sitecore.Mapper.Tests.SitecoreServiceFixtureNS, Glass.Sitecore.Mapper.Tests"}
                 );
 
-            _context = new Context(loader, new ISitecoreDataHandler[]{new SitecoreIdDataHandler() });
+            _context = new Context(loader, new AbstractSitecoreDataHandler[]{new SitecoreIdDataHandler() });
 
             _sitecore = new SitecoreService("master");
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");

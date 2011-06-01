@@ -41,36 +41,57 @@ namespace Glass.Sitecore.Mapper.Tests
         [SetUp]
         public void Setup()
         {
+            #region TestClass1
+
+            var tc1Property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreIdAttribute(),
+                Property = typeof(InstanceContextFixtureNS.TestClass).GetProperty("Id")
+            };
+            var tc1HandlerId = new SitecoreIdDataHandler();
+            tc1HandlerId.ConfigureDataHandler(tc1Property);
+
+            #endregion
+            #region TestClass4
+
+            var tc4Property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = typeof(InstanceContextFixtureNS.TestClass4).GetProperty("SingleLineText")
+            };
+            var tc4HandlerString = new SitecoreFieldStringHandler();
+            tc4HandlerString.ConfigureDataHandler(tc4Property);
+
+            #endregion
+
+
             _context = new InstanceContext((new SitecoreClassConfig[]{
                 new SitecoreClassConfig(){
                     ClassAttribute = new SitecoreClassAttribute(),
                     Properties = new SitecoreProperty[]{
-                        new SitecoreProperty(){
-                               Attribute = new SitecoreIdAttribute(),
-                               DataHandler = new SitecoreIdDataHandler(),
-                               Property = typeof(InstanceContextFixtureNS.TestClass).GetProperty("Id")
-                        }
+                        tc1Property
                     },
-                    Type = typeof(InstanceContextFixtureNS.TestClass)
+                    Type = typeof(InstanceContextFixtureNS.TestClass),
+                    DataHandlers = new AbstractSitecoreDataHandler[]{
+                        tc1HandlerId
+                    }
                 },
                 new SitecoreClassConfig(){
                     ClassAttribute = new SitecoreClassAttribute(),
                     Properties = new SitecoreProperty[]{},
-                    Type = typeof(InstanceContextFixtureNS.TestClass2)
+                    Type = typeof(InstanceContextFixtureNS.TestClass2),
+                    DataHandlers = new AbstractSitecoreDataHandler[]{}
                 },
                 new SitecoreClassConfig(){
                     ClassAttribute = new SitecoreClassAttribute(),
                     Properties = new SitecoreProperty[]{
-                        new SitecoreProperty(){
-                               Attribute = new SitecoreFieldAttribute(),
-                               DataHandler = new SitecoreFieldStringHandler(),
-                               Property = typeof(InstanceContextFixtureNS.TestClass4).GetProperty("SingleLineText")
-                        }
+                       tc4Property
                     },
-                    Type = typeof(InstanceContextFixtureNS.TestClass4)
+                    Type = typeof(InstanceContextFixtureNS.TestClass4),
+                    DataHandlers = new AbstractSitecoreDataHandler[]{tc4HandlerString}
                 }
             
-            }).ToDictionary(), new ISitecoreDataHandler[] { });
+            }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");

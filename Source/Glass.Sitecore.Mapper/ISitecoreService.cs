@@ -19,18 +19,96 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Sitecore.Data.Items;
+using Sitecore.Globalization;
 
 namespace Glass.Sitecore.Mapper
 {
     public interface ISitecoreService
     {
+        /// <summary>
+        /// Query Sitecore for a set of items. Concrete classes are created
+        /// </summary>
+        /// <typeparam name="T">The type to return the items as</typeparam>
+        /// <param name="query">The query to execute</param>
+        /// <returns>Sitecore items as concrete classes of the specified type</returns>
         IEnumerable<T> Query<T>(string query) where T: class;
+        
+        /// <summary>
+        /// Query Sitecore for a set of items. Proxy classes are created.
+        /// </summary>
+        /// <typeparam name="T">The type to return the items as</typeparam>
+        /// <param name="query">The query to execute</param>
+        /// <returns>Sitecore items as proxy classes of the specified type</returns>
         IEnumerable<T> Query<T>(string query, bool isLazy) where T : class;
+
+        /// <summary>
+        /// Query Sitecore for a single item. 
+        /// </summary>
+        /// <typeparam name="T">The type to return the items as</typeparam>
+        /// <param name="query">The query to execute</param>
+        /// <returns>Sitecore item as the specified type</returns>
         T QuerySingle<T>(string query) where T : class;
 
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
         T GetItem<T>(string path) where T : class;
+        
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        T GetItem<T>(string path, Language language) where T : class;
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        T GetItem<T>(string path, Language language, global::Sitecore.Data.Version version) where T : class;
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
         T GetItem<T>(Guid id) where T : class;
         
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="language">The language of the item to return</param>        
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        T GetItem<T>(Guid id, Language language) where T : class;
+        
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        T GetItem<T>(Guid id, Language language, global::Sitecore.Data.Version version) where T : class;
+
+
+        /// <summary>
+        /// Saves a class back to Sitecore. 
+        /// </summary>
+        /// <typeparam name="T">The type being saved. The type must have a property with the SitecoreIdAttribute.</typeparam>
+        /// <param name="item">The class to save</param>
         void Save<T>(T item) where T : class;
         
         /// <summary>
@@ -58,6 +136,11 @@ namespace Glass.Sitecore.Mapper
             where T : class
             where K : class;
         
+        /// <summary>
+        /// Delete an item from Sitecore
+        /// </summary>
+        /// <typeparam name="T">The type being deleted. The type must have a property with the SitecoreIdAttribute.</typeparam>
+        /// <param name="item">The class to delete</param>
         void Delete<T>(T item) where T : class;
     }
 }

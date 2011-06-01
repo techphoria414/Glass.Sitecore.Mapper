@@ -26,11 +26,13 @@ using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
-    public class SitecoreChildrenHandler : ISitecoreDataHandler
+    public class SitecoreChildrenHandler : AbstractSitecoreDataHandler
     {
+        protected bool IsLazy { get; set; }
+
         #region ISitecoreDataHandler Members
 
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             if (!property.Property.PropertyType.IsGenericType) return false;
 
@@ -38,30 +40,41 @@ namespace Glass.Sitecore.Mapper.Data
             return property.Attribute is SitecoreChildrenAttribute && typeof(IEnumerable<>) == type;
         }
 
-        public object GetValue(object target, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item,  InstanceContext context)
         {
                 int numChildren = item.Children.Count;
-                Type genericType = Utility.GetGenericArgument(property.Property.PropertyType);
+                Type genericType = Utility.GetGenericArgument(Property.PropertyType);
 
-                SitecoreChildrenAttribute attr = property.Attribute as SitecoreChildrenAttribute;
 
                 Func<IEnumerable<Item>> getItems = new Func<IEnumerable<Item>>(() =>
                 {
                     return item.Children.Cast<Item>();
                 });
 
-                return context.CreateClasses(attr.IsLazy, genericType, getItems);
+                return context.CreateClasses(IsLazy, genericType, getItems);
         }
 
-        public void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
         {
             throw new NotImplementedException();
         }
 
-        public bool CanSetValue(SitecoreProperty property)
-        {
-            return false; 
+        public override bool CanSetValue{
+            get
+            {
+                return false;
+            }
         }
+
+
+        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        {
+            SitecoreChildrenAttribute attr = scProperty.Attribute as SitecoreChildrenAttribute;
+            IsLazy = attr.IsLazy;
+
+            base.ConfigureDataHandler(scProperty);
+        }
+
 
         #endregion
     }

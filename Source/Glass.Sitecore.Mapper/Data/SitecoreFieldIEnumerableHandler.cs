@@ -28,16 +28,15 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldIEnumerableHandler : AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+        protected AbstractSitecoreField EnumSubHandler { get; set; }
+
+        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
         {
-
-            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
-
-            Type type = property.Property.PropertyType;
+            Type type = Property.PropertyType;
             //Get generic type
             Type pType = Utility.GetGenericArgument(type);
 
-            if (attr.EnumSubHandler == null) attr.EnumSubHandler = GetSubHandler(pType, context);
+            if (EnumSubHandler == null) EnumSubHandler = GetSubHandler(pType, context);
             
             //The enumerator only works with piped lists
             IEnumerable<string> parts = fieldValue.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
@@ -45,14 +44,9 @@ namespace Glass.Sitecore.Mapper.Data
             //replace any pipe encoding with an actual pipe
             parts = parts.Select(x => x.Replace(Settings.PipeEncoding, "|")).ToArray();
 
+                      
 
-            SitecoreProperty fProperty = new SitecoreProperty()
-            {
-                Attribute = property.Attribute,
-                Property = new FakePropertyInfo(pType)
-            };
-
-            IEnumerable<object> items = parts.Select(x => attr.EnumSubHandler.GetFieldValue(x, parent, item, fProperty, context)).ToArray();
+            IEnumerable<object> items = parts.Select(x => EnumSubHandler.GetFieldValue(x, item, context)).ToArray();
             var list = Utility.CreateGenericType(typeof(List<>), new Type[] { pType }) ;
             Utility.CallAddMethod(items, list);
 
@@ -62,29 +56,22 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
+        public override string SetFieldValue(object value, InstanceContext context)
         {
-            Type pType = Utility.GetGenericArgument(property.Property.PropertyType);
+            Type pType = Utility.GetGenericArgument(Property.PropertyType);
 
-            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
 
-            if (attr.EnumSubHandler == null)
-                attr.EnumSubHandler = GetSubHandler(pType, context);
+            if (EnumSubHandler == null)
+                EnumSubHandler = GetSubHandler(pType, context);
 
             IEnumerable list = value as IEnumerable;
 
             List<string> sList = new List<string>();
-
-            SitecoreProperty fakeProp = new SitecoreProperty()
-            {
-                Attribute = property.Attribute,
-                Property =  new FakePropertyInfo(pType)
-
-            };
+                       
 
             foreach (object obj in list)
             {
-                string result = attr.EnumSubHandler.SetFieldValue(obj, fakeProp, context);
+                string result = EnumSubHandler.SetFieldValue(obj, context);
                 if (!result.IsNullOrEmpty())
                     sList.Add(result);
             }
@@ -96,7 +83,7 @@ namespace Glass.Sitecore.Mapper.Data
             return sb.ToString();
         }
 
-        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
 
             if(!(property.Attribute is SitecoreFieldAttribute)) return false;
@@ -123,13 +110,19 @@ namespace Glass.Sitecore.Mapper.Data
         {
             SitecoreProperty fakeProp = new SitecoreProperty()
             {
-                Attribute = new SitecoreFieldAttribute(),
+                Attribute = new SitecoreFieldAttribute(){
+                    FieldName = FieldName,
+                    ReadOnly = ReadOnly,
+                    Setting = Setting
+                },
                 Property = new FakePropertyInfo(type)
+                
             };
 
             var handler = context.Datas.FirstOrDefault(x => x.WillHandle(fakeProp, context.Datas, context.Classes)) as AbstractSitecoreField;
             if (handler == null) throw new NotSupportedException("No handler to support field type {0}".Formatted(type.FullName));
 
+            handler.ConfigureDataHandler(fakeProp);
             return handler;
 
 

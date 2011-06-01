@@ -27,7 +27,7 @@ namespace Glass.Sitecore.Mapper.Data.QueryParameters
     public interface ISitecoreQueryParameter
     {
         string Name { get;  }
-        string GetValue(Item item, SitecoreProperty property);
+        string GetValue(Item item);
         
         
     }

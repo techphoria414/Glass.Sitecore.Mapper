@@ -28,48 +28,41 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldStringHandler: AbstractSitecoreField
     {
 
-        public override object GetValue(object parent, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item, InstanceContext context)
         {
-            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
-
-            string fieldName = GetFieldName(property);
-
-            if (item.Fields[fieldName] != null && item.Fields[fieldName].Type.StartsWith("Rich Text") && attr.Setting != SitecoreFieldSettings.RichTextRaw)
+            if (item.Fields[FieldName] != null && item.Fields[FieldName].Type.StartsWith("Rich Text") && Setting != SitecoreFieldSettings.RichTextRaw)
             {
                 FieldRenderer renderer = new FieldRenderer();
                 renderer.Item = item;
-                renderer.FieldName = fieldName;
+                renderer.FieldName = FieldName;
                 renderer.Parameters = "";
                 return renderer.Render();
             }
-            else return item[fieldName];
+            else return item[FieldName];
         }
 
 
 
-        public override void SetValue(object parent, Item item, object value, SitecoreProperty property, InstanceContext context)
+        public override void SetValue( Item item, object value, InstanceContext context)
         {
-            SitecoreFieldAttribute attr = property.Attribute as SitecoreFieldAttribute;
-            
-            string fieldName = GetFieldName(property);
 
-            if (item.Fields[fieldName] != null && item.Fields[fieldName].Type.StartsWith("Rich Text") && attr.Setting != SitecoreFieldSettings.RichTextRaw)
+            if (item.Fields[FieldName] != null && item.Fields[FieldName].Type.StartsWith("Rich Text") && Setting != SitecoreFieldSettings.RichTextRaw)
             {
                 throw new NotSupportedException("It is not possible to save data from a rich text field when the data isn't raw."
-                    + "Set the SitecoreFieldAttribute setting property to SitecoreFieldSettings.RichTextRaw for property {0} on type {1}".Formatted(property.Property.Name, property.Property.ReflectedType.FullName));
+                    + "Set the SitecoreFieldAttribute setting property to SitecoreFieldSettings.RichTextRaw for property {0} on type {1}".Formatted(Property.Name, Property.ReflectedType.FullName));
             }
             else
             {
-                string fieldValue = SetFieldValue(value, property, context);
-                item[fieldName] = fieldValue;
+                string fieldValue = value.ToString();
+                item[FieldName] = fieldValue;
             }
         }
 
-        public override string SetFieldValue(object value, SitecoreProperty property, InstanceContext context)
+        public override string SetFieldValue(object value, InstanceContext context)
         {
-            return value.ToString();
+            throw new NotImplementedException();
         }
-        public override object GetFieldValue(string fieldValue, object parent, Item item, SitecoreProperty property, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
         {
             throw new NotImplementedException();
         }

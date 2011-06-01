@@ -74,7 +74,7 @@
     <Compile Include="Configuration\Fluent\FluentConfigurationLoader.cs" />
     <Compile Include="Configuration\Fluent\SitecoreClass.cs" />
     <Compile Include="Configuration\IConfigurationLoader.cs" />
-    <Compile Include="Configuration\SitecoreMember.cs" />
+    <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClass.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Data\QueryParameters\ItemIdNoBracketsParameter.cs" />
@@ -87,7 +87,7 @@
     <Compile Include="Data\SitecoreFieldStreamHandler.cs" />
     <Compile Include="Data\SitecoreFieldClassHandler.cs" />
     <Compile Include="Data\SitecoreFieldDecimalHandler.cs" />
-    <Compile Include="Data\ISitecoreDataHandler.cs" />
+    <Compile Include="Data\AbstractSitecoreDataHandler.cs" />
     <Compile Include="Data\AbstractSitecoreField.cs" />
     <Compile Include="Data\SitecoreFieldBooleanHandler.cs" />
     <Compile Include="Data\SitecoreFieldDateTimeHandler.cs" />
@@ -119,6 +119,7 @@
     <Compile Include="NullLog.cs" />
     <Compile Include="PersistenceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Proxies\InterfaceMethodInterceptor.cs" />
     <Compile Include="Proxies\ProxyBlobInterceptor.cs" />
     <Compile Include="Proxies\ProxyClassInterceptor.cs" />
     <Compile Include="Proxies\ProxyGenerator.cs" />

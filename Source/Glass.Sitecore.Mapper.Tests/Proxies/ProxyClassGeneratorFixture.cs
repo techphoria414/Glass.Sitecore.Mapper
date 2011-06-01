@@ -39,14 +39,17 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
         [SetUp]
         public void Setup()
         {
+            
+
             _context = new InstanceContext(
                (new SitecoreClassConfig[]{
                    new SitecoreClassConfig(){
                        ClassAttribute = new SitecoreClassAttribute(),
                        Properties = new SitecoreProperty[]{},
-                       Type = typeof(ProxyClassGeneratorFixtureNS.SubClass)
+                       Type = typeof(ProxyClassGeneratorFixtureNS.SubClass),
+                       DataHandlers = new AbstractSitecoreDataHandler[]{}
                    }
-               }).ToDictionary(), new ISitecoreDataHandler[] { });
+               }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 

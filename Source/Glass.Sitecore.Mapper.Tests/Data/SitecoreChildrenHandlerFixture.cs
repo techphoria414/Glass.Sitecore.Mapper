@@ -44,9 +44,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                    new SitecoreClassConfig(){
                        ClassAttribute = new SitecoreClassAttribute(),
                        Properties = new SitecoreProperty[]{},
-                       Type = typeof(SitecoreChildrenHandlerFixtureNS.SubClass)
+                       Type = typeof(SitecoreChildrenHandlerFixtureNS.SubClass),
+                       DataHandlers = new AbstractSitecoreDataHandler []{}
                    }
-               }).ToDictionary(), new ISitecoreDataHandler[] { });
+               }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
 
 
 
@@ -63,14 +64,15 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             Item item = _db.GetItem(new ID(_itemId));
-
-            SitecoreProperty property = new SitecoreProperty(){
+            SitecoreProperty property = new SitecoreProperty()
+            {
                 Attribute = new SitecoreChildrenAttribute(),
                 Property = typeof(SitecoreChildrenHandlerFixtureNS.TestClass).GetProperty("Children")
             };
 
+            _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue(null, item, property, _context) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
+            var result = _handler.GetValue( item, _context) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
             SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
             assignTest.Children = result;
             //Assert
@@ -93,8 +95,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Property = typeof(SitecoreChildrenHandlerFixtureNS.TestClass).GetProperty("Children")
             };
 
+            _handler.ConfigureDataHandler(property);
+
             //Act
-            var result = _handler.GetValue(null, item, property, _context) as IEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
+            var result = _handler.GetValue(item,  _context) as IEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
             SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
             assignTest.Children = result;
             //Assert

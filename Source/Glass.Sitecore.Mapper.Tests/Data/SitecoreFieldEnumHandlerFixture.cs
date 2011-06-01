@@ -21,6 +21,7 @@ using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
 using Glass.Sitecore.Mapper.Configuration;
+using Glass.Sitecore.Mapper.Configuration.Attributes;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -36,6 +37,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler = new SitecoreFieldEnumHandler();
             _property = new SitecoreProperty()
             {
+                Attribute = new SitecoreFieldAttribute(),
                 Property = typeof(SitecoreFieldEnumHandlerFixtureNS.TestClass).GetProperty("Enum")
             };
         }
@@ -46,7 +48,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void WillHandler_ReturnsTrue()
         {
             //Assign
-            
+
             //Act
 
             var result = _handler.WillHandle(_property, null, null);
@@ -64,9 +66,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             string fieldValue = "Oranges";
+            _handler.ConfigureDataHandler(_property);
 
             //Act
-            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum) _handler.GetFieldValue(fieldValue, null, null, _property, null);
+            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum)_handler.GetFieldValue(fieldValue,  null, null);
 
             //Assert
             Assert.AreEqual(SitecoreFieldEnumHandlerFixtureNS.TestEnum.Oranges, result);
@@ -79,12 +82,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             string fieldValue = "RandomFruit";
+            _handler.ConfigureDataHandler(_property);
 
             //Act
-            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum)_handler.GetFieldValue(fieldValue, null, null, _property, null);
+            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum)_handler.GetFieldValue(fieldValue,  null, null);
 
             //Assert
-          
+
 
         }
         #endregion
@@ -98,11 +102,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             SitecoreFieldEnumHandlerFixtureNS.TestEnum value = SitecoreFieldEnumHandlerFixtureNS.TestEnum.Berry;
             SitecoreProperty property = new SitecoreProperty()
             {
+                Attribute = new SitecoreFieldAttribute(),
                 Property = new FakePropertyInfo(typeof(SitecoreFieldEnumHandlerFixtureNS.TestEnum))
             };
 
+            _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.SetFieldValue( value, property, null);
+            var result = _handler.SetFieldValue(value, null);
 
             //Assert
             Assert.AreEqual("Berry", result);

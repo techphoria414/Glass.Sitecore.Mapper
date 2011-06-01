@@ -36,7 +36,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         Guid _itemId;
         Item _item;
 
-        string _richTextContent= "<p>This is a test with <a href=\"~/link.aspx?_id=98F907F7CD1A4C88AF118F38A21A7FE1&amp;_z=z\">link</a></p>";
+        string _richTextContent = "<p>This is a test with <a href=\"~/link.aspx?_id=98F907F7CD1A4C88AF118F38A21A7FE1&amp;_z=z\">link</a></p>";
         string _richTextOriginal = "";
 
         [SetUp]
@@ -80,9 +80,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Attribute = new SitecoreFieldAttribute(),
                 Property = new FakePropertyInfo(typeof(string), "SingleLineText")
             };
+            _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, _item, property, null);
+            var result = _handler.GetValue(_item, null);
 
             //Assert
             Assert.AreEqual("test single line text", result);
@@ -103,9 +104,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Attribute = new SitecoreFieldAttribute(),
                 Property = new FakePropertyInfo(typeof(string), "RichText")
             };
+            _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, _item, property, null);
+            var result = _handler.GetValue( _item, null);
 
             //Assert
             Assert.AreNotEqual(_richTextContent, result);
@@ -123,38 +125,20 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Item item = _db.GetItem(new ID(_itemId));
             SitecoreProperty property = new SitecoreProperty()
             {
-                Attribute = new SitecoreFieldAttribute(){Setting = SitecoreFieldSettings.RichTextRaw},
+                Attribute = new SitecoreFieldAttribute() { Setting = SitecoreFieldSettings.RichTextRaw },
                 Property = new FakePropertyInfo(typeof(string), "RichText")
             };
+            _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(null, item, property, null);
+            var result = _handler.GetValue( item, null);
 
             //Assert
             Assert.AreEqual(_richTextContent, result);
         }
 
         #endregion
-        #region SetFieldValue
-
-        [Test]
-        public void SetFieldValue_ReturnsSameString()
-        {
-            //Assign
-            string value = "some test string";
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Property = new FakePropertyInfo(typeof(string))
-            };
-
-            //Act
-            var result = _handler.SetFieldValue( value, property, null);
-
-            //Assert
-            Assert.AreEqual(value, result);
-        }
-        #endregion
-
+       
         #region SetValue
 
         [Test]
@@ -168,6 +152,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Property = new FakePropertyInfo(typeof(string), "RichText"),
                 Attribute = new SitecoreFieldAttribute()
             };
+            _handler.ConfigureDataHandler(property);
+
 
             using (new SecurityDisabler())
             {
@@ -176,7 +162,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 try
                 {
 
-                    _handler.SetValue(null, _item, value, property, null);
+                    _handler.SetValue( _item, value, null);
                 }
                 finally
                 {
@@ -184,7 +170,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                     _item.Editing.EndEdit();
 
                 }
-            }   
+            }
 
 
         }
@@ -199,16 +185,18 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Property = new FakePropertyInfo(typeof(string), "RichText"),
                 Attribute = new SitecoreFieldAttribute()
                 {
-                    Setting  = SitecoreFieldSettings.RichTextRaw
+                    Setting = SitecoreFieldSettings.RichTextRaw
                 }
             };
+
+            _handler.ConfigureDataHandler(property);
 
             using (new SecurityDisabler())
             {
                 //Act
 
                 _item.Editing.BeginEdit();
-                _handler.SetValue(null, _item, value, property, null);
+                _handler.SetValue( _item, value, null);
 
                 //Assert
                 Assert.AreEqual(_item["RichText"], value);

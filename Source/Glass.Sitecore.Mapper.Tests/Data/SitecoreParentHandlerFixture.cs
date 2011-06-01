@@ -50,14 +50,14 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                         Properties = new SitecoreProperty[]{
                             new SitecoreProperty(){
                                 Attribute = new SitecoreIdAttribute(),
-                                DataHandler = new SitecoreIdDataHandler(),
                                 Property = typeof(SitecoreParentHandlerFixtureNS.ChildClass).GetProperty("Id")
                             }
                         },
-                        Type = typeof(SitecoreParentHandlerFixtureNS.ChildClass)
+                        Type = typeof(SitecoreParentHandlerFixtureNS.ChildClass),
+                        DataHandlers = new AbstractSitecoreDataHandler[]{}
                     }
                 }).ToDictionary(),
-                new ISitecoreDataHandler[] { });
+                new AbstractSitecoreDataHandler[] { });
                 
         }
      
@@ -111,12 +111,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Item item = _db.GetItem(new ID(_itemId));
             SitecoreProperty property = new SitecoreProperty(){
                 Attribute =new  SitecoreParentAttribute(),
-                DataHandler = _handler,
                 Property = typeof(SitecoreParentHandlerFixtureNS.ParentClass).GetProperty("Child")
             };
 
+            _handler.ConfigureDataHandler(property);
+
             //Act
-            var result = _handler.GetValue(parent, item, property, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
+            var result = _handler.GetValue( item, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
             parent.Child = result;
             //Assert
 
@@ -134,12 +135,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreParentAttribute() { IsLazy = false },
-                DataHandler = _handler,
                 Property = typeof(SitecoreParentHandlerFixtureNS.ParentClass).GetProperty("Child")
             };
 
+            _handler.ConfigureDataHandler(property);
+
             //Act
-            var result = _handler.GetValue(parent, item, property, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
+            var result = _handler.GetValue( item, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
             parent.Child = result;
             //Assert
 
@@ -158,12 +160,14 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreParentAttribute(),
-                DataHandler = _handler,
                 Property = typeof(SitecoreParentHandlerFixtureNS.ParentClass).GetProperty("NotLoaded")
             };
 
+            _handler.ConfigureDataHandler(property);
+
+
             //Act
-            var result = _handler.GetValue(parent, item, property, _context) as SitecoreParentHandlerFixtureNS.ChildClassNotLoaded;
+            var result = _handler.GetValue( item, _context) as SitecoreParentHandlerFixtureNS.ChildClassNotLoaded;
             parent.NotLoaded = result;
 
             parent.NotLoaded.CallMe = "";

@@ -47,7 +47,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data.QueryParameters
             ItemIdNoBracketsParameter param = new ItemIdNoBracketsParameter();
 
             //Act
-            var result = param.GetValue(_item, null);
+            var result = param.GetValue(_item);
 
             //Assert
             string idResult = _item.ID.Guid.ToString("N");

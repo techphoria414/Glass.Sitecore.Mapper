@@ -53,14 +53,17 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             Item item = _db.GetItem(new ID(_itemId));
-
-            //Act
-            var result = _handler.GetValue(null, item,
-                new SitecoreProperty()
+            SitecoreProperty property = new SitecoreProperty()
                 {
                     Attribute = new SitecoreFieldAttribute(),
-                    Property = new FakePropertyInfo(typeof (Image), "Image")
-                }, null) as Image;
+                    Property = new FakePropertyInfo(typeof(Image), "Image")
+                };
+
+            _handler.ConfigureDataHandler(property);
+
+            //Act
+            var result = _handler.GetValue(item,
+                 null) as Image;
 
             //Assert
 
@@ -73,12 +76,12 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.IsFalse(result.Src.IsNullOrEmpty());
             Assert.AreEqual(60, result.VSpace);
             Assert.AreEqual(720, result.Width);
-            
+
             // Unsure how to test below
             // result.Border 
             // result.Class
             // result.MediaItem
-            
+
         }
 
         #endregion
@@ -93,13 +96,16 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreFieldAttribute(),
-                Property = new FakePropertyInfo(typeof(Image),"Image")
+                Property = new FakePropertyInfo(typeof(Image), "Image")
             };
 
-            
+            _handler.ConfigureDataHandler(property);
+
+
             Item item = _db.GetItem(new ID(_itemId));
-            
-            Image img = new Image(){
+
+            Image img = new Image()
+            {
                 Alt = "New alt",
                 Border = "New Border",
                 Class = "New Class",
@@ -115,9 +121,9 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             {
                 item.Editing.BeginEdit();
                 //Act
-                _handler.SetValue(null, item, img, property, null);
+                _handler.SetValue( item, img, null);
 
-                
+
                 //Assert
                 ImageField field = new ImageField(item.Fields["Image"]);
 
@@ -125,7 +131,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Assert.AreEqual(img.Border, field.Border);
                 Assert.AreEqual(img.Class, field.Class);
                 Assert.AreEqual(img.Height.ToString(), field.Height);
-                Assert.AreEqual(img.HSpace.ToString(),  field.HSpace);
+                Assert.AreEqual(img.HSpace.ToString(), field.HSpace);
                 Assert.AreEqual(img.MediaId, field.MediaItem.ID.Guid);
                 Assert.AreEqual(img.VSpace.ToString(), field.VSpace);
                 Assert.AreEqual(img.Width.ToString(), field.Width);
@@ -133,7 +139,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 item.Editing.CancelEdit();
             }
 
-            
+
 
         }
 
@@ -145,6 +151,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Attribute = new SitecoreFieldAttribute(),
                 Property = new FakePropertyInfo(typeof(Image), "Image")
             };
+
+            _handler.ConfigureDataHandler(property);
 
 
             Item item = _db.GetItem(new ID(_itemId));
@@ -166,7 +174,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             {
                 item.Editing.BeginEdit();
                 //Act
-                _handler.SetValue(null, item, img, property, null);
+                _handler.SetValue( item, img, null);
 
 
                 //Assert

@@ -26,10 +26,17 @@ using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
-    public class SitecoreQueryHandler : ISitecoreDataHandler
+    public class SitecoreQueryHandler : AbstractSitecoreDataHandler
     {
 
         List<ISitecoreQueryParameter> _parameters;
+
+        protected bool IsLazy { get; set; }
+
+        protected bool IsRelative { get; set; }
+
+        protected string Query { get; set; }
+
 
         public SitecoreQueryHandler(IEnumerable<ISitecoreQueryParameter> parameters)
         {
@@ -50,31 +57,26 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        #region ISitecoreDataHandler Members
-
-        public bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<ISitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+        public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreQueryAttribute;
         }
 
-        public object GetValue(object target, global::Sitecore.Data.Items.Item item, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item, InstanceContext context)
         {
-            SitecoreQueryAttribute attr = property.Attribute as SitecoreQueryAttribute;
 
-            string query = ParseQuery(attr.Query, item, property);
+            string query = ParseQuery(Query, item);
 
-
-
-            if (property.Property.PropertyType.IsGenericType)
+            if (Property.PropertyType.IsGenericType)
             {
-                Type outerType = Utility.GetGenericOuter(property.Property.PropertyType);
+                Type outerType = Utility.GetGenericOuter(Property.PropertyType);
 
                 if (typeof(IEnumerable<>) == outerType)
                 {
-                    Type genericType = Utility.GetGenericArgument(property.Property.PropertyType);
+                    Type genericType = Utility.GetGenericArgument(Property.PropertyType);
                     
                     Func<IEnumerable<Item>> getItems = null;
-                    if (attr.IsRelative)
+                    if (IsRelative)
                     {
                         getItems = new Func<IEnumerable<Item>>(() =>
                         {
@@ -89,14 +91,14 @@ namespace Glass.Sitecore.Mapper.Data
                         });
                     }
 
-                    return context.CreateClasses(attr.IsLazy, genericType, getItems);
+                    return context.CreateClasses(IsLazy, genericType, getItems);
                 }
                 else throw new NotSupportedException("Generic type not supported {0}. Must be IEnumerable<>.".Formatted(outerType.FullName));
             }
             else
             {
                 Item result = null;
-                if (attr.IsRelative)
+                if (IsRelative)
                 {
                     result = item.Axes.SelectSingleItem(query);
                 }
@@ -104,31 +106,43 @@ namespace Glass.Sitecore.Mapper.Data
                 {
                     result = item.Database.SelectSingleItem(query);
                 }
-                return context.CreateClass(attr.IsLazy, property.Property.PropertyType, result);
+                return context.CreateClass(IsLazy, Property.PropertyType, result);
             }
 
         }
 
-        public string ParseQuery(string query, Item item, SitecoreProperty property)
+        public string ParseQuery(string query, Item item)
         {
             StringBuilder sb = new StringBuilder(query);
             foreach (var param in _parameters)
             {
-                sb.Replace("{"+param.Name+"}", param.GetValue(item, property));
+                sb.Replace("{"+param.Name+"}", param.GetValue(item));
             }
             return sb.ToString();
         }
 
-        public void SetValue(object target, global::Sitecore.Data.Items.Item item, object value, Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, InstanceContext context)
+        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
         {
             throw new NotImplementedException();
         }
 
-        public bool CanSetValue(SitecoreProperty property)
+        public override bool CanSetValue
         {
-             return false; 
+            get
+            {
+                return false;
+            }
         }
 
-        #endregion
+        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        {
+            SitecoreQueryAttribute attr = scProperty.Attribute as SitecoreQueryAttribute;
+            IsLazy = attr.IsLazy;
+            IsRelative = attr.IsRelative;
+            Query = attr.Query;
+
+            base.ConfigureDataHandler(scProperty);
+        }
+
     }
 }

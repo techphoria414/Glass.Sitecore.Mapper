@@ -21,7 +21,7 @@ using System.Text;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
-    [AttributeUsage(AttributeTargets.Class)]
+    [AttributeUsage(AttributeTargets.Class|AttributeTargets.Interface)]
     public class SitecoreClassAttribute : Attribute
     {
         /// <summary>

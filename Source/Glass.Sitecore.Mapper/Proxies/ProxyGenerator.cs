@@ -35,10 +35,21 @@ namespace Glass.Sitecore.Mapper.Proxies
         }
         public static object CreateProxy(Type type,  InstanceContext context, Item item){
             var options = new Castle.DynamicProxy.ProxyGenerationOptions(new ProxyGeneratorHook() );
-            var proxy = _generator.CreateClassProxy(type, options, new ProxyClassInterceptor(type,
-                context,
-                item));
+            object proxy = null;
+
+            if (type.IsInterface)
+            {
+                var config = context.Classes[type];
+                proxy = _generator.CreateInterfaceProxyWithoutTarget(type, new InterfaceMethodInterceptor(config, item, context));
+            }
+            else
+            {
+                proxy = _generator.CreateClassProxy(type, options, new ProxyClassInterceptor(type,
+                   context,
+                   item));
+            }
             return proxy;
+
         }
        
     }

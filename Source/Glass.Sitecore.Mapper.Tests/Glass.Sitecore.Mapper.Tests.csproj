@@ -151,6 +151,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="InstanceContextFixture.cs" />
+    <Compile Include="InterfaceFixture.cs" />
     <Compile Include="LoadTesting.cs" />
     <Compile Include="MiscFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
