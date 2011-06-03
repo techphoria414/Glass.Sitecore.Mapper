@@ -33,23 +33,23 @@ namespace Glass.Sitecore.Mapper.Data
 
         protected SitecoreFieldSettings Setting { get; set; }
 
-        public abstract object GetFieldValue(string fieldValue, Item item, InstanceContext context);
+        public abstract object GetFieldValue(string fieldValue, Item item, ISitecoreService service);
 
 
-        public abstract string SetFieldValue(object value, InstanceContext context);
+        public abstract string SetFieldValue(object value, ISitecoreService service);
 
    
 
-        public override void SetValue(Item item, object value, InstanceContext context)
+        public override void SetValue(Item item, object value, ISitecoreService service)
         {
-            string fieldValue = SetFieldValue(value,  context);
+            string fieldValue = SetFieldValue(value,  service);
             item[FieldName] = fieldValue;
         }
 
-        public override  object GetValue(Item item, InstanceContext context)
+        public override  object GetValue(Item item, ISitecoreService service)
         {
             string fieldValue = item[FieldName];
-            return GetFieldValue(fieldValue, item, context);
+            return GetFieldValue(fieldValue, item, service);
         }
 
         public override  bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)

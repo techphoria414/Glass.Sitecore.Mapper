@@ -37,7 +37,7 @@ namespace Glass.Sitecore.Mapper.Data
             return property.Attribute is SitecoreInfoAttribute;
         }
 
-        public override object GetValue(global::Sitecore.Data.Items.Item item, InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
             
             switch (InfoType)
@@ -71,7 +71,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
+        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)
         {
             switch (InfoType)
             {

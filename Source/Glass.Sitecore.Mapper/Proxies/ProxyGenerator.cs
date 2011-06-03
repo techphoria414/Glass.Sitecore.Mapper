@@ -22,6 +22,7 @@ using System.Text;
 using System.Reflection;
 using Sitecore.Data.Items;
 using System.Collections;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Proxies
 {
@@ -29,23 +30,21 @@ namespace Glass.Sitecore.Mapper.Proxies
     {
         private static readonly Castle.DynamicProxy.ProxyGenerator _generator = new Castle.DynamicProxy.ProxyGenerator();
 
-        public static T CreateProxy<T>(InstanceContext context, Item item) where T : class, new()
-        {
-            return CreateProxy(typeof(T), context, item) as T;
-        }
-        public static object CreateProxy(Type type,  InstanceContext context, Item item){
+       
+        public static object CreateProxy(SitecoreClassConfig config,  ISitecoreService service, Item item){
             var options = new Castle.DynamicProxy.ProxyGenerationOptions(new ProxyGeneratorHook() );
             object proxy = null;
 
+            Type type = config.Type;
+
             if (type.IsInterface)
             {
-                var config = context.Classes[type];
-                proxy = _generator.CreateInterfaceProxyWithoutTarget(type, new InterfaceMethodInterceptor(config, item, context));
+                proxy = _generator.CreateInterfaceProxyWithoutTarget(type, new InterfaceMethodInterceptor(config, item, service));
             }
             else
             {
                 proxy = _generator.CreateClassProxy(type, options, new ProxyClassInterceptor(type,
-                   context,
+                   service,
                    item));
             }
             return proxy;

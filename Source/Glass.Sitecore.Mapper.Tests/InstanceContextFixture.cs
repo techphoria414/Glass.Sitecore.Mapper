@@ -33,7 +33,7 @@ namespace Glass.Sitecore.Mapper.Tests
     public class InstanceContextFixture
     {
 
-        InstanceContext _context;
+        ISitecoreService _service;
         Database _db;
         Guid _itemId;
         Guid _itemId2;
@@ -65,7 +65,7 @@ namespace Glass.Sitecore.Mapper.Tests
             #endregion
 
 
-            _context = new InstanceContext((new SitecoreClassConfig[]{
+            var context = new InstanceContext((new SitecoreClassConfig[]{
                 new SitecoreClassConfig(){
                     ClassAttribute = new SitecoreClassAttribute(),
                     Properties = new SitecoreProperty[]{
@@ -94,6 +94,9 @@ namespace Glass.Sitecore.Mapper.Tests
             }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
+
+            _service = new SitecoreService(_db, context);
+
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
             _itemId2 = new Guid("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}");
                 
@@ -108,7 +111,7 @@ namespace Glass.Sitecore.Mapper.Tests
             Item item = null;
 
             //Act 
-            var result = _context.CreateClass<InstanceContextFixtureNS.TestClass>(false, item);
+            var result = _service.CreateClass<InstanceContextFixtureNS.TestClass>(false, item);
 
             //Assert 
             Assert.IsNull(result);
@@ -121,7 +124,7 @@ namespace Glass.Sitecore.Mapper.Tests
             Item item = _db.GetItem(new ID(_itemId));
 
             //Act
-            var result = _context.CreateClass<InstanceContextFixtureNS.TestClass>(false, item);
+            var result = _service.CreateClass<InstanceContextFixtureNS.TestClass>(false, item);
 
             //Assert
             Assert.IsNotNull(result);
@@ -133,7 +136,7 @@ namespace Glass.Sitecore.Mapper.Tests
             Item item = _db.GetItem(new ID(_itemId));
 
             //Act
-            var result = _context.CreateClass<InstanceContextFixtureNS.TestClass>(false, item);
+            var result = _service.CreateClass<InstanceContextFixtureNS.TestClass>(false, item);
 
             //Assert
             Assert.IsNotNull(result);
@@ -152,7 +155,7 @@ namespace Glass.Sitecore.Mapper.Tests
             InstanceContextFixtureNS.TestClass2 testClass = new Glass.Sitecore.Mapper.Tests.InstanceContextFixtureNS.TestClass2();
 
             //Act
-            var result = _context.GetClassId<InstanceContextFixtureNS.TestClass2>(testClass);
+            var result = _service.InstanceContext.GetClassId(typeof(InstanceContextFixtureNS.TestClass2),testClass);
 
             //Assert
             //no assertion, expections should be thrown
@@ -165,7 +168,7 @@ namespace Glass.Sitecore.Mapper.Tests
             testClass.Id = _itemId;
 
             //Act 
-            var result = _context.GetClassId<InstanceContextFixtureNS.TestClass>(testClass);
+            var result = _service.InstanceContext.GetClassId(typeof(InstanceContextFixtureNS.TestClass), testClass);
 
             //Assert
             Assert.AreEqual(_itemId, result);
@@ -182,7 +185,7 @@ namespace Glass.Sitecore.Mapper.Tests
             SitecoreClassConfig config = null;
 
             //Act
-            config = _context.GetSitecoreClass(typeof(InstanceContextFixtureNS.TestClass2));
+            config = _service.InstanceContext.GetSitecoreClass(typeof(InstanceContextFixtureNS.TestClass2));
 
             //Assert
             Assert.IsNotNull(config);
@@ -197,7 +200,7 @@ namespace Glass.Sitecore.Mapper.Tests
             SitecoreClassConfig config = null;
 
             //Act
-            config = _context.GetSitecoreClass(typeof(InstanceContextFixtureNS.TestClass3));
+            config = _service.InstanceContext.GetSitecoreClass(typeof(InstanceContextFixtureNS.TestClass3));
 
             //Assert
             //no asserts, exception should be thrown
@@ -207,90 +210,7 @@ namespace Glass.Sitecore.Mapper.Tests
 
         #endregion
 
-        #region SaveClass
-
-        [Test]
-        public void SaveClass_WritesClassToSitecoreItem()
-        {
-            string fieldName ="SingleLineText";
-            string originalText = "original text";
-            string newText = "new text";
-
-            //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            using (new SecurityDisabler())
-            {
-                item.Editing.BeginEdit();
-
-                item[fieldName] = originalText;
-
-                Assert.AreEqual(originalText, item[fieldName]);
-
-                InstanceContextFixtureNS.TestClass4 testClass = new Glass.Sitecore.Mapper.Tests.InstanceContextFixtureNS.TestClass4();
-                testClass.SingleLineText = newText;
-
-                //Act
-                _context.SaveClass<InstanceContextFixtureNS.TestClass4>(testClass, item);
-
-                //Assert
-                Assert.AreEqual(newText, item[fieldName]);
-
-                item.Editing.CancelEdit();
-            }
-        }
-
-        [Test]
-        public void SaveClass_WritesClassToSitecoreItem_UsingProxy()
-        {
-            string fieldName = "SingleLineText";
-            string originalText = "original text";
-            string newText = "new text";
-
-            //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            using (new SecurityDisabler())
-            {
-                item.Editing.BeginEdit();
-
-                item[fieldName] = originalText;
-
-                Assert.AreEqual(originalText, item[fieldName]);
-
-                InstanceContextFixtureNS.TestClass4 testClass = ProxyGenerator.CreateProxy<InstanceContextFixtureNS.TestClass4>(_context, item);
-                testClass.SingleLineText = newText;
-
-                //Act
-                _context.SaveClass<InstanceContextFixtureNS.TestClass4>(testClass, item);
-
-                //Assert
-                Assert.AreEqual(newText, item[fieldName]);
-
-                item.Editing.CancelEdit();
-            }
-        }
-
-        #endregion
-
-        #region CreateClasses
-        
-        [Test]
-        public void CreateClasses_ValidItems_ReturnsMultipleClasses()
-        {
-            //Assign
-            Item item1 = _db.GetItem(new ID(_itemId));
-            Item item2 = _db.GetItem(new ID(_itemId2));
-
-            //Act 
-            var result = _context.CreateClasses<InstanceContextFixtureNS.TestClass>(false, new Item[] { item1, item2 });
-
-            //Assert
-
-            Assert.AreEqual(2, result.Count());
-            Assert.AreEqual(_itemId, result.First().Id);
-            Assert.AreEqual(_itemId2, result.Last().Id);
-        }
-
-        #endregion
+     
     }
 
     namespace InstanceContextFixtureNS

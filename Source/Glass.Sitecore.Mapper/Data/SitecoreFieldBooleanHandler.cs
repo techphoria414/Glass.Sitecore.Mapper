@@ -25,12 +25,12 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldBooleanHandler:AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, ISitecoreService service)
         {
             return fieldValue == "1";
         }
 
-        public override string SetFieldValue( object value,  InstanceContext context)
+        public override string SetFieldValue( object value,  ISitecoreService service)
         {
             if ((bool)value) return "1";
             else return "0";

@@ -30,13 +30,13 @@ namespace Glass.Sitecore.Mapper.Data
     {
         protected AbstractSitecoreField EnumSubHandler { get; set; }
 
-        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, ISitecoreService service)
         {
             Type type = Property.PropertyType;
             //Get generic type
             Type pType = Utility.GetGenericArgument(type);
 
-            if (EnumSubHandler == null) EnumSubHandler = GetSubHandler(pType, context);
+            if (EnumSubHandler == null) EnumSubHandler = GetSubHandler(pType, service);
             
             //The enumerator only works with piped lists
             IEnumerable<string> parts = fieldValue.Split(new char[] { '|' }, StringSplitOptions.RemoveEmptyEntries);
@@ -46,7 +46,7 @@ namespace Glass.Sitecore.Mapper.Data
 
                       
 
-            IEnumerable<object> items = parts.Select(x => EnumSubHandler.GetFieldValue(x, item, context)).ToArray();
+            IEnumerable<object> items = parts.Select(x => EnumSubHandler.GetFieldValue(x, item, service)).ToArray();
             var list = Utility.CreateGenericType(typeof(List<>), new Type[] { pType }) ;
             Utility.CallAddMethod(items, list);
 
@@ -56,13 +56,13 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override string SetFieldValue(object value, InstanceContext context)
+        public override string SetFieldValue(object value, ISitecoreService service)
         {
             Type pType = Utility.GetGenericArgument(Property.PropertyType);
 
 
             if (EnumSubHandler == null)
-                EnumSubHandler = GetSubHandler(pType, context);
+                EnumSubHandler = GetSubHandler(pType, service);
 
             IEnumerable list = value as IEnumerable;
 
@@ -71,7 +71,7 @@ namespace Glass.Sitecore.Mapper.Data
 
             foreach (object obj in list)
             {
-                string result = EnumSubHandler.SetFieldValue(obj, context);
+                string result = EnumSubHandler.SetFieldValue(obj, service);
                 if (!result.IsNullOrEmpty())
                     sList.Add(result);
             }
@@ -106,7 +106,7 @@ namespace Glass.Sitecore.Mapper.Data
             get { return typeof(object); }
         }
 
-        private AbstractSitecoreField GetSubHandler(Type type, InstanceContext context)
+        private AbstractSitecoreField GetSubHandler(Type type, ISitecoreService service)
         {
             SitecoreProperty fakeProp = new SitecoreProperty()
             {
@@ -119,7 +119,7 @@ namespace Glass.Sitecore.Mapper.Data
                 
             };
 
-            var handler = context.Datas.FirstOrDefault(x => x.WillHandle(fakeProp, context.Datas, context.Classes)) as AbstractSitecoreField;
+            var handler = service.InstanceContext.Datas.FirstOrDefault(x => x.WillHandle(fakeProp, service.InstanceContext.Datas, service.InstanceContext.Classes)) as AbstractSitecoreField;
             if (handler == null) throw new NotSupportedException("No handler to support field type {0}".Formatted(type.FullName));
 
             handler.ConfigureDataHandler(fakeProp);

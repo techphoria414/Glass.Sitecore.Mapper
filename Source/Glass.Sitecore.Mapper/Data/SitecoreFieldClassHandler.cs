@@ -37,7 +37,7 @@ namespace Glass.Sitecore.Mapper.Data
 
 
 
-        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, ISitecoreService service)
         {
             Item target = null;
 
@@ -55,13 +55,13 @@ namespace Glass.Sitecore.Mapper.Data
             if (target == null) return null;
             bool isLazy = Setting != SitecoreFieldSettings.DontLoadLazily;
 
-            return context.CreateClass(isLazy, Property.PropertyType, target);
+            return service.CreateClass(isLazy, Property.PropertyType, target);
             
         }
 
-        public override string SetFieldValue(object value, InstanceContext context)
+        public override string SetFieldValue(object value, ISitecoreService service)
         {
-            return context.GetClassId(Property.PropertyType, value).ToString("B");
+            return service.InstanceContext.GetClassId(Property.PropertyType, value).ToString("B");
         }
 
         public override Type TypeHandled

@@ -25,7 +25,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldDecimalHandler : AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, Item item,  InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item,  ISitecoreService service)
         {
             if (fieldValue.IsNullOrEmpty()) return 0M;
 
@@ -34,7 +34,7 @@ namespace Glass.Sitecore.Mapper.Data
             else throw new MapperException("Could not convert value to decimal");
         }
 
-        public override string SetFieldValue( object value, InstanceContext context)
+        public override string SetFieldValue( object value, ISitecoreService service)
         {
             return value.ToString();
         }

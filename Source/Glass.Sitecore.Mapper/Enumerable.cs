@@ -27,7 +27,7 @@ namespace Glass.Sitecore.Mapper
     public class Enumerable<T> : IEnumerable<T> where T:class
     {
         Func<IEnumerable<Item>> _getItems;
-        InstanceContext _context;
+        ISitecoreService _service;
         
         
         IList<T> _itemList = null; 
@@ -35,10 +35,10 @@ namespace Glass.Sitecore.Mapper
         bool _loaded = false;
         bool _isLazy = true;
 
-        public Enumerable(Func<IEnumerable<Item>> getItems, InstanceContext context, bool isLazy)
+        public Enumerable(Func<IEnumerable<Item>> getItems, ISitecoreService service, bool isLazy)
         {
             _getItems = getItems;
-            _context = context;
+            _service = service;
             _isLazy = isLazy;
         }
 
@@ -50,7 +50,7 @@ namespace Glass.Sitecore.Mapper
 
             foreach (Item item in _getItems.Invoke().Where(x=>x != null))
             {
-                var result = _context.CreateClass<T>(_isLazy, item);
+                var result = _service.CreateClass<T>(_isLazy, item);
                 _itemList.Add(result);
             }
             _loaded = true;

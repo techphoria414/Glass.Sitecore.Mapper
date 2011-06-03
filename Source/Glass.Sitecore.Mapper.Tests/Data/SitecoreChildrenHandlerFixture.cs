@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
     [TestFixture]
     public class SitecoreChildrenHandlerFixture
     {
-        InstanceContext _context;
+        ISitecoreService _service;
         Database _db;
         Guid _itemId;
 
@@ -39,7 +39,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         [SetUp]
         public void Setup()
         {
-            _context = new InstanceContext(
+            var context = new InstanceContext(
               (new SitecoreClassConfig[]{
                    new SitecoreClassConfig(){
                        ClassAttribute = new SitecoreClassAttribute(),
@@ -52,6 +52,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
+
+            _service = new SitecoreService(_db, context);
 
             _itemId = new Guid("{D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}");
             _handler = new SitecoreChildrenHandler();
@@ -72,7 +74,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue( item, _context) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
+            var result = _handler.GetValue( item, _service) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
             SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
             assignTest.Children = result;
             //Assert
@@ -98,7 +100,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(item,  _context) as IEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
+            var result = _handler.GetValue(item,  _service) as IEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
             SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
             assignTest.Children = result;
             //Assert

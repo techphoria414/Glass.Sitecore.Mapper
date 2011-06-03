@@ -24,7 +24,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldEnumHandler:AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, global::Sitecore.Data.Items.Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
             Type enumType = Property.PropertyType;
 
@@ -43,7 +43,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override string SetFieldValue(object value,  InstanceContext context)
+        public override string SetFieldValue(object value,  ISitecoreService service)
         {
             return Enum.GetName(Property.PropertyType, value);
         }

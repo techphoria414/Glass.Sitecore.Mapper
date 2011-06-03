@@ -29,15 +29,16 @@ namespace Glass.Sitecore.Mapper.Tests.Data
     public class SitecoreFieldIEnumerableHandlerFixture
     {
         SitecoreFieldIEnumerableHandler _handler;
-        InstanceContext _context;
+        ISitecoreService  _service;
 
         [SetUp]
         public void Setup()
         {
             _handler = new SitecoreFieldIEnumerableHandler();
-            _context = new InstanceContext(
+            var context = new InstanceContext(
                 new Dictionary<Type, SitecoreClassConfig>(),
                 new AbstractSitecoreDataHandler[] { new SitecoreFieldIntegerHandler() });
+            _service = new SitecoreService(null, context);
         }
 
         #region GetFieldValue
@@ -54,7 +55,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetFieldValue(value, null,  _context);
+            var result = _handler.GetFieldValue(value, null,  _service);
 
             //Assert
             var list = result as IEnumerable<int>;
@@ -78,7 +79,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetFieldValue(value, null, _context);
+            var result = _handler.GetFieldValue(value, null, _service);
 
             //Assert
             //Exception thrown
@@ -105,7 +106,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var result = _handler.SetFieldValue(
                 list,
                 
-                _context);
+                _service);
 
             //Assert
             Assert.AreEqual("44|535|22", result);
