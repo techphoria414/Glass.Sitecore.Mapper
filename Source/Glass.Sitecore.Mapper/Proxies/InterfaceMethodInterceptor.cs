@@ -39,6 +39,7 @@ namespace Glass.Sitecore.Mapper.Proxies
                     var result = handler.GetValue(_item, _service);
                     _values[handler.Property.Name] = result;
                 }
+                _isLoaded = true;
             }
 
             if (invocation.Method.IsSpecialName)
