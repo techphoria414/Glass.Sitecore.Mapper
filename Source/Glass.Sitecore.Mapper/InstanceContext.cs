@@ -44,76 +44,8 @@ namespace Glass.Sitecore.Mapper
 
 
 
-        /// <summary>
-        /// Creates an enumerable of the specified type
-        /// </summary>
-        /// <param name="isLazy"></param>
-        /// <param name="type"></param>
-        /// <param name="getItems"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
-        public IEnumerable CreateClasses(bool isLazy, Type type, Func<IEnumerable<Item>> getItems)
-        {
-            return Utility.CreateGenericType(typeof(Enumerable<>), new Type[] { type }, getItems, this, isLazy) as IEnumerable;
-        }
+        
 
-        public object CreateClass(bool isLazy, Type type, Item item)
-        {
-            if (item == null) return null;
-            if (isLazy || type.IsInterface)
-            {
-                return ProxyGenerator.CreateProxy(type, this, item);
-            }
-            else
-            {
-                if (item == null) return null;
-
-                //get the class information
-                var scClass = GetSitecoreClass(type);
-                object t = scClass.Type.Assembly.CreateInstance(scClass.Type.FullName);
-
-                foreach (var handler in scClass.DataHandlers)
-                {
-                    handler.SetProperty(t, item, this);
-                }
-
-                return t;
-            }
-        }
-
-        public IEnumerable<T> CreateClasses<T>(bool isLazy, IEnumerable<Item> items) where T : class
-        {
-            Func<IEnumerable<Item>> getItems = new Func<IEnumerable<Item>>(() =>
-            {
-                return items;
-            });
-            return CreateClasses(isLazy, typeof(T), getItems) as IEnumerable<T>;
-        }
-      
-        public T CreateClass<T>(bool isLazy, Item item) where T : class
-        {
-            return CreateClass(isLazy, typeof(T),  item) as T;
-        }
-       
-        public void SaveClass<T>(T target, Item item)
-        {
-            var scClass = GetSitecoreClass(typeof(T));
-
-
-            foreach (var handler in scClass.DataHandlers)
-            {
-               
-                if (handler.CanSetValue)
-                {
-                    handler.ReadProperty(target, item, this);
-                }
-            }
-            
-        }
-        public Guid GetClassId<T>(T target) where T : class
-        {
-            return GetClassId(typeof(T), target);
-        }
         public Guid GetClassId(Type type, object target){
             var scClass = GetSitecoreClass(type);
             var attribute = scClass.Properties.FirstOrDefault(x => x.Attribute is SitecoreIdAttribute);
@@ -128,8 +60,6 @@ namespace Glass.Sitecore.Mapper
 
         public SitecoreClassConfig GetSitecoreClass(Type type)
         {
-            
-           
             if (!Classes.ContainsKey(type) || Classes[type] == null)
                 throw new MapperException("Type {0} has not been loaded".Formatted(type.FullName));
 

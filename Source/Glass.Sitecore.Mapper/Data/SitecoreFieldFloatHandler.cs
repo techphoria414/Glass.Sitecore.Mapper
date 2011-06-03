@@ -25,7 +25,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldFloatHandler : AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, ISitecoreService service)
         {
             if (fieldValue.IsNullOrEmpty()) return (float)0.0;
             float fValue = 0.0f;
@@ -33,7 +33,7 @@ namespace Glass.Sitecore.Mapper.Data
             else throw new MapperException("Could not convert value to float");
         }
 
-        public override string SetFieldValue(object value, InstanceContext context)
+        public override string SetFieldValue(object value, ISitecoreService service)
         {
             return value.ToString();
         }

@@ -14,15 +14,15 @@ namespace Glass.Sitecore.Mapper.Proxies
     {
         SitecoreClassConfig _config;
         Item _item;
-        InstanceContext _context;
+        ISitecoreService _service;
 
         Dictionary<string, object> _values;
         bool _isLoaded = false;
 
-        public InterfaceMethodInterceptor(SitecoreClassConfig config, Item item, InstanceContext context){
+        public InterfaceMethodInterceptor(SitecoreClassConfig config, Item item, ISitecoreService service){
             _config = config;
             _item = item;
-            _context = context;
+            _service = service;
             _values = new Dictionary<string, object>();
         }
 
@@ -36,7 +36,7 @@ namespace Glass.Sitecore.Mapper.Proxies
             {
                 foreach (var handler in _config.DataHandlers)
                 {
-                    var result = handler.GetValue(_item, _context);
+                    var result = handler.GetValue(_item, _service);
                     _values[handler.Property.Name] = result;
                 }
             }

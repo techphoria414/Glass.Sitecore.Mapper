@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldFileHandler : AbstractSitecoreField
     {
 
-        public override object GetValue(global::Sitecore.Data.Items.Item item, InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
 
             FileField field = new FileField(item.Fields[FieldName]);
@@ -41,7 +41,7 @@ namespace Glass.Sitecore.Mapper.Data
             return file;
         }
 
-        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
+        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)
         {
 
             File  file = value as File;
@@ -70,12 +70,12 @@ namespace Glass.Sitecore.Mapper.Data
 
         }
 
-        public override object GetFieldValue(string fieldValue, global::Sitecore.Data.Items.Item item,  InstanceContext context)
+        public override object GetFieldValue(string fieldValue, global::Sitecore.Data.Items.Item item,  ISitecoreService service)
         {
             throw new NotImplementedException();
         }
 
-        public override string SetFieldValue(object value,InstanceContext context)
+        public override string SetFieldValue(object value,ISitecoreService service)
         {
             throw new NotImplementedException();
         }

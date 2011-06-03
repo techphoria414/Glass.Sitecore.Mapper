@@ -34,13 +34,13 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
     [TestFixture]
     public class ProxyClassInterceptorFixture
     {
-        InstanceContext _context;
+        ISitecoreService _service;
         Database _db;
         Guid _itemId;
 
         [SetUp]
         public void Setup(){
-            _context = new InstanceContext(
+            var context  = new InstanceContext(
                (new SitecoreClassConfig[]{
                    new SitecoreClassConfig(){
                        ClassAttribute = new SitecoreClassAttribute(),
@@ -51,6 +51,8 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
                }).ToDictionary(), new AbstractSitecoreDataHandler[]{});
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
+
+            _service = new SitecoreService(_db, context);
 
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
 
@@ -66,7 +68,7 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
 
             ProxyClassInterceptor interceptor = new ProxyClassInterceptor(
                 typeof(ProxyClassInterceptorFixtureNS.TestClass),
-                _context,
+                _service,
                 item);
 
             invocation.Setup(x=>x.Method).Returns(typeof(ProxyClassInterceptorFixtureNS.TestClass).GetMethod("TestCall"));

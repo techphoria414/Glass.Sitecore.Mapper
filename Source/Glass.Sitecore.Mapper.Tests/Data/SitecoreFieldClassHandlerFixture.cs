@@ -31,7 +31,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
     public class SitecoreFieldClassHandlerFixture
     {
         SitecoreFieldClassHandler _handler;
-        InstanceContext _context;
+        ISitecoreService _service;
         Database _db;
         Guid _itemId;
 
@@ -40,7 +40,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void Setup()
         {
             _handler = new SitecoreFieldClassHandler();
-            _context = new InstanceContext(
+            var context = new InstanceContext(
                 (new SitecoreClassConfig[]{
                     new SitecoreClassConfig(){
                          ClassAttribute = new SitecoreClassAttribute(),
@@ -60,6 +60,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
+            _service = new SitecoreService(_db, context);
+
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
 
         }
@@ -76,7 +78,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             property.Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass));
 
             //Act
-            var result = _handler.WillHandle(property, _context.Datas, _context.Classes);
+            var result = _handler.WillHandle(property, _service.InstanceContext.Datas, _service.InstanceContext.Classes);
 
             //Assert
             Assert.IsTrue(result);
@@ -91,7 +93,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             property.Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.NotLoadedClass));
 
             //Act
-            var result = _handler.WillHandle(property, _context.Datas, _context.Classes);
+            var result = _handler.WillHandle(property, _service.InstanceContext.Datas, _service.InstanceContext.Classes);
 
             //Assert
             Assert.IsFalse(result);
@@ -120,7 +122,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var result = _handler.GetFieldValue(
                 _itemId.ToString(),                
                 item,                
-                _context);
+                _service);
 
             parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
 
@@ -147,7 +149,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var result = _handler.GetFieldValue(
                 _itemId.ToString(),
                 item,
-                _context);
+                _service);
 
             parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
 
@@ -174,7 +176,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var result = _handler.GetFieldValue(
                 _itemId.ToString(),
                 item,
-                _context) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
+                _service) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
 
             parent.Child = result;
             result.CallMe = "Some value";
@@ -203,7 +205,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var result = _handler.GetFieldValue(
                 _itemId.ToString(),
                 item,
-                _context) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
+                _service) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
 
             parent.Child = result;
             parent.Child.CallMe = "Some value";
@@ -234,7 +236,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var result = _handler.GetFieldValue(
                 path,
                 item,
-                _context);
+                _service);
 
             parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
 
@@ -262,7 +264,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var result = _handler.GetFieldValue(
                 path,
                 item,               
-                _context);
+                _service);
 
             parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
 
@@ -302,7 +304,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.SetFieldValue(target, _context);
+            var result = _handler.SetFieldValue(target, _service);
 
             //Assert
             Assert.AreEqual(_itemId, new Guid(result));
@@ -327,7 +329,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.SetFieldValue(target, _context);
+            var result = _handler.SetFieldValue(target, _service);
 
             //Assert
             Assert.AreEqual(_itemId, new Guid(result));

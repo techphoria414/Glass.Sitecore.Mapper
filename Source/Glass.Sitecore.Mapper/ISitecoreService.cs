@@ -20,11 +20,15 @@ using System.Linq;
 using System.Text;
 using Sitecore.Data.Items;
 using Sitecore.Globalization;
+using System.Collections;
 
 namespace Glass.Sitecore.Mapper
 {
     public interface ISitecoreService
     {
+
+        InstanceContext InstanceContext { get; }
+
         /// <summary>
         /// Query Sitecore for a set of items. Concrete classes are created
         /// </summary>
@@ -142,5 +146,11 @@ namespace Glass.Sitecore.Mapper
         /// <typeparam name="T">The type being deleted. The type must have a property with the SitecoreIdAttribute.</typeparam>
         /// <param name="item">The class to delete</param>
         void Delete<T>(T item) where T : class;
+
+
+        T CreateClass<T>(bool isLazy, Item item) where T : class;
+        object CreateClass(bool isLazy, Type type, Item item);
+        IEnumerable CreateClasses(bool isLazy, Type type, Func<IEnumerable<Item>> getItems);
+
     }
 }

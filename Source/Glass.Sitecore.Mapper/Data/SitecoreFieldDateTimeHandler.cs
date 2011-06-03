@@ -25,12 +25,12 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldDateTimeHandler : AbstractSitecoreField
     {
-        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, ISitecoreService service)
         {
             return global::Sitecore.DateUtil.IsoDateToDateTime(fieldValue);
         }
 
-        public override string SetFieldValue(object value, InstanceContext context)
+        public override string SetFieldValue(object value, ISitecoreService service)
         {
             DateTime date = (DateTime)value;
             return global::Sitecore.DateUtil.ToIsoDate(date);

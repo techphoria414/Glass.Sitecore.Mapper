@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldLinkHandler : AbstractSitecoreField
     {
 
-        public override object GetValue(global::Sitecore.Data.Items.Item item,  InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item,  ISitecoreService service)
         {
 
             Link link = new Link();
@@ -46,7 +46,7 @@ namespace Glass.Sitecore.Mapper.Data
             return link;
         }
 
-        public override void SetValue( global::Sitecore.Data.Items.Item item, object value,  InstanceContext context)
+        public override void SetValue( global::Sitecore.Data.Items.Item item, object value,  ISitecoreService service)
         {
 
             Link link = value as Link;
@@ -86,7 +86,7 @@ namespace Glass.Sitecore.Mapper.Data
          
         }
 
-        public override string SetFieldValue(object value,  InstanceContext context)
+        public override string SetFieldValue(object value,  ISitecoreService service)
         {
             throw new NotImplementedException();
         }
@@ -96,7 +96,7 @@ namespace Glass.Sitecore.Mapper.Data
             get { return typeof(FieldTypes.Link); }
         }
 
-        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, ISitecoreService service)
         {
             throw new NotImplementedException();
         }

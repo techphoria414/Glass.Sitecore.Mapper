@@ -34,7 +34,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         SitecoreParentHandler _handler;
         Guid _itemId;
         Database _db;
-        InstanceContext _context;
+        ISitecoreService _service;
 
         [SetUp]
         public void Setup()
@@ -43,7 +43,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
-            _context = new InstanceContext(
+            var context = new InstanceContext(
                 (new SitecoreClassConfig[]{
                     new SitecoreClassConfig(){
                         ClassAttribute = new SitecoreClassAttribute(),
@@ -58,7 +58,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                     }
                 }).ToDictionary(),
                 new AbstractSitecoreDataHandler[] { });
-                
+
+            _service = new SitecoreService(_db, context);
         }
      
         #region WillHandle
@@ -73,7 +74,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.WillHandle(property, _context.Datas, _context.Classes);
+            var result = _handler.WillHandle(property, _service.InstanceContext.Datas, _service.InstanceContext.Classes);
 
             //Assert
 
@@ -90,7 +91,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
 
             //Act
-            var result = _handler.WillHandle(property, _context.Datas, _context.Classes);
+            var result = _handler.WillHandle(property, _service.InstanceContext.Datas, _service.InstanceContext.Classes);
 
             //Assert
 
@@ -117,7 +118,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue( item, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
+            var result = _handler.GetValue( item, _service) as SitecoreParentHandlerFixtureNS.ChildClass;
             parent.Child = result;
             //Assert
 
@@ -141,7 +142,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue( item, _context) as SitecoreParentHandlerFixtureNS.ChildClass;
+            var result = _handler.GetValue( item, _service) as SitecoreParentHandlerFixtureNS.ChildClass;
             parent.Child = result;
             //Assert
 
@@ -167,7 +168,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
             //Act
-            var result = _handler.GetValue( item, _context) as SitecoreParentHandlerFixtureNS.ChildClassNotLoaded;
+            var result = _handler.GetValue( item, _service) as SitecoreParentHandlerFixtureNS.ChildClassNotLoaded;
             parent.NotLoaded = result;
 
             parent.NotLoaded.CallMe = "";

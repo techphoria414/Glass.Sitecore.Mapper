@@ -62,7 +62,7 @@ namespace Glass.Sitecore.Mapper.Data
             return property.Attribute is SitecoreQueryAttribute;
         }
 
-        public override object GetValue(global::Sitecore.Data.Items.Item item, InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
 
             string query = ParseQuery(Query, item);
@@ -91,7 +91,7 @@ namespace Glass.Sitecore.Mapper.Data
                         });
                     }
 
-                    return context.CreateClasses(IsLazy, genericType, getItems);
+                    return service.CreateClasses(IsLazy, genericType, getItems);
                 }
                 else throw new NotSupportedException("Generic type not supported {0}. Must be IEnumerable<>.".Formatted(outerType.FullName));
             }
@@ -106,7 +106,7 @@ namespace Glass.Sitecore.Mapper.Data
                 {
                     result = item.Database.SelectSingleItem(query);
                 }
-                return context.CreateClass(IsLazy, Property.PropertyType, result);
+                return service.CreateClass(IsLazy, Property.PropertyType, result);
             }
 
         }
@@ -121,7 +121,7 @@ namespace Glass.Sitecore.Mapper.Data
             return sb.ToString();
         }
 
-        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, InstanceContext context)
+        public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)
         {
             throw new NotImplementedException();
         }

@@ -28,7 +28,7 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreFieldStringHandler: AbstractSitecoreField
     {
 
-        public override object GetValue(global::Sitecore.Data.Items.Item item, InstanceContext context)
+        public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
             if (item.Fields[FieldName] != null && item.Fields[FieldName].Type.StartsWith("Rich Text") && Setting != SitecoreFieldSettings.RichTextRaw)
             {
@@ -43,7 +43,7 @@ namespace Glass.Sitecore.Mapper.Data
 
 
 
-        public override void SetValue( Item item, object value, InstanceContext context)
+        public override void SetValue( Item item, object value, ISitecoreService service)
         {
 
             if (item.Fields[FieldName] != null && item.Fields[FieldName].Type.StartsWith("Rich Text") && Setting != SitecoreFieldSettings.RichTextRaw)
@@ -58,11 +58,11 @@ namespace Glass.Sitecore.Mapper.Data
             }
         }
 
-        public override string SetFieldValue(object value, InstanceContext context)
+        public override string SetFieldValue(object value, ISitecoreService service)
         {
             throw new NotImplementedException();
         }
-        public override object GetFieldValue(string fieldValue, Item item, InstanceContext context)
+        public override object GetFieldValue(string fieldValue, Item item, ISitecoreService service)
         {
             throw new NotImplementedException();
         }

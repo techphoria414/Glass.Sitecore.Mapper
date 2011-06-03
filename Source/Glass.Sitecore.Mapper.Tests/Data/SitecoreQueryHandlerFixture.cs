@@ -31,7 +31,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
     public class SitecoreQueryHandlerFixture
     {
         Database _db;
-        InstanceContext _context;
+        ISitecoreService _service;
         SitecoreQueryHandler _handler;
         Guid _itemId;
         Item _item;
@@ -40,7 +40,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void Setup()
         {
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
-            _context = new InstanceContext(
+            var context = new InstanceContext(
                 (new SitecoreClassConfig[]{
                     new SitecoreClassConfig(){
                         ClassAttribute = new SitecoreClassAttribute(),
@@ -55,6 +55,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                     }
                 }).ToDictionary(),
                 new AbstractSitecoreDataHandler[] { });
+
+            _service = new SitecoreService(_db, context);
 
             _handler = new SitecoreQueryHandler();
 
@@ -80,7 +82,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue( _item,  _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue( _item,  _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
 
             //Assert
             Assert.AreEqual(_item.Children.Count, result.Count());
@@ -104,7 +106,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue( _item,  _context) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue( _item,  _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
 
             //Assert
             Assert.AreEqual(_item.Children.Count, result.Count());
@@ -127,7 +129,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue( _item, _context) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue( _item, _service) as SitecoreQueryHandlerFixtureNS.TestClass;
 
             //Assert
             Assert.AreNotEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.GetType());
@@ -149,7 +151,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue( _item,  _context) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue( _item,  _service) as SitecoreQueryHandlerFixtureNS.TestClass;
 
             //Assert
 
