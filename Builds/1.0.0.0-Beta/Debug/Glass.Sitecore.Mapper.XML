@@ -1,0 +1,433 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Glass.Sitecore.Mapper</name>
+    </assembly>
+    <members>
+        <member name="M:Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler.SetProperty(System.Object,Sitecore.Data.Items.Item,Glass.Sitecore.Mapper.ISitecoreService)">
+            <summary>
+            Sets the property on the target object using data from the Sitecore Item
+            </summary>
+            <param name="target">The object to set the value on</param>
+            <param name="item">The item to pull the data from</param>
+            <param name="context">The current instance context</param>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler.ReadProperty(System.Object,Sitecore.Data.Items.Item,Glass.Sitecore.Mapper.ISitecoreService)">
+            <summary>
+            Reads a property from an object and sets the value on the Sitecore Item
+            </summary>
+            <param name="target">The object to read the value from</param>
+            <param name="item">The item to write the value to</param>
+            <param name="context">The instance context operating on the target</param>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler.ConfigureDataHandler(Glass.Sitecore.Mapper.Configuration.SitecoreProperty)">
+            <summary>
+            Reads settings from the property and sets up the data handler.
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler.WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty,System.Collections.Generic.IEnumerable{Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler},System.Collections.Generic.Dictionary{System.Type,Glass.Sitecore.Mapper.Configuration.SitecoreClassConfig})">
+            <summary>
+            Determines if the Data Handler will handle the passed in Property
+            </summary>
+            <param name="property"></param>
+            <param name="datas"></param>
+            <param name="classes"></param>
+            <returns></returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler.GetValue(Sitecore.Data.Items.Item,Glass.Sitecore.Mapper.ISitecoreService)">
+            <summary>
+            Reads an item from the Sitecore item and returns it as the requested return type
+            </summary>
+            <param name="target">The object that the value will be set on</param>
+            <param name="item">The Sitecore item to work on</param>
+            <param name="context">The context used to load the target object</param>
+            <returns></returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler.SetValue(Sitecore.Data.Items.Item,System.Object,Glass.Sitecore.Mapper.ISitecoreService)">
+            <summary>
+            Sets a value on the Sitecore item
+            </summary>
+            <param name="target">The object that the value was read from</param>
+            <param name="item">The Sitecore item to write the value to</param>
+            <param name="value">The value to be set</param>
+            <param name="context">The context used to load the target object</param>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler.Property">
+            <summary>
+            The class property the handler is setting
+            </summary>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler.CanSetValue">
+            <summary>
+            Indicates the data handler can be used to set a value on a Sitecore item.
+            </summary>
+        </member>
+        <member name="T:Glass.Sitecore.Mapper.Configuration.Attributes.AbstractSitecorePropertyAttribute">
+            <summary>
+            Abstract class for all property attributes
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreQueryAttribute.#ctor(System.String)">
+            <summary>
+            Indicates that the property should be populated with the result of a query.
+            </summary>
+            <param name="query">The query to execute</param>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreQueryAttribute.Query">
+            <summary>
+            The query to execute
+            </summary>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreQueryAttribute.IsLazy">
+            <summary>
+            Indicates that the results should be loaded lazily
+            </summary>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreQueryAttribute.IsRelative">
+            <summary>
+            Indicates that the field is relative to the current item.
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.Query``1(System.String)">
+            <summary>
+            Query Sitecore for a set of items. Concrete classes are created
+            </summary>
+            <typeparam name="T">The type to return the items as</typeparam>
+            <param name="query">The query to execute</param>
+            <returns>Sitecore items as concrete classes of the specified type</returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.Query``1(System.String,System.Boolean)">
+            <summary>
+            Query Sitecore for a set of items. Proxy classes are created.
+            </summary>
+            <typeparam name="T">The type to return the items as</typeparam>
+            <param name="query">The query to execute</param>
+            <returns>Sitecore items as proxy classes of the specified type</returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.QuerySingle``1(System.String)">
+            <summary>
+            Query Sitecore for a single item. 
+            </summary>
+            <typeparam name="T">The type to return the items as</typeparam>
+            <param name="query">The query to execute</param>
+            <returns>Sitecore item as the specified type</returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.GetItem``1(System.String)">
+            <summary>
+            Retrieve a Sitecore item as the specified type.
+            </summary>
+            <typeparam name="T">The type to return the Sitecore item as</typeparam>
+            <param name="path">The path to the Sitecore item</param>
+            <returns>The Sitecore item as the specified type</returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.GetItem``1(System.String,Sitecore.Globalization.Language)">
+            <summary>
+            Retrieve a Sitecore item as the specified type.
+            </summary>
+            <typeparam name="T">The type to return the Sitecore item as</typeparam>
+            <param name="language">The language of the item to return</param>
+            <param name="path">The path to the Sitecore item</param>
+            <returns>The Sitecore item as the specified type</returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.GetItem``1(System.String,Sitecore.Globalization.Language,Sitecore.Data.Version)">
+            <summary>
+            Retrieve a Sitecore item as the specified type.
+            </summary>
+            <typeparam name="T">The type to return the Sitecore item as</typeparam>
+            <param name="language">The language of the item to return</param>
+            <param name="version">The version of the item to return</param>
+            <param name="path">The path to the Sitecore item</param>
+            <returns>The Sitecore item as the specified type</returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.GetItem``1(System.Guid)">
+            <summary>
+            Retrieve a Sitecore item as the specified type.
+            </summary>
+            <typeparam name="T">The type to return the Sitecore item as</typeparam>
+            <param name="id">The ID of the Sitecore item</param>
+            <returns>The Sitecore item as the specified type</returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.GetItem``1(System.Guid,Sitecore.Globalization.Language)">
+            <summary>
+            Retrieve a Sitecore item as the specified type.
+            </summary>
+            <typeparam name="T">The type to return the Sitecore item as</typeparam>
+            <param name="language">The language of the item to return</param>        
+            <param name="id">The ID of the Sitecore item</param>
+            <returns>The Sitecore item as the specified type</returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.GetItem``1(System.Guid,Sitecore.Globalization.Language,Sitecore.Data.Version)">
+            <summary>
+            Retrieve a Sitecore item as the specified type.
+            </summary>
+            <typeparam name="T">The type to return the Sitecore item as</typeparam>
+            <param name="language">The language of the item to return</param>
+            <param name="version">The version of the item to return</param>
+            <param name="id">The ID of the Sitecore item</param>
+            <returns>The Sitecore item as the specified type</returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.Save``1(``0)">
+            <summary>
+            Saves a class back to Sitecore. 
+            </summary>
+            <typeparam name="T">The type being saved. The type must have a property with the SitecoreIdAttribute.</typeparam>
+            <param name="item">The class to save</param>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.Create``2(``1,System.String)">
+            <summary>
+            Create a blank Sitecore item
+            </summary>
+            <typeparam name="T">The type to create</typeparam>
+            <typeparam name="K">The type of the parent</typeparam>
+            <param name="parent">The parent item. This item must have been load by Glass Sitecore Mapper</param>
+            <param name="name">The name of the item</param>
+            <returns></returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.Create``2(``1,System.String,``0)">
+            <summary>
+            Create an item with pre-populated data
+            </summary>
+            <typeparam name="T">The type to create</typeparam>
+            <typeparam name="K">The type of the parent</typeparam>
+            <param name="parent">The parent item. This item must have been load by Glass Sitecore Mapper</param>
+            <param name="name">The name of the item</param>
+            <param name="data">The data to pre-populate the item with</param>
+            <returns></returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.ISitecoreService.Delete``1(``0)">
+            <summary>
+            Delete an item from Sitecore
+            </summary>
+            <typeparam name="T">The type being deleted. The type must have a property with the SitecoreIdAttribute.</typeparam>
+            <param name="item">The class to delete</param>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.SitecoreService.#ctor(Sitecore.Data.Database,Glass.Sitecore.Mapper.InstanceContext)">
+            <summary>
+            Used by the test assembly only!!
+            </summary>
+            <param name="database"></param>
+            <param name="context"></param>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.SitecoreService.CreateClasses(System.Boolean,System.Type,System.Func{System.Collections.Generic.IEnumerable{Sitecore.Data.Items.Item}})">
+            <summary>
+            Creates an enumerable of the specified type
+            </summary>
+            <param name="isLazy"></param>
+            <param name="type"></param>
+            <param name="getItems"></param>
+            <param name="context"></param>
+            <returns></returns>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Context._contextLoaded">
+            <summary>
+            Indicates that the context has been loaded
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Context.#ctor(Glass.Sitecore.Mapper.Configuration.IConfigurationLoader,System.Collections.Generic.IEnumerable{Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler})">
+            <summary>
+            The context constructor should only be called once. After the context has been created call GetContext for specific copies
+            </summary>
+            <param name="loader">The loader used to load classes.</param>
+            <param name="datas">Custom data handlers.</param>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Context.GetContext">
+            <summary>
+            Creates an instance of the context that can be used by the calling class      
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Context.SetDataHandler(Glass.Sitecore.Mapper.Configuration.SitecoreProperty,System.Collections.Generic.IEnumerable{Glass.Sitecore.Mapper.Data.AbstractSitecoreDataHandler},System.Collections.Generic.Dictionary{System.Type,Glass.Sitecore.Mapper.Configuration.SitecoreClassConfig})">
+            <summary>
+            Can we move this so that it happens when the instance context is created
+            
+            </summary>
+            <param name="property"></param>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Context.StaticContext">
+            <summary>
+            The context created with the classes loaded
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreParentAttribute.#ctor">
+            <summary>
+            Indicates that the property should be populated with the parent item.
+            </summary>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreParentAttribute.IsLazy">
+            <summary>
+            Indicates if children should be loaded lazily. Default value is true. If false parent will be loaded when the contain object is created.
+            </summary>
+        </member>
+        <member name="T:Glass.Sitecore.Mapper.FakePropertyInfo">
+            <summary>
+            This is used to fake the System.Reflection.PropertyInfo class when needed.
+            </summary>
+        </member>
+        <member name="T:Glass.Sitecore.Mapper.Configuration.SitecoreProperty">
+            <summary>
+            Contains details about attributes assigned to members
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreChildrenAttribute.#ctor">
+            <summary>
+            Used to retrieve the children of an item as a specific type.
+            </summary>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreChildrenAttribute.IsLazy">
+            <summary>
+            Indicates if children should be loaded lazily. Default value is true. If false all children will be loaded when the contain object is created.
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.ContentPath">
+            <summary>
+            The item's content path. The property type must be System.String
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.DisplayName">
+            <summary>
+            The item's display name. The property type must be System.String
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.FullPath">
+            <summary>
+            The item's full path. The property type must be System.String
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.Key">
+            <summary>
+            The item's key (name). The property type must be System.String
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.MediaUrl">
+            <summary>
+            The item's media URL. The property type must be System.String
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.Path">
+            <summary>
+            The item's path. The property type must be System.String
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.TemplateId">
+            <summary>
+            The item's template Id. The property type must be System.Guid
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.TemplateName">
+            <summary>
+            The item's template name. The property type must be System.String
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.Url">
+            <summary>
+            The item's URL. The property type must be System.String
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType.Version">
+            <summary>
+            The item's version. The property type must be System.Int32
+            </summary>
+        </member>
+        <member name="T:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreIdAttribute">
+            <summary>
+            Indicates a field that contains the Sitecore item ID, this field must be a Guid
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Utility.CallAddMethod(System.Collections.Generic.IEnumerable{System.Object},System.Object)">
+            <summary>
+            Will call the add method on a list via reflection to add the items
+            </summary>
+            <param name="items">Items to add to the list</param>
+            <param name="list">The list to call the add method on</param>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Utility.CreateGenericType(System.Type,System.Type[])">
+            <summary>
+            Creates a generic type via reflection
+            </summary>
+            <param name="type">The generic type to create e.g. List&lt;&gt;</param>
+            <param name="arguments">The list of subtypes for the generic type, e.g string in List&lt;string&gt;</param>
+            <returns></returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Utility.CreateGenericType(System.Type,System.Type[],System.Object[])">
+            <summary>
+            </summary>
+            <param name="type">The generic type to create e.g. List&lt;&gt;</param>
+            <param name="arguments">The list of subtypes for the generic type, e.g string in List&lt;string&gt;</param>
+            <param name="parameters"> List of parameters to pass to the constructor.</param>
+            <returns></returns>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoAttribute.#ctor(Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoType)">
+            <summary>
+            Indicates that the property should be populated with data about the item such as URL, ID, etc.
+            </summary>
+            <param name="type">The type of information that should populate the property</param>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreInfoAttribute.Type">
+            <summary>
+            The type of information that should populate the property
+            </summary>
+        </member>
+        <member name="T:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreFieldAttribute">
+            <summary>
+            Used to populate the property with data from a Sitecore field
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreFieldAttribute.#ctor">
+            <summary>
+            Indicates that the property should pull data from a Sitecore field.
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreFieldAttribute.#ctor(System.String)">
+            <summary>
+            Indicates that the property should pull data from a Sitecore field.
+            </summary>
+            <param name="fieldName">The name of the field  to use if it is different to the property name</param>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreFieldAttribute.FieldName">
+            <summary>
+            The name of the field  to use if it is different to the property name
+            </summary>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreFieldAttribute.Setting">
+            <summary>
+            Options to override the behaviour of certain fields.
+            </summary>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreFieldAttribute.ReadOnly">
+            <summary>
+            When true the field will not be save back to Sitecore 
+            </summary>
+        </member>
+        <member name="M:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreClassAttribute.#ctor">
+            <summary>
+            Indicates that the class can be used by Glass Sitecore Mapper
+            </summary>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreClassAttribute.TemplateId">
+            <summary>
+            Indicates the template to use when trying to create an item
+            </summary>
+        </member>
+        <member name="P:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreClassAttribute.BranchId">
+            <summary>
+            Indicates the branch to use when trying to create and item. If a template id is also specified the template Id will be use instead.
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreFieldSettings.Default">
+            <summary>
+            The field carries out its default behaviour
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreFieldSettings.RichTextRaw">
+            <summary>
+            If used on a Rich Text field it stops the contents going through the render process 
+            and returns the raw HTML of the field
+            </summary>
+        </member>
+        <member name="F:Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreFieldSettings.DontLoadLazily">
+            <summary>
+            If the property type is another classes loaded by the  Mapper, indicates that the class should not be lazy loaded.
+            </summary>
+        </member>
+    </members>
+</doc>
