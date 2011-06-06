@@ -1,0 +1,12 @@
+h2. Glass Sitecore Mapper
+
+Glass Sitecore Mapper is an object mapper for "Sitecore":http://www.sitecore.net that allows  you to map content in Sitecore to .Net objects.
+
+To get started read the "Wiki":https://github.com/Glass-lu/Glass.Sitecore.Mapper/wiki and download the latest "build":https://github.com/Glass-lu/Glass.Sitecore.Mapper/tree/master/Builds. You can keep up to date by following "Glasslu":http://twitter.com/#!/Glasslu on twitter.
+
+Glass Sitecore Mapper is released under the Apache License Version 2, please see the "License":https://github.com/Glass-lu/Glass.Sitecore.Mapper/blob/master/License.txt file for more information.
+
+
+Thanks
+
+Mike Edwards
