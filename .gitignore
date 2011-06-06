@@ -42,3 +42,8 @@ data/
 temp/
 upload/
 App_Config/
+#don't ignore builds
+!Builds/*/Release
+!Builds/*/Debug
+!Builds/*/Release/*.pdb
+!Builds/*/Debug/*.pdb
