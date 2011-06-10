@@ -17,31 +17,24 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Glass.Sitecore.Mapper.Configuration.Attributes;
-using Glass.Sitecore.Mapper.Configuration;
+using System.Text;
 
-namespace Glass.Sitecore.Mapper.Demo.Application.Domain
+namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    [SitecoreClass(TemplateId="{D3F8D040-C346-4154-9AEA-847583FBD364}")]
-    public class DemoClass
+    public class FluentConfigurationLoader :IConfigurationLoader
     {
+        IEnumerable<ISitecoreClass> _configs;
+        public FluentConfigurationLoader(params ISitecoreClass [] configs)
+        {
+            _configs = configs;
+        }
+        #region IConfigurationLoader Members
 
-        [SitecoreInfo(SitecoreInfoType.Url)]
-        public virtual string Url { get; set; }
+        public IEnumerable<SitecoreClassConfig> Load()
+        {
+            return _configs.Select(x => x.Config);
+        }
 
-        [SitecoreField]
-        public virtual string Title { get; set; }
-
-        [SitecoreField]
-        public virtual string Body { get; set; }
-        
-        [SitecoreField]
-        public virtual IEnumerable<DemoClass> Links { get; set; }
-
+        #endregion
     }
-
-   
-
-    
 }

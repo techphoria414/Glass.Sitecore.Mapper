@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Glass.Sitecore.Mapper.Configuration.Attributes
+namespace Glass.Sitecore.Mapper.Configuration
 {
     public enum SitecoreFieldSettings
     {

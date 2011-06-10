@@ -21,18 +21,19 @@ using System.Text;
 using NUnit.Framework;
 using Sitecore.Data;
 using Glass.Sitecore.Mapper.Data;
-using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.FieldTypes;
 using Sitecore.Data.Items;
 using Sitecore.Links;
 using Sitecore.Data.Fields;
 using Sitecore.SecurityModel;
 using Glass.Sitecore.Mapper.Configuration;
+using Glass.Sitecore.Mapper.Configuration.Fluent;
+using Glass.Sitecore.Mapper.Tests.Configuration.Fluent.GeneralFluentFixtureNS;
 
-namespace Glass.Sitecore.Mapper.Tests
+namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 {
     [TestFixture]
-    public class MiscFixture
+    public class GeneralFluentFixture
     {
 
 
@@ -46,9 +47,64 @@ namespace Glass.Sitecore.Mapper.Tests
         [SetUp]
         public void Setup()
         {
-            AttributeConfigurationLoader loader = new AttributeConfigurationLoader(
-               new string[] { "Glass.Sitecore.Mapper.Tests.MiscFixtureNS, Glass.Sitecore.Mapper.Tests" }
-               );
+
+            var basic = new SitecoreClass<GeneralFluentFixtureNS.BasicTemplate>();
+            basic.Id(x => x.Id);
+            basic.Field(x => x.Checkbox);
+            basic.Field(x => x.Date);
+            basic.Field(x => x.DateTime);
+            basic.Field(x => x.File);
+            basic.Field(x => x.Image);
+            basic.Field(x => x.Integer);
+            basic.Field(x => x.Float);
+            basic.Field(x => x.Double);
+            basic.Field(x => x.Decimal);
+            basic.Field(x => x.MultiLineText);
+            basic.Field(x => x.Number);
+            basic.Field(x => x.Password);
+            basic.Field(x => x.RichText).Setting(SitecoreFieldSettings.RichTextRaw);
+            basic.Field(x => x.SingleLineText);
+
+            basic.Field(x => x.CheckList);
+            basic.Field(x => x.DropList);
+            basic.Field(x => x.GroupedDropLink);
+            basic.Field(x => x.GroupedDropList);
+            basic.Field(x => x.MultiList);
+            basic.Field(x => x.Treelist);
+            basic.Field(x => x.TreeListEx);
+
+            basic.Field(x => x.DropLink);
+            basic.Field(x => x.DropTree);
+            basic.Field(x => x.GeneralLink);
+
+            basic.Field(x => x.Icon);
+            basic.Field(x => x.TriState);
+
+            basic.Field(x => x.Attachment);
+
+            basic.Info(x => x.ContentPath).InfoType(SitecoreInfoType.ContentPath);
+            basic.Info(x => x.DisplayName).InfoType(SitecoreInfoType.DisplayName);
+            basic.Info(x => x.FullPath).InfoType(SitecoreInfoType.FullPath);
+            basic.Info(x => x.Key).InfoType(SitecoreInfoType.Key);
+            basic.Info(x => x.MediaUrl).InfoType(SitecoreInfoType.MediaUrl);
+            basic.Info(x => x.Path).InfoType(SitecoreInfoType.Path);
+            basic.Info(x => x.TemplateId).InfoType(SitecoreInfoType.TemplateId);
+            basic.Info(x => x.TemplateName).InfoType(SitecoreInfoType.TemplateName);
+            basic.Info(x => x.Url).InfoType(SitecoreInfoType.Url);
+            basic.Info(x => x.Version).InfoType(SitecoreInfoType.Version);
+
+            basic.Children(x => x.Children);
+
+            basic.Parent(x => x.Parent);
+
+            basic.Query(x => x.Query).Query("/sitecore/content/Glass/*[@@TemplateName='BasicTemplate']");
+
+            var subClass = new SitecoreClass<GeneralFluentFixtureNS.SubClass>();
+            subClass.Id(x => x.Id);
+
+            FluentConfigurationLoader loader = new FluentConfigurationLoader(
+              basic, subClass                  
+                             );
 
             _context = new Context(loader, new AbstractSitecoreDataHandler[] {});
             global::Sitecore.Context.Site = global::Sitecore.Configuration.Factory.GetSite("website");
@@ -69,10 +125,10 @@ namespace Glass.Sitecore.Mapper.Tests
         {
 
             //Assign 
-            MiscFixtureNS.BasicTemplate test = null;
+            GeneralFluentFixtureNS.BasicTemplate test = null;
 
             //Act
-            test = _sitecore.GetItem<MiscFixtureNS.BasicTemplate>("/sitecore/content/Glass/Test1");
+            test = _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Glass/Test1");
 
             //Assert
 
@@ -147,11 +203,11 @@ namespace Glass.Sitecore.Mapper.Tests
             Assert.AreEqual(_test1.ID.Guid, test.CheckList.First().Id);
             Assert.AreEqual(_test2.ID.Guid, test.CheckList.Last().Id);
 
-            Assert.AreEqual(MiscFixtureNS.TestEnum.Test1, test.DropList);
+            Assert.AreEqual(TestEnum.Test1, test.DropList);
 
             Assert.AreEqual(_test3.ID.Guid, test.GroupedDropLink.Id);
 
-            Assert.AreEqual(MiscFixtureNS.TestEnum.Test3, test.GroupedDropList);
+            Assert.AreEqual(TestEnum.Test3, test.GroupedDropList);
 
             Assert.AreEqual(_test1.ID.Guid, test.MultiList.First().Id);
 
@@ -244,9 +300,9 @@ namespace Glass.Sitecore.Mapper.Tests
             //if you do this without the disabler the role manager throws an exception
             using (new SecurityDisabler())
             {
-                Assert.AreEqual(3, test.Query.Count());
+                Assert.AreEqual(2, test.Query.Count());
                 Assert.AreEqual(_test1.ID.Guid, test.Query.First().Id);
-                Assert.AreEqual(_test2.ID.Guid, test.Query.Take(2).Last().Id);
+                Assert.AreEqual(_test2.ID.Guid, test.Query.Last().Id);
             }
             #endregion
 
@@ -271,9 +327,9 @@ namespace Glass.Sitecore.Mapper.Tests
                 _test2["DropList"] = "Test2";
                 _test2.EndEdit();
             }
-            
-            MiscFixtureNS.BasicTemplate test = 
-                _sitecore.GetItem<MiscFixtureNS.BasicTemplate>("/sitecore/content/Glass/Test2");
+
+            GeneralFluentFixtureNS.BasicTemplate test =
+                _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Glass/Test2");
             
             //Simple Types
 
@@ -303,29 +359,29 @@ namespace Glass.Sitecore.Mapper.Tests
             test.SingleLineText = "test single line text";
 
             //List Types
-            test.CheckList = new MiscFixtureNS.SubClass[]{
-                new MiscFixtureNS.SubClass(){Id = _test1.ID.Guid},
-                new MiscFixtureNS.SubClass(){Id = _test2.ID.Guid},
+            test.CheckList = new GeneralFluentFixtureNS.SubClass[]{
+                new GeneralFluentFixtureNS.SubClass(){Id = _test1.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _test2.ID.Guid},
             };
-            test.DropList = MiscFixtureNS.TestEnum.Test3;
-            test.GroupedDropLink = new MiscFixtureNS.SubClass() { Id = _test3.ID.Guid };
-            test.GroupedDropList = MiscFixtureNS.TestEnum.Test3;
-            test.MultiList = new MiscFixtureNS.SubClass[]{
-                new MiscFixtureNS.SubClass(){Id = _test1.ID.Guid},
-                new MiscFixtureNS.SubClass(){Id = _test2.ID.Guid},
+            test.DropList = GeneralFluentFixtureNS.TestEnum.Test3;
+            test.GroupedDropLink = new GeneralFluentFixtureNS.SubClass() { Id = _test3.ID.Guid };
+            test.GroupedDropList = GeneralFluentFixtureNS.TestEnum.Test3;
+            test.MultiList = new GeneralFluentFixtureNS.SubClass[]{
+                new GeneralFluentFixtureNS.SubClass(){Id = _test1.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _test2.ID.Guid},
             };
-            test.Treelist = new MiscFixtureNS.SubClass[]{
-                new MiscFixtureNS.SubClass(){Id = _test1.ID.Guid},
-                new MiscFixtureNS.SubClass(){Id = _test2.ID.Guid},
+            test.Treelist = new GeneralFluentFixtureNS.SubClass[]{
+                new GeneralFluentFixtureNS.SubClass(){Id = _test1.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _test2.ID.Guid},
             };
-            test.TreeListEx = new MiscFixtureNS.SubClass[]{
-                new MiscFixtureNS.SubClass(){Id = _test1.ID.Guid},
-                new MiscFixtureNS.SubClass(){Id = _test2.ID.Guid},
+            test.TreeListEx = new GeneralFluentFixtureNS.SubClass[]{
+                new GeneralFluentFixtureNS.SubClass(){Id = _test1.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _test2.ID.Guid},
             };
 
             //Link Types 
-            test.DropLink = new MiscFixtureNS.SubClass() { Id = _test3.ID.Guid };
-            test.DropTree = new MiscFixtureNS.SubClass() { Id = _test3.ID.Guid };
+            test.DropLink = new GeneralFluentFixtureNS.SubClass() { Id = _test3.ID.Guid };
+            test.DropTree = new GeneralFluentFixtureNS.SubClass() { Id = _test3.ID.Guid };
             test.GeneralLink = new Link(){
                 Anchor="test anchor",
                 Class="test class",
@@ -343,7 +399,7 @@ namespace Glass.Sitecore.Mapper.Tests
             //Act
             using (new SecurityDisabler())
             {
-                _sitecore.Save<MiscFixtureNS.BasicTemplate>(test);
+                _sitecore.Save<GeneralFluentFixtureNS.BasicTemplate>(test);
             }
             
             //Assert
@@ -409,14 +465,12 @@ namespace Glass.Sitecore.Mapper.Tests
         #endregion
     }
 
-    namespace MiscFixtureNS
+    namespace GeneralFluentFixtureNS
     {
-        [SitecoreClass]
         public class BasicTemplate
         {
             #region SitecoreId
 
-            [SitecoreId]
             public virtual Guid Id { get; set; }
 
             #endregion
@@ -424,81 +478,52 @@ namespace Glass.Sitecore.Mapper.Tests
             #region Fields
             #region Simple Types
 
-            [SitecoreField]
             public virtual bool Checkbox { get; set; }
-            [SitecoreField]
             public virtual DateTime Date { get; set; }
-            [SitecoreField]
             public virtual DateTime DateTime { get; set; }
-            [SitecoreField]
             public virtual File File { get; set; }
-            [SitecoreField]
             public virtual Image Image { get; set; }
-            [SitecoreField]
             public virtual int Integer { get; set; }
-            [SitecoreField]
             public virtual float Float { get; set; }
-            [SitecoreField]
             public virtual double Double { get; set; }
-            [SitecoreField]
             public virtual decimal Decimal { get; set; }
-
-            [SitecoreField]
             public virtual string MultiLineText { get; set; }
-            [SitecoreField]
             public virtual int Number { get; set; }
-            [SitecoreField]
             public virtual string Password { get; set; }
-            [SitecoreField(Setting=SitecoreFieldSettings.RichTextRaw)]
             public virtual string RichText { get; set; }
-            [SitecoreField]
             public virtual string SingleLineText { get; set; }
 
             #endregion
 
             #region List Types
 
-            [SitecoreField]
             public virtual IEnumerable<SubClass> CheckList { get; set; }
-            [SitecoreField]
             public virtual TestEnum DropList { get; set; }
-            [SitecoreField]
             public virtual SubClass GroupedDropLink { get; set; }
-            [SitecoreField]
             public virtual TestEnum GroupedDropList { get; set; }
-            [SitecoreField]
             public virtual IEnumerable<SubClass> MultiList { get; set; }
-            [SitecoreField]
             public virtual IEnumerable<SubClass> Treelist { get; set; }
-            [SitecoreField]
             public virtual IEnumerable<SubClass> TreeListEx { get; set; }
 
             #endregion
 
             #region Link Types
 
-            [SitecoreField]
             public virtual SubClass DropLink { get; set; }
-            [SitecoreField]
             public virtual SubClass DropTree { get; set; }
-            [SitecoreField]
             public virtual Link GeneralLink { get; set; }
 
             #endregion
 
             #region Developer Types
 
-            [SitecoreField]
             public virtual string Icon { get; set; }
-            
-            [SitecoreField]
             public virtual TriState TriState { get; set; }
 
             #endregion
 
             #region SystemType
 
-            [SitecoreField]
             public virtual System.IO.Stream Attachment { get; set; }
 
             #endregion
@@ -507,56 +532,41 @@ namespace Glass.Sitecore.Mapper.Tests
 
             #region SitecoreInfo
 
-            [SitecoreInfo(SitecoreInfoType.ContentPath)]
             public virtual string ContentPath { get; set; }
-            [SitecoreInfo(SitecoreInfoType.DisplayName)]
             public virtual string DisplayName { get; set; }
-            [SitecoreInfo(SitecoreInfoType.FullPath)]
             public virtual string FullPath { get; set; }
-            [SitecoreInfo(SitecoreInfoType.Key)]
             public virtual string Key { get; set; }
-            [SitecoreInfo(SitecoreInfoType.MediaUrl)]
             public virtual string MediaUrl { get; set; }
-            [SitecoreInfo(SitecoreInfoType.Path)]
             public virtual string Path { get; set; }
-            [SitecoreInfo(SitecoreInfoType.TemplateId)]
             public virtual Guid TemplateId { get; set; }
-            [SitecoreInfo(SitecoreInfoType.TemplateName)]
             public virtual string TemplateName { get; set; }
-            [SitecoreInfo(SitecoreInfoType.Url)]
             public virtual string Url { get; set; }
-            [SitecoreInfo(SitecoreInfoType.Version)]
             public virtual int Version { get; set; }
 
             #endregion
 
             #region SitecoreChildren
             
-            [SitecoreChildren]
             public virtual IEnumerable<SubClass> Children { get; set; }
 
             #endregion
             
             #region SitecoreParent
 
-            [SitecoreParent]
             public virtual SubClass Parent { get; set; }
 
             #endregion
 
             #region SitecoreQuery
 
-            [SitecoreQuery("/sitecore/content/Glass/*[@@TemplateName='BasicTemplate']")]
             public virtual IEnumerable<SubClass> Query { get; set; }
 
             #endregion
 
         }
 
-        [SitecoreClass]
         public class SubClass{
             
-            [SitecoreId]
             public virtual Guid Id{get;set;}
 
         }

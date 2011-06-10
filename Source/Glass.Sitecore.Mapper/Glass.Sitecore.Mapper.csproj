@@ -66,12 +66,14 @@
     <Compile Include="Configuration\Attributes\SitecoreClassAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreFieldAttribute.cs" />
     <Compile Include="Configuration\Attributes\AbstractSitecorePropertyAttribute.cs" />
-    <Compile Include="Configuration\Attributes\SitecoreFieldSettings.cs" />
+    <Compile Include="Configuration\SitecoreFieldSettings.cs" />
     <Compile Include="Configuration\Attributes\SitecoreIdAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreParentAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreInfoAttribute.cs" />
-    <Compile Include="Configuration\Attributes\SitecoreInfoType.cs" />
+    <Compile Include="Configuration\SitecoreInfoType.cs" />
     <Compile Include="Configuration\Attributes\SitecoreQueryAttribute.cs" />
+    <Compile Include="Configuration\Fluent\FluentConfigurationLoader.cs" />
+    <Compile Include="Configuration\Fluent\SitecoreClass.cs" />
     <Compile Include="Configuration\IConfigurationLoader.cs" />
     <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClass.cs" />
@@ -128,6 +130,16 @@
     <Compile Include="SitecoreIdException.cs" />
     <Compile Include="SitecoreService.cs" />
     <Compile Include="Utility.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Configuration\Fluent\ISitecoreAttributeBuilder.cs" />
+    <Compile Include="Configuration\Fluent\ISitecoreClass.cs" />
+    <Compile Include="Configuration\Fluent\SitecoreChildren.cs" />
+    <Compile Include="Configuration\Fluent\SitecoreField.cs" />
+    <Compile Include="Configuration\Fluent\SitecoreId.cs" />
+    <Compile Include="Configuration\Fluent\SitecoreInfo.cs" />
+    <Compile Include="Configuration\Fluent\SitecoreParent.cs" />
+    <Compile Include="Configuration\Fluent\SitecoreQuery.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

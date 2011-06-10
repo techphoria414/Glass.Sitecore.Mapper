@@ -17,31 +17,30 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Glass.Sitecore.Mapper.Configuration.Attributes;
-using Glass.Sitecore.Mapper.Configuration;
+using System.Text;
+using NUnit.Framework;
+using Glass.Sitecore.Mapper.Configuration.Fluent;
 
-namespace Glass.Sitecore.Mapper.Demo.Application.Domain
+namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 {
-    [SitecoreClass(TemplateId="{D3F8D040-C346-4154-9AEA-847583FBD364}")]
-    public class DemoClass
+    [TestFixture]
+    public class SitecoreClassFixture
     {
 
-        [SitecoreInfo(SitecoreInfoType.Url)]
-        public virtual string Url { get; set; }
+        [Test]
+        public void Test()
+        {
+           
 
-        [SitecoreField]
-        public virtual string Title { get; set; }
-
-        [SitecoreField]
-        public virtual string Body { get; set; }
-        
-        [SitecoreField]
-        public virtual IEnumerable<DemoClass> Links { get; set; }
+        }
 
     }
+    namespace SitecoreClassFixtureNS
+    {
+        public class Test
+        {
+            public virtual string MyField { get; set; }
+        }
 
-   
-
-    
+    }
 }

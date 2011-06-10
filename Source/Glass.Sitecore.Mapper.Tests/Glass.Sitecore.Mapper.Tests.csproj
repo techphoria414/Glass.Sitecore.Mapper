@@ -71,6 +71,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoaderFixture.cs" />
+    <Compile Include="Configuration\Fluent\FluentConfigurationLoaderFixture.cs" />
+    <Compile Include="Configuration\Fluent\GeneralFluentFixture.cs" />
+    <Compile Include="Configuration\Fluent\SitecoreClassFixture.cs" />
     <Compile Include="ContextFixture.cs" />
     <Compile Include="Data\AbstractSitecoreFieldFixture.cs" />
     <Compile Include="Data\QueryParameters\ItemDateNowParameterFixture.cs">

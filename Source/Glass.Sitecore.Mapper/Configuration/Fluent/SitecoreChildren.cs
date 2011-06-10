@@ -19,27 +19,31 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Glass.Sitecore.Mapper.Configuration.Attributes
+namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    public class SitecoreInfoAttribute:AbstractSitecorePropertyAttribute
+    public class SitecoreChildren<T> : ISitecoreAttributeBuilder
     {
-        /// <summary>
-        /// The type of information that should populate the property
-        /// </summary>
-        public SitecoreInfoType Type{get;set;}
-        
-        /// <summary>
-        /// Indicates that the property should be populated with data about the item such as URL, ID, etc.
-        /// </summary>
-        /// <param name="type">The type of information that should populate the property</param>
-        public SitecoreInfoAttribute(SitecoreInfoType type)
+
+        Configuration.Attributes.SitecoreChildrenAttribute _attr;
+
+        public SitecoreChildren()
         {
-            Type = type;
+            _attr = new Configuration.Attributes.SitecoreChildrenAttribute();
         }
 
-        internal SitecoreInfoAttribute()
+        public SitecoreChildren<T> IsNotLazy()
         {
-            Type = SitecoreInfoType.NotSet;
+            _attr.IsLazy = false;
+            return this;
         }
+
+        #region ISitecoreAttributeBuilder Members
+
+        public Glass.Sitecore.Mapper.Configuration.Attributes.AbstractSitecorePropertyAttribute Attribute
+        {
+            get { return _attr; }
+        }
+
+        #endregion
     }
 }
