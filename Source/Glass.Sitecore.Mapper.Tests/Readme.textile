@@ -1,0 +1,4 @@
+﻿h2. Glass.Sitecore.Mapper.Tests
+
+Test must be run in debug mode. When compiling in release mode compile errors will be returned, this is expected.
+
