@@ -38,7 +38,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var context = new InstanceContext(
                 new Dictionary<Type, SitecoreClassConfig>(),
                 new AbstractSitecoreDataHandler[] { new SitecoreFieldIntegerHandler() });
-            _service = new SitecoreService(null, context);
+            _service = new SitecoreService("master");
         }
 
         #region GetFieldValue

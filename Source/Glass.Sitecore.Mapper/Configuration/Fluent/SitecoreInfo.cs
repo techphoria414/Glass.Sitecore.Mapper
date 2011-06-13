@@ -18,14 +18,16 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    public class SitecoreInfo<T>: ISitecoreAttributeBuilder
+    public class SitecoreInfo<T>: AbstractSitecoreAttributeBuilder<T>
+
     {
         Configuration.Attributes.SitecoreInfoAttribute _attr;
 
-        public SitecoreInfo(){
+        public SitecoreInfo(Expression<Func<T, object>> ex):base(ex){
             _attr = new Configuration.Attributes.SitecoreInfoAttribute();
         }
 
@@ -35,13 +37,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             return this;
         }
 
-        #region ISitecoreAttributeBuilder Members
 
-        public Glass.Sitecore.Mapper.Configuration.Attributes.AbstractSitecorePropertyAttribute Attribute
+        internal override Glass.Sitecore.Mapper.Configuration.Attributes.AbstractSitecorePropertyAttribute Attribute
         {
             get { return _attr; }
         }
 
-        #endregion
     }
 }

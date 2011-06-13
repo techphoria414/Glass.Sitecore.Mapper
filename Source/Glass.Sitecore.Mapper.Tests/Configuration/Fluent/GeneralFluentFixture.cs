@@ -48,10 +48,28 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
         public void Setup()
         {
 
-            var basic = new SitecoreClass<GeneralFluentFixtureNS.BasicTemplate>();
+            var basic = new SitecoreClass<GeneralFluentFixtureNS.BasicTemplate>()
+            .Fields(x =>
+                {
+                    x.Field(y => y.Checkbox);
+                    x.Field(y => y.Date);
+                })
+            .Infos(x =>
+                {
+                    x.Info(y => y.ContentPath).InfoType(SitecoreInfoType.ContentPath);
+                    x.Info(y => y.DisplayName).InfoType(SitecoreInfoType.DisplayName);
+                })
+            .Queries(x =>
+                {
+                    x.Query(y => y.Query).Query("/sitecore/content/Glass/*[@@TemplateName='BasicTemplate']");
+
+                });
+
+            
             basic.Id(x => x.Id);
-            basic.Field(x => x.Checkbox);
-            basic.Field(x => x.Date);
+
+            //basic.Field(x => x.Checkbox);
+            //basic.Field(x => x.Date);
             basic.Field(x => x.DateTime);
             basic.Field(x => x.File);
             basic.Field(x => x.Image);
@@ -82,8 +100,7 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 
             basic.Field(x => x.Attachment);
 
-            basic.Info(x => x.ContentPath).InfoType(SitecoreInfoType.ContentPath);
-            basic.Info(x => x.DisplayName).InfoType(SitecoreInfoType.DisplayName);
+            
             basic.Info(x => x.FullPath).InfoType(SitecoreInfoType.FullPath);
             basic.Info(x => x.Key).InfoType(SitecoreInfoType.Key);
             basic.Info(x => x.MediaUrl).InfoType(SitecoreInfoType.MediaUrl);
@@ -97,7 +114,6 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 
             basic.Parent(x => x.Parent);
 
-            basic.Query(x => x.Query).Query("/sitecore/content/Glass/*[@@TemplateName='BasicTemplate']");
 
             var subClass = new SitecoreClass<GeneralFluentFixtureNS.SubClass>();
             subClass.Id(x => x.Id);
@@ -300,9 +316,9 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             //if you do this without the disabler the role manager throws an exception
             using (new SecurityDisabler())
             {
-                Assert.AreEqual(2, test.Query.Count());
+                Assert.AreEqual(3, test.Query.Count());
                 Assert.AreEqual(_test1.ID.Guid, test.Query.First().Id);
-                Assert.AreEqual(_test2.ID.Guid, test.Query.Last().Id);
+                Assert.AreEqual(_test2.ID.Guid, test.Query.Take(2).Last().Id);
             }
             #endregion
 

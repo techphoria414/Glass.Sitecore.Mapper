@@ -24,11 +24,17 @@ using System.Text.RegularExpressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    public class SitecoreClass<T> : ISitecoreClass
+    public class SitecoreClass<T> : ISitecoreClass, ISitecoreClassFields<T>, ISitecoreClassInfos<T>, ISitecoreClassQueries<T>
     {
        
-        IList<SitecoreProperty> _properties;
+        List<SitecoreProperty> _properties;
         SitecoreClassConfig _config;
+
+
+        public SitecoreClass(params AbstractSitecoreAttributeBuilder<T> [] configs):base()
+        {
+           
+        }
 
         public SitecoreClass()
         {
@@ -55,40 +61,71 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
 
         public SitecoreChildren<T> Children(Expression<Func<T, object>> ex)
         {
-            SitecoreChildren<T> builder = new SitecoreChildren<T>();
-            AddProperty(builder.Attribute, ex);
+            SitecoreChildren<T> builder = new SitecoreChildren<T>(ex);
+            AddProperty(builder);
             return builder;
         }
+
+        
+
+
         public SitecoreField<T> Field(Expression<Func<T, object>> ex){
-            SitecoreField<T> builder = new SitecoreField<T>();
-            AddProperty(builder.Attribute, ex);
+            SitecoreField<T> builder = new SitecoreField<T>(ex);
+            AddProperty(builder);
+            
             return builder;
         }
+
+      
+
         public SitecoreId<T> Id(Expression<Func<T, object>> ex)
         {
-            SitecoreId<T> info = new SitecoreId<T>();
-            AddProperty(info.Attribute, ex);
-            return info;
+            SitecoreId<T> builder = new SitecoreId<T>(ex);
+            AddProperty(builder);
+            return builder;
         }
         public SitecoreInfo<T> Info(Expression<Func<T, object>> ex)
         {
-            SitecoreInfo<T> builder = new SitecoreInfo<T>();
-            AddProperty(builder.Attribute, ex);
+            SitecoreInfo<T> builder = new SitecoreInfo<T>(ex);
+            AddProperty(builder);
             return builder;
         }
         public SitecoreParent<T> Parent(Expression<Func<T, object>> ex)
         {
-            SitecoreParent<T> builder = new SitecoreParent<T>();
-            AddProperty(builder.Attribute, ex);
+            SitecoreParent<T> builder = new SitecoreParent<T>(ex);
+            AddProperty(builder);
             return builder;
         }
         public SitecoreQuery<T> Query(Expression<Func<T, object>> ex)
         {
-            SitecoreQuery<T> builder = new SitecoreQuery<T>();
-            AddProperty(builder.Attribute, ex);
+            SitecoreQuery<T> builder = new SitecoreQuery<T>(ex);
+            AddProperty(builder);
             return builder;
         }
-        private void AddProperty(Configuration.Attributes.AbstractSitecorePropertyAttribute attr, Expression<Func<T, object>> ex){
+
+        public SitecoreClass<T> Fields(Action<ISitecoreClassFields<T>> fields)
+        {
+            fields.Invoke(this);
+            return this;
+        }
+
+        public SitecoreClass<T> Infos(Action<ISitecoreClassInfos<T>> infos)
+        {
+            infos.Invoke(this);
+            return this;
+        }
+        public SitecoreClass<T> Queries(Action<ISitecoreClassQueries<T>> queries)
+        {
+            queries.Invoke(this);
+            return this;
+        }
+
+
+
+
+        private void AddProperty(AbstractSitecoreAttributeBuilder<T> builder){
+            Configuration.Attributes.AbstractSitecorePropertyAttribute attr = builder.Attribute;
+            Expression<Func<T, object>> ex = builder.Expression;
             SitecoreProperty property = new SitecoreProperty();
             if (ex.Parameters.Count > 1)
                 throw new MapperException("To many parameters in linq expression {0}".Formatted(ex.Body));
@@ -120,6 +157,24 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
         }
 
         #endregion
+
+        
     }
+    #region Interfaces
+
+    public interface ISitecoreClassFields<T>
+    {
+        SitecoreField<T> Field(Expression<Func<T, object>> ex);
+    }
+    public interface ISitecoreClassInfos<T>
+    {
+        SitecoreInfo<T> Info(Expression<Func<T, object>> ex);
+    }
+    public interface ISitecoreClassQueries<T>
+    {
+        SitecoreQuery<T> Query(Expression<Func<T, object>> ex);
+    }
+
+    #endregion
 }
  

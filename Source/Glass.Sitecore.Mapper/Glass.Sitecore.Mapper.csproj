@@ -132,7 +132,7 @@
     <Compile Include="Utility.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Configuration\Fluent\ISitecoreAttributeBuilder.cs" />
+    <Compile Include="Configuration\Fluent\AbstractSitecoreAttributeBuilder.cs" />
     <Compile Include="Configuration\Fluent\ISitecoreClass.cs" />
     <Compile Include="Configuration\Fluent\SitecoreChildren.cs" />
     <Compile Include="Configuration\Fluent\SitecoreField.cs" />

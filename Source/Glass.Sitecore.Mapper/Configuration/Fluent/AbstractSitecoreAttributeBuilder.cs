@@ -19,11 +19,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
+using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    public interface ISitecoreAttributeBuilder
+    public abstract class AbstractSitecoreAttributeBuilder<T>
     {
-        AbstractSitecorePropertyAttribute Attribute { get; }
+        public AbstractSitecoreAttributeBuilder(Expression<Func<T, object>> ex)
+        {
+            Expression = ex;
+        }
+        internal abstract AbstractSitecorePropertyAttribute Attribute { get; }
+        internal Expression<Func<T, object>> Expression { get; private set; }
     }
 }

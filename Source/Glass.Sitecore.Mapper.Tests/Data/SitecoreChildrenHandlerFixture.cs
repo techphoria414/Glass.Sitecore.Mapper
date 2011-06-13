@@ -53,7 +53,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
-            _service = new SitecoreService(_db, context);
+            _service = new SitecoreService(_db);
 
             _itemId = new Guid("{D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}");
             _handler = new SitecoreChildrenHandler();

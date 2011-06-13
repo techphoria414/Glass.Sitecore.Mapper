@@ -59,7 +59,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 }).ToDictionary(),
                 new AbstractSitecoreDataHandler[] { });
 
-            _service = new SitecoreService(_db, context);
+            _service = new SitecoreService(_db);
         }
      
         #region WillHandle
