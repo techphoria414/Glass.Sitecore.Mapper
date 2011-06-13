@@ -52,7 +52,7 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
-            _service = new SitecoreService(_db);
+            _service = new SitecoreService(_db, context);
 
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
 

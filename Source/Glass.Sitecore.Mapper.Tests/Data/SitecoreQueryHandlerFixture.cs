@@ -56,7 +56,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 }).ToDictionary(),
                 new AbstractSitecoreDataHandler[] { });
 
-            _service = new SitecoreService(_db);
+            _service = new SitecoreService(_db, context);
 
             _handler = new SitecoreQueryHandler();
 
