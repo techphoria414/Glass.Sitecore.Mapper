@@ -229,6 +229,7 @@
     <None Include="App_Config\XamlSharp.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
+    <None Include="Readme.textile" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Config\Security\Domains.config.xml">
