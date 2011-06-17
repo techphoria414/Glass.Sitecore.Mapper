@@ -41,9 +41,9 @@ App_Data/
 !*/[Cc]onfiguration/[Dd]ebug/
 !*/[Cc]onfiguration/[Rr]elease/
 *.DS_Store
-data/
 temp/
 upload/
 App_Config/
 Builds/
 !*.textile
+Source/Glass.Sitecore.Mapper.Demo/data/
