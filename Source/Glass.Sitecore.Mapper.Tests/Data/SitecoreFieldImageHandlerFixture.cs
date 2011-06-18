@@ -92,7 +92,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void SetValue_SaveDataCorrectly()
         {
             //Assign
-            ID newMediaId = new ID(new Guid("{B4445D6A-D2DA-40A6-9C43-5972F79C73AE}"));
+            // /sitecore/media library/Files/DSC01034
+            ID newMediaId = new ID(new Guid("{210FAF49-5AA4-471E-BBFE-B4D3ACB6ADC0}"));
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreFieldAttribute(),

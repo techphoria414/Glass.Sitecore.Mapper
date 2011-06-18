@@ -51,7 +51,7 @@ namespace Glass.Sitecore.Mapper.Data
             {
                 if (file.Id == Guid.Empty)
                 {
-                    ItemLink link = new ItemLink(item.Database.Name, item.ID, null, field.MediaItem.Database.Name, field.MediaID, field.MediaItem.Paths.FullPath);
+                    ItemLink link = new ItemLink(item.Database.Name, item.ID, field.InnerField.ID, field.MediaItem.Database.Name, field.MediaID, field.MediaItem.Paths.FullPath);
                     field.RemoveLink(link);
                 }
                 else
@@ -61,7 +61,7 @@ namespace Glass.Sitecore.Mapper.Data
                     if (target != null)
                     {
                         field.MediaID = newId;
-                        ItemLink link = new ItemLink(item.Database.Name, item.ID, null, target.Database.Name, target.ID, target.Paths.FullPath);
+                        ItemLink link = new ItemLink(item.Database.Name, item.ID, field.InnerField.ID, target.Database.Name, target.ID, target.Paths.FullPath);
                         field.UpdateLink(link);
                     }
                     else throw new MapperException("No item with ID {0}. Can not update File Item field".Formatted(newId));
