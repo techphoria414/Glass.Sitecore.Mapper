@@ -24,6 +24,7 @@ using Glass.Sitecore.Mapper.Configuration;
 using Sitecore.Globalization;
 using Glass.Sitecore.Mapper.Proxies;
 using System.Collections;
+using Sitecore.Links;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -34,6 +35,7 @@ namespace Glass.Sitecore.Mapper
         
 
         Database _database;
+        LinkDatabase _linkDb;
 
         public SitecoreService(string database):this(global::Sitecore.Configuration.Factory.GetDatabase(database))
         {
@@ -42,6 +44,7 @@ namespace Glass.Sitecore.Mapper
         public SitecoreService(Database database)
         {
             InstanceContext = Context.GetContext();
+            _linkDb = global::Sitecore.Configuration.Factory.GetLinkDatabase();
             _database = database;
         }
         
@@ -119,6 +122,7 @@ namespace Glass.Sitecore.Mapper
             item.Editing.BeginEdit();
             WriteToItem<T>(target, item);            
             item.Editing.EndEdit();
+            _linkDb.UpdateReferences(item);
             
         }
 

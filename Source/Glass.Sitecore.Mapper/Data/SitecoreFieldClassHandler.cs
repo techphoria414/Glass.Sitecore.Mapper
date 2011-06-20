@@ -62,7 +62,7 @@ namespace Glass.Sitecore.Mapper.Data
         public override string SetFieldValue(object value, ISitecoreService service)
         {
             if (value == null) return "";
-            return service.InstanceContext.GetClassId(Property.PropertyType, value).ToString("B");
+            return service.InstanceContext.GetClassId(Property.PropertyType, value).ToString("B").ToUpper();
         }
 
         public override Type TypeHandled

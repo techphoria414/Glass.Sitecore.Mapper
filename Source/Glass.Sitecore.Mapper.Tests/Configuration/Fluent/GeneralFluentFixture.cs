@@ -455,15 +455,15 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 
             Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["CheckList"].ToUpper());
             Assert.AreEqual("Test3", result["DropList"]);
-            Assert.AreEqual("{C28E80AF-26E5-4004-BF99-F63FA8772D39}", result["GroupedDropLink"].ToUpper());
+            Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["GroupedDropLink"].ToUpper());
             Assert.AreEqual("Test3", result["GroupedDropList"]);
             Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["MultiList"].ToUpper());
             Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["Treelist"].ToUpper());
             Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["TreeListEx"].ToUpper());
 
             //Linked Types
-            Assert.AreEqual("{C28E80AF-26E5-4004-BF99-F63FA8772D39}", result["DropLink"].ToUpper());
-            Assert.AreEqual("{C28E80AF-26E5-4004-BF99-F63FA8772D39}", result["DropTree"].ToUpper());
+            Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropLink"].ToUpper());
+            Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropTree"].ToUpper());
             LinkField link = new LinkField(result.Fields["GeneralLink"]);
             Assert.AreEqual("test anchor", link.Anchor);
             Assert.AreEqual("test class", link.Class);

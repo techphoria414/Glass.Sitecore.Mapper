@@ -42,6 +42,7 @@ namespace Glass.Sitecore.Mapper.Tests
         Item _test1;
         Item _test2;
         Item _test3;
+        Item _demo;
 
         [SetUp]
         public void Setup()
@@ -59,7 +60,7 @@ namespace Glass.Sitecore.Mapper.Tests
             _test1 = _db.GetItem("/sitecore/content/Glass/Test1");
             _test2 = _db.GetItem("/sitecore/content/Glass/Test2");
             _test3 = _db.GetItem("/sitecore/content/Glass/Test1/Test3");
-
+            _demo = _db.GetItem("/sitecore/content/Glass/Demo");
         }
 
         #region Item Test1
@@ -383,15 +384,15 @@ namespace Glass.Sitecore.Mapper.Tests
 
             Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["CheckList"].ToUpper());
             Assert.AreEqual("Test3", result["DropList"]);
-            Assert.AreEqual("{C28E80AF-26E5-4004-BF99-F63FA8772D39}", result["GroupedDropLink"].ToUpper());
+            Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["GroupedDropLink"].ToUpper());
             Assert.AreEqual("Test3", result["GroupedDropList"]);
             Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["MultiList"].ToUpper());
             Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["Treelist"].ToUpper());
             Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["TreeListEx"].ToUpper());
 
             //Linked Types
-            Assert.AreEqual("{C28E80AF-26E5-4004-BF99-F63FA8772D39}", result["DropLink"].ToUpper());
-            Assert.AreEqual("{C28E80AF-26E5-4004-BF99-F63FA8772D39}", result["DropTree"].ToUpper());
+            Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropLink"].ToUpper());
+            Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropTree"].ToUpper());
             LinkField link = new LinkField(result.Fields["GeneralLink"]);
             Assert.AreEqual("test anchor", link.Anchor);
             Assert.AreEqual("test class", link.Class);
@@ -407,11 +408,82 @@ namespace Glass.Sitecore.Mapper.Tests
 
         }
         #endregion
+
+        /// <summary>
+        /// Ensure that the data is the link manager
+        /// </summary>
+        [Test]
+        public void LinkManager_DropLink_UpdatesReferences(){
+
+            using (new SecurityDisabler())
+            {
+                var parent = _sitecore.GetItem<MiscFixtureNS.SubClass>(_test1.ID.Guid);
+                var newItem = _sitecore.Create<MiscFixtureNS.LinkTest, MiscFixtureNS.SubClass>(parent, "DroplinkLinkTest");
+                
+                Assert.IsNotNull(newItem);
+
+                newItem.Droplink = parent;
+                _sitecore.Save<MiscFixtureNS.LinkTest>(newItem);
+
+                string path = newItem.Path;
+                Item item = _db.GetItem(path);
+
+                LinkDatabase linkDb = global::Sitecore.Configuration.Factory.GetLinkDatabase();
+                int count = linkDb.GetReferenceCount(item);
+                Assert.AreEqual(2, count); //the additional one is for the template reference
+
+                try
+                {
+                    item.Delete();
+                }
+                catch (NullReferenceException ex)
+                {
+                    //we need to catch a null reference exception raised by the Sitecore.Tasks.ItemEventHandler.OnItemDeleted
+                }
+            }
+        }
+
+        /// <summary>
+        /// Ensure that the data is the link manager
+        /// </summary>
+        [Test]
+        public void LinkManager_Multilist_UpdatesReferences()
+        {
+
+            using (new SecurityDisabler())
+            {
+                var test1Object  = _sitecore.GetItem<MiscFixtureNS.SubClass>(_test1.ID.Guid);
+                var test2Object = _sitecore.GetItem<MiscFixtureNS.SubClass>(_demo.ID.Guid);
+
+                var newItem = _sitecore.Create<MiscFixtureNS.LinkTest, MiscFixtureNS.SubClass>(test1Object, "MultilistLinkTest");
+
+                Assert.IsNotNull(newItem);
+
+                newItem.Multilist = new[] { test1Object, test2Object };
+                _sitecore.Save<MiscFixtureNS.LinkTest>(newItem);
+
+                string path = newItem.Path;
+                Item item = _db.GetItem(path);
+
+                LinkDatabase linkDb = global::Sitecore.Configuration.Factory.GetLinkDatabase();
+                int count = linkDb.GetReferenceCount(item);
+                Assert.AreEqual(3, count); //the additional one is the link to the template
+
+                try
+                {
+                    item.Delete();
+                }
+                catch (NullReferenceException ex)
+                {
+                    //we need to catch a null reference exception raised by the Sitecore.Tasks.ItemEventHandler.OnItemDeleted
+                }
+            }
+        }
     }
 
     namespace MiscFixtureNS
     {
-        [SitecoreClass]
+        [SitecoreClass(TemplateId="{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")]
         public class BasicTemplate
         {
             #region SitecoreId
@@ -558,6 +630,23 @@ namespace Glass.Sitecore.Mapper.Tests
             
             [SitecoreId]
             public virtual Guid Id{get;set;}
+
+        }
+
+        [SitecoreClass(TemplateId="{C867D02D-103C-404A-B008-4A3E6B8B6F51}")]
+        public class LinkTest
+        {
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+
+            [SitecoreField]
+            public virtual SubClass Droplink { get; set; }
+
+            [SitecoreField]
+            public virtual IEnumerable<SubClass> Multilist { get; set; }
+
+            [SitecoreInfo(SitecoreInfoType.Path)]
+            public virtual string Path { get; set; }
 
         }
 
