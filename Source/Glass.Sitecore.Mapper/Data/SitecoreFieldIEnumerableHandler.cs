@@ -78,7 +78,8 @@ namespace Glass.Sitecore.Mapper.Data
 
             StringBuilder sb = new StringBuilder();
             sList.ForEach(x => sb.AppendFormat("{0}|", x.Replace("|", Settings.PipeEncoding)));
-            sb.Remove(sb.Length - 1, 1);
+            if (sb.Length > 1) 
+                sb.Remove(sb.Length - 1, 1);
 
             return sb.ToString();
         }

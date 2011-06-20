@@ -37,8 +37,10 @@ namespace Glass.Sitecore.Mapper.Data
             {
                 if (Enum.IsDefined(enumType, fieldValue))
                     return Enum.Parse(enumType, fieldValue, true);
-                else
+                else if (!fieldValue.IsNullOrEmpty())
                     throw new MapperException("Can not convert value {0} to enum type {1}".Formatted(fieldValue, enumType.FullName));
+                else
+                    return null;
             }
 
         }

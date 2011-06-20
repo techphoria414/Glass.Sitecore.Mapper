@@ -38,8 +38,8 @@ namespace Glass.Sitecore.Mapper.Data
             object value = null;
 
             value = this.GetValue(item, service);
-
-            Property.SetValue(target, value, null);
+            if(value != null)
+                Property.SetValue(target, value, null);
         }
         /// <summary>
         /// Reads a property from an object and sets the value on the Sitecore Item
