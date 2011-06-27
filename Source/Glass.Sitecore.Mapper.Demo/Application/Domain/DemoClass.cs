@@ -26,6 +26,8 @@ namespace Glass.Sitecore.Mapper.Demo.Application.Domain
     [SitecoreClass(TemplateId="{D3F8D040-C346-4154-9AEA-847583FBD364}")]
     public class DemoClass
     {
+        [SitecoreId]
+        public virtual Guid Id { get; set; }
 
         [SitecoreInfo(SitecoreInfoType.Url)]
         public virtual string Url { get; set; }
@@ -39,6 +41,8 @@ namespace Glass.Sitecore.Mapper.Demo.Application.Domain
         [SitecoreField]
         public virtual IEnumerable<DemoClass> Links { get; set; }
 
+        [SitecoreField]
+        public virtual FieldTypes.Image Image { get; set; }
     }
 
    

@@ -32,7 +32,15 @@ namespace Glass.Sitecore.Mapper
     {
         public InstanceContext InstanceContext { get; private set;}
         
-        
+        /// <summary>
+        /// The database used by the Sitecore service, used by some internal processed.
+        /// </summary>
+        public Database Database{
+            get
+            {
+                return _database;
+            }
+        }
 
         Database _database;
         LinkDatabase _linkDb;

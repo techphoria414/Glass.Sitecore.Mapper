@@ -21,6 +21,7 @@ using System.Text;
 using Sitecore.Data.Items;
 using Sitecore.Globalization;
 using System.Collections;
+using Sitecore.Data;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -28,6 +29,14 @@ namespace Glass.Sitecore.Mapper
     {
 
         InstanceContext InstanceContext { get; }
+
+         /// <summary>
+        /// The database used by the Sitecore service, used by some internal processed.
+        /// </summary>
+        Database Database
+        {
+            get;
+        }
 
         /// <summary>
         /// Query Sitecore for a set of items. Concrete classes are created

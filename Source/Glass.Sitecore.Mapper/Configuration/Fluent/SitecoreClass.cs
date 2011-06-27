@@ -131,23 +131,12 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
                 throw new MapperException("To many parameters in linq expression {0}".Formatted(ex.Body));
                 
             
-            property.Property = GetInfo(ex.Body.ToString(), ex.Parameters[0].Name);
+            property.Property = Utility.GetInfo(_config.Type, ex.Body.ToString(), ex.Parameters[0].Name);
             property.Attribute = attr;
             this._properties.Add(property);
         }
         
-        private PropertyInfo GetInfo(string expressionBody, string parameter)
-        {
-            string regExTest = "{0}\\.(?'name'[^\\s\\)}}\\.]+)".Formatted(parameter);
-
-            Match match = Regex.Match(expressionBody, regExTest);
-            if (match == null || match.Groups["name"] == null) throw new MapperException("Can not determine property name from linq expression {0}.".Formatted(expressionBody));
-
-            string name = match.Groups["name"].Value;
-
-            PropertyInfo info = _config.Type.GetProperty(name);
-            return info;
-        }
+       
 
         #region ISitecoreClass Members
 

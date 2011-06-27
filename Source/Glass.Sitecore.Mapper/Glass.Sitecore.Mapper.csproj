@@ -41,10 +41,6 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Depends\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="log4net, Version=1.2.10.0, Culture=neutral, PublicKeyToken=1b44e1d426115821, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\log4net.dll</HintPath>
-    </Reference>
     <Reference Include="Sitecore.Kernel, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Depends\Sitecore.Kernel.dll</HintPath>
@@ -117,11 +113,13 @@
     <Compile Include="FieldTypes\Image.cs" />
     <Compile Include="FieldTypes\Link.cs" />
     <Compile Include="FieldTypes\TriState.cs" />
+    <Compile Include="Html.cs" />
     <Compile Include="InstanceContext.cs" />
     <Compile Include="ISitecoreContext.cs" />
     <Compile Include="ISitecoreService.cs" />
     <Compile Include="Enumerable.cs" />
     <Compile Include="NullLog.cs" />
+    <Compile Include="PageEditor\Editor.cs" />
     <Compile Include="PersistenceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\InterfaceMethodInterceptor.cs" />
@@ -145,6 +143,7 @@
     <Compile Include="Configuration\Fluent\SitecoreParent.cs" />
     <Compile Include="Configuration\Fluent\SitecoreQuery.cs" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

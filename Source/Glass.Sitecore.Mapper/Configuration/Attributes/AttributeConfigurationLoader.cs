@@ -18,19 +18,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using log4net;
 using System.Reflection;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
     public class AttributeConfigurationLoader : IConfigurationLoader
     {
-        ILog _log = new NullLog();
-        public ILog Log
-        {
-            get { return _log; }
-            set { _log = value; }
-        }
+       
 
         IEnumerable<string> _namespaces;
 
@@ -94,7 +88,6 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
                         if (attr != null)
                         {
-                            Log.Info("Loaded type {0}".Formatted(x.FullName));
                             return new SitecoreClassConfig() { 
                                 Type = x,
                                 ClassAttribute = attr
@@ -106,7 +99,6 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             }
             else
             {
-                Log.Warn("Could not load assembly {0}.".Formatted(assembly));
                 return new List<SitecoreClassConfig>();
             }
             

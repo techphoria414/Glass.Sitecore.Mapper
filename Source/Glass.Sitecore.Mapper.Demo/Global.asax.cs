@@ -24,7 +24,7 @@ using Glass.Sitecore.Mapper.Configuration.Attributes;
 
 namespace Glass.Sitecore.Mapper.Demo
 {
-    public class Global : System.Web.HttpApplication
+    public class Global : global::Sitecore.Web.Application
     {
 
         protected void Application_Start(object sender, EventArgs e)

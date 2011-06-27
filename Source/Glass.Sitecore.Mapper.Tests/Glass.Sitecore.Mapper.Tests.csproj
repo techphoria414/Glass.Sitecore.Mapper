@@ -159,6 +159,7 @@
     <Compile Include="Data\SitecoreQueryHandlerFixture.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="HtmlFixture.cs" />
     <Compile Include="InstanceContextFixture.cs" />
     <Compile Include="InterfaceFixture.cs" />
     <Compile Include="LoadTesting.cs" />
@@ -168,6 +169,7 @@
     <Compile Include="Proxies\ProxyClassInterceptorFixture.cs" />
     <Compile Include="SitecoreConnectionFixture.cs" />
     <Compile Include="SitecoreServiceFixture.cs" />
+    <Compile Include="UtilityFixture.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Glass.Sitecore.Mapper\Glass.Sitecore.Mapper.csproj">

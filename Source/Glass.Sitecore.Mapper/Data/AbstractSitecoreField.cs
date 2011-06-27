@@ -27,7 +27,7 @@ namespace Glass.Sitecore.Mapper.Data
     public abstract class AbstractSitecoreField : AbstractSitecoreDataHandler
     {
 
-        protected string FieldName { get; set; }
+        public string FieldName { get; set; }
 
         protected bool ReadOnly { get; set; }
 

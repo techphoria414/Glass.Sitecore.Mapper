@@ -35,85 +35,83 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Castle.Core.dll</HintPath>
+    <Reference Include="ComponentArt.Web.UI">
+      <HintPath>..\..\Depends\65\ComponentArt.Web.UI.dll</HintPath>
     </Reference>
-    <Reference Include="ComponentArt.Web.UI, Version=2007.1.1617.2, Culture=neutral, PublicKeyToken=9bc9f846553156bb, processorArchitecture=MSIL">
+    <Reference Include="HtmlAgilityPack, Version=1.4.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\ComponentArt.Web.UI.dll</HintPath>
+      <HintPath>..\..\Depends\65\HtmlAgilityPack.dll</HintPath>
     </Reference>
-    <Reference Include="ConfigModifier, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\ConfigModifier.dll</HintPath>
+    <Reference Include="ITHit.WebDAV.Server">
+      <HintPath>..\..\Depends\65\ITHit.WebDAV.Server.dll</HintPath>
     </Reference>
-    <Reference Include="HtmlAgilityPack, Version=1.3.0.0, Culture=neutral, PublicKeyToken=bd319b19eaf3b43a, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\HtmlAgilityPack.dll</HintPath>
+    <Reference Include="Lucene.Net">
+      <HintPath>..\..\Depends\65\Lucene.Net.dll</HintPath>
     </Reference>
-    <Reference Include="Interop.Shell32, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Interop.Shell32.dll</HintPath>
+    <Reference Include="Mvp.Xml">
+      <HintPath>..\..\Depends\65\Mvp.Xml.dll</HintPath>
     </Reference>
-    <Reference Include="Lucene.Net, Version=2.0.0.4, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Lucene.Net.dll</HintPath>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>..\..\Depends\65\Newtonsoft.Json.dll</HintPath>
     </Reference>
-    <Reference Include="Mvp.Xml, Version=2.0.2158.1055, Culture=neutral, PublicKeyToken=dd92544dc05f5671, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Mvp.Xml.dll</HintPath>
+    <Reference Include="Oracle.DataAccess">
+      <HintPath>..\..\Depends\65\Oracle.DataAccess.dll</HintPath>
     </Reference>
-    <Reference Include="Newtonsoft.Json, Version=1.3.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Newtonsoft.Json.dll</HintPath>
+    <Reference Include="RadEditor.Net2">
+      <HintPath>..\..\Depends\65\RadEditor.Net2.dll</HintPath>
     </Reference>
-    <Reference Include="RadEditor.Net2, Version=7.2.0.0, Culture=neutral, PublicKeyToken=852c9eb6525c1b53, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\RadEditor.Net2.dll</HintPath>
+    <Reference Include="Sitecore.Analytics">
+      <HintPath>..\..\Depends\65\Sitecore.Analytics.dll</HintPath>
     </Reference>
-    <Reference Include="RadSpell.NET2, Version=3.2.0.0, Culture=neutral, PublicKeyToken=b5dad7bf2bf594c2, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\RadSpell.NET2.dll</HintPath>
+    <Reference Include="Sitecore.Apps.Loader">
+      <HintPath>..\..\Depends\65\Sitecore.Apps.Loader.dll</HintPath>
     </Reference>
-    <Reference Include="SCCounters, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\SCCounters.dll</HintPath>
+    <Reference Include="Sitecore.Automation.MarketingAutomation">
+      <HintPath>..\..\Depends\65\Sitecore.Automation.MarketingAutomation.dll</HintPath>
     </Reference>
-    <Reference Include="SecurityApplier, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\SecurityApplier.dll</HintPath>
-    </Reference>
-    <Reference Include="Sitecore.Client, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Sitecore.Client.dll</HintPath>
+    <Reference Include="Sitecore.Client">
+      <HintPath>..\..\Depends\65\Sitecore.Client.dll</HintPath>
     </Reference>
     <Reference Include="Sitecore.Kernel, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Sitecore.Kernel.dll</HintPath>
+      <HintPath>..\..\Depends\65\Sitecore.Kernel.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.Logging, Version=1.2.0.30714, Culture=neutral, processorArchitecture=MSIL">
+    <Reference Include="Sitecore.Logging, Version=1.2.0.30715, Culture=neutral, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Sitecore.Logging.dll</HintPath>
+      <HintPath>..\..\Depends\65\Sitecore.Logging.dll</HintPath>
     </Reference>
-    <Reference Include="sitecore.nexus, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\sitecore.nexus.dll</HintPath>
+    <Reference Include="sitecore.nexus">
+      <HintPath>..\..\Depends\65\sitecore.nexus.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.NVelocity, Version=0.4.2.8580, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Sitecore.NVelocity.dll</HintPath>
+    <Reference Include="Sitecore.NVelocity">
+      <HintPath>..\..\Depends\65\Sitecore.NVelocity.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.SQLite, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Sitecore.SQLite.dll</HintPath>
+    <Reference Include="Sitecore.Oracle">
+      <HintPath>..\..\Depends\65\Sitecore.Oracle.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.Starterkit, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Sitecore.Starterkit.dll</HintPath>
+    <Reference Include="Sitecore.Publishing.WebDeploy">
+      <HintPath>..\..\Depends\65\Sitecore.Publishing.WebDeploy.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.Zip, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\Sitecore.Zip.dll</HintPath>
+    <Reference Include="Sitecore.Update">
+      <HintPath>..\..\Depends\65\Sitecore.Update.dll</HintPath>
+    </Reference>
+    <Reference Include="Sitecore.Zip">
+      <HintPath>..\..\Depends\65\Sitecore.Zip.dll</HintPath>
+    </Reference>
+    <Reference Include="Stimulsoft.Base">
+      <HintPath>..\..\Depends\65\Stimulsoft.Base.dll</HintPath>
+    </Reference>
+    <Reference Include="Stimulsoft.Database">
+      <HintPath>..\..\Depends\65\Stimulsoft.Database.dll</HintPath>
+    </Reference>
+    <Reference Include="Stimulsoft.Report">
+      <HintPath>..\..\Depends\65\Stimulsoft.Report.dll</HintPath>
+    </Reference>
+    <Reference Include="Stimulsoft.Report.Web">
+      <HintPath>..\..\Depends\65\Stimulsoft.Report.Web.dll</HintPath>
+    </Reference>
+    <Reference Include="Stimulsoft.Report.WebDesign">
+      <HintPath>..\..\Depends\65\Stimulsoft.Report.WebDesign.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
@@ -122,10 +120,6 @@
     </Reference>
     <Reference Include="System.Data.DataSetExtensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
-    </Reference>
-    <Reference Include="System.Data.SQLite, Version=1.0.48.0, Culture=neutral, PublicKeyToken=db937bc2d44ff139, processorArchitecture=x86">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\Depends\Website\System.Data.SQLite.DLL</HintPath>
     </Reference>
     <Reference Include="System.Web.Extensions">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
@@ -140,25 +134,24 @@
     <Reference Include="System.Web.Services" />
     <Reference Include="System.EnterpriseServices" />
     <Reference Include="System.Web.Mobile" />
+    <Reference Include="Telerik.Web.UI">
+      <HintPath>..\..\Depends\65\Telerik.Web.UI.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Config\Security\Domains.config.xml" />
-    <Content Include="App_Config\Security\GlobalRoles.config.xml" />
     <Content Include="Default.aspx" />
+    <Content Include="default.css" />
+    <Content Include="default.js" />
+    <Content Include="Layouts\PageEditor.ascx" />
     <Content Include="Web.config" />
+    <Content Include="webedit.css" />
+    <Content Include="Xsl\SpeedTest.xslt" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Application\Domain\Address.cs" />
     <Compile Include="Application\Domain\Company.cs" />
     <Compile Include="Application\Domain\DemoClass.cs" />
     <Compile Include="Application\Domain\Employee.cs" />
-    <Compile Include="Default.aspx.cs">
-      <SubType>ASPXCodeBehind</SubType>
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
-    <Compile Include="Default.aspx.designer.cs">
-      <DependentUpon>Default.aspx</DependentUpon>
-    </Compile>
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -176,24 +169,20 @@
     <Compile Include="Layouts\MainLayout.aspx.designer.cs">
       <DependentUpon>MainLayout.aspx</DependentUpon>
     </Compile>
+    <Compile Include="Layouts\PageEditor.ascx.cs">
+      <DependentUpon>PageEditor.ascx</DependentUpon>
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Layouts\PageEditor.ascx.designer.cs">
+      <DependentUpon>PageEditor.ascx</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Glass.Sitecore.Mapper\Glass.Sitecore.Mapper.csproj">
-      <Project>{564CDD78-0939-436B-9C90-7AF9D95B9024}</Project>
-      <Name>Glass.Sitecore.Mapper</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Config\Commands.config" />
     <Content Include="App_Config\ConnectionStrings.config" />
-    <Content Include="App_Config\ConnectionStringsSQLite.config" />
     <Content Include="App_Config\FieldTypes.config" />
     <Content Include="App_Config\Icons.config" />
-    <Content Include="App_Config\Include\CheckIgnoreFlag.config" />
-    <Content Include="App_Config\Include\eventsubscriber.config" />
-    <Content Include="App_Config\Include\livemode.config" />
-    <Content Include="App_Config\Include\webstylesheet.config" />
     <Content Include="App_Config\LanguageDefinitions.config" />
     <Content Include="App_Config\MimeTypes.config" />
     <Content Include="App_Config\Portraits.config" />
@@ -209,15 +198,34 @@
     <Content Include="Layouts\MainLayout.aspx" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="App_Config\Include\Glass.config">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </Content>
-  </ItemGroup>
-  <ItemGroup>
-    <Content Include="App_Config\Include\CustomItem.config" />
-  </ItemGroup>
-  <ItemGroup>
     <Folder Include="App_Data\" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_Config\Include\DataFolder.config.example" />
+    <None Include="App_Config\Include\EventHandler.config.example" />
+    <None Include="App_Config\Include\ForwardingSecurityEvents.config.example" />
+    <None Include="App_Config\Include\LiveMode.config.example" />
+    <None Include="App_Config\Include\ScalabilitySettings.config.example" />
+    <Content Include="App_Config\Include\Sitecore.Analytics.config" />
+    <Content Include="App_Config\Include\Sitecore.Analytics.ExcludeRobots.config" />
+    <Content Include="App_Config\Include\Sitecore.WebDAV.config" />
+    <None Include="App_Config\Include\SitecoreSettings.config.example" />
+    <None Include="App_Config\Include\SiteDefinition.config.example" />
+    <None Include="App_Config\Include\WebDeploy.config.example" />
+    <None Include="App_Config\Include\XslExtension.config.example" />
+    <Content Include="App_Config\Security\Domains.config" />
+    <Content Include="App_Config\Security\GlobalRoles.config" />
+    <None Include="default.htm.sitedown" />
+    <Content Include="Design.config" />
+    <None Include="web.config.Net3_5.MVC" />
+    <None Include="web.config.Net4.MVC" />
+    <None Include="Web.config.Oracle" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Glass.Sitecore.Mapper\Glass.Sitecore.Mapper.csproj">
+      <Project>{564CDD78-0939-436B-9C90-7AF9D95B9024}</Project>
+      <Name>Glass.Sitecore.Mapper</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v10.0\WebApplications\Microsoft.WebApplication.targets" />

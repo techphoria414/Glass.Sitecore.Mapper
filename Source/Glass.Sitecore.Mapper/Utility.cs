@@ -22,6 +22,8 @@ using System.Reflection;
 using Sitecore.Data.Items;
 using System.Collections;
 using Glass.Sitecore.Mapper.Proxies;
+using System.Text.RegularExpressions;
+using System.Collections.Specialized;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -81,12 +83,59 @@ namespace Glass.Sitecore.Mapper
             
         }
 
+        /// <summary>
+        /// Checks if a method is a set property method
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         public static bool IsSetMethod(MethodInfo info){
             return info.IsSpecialName && info.Name.StartsWith("set_");
         }
+        /// <summary>
+        /// Checks if a method is a get property method
+        /// </summary>
+        /// <param name="info"></param>
+        /// <returns></returns>
         public static bool IsGetMethod(MethodInfo info)
         {
             return info.IsSpecialName && info.Name.StartsWith("get_");
+        }
+
+        /// <summary>
+        /// Returns a PropertyInfo based on a link expression, it will pull the first property name from the linq express.
+        /// </summary>
+        /// <param name="type"></param>
+        /// <param name="expressionBody"></param>
+        /// <param name="parameter"></param>
+        /// <returns></returns>
+        public static PropertyInfo GetInfo(Type type, string expressionBody, string parameter)
+        {
+            string regExTest = "{0}\\.(?'name'[^\\s\\)}}\\.]+)".Formatted(parameter);
+
+            Match match = Regex.Match(expressionBody, regExTest);
+            if (match == null || match.Groups["name"] == null) throw new MapperException("Can not determine property name from linq expression {0}.".Formatted(expressionBody));
+
+            string name = match.Groups["name"].Value;
+
+            PropertyInfo info = type.GetProperty(name);
+            return info;
+        }
+
+        /// <summary>
+        /// Converts a NameValueCollection in to HTML attributes
+        /// </summary>
+        /// <param name="attributes">A list of atrributes to convert</param>
+        public static string ConvertAttributes(NameValueCollection attributes){
+
+            if (attributes == null || attributes.Count == 0) return "";
+
+            StringBuilder sb = new StringBuilder();
+            foreach (var key in attributes.AllKeys)
+            {
+                sb.AppendFormat("{0}='{1}' ".Formatted(key, attributes[key] ?? ""));
+            }
+
+            return sb.ToString();
         }
 
         

@@ -19,7 +19,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration;
-using log4net;
 using Glass.Sitecore.Mapper.Data;
 
 namespace Glass.Sitecore.Mapper
@@ -31,7 +30,7 @@ namespace Glass.Sitecore.Mapper
         #region STATICS
 
         /// <summary>
-        /// The context created with the classes loaded
+        /// The context created with the classes loaded. If you want a copy of this use GetContext.
         /// </summary>
         internal static InstanceContext StaticContext { get; set; }
         static readonly object _lock = new object();
@@ -42,20 +41,7 @@ namespace Glass.Sitecore.Mapper
 
         #endregion
 
-        ILog _log = new NullLog();
-        public ILog Log
-        {
-            get
-            {
-                return _log;
-            }
-            set
-            {
-                _log = value;
-            }
-        
-        }
-
+       
 
         /// <summary>
         /// The context constructor should only be called once. After the context has been created call GetContext for specific copies
@@ -72,7 +58,6 @@ namespace Glass.Sitecore.Mapper
                 {
                     if (!_contextLoaded)
                     {
-                        Log.Info("Context loading");
 
                         //load all classes
                         var classes = loader.Load().ToDictionary();
@@ -96,12 +81,11 @@ namespace Glass.Sitecore.Mapper
                         InstanceContext instance = new InstanceContext(classes, datas);
                         StaticContext = instance;
 
-                        Log.Info("Context loaded");
                     }
                 }
             }
             else
-                Log.Info("Context already loaded");
+                throw new MapperException ("Context already loaded");
         }
 
         /// <summary>
@@ -110,6 +94,7 @@ namespace Glass.Sitecore.Mapper
         /// <returns></returns>
         internal static InstanceContext GetContext()
         {
+            if (StaticContext == null) throw new MapperException("Context has not been loaded");
             return StaticContext.Clone() as InstanceContext;
         }
 
