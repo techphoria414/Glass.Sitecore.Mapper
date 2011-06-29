@@ -67,6 +67,11 @@ namespace Glass.Sitecore.Mapper
             return dicClasses;
 
         }
+
+        public static T CastTo<T>(this object target)
+        {
+            return (T)target;
+        }
     }
   
 }

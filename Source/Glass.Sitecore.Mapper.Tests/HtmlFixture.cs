@@ -12,7 +12,7 @@ namespace Glass.Sitecore.Mapper.Tests
     {
 
         #region RenderImage
-
+        [Test]
         public void RenderImage_RendersImageWithAttributes()
         {
             //Assign

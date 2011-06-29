@@ -131,7 +131,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
                 throw new MapperException("To many parameters in linq expression {0}".Formatted(ex.Body));
                 
             
-            property.Property = Utility.GetInfo(_config.Type, ex.Body.ToString(), ex.Parameters[0].Name);
+            property.Property = Utility.GetPropertyInfo(_config.Type, ex.Body);
             property.Attribute = attr;
             this._properties.Add(property);
         }

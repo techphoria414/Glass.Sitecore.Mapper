@@ -65,7 +65,7 @@ namespace Glass.Sitecore.Mapper.PageEditor
 
                     var scClass = context.GetSitecoreClass(typeof(T));
 
-                    var prop = Utility.GetInfo(type, field.Body.ToString(), field.Parameters[0].Name);
+                    var prop = Utility.GetPropertyInfo(type, field.Body);
 
                     var dataHandler = scClass.DataHandlers.FirstOrDefault(x => x.Property == prop);
 

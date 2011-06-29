@@ -24,6 +24,7 @@ using System.Collections;
 using Glass.Sitecore.Mapper.Proxies;
 using System.Text.RegularExpressions;
 using System.Collections.Specialized;
+using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -105,17 +106,26 @@ namespace Glass.Sitecore.Mapper
         /// Returns a PropertyInfo based on a link expression, it will pull the first property name from the linq express.
         /// </summary>
         /// <param name="type"></param>
-        /// <param name="expressionBody"></param>
-        /// <param name="parameter"></param>
+        /// <param name="expression"></param>
         /// <returns></returns>
-        public static PropertyInfo GetInfo(Type type, string expressionBody, string parameter)
+        public static PropertyInfo GetPropertyInfo(Type type, Expression expression)
         {
-            string regExTest = "{0}\\.(?'name'[^\\s\\)}}\\.]+)".Formatted(parameter);
+            string name = "";
 
-            Match match = Regex.Match(expressionBody, regExTest);
-            if (match == null || match.Groups["name"] == null) throw new MapperException("Can not determine property name from linq expression {0}.".Formatted(expressionBody));
+            if (expression.NodeType == ExpressionType.Convert)
+            {
+                Expression operand=(expression as UnaryExpression).Operand;
+                name = operand.CastTo<MemberExpression>().Member.Name;
 
-            string name = match.Groups["name"].Value;
+            }
+            else if (expression.NodeType == ExpressionType.Call)
+            {
+                name = expression.CastTo<MethodCallExpression>().Method.Name;
+            }
+            else if (expression.NodeType == ExpressionType.MemberAccess)
+            {
+                name = expression.CastTo<MemberExpression>().Member.Name;
+            }
 
             PropertyInfo info = type.GetProperty(name);
             return info;
