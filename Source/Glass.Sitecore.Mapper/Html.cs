@@ -135,6 +135,18 @@ namespace Glass.Sitecore.Mapper
 
         }
 
+        /// <summary>
+        /// Indicates if the site is in editing mode
+        /// </summary>
+        public static bool IsInEditingMode
+        {
+            get
+            {
+                return global::Sitecore.Context.Site.DisplayMode ==
+                            global::Sitecore.Sites.DisplayMode.Edit
+                            && global::Sitecore.Context.PageMode.IsPageEditorEditing;
+            }
+        }
     }
 }
   

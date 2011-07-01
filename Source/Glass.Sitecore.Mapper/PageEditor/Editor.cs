@@ -28,25 +28,18 @@ namespace Glass.Sitecore.Mapper.PageEditor
 {
     public class Editor
     {
-        
-
         public static string Editable<T>(Expression<Func<T, object>> field,Expression<Func<T, string>> standardOutput, T target, Database database)
         {
             try
             {
 
-                if (global::Sitecore.Context.Site.DisplayMode ==
- global::Sitecore.Sites.DisplayMode.Edit
-                    && global::Sitecore.Context.PageMode.IsPageEditorEditing
-                    )
+                if (Html.IsInEditingMode)
                 {
                      if (field.Parameters.Count > 1)
                         throw new MapperException("To many parameters in linq expression {0}".Formatted(field.Body));
 
-
                     var site = global::Sitecore.Context.Site;
                     Type type = typeof(T);
-                   
 
                     InstanceContext context = Context.GetContext();
 
@@ -61,8 +54,6 @@ namespace Glass.Sitecore.Mapper.PageEditor
                         throw new MapperException("Page editting error. Type {0} can not be used for editing. See inner exception".Formatted(typeof(T).FullName), ex);
                     }
 
-
-
                     var scClass = context.GetSitecoreClass(typeof(T));
 
                     var prop = Utility.GetPropertyInfo(type, field.Body);
@@ -70,7 +61,6 @@ namespace Glass.Sitecore.Mapper.PageEditor
                     var dataHandler = scClass.DataHandlers.FirstOrDefault(x => x.Property == prop);
 
                     var item = database.GetItem(new ID(id));
-
 
                     using (new ContextItemSwitcher(item))
                     {
