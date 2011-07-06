@@ -21,17 +21,18 @@ using System.Text;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
+    /// <summary>
+    /// Indicates that the property should be populated with the parent item.
+    /// </summary>
     public class SitecoreParentAttribute : AbstractSitecorePropertyAttribute
     {
-        /// <summary>
-        /// Indicates that the property should be populated with the parent item.
-        /// </summary>
+        
         public SitecoreParentAttribute()
         {
             IsLazy = true;
         }
         /// <summary>
-        /// Indicates if children should be loaded lazily. Default value is true. If false parent will be loaded when the contain object is created.
+        /// Indicates if the parent should be loaded lazily. Default value is true. If false parent will be loaded when the contain object is created.
         /// </summary>
         public bool IsLazy
         {
