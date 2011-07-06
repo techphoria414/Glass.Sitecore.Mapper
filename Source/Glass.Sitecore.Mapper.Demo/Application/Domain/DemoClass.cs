@@ -43,6 +43,11 @@ namespace Glass.Sitecore.Mapper.Demo.Application.Domain
 
         [SitecoreField]
         public virtual FieldTypes.Image Image { get; set; }
+
+        [SitecoreField]
+        public virtual DemoSubClass SubClass { get; set; }
+
+
     }
 
    

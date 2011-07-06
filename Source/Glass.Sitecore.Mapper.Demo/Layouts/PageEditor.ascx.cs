@@ -31,6 +31,25 @@ namespace Glass.Sitecore.Mapper.Demo.Layouts
         {
             SitecoreContext context = new SitecoreContext();
 
+            //var demo = context.GetCurrentItem<PageEditorDemo>();
+
+            //mainBody.Text = Html.Editable<PageEditorDemo>(
+            //    x => x.Body,
+            //    demo,
+            //    context);
+
+            //mainImage.Text = Html.Editable<PageEditorDemo>(
+            //    x => x.Image,
+            //    x => string.Format("<img src='{0}' alt='{1}' />", x.Image.Src, x.Image.Alt), 
+            //    demo,
+            //    context);
+
+            //subContent.Text = Html.Editable<PageEditorDemoSub>(
+            //    x => x.Content,
+            //    demo.AnotherItem,
+            //    context);
+                
+
             var target= context.GetCurrentItem<DemoClass>();
 
             test1.Text = Html.Editable<DemoClass>(
@@ -63,6 +82,13 @@ namespace Glass.Sitecore.Mapper.Demo.Layouts
                x => x.Body, //the field that you want to edit
                target, //the item to target for editing
                "master"); //the current ISitecoreService used to load the target
+
+            test7.Text = Html.Editable<DemoSubClass>(
+                x => x.Body,
+                target.SubClass,
+                context);
+                
+
         }
     }
 }

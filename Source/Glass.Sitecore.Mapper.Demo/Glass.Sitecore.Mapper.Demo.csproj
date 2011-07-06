@@ -151,7 +151,10 @@
     <Compile Include="Application\Domain\Address.cs" />
     <Compile Include="Application\Domain\Company.cs" />
     <Compile Include="Application\Domain\DemoClass.cs" />
+    <Compile Include="Application\Domain\DemoSubClass.cs" />
     <Compile Include="Application\Domain\Employee.cs" />
+    <Compile Include="Application\Domain\PageEditorDemo.cs" />
+    <Compile Include="Application\Domain\Product.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -215,6 +218,7 @@
     <None Include="App_Config\Include\XslExtension.config.example" />
     <Content Include="App_Config\Security\Domains.config" />
     <Content Include="App_Config\Security\GlobalRoles.config" />
+    <Compile Include="Configuration\Product.cs" />
     <None Include="default.htm.sitedown" />
     <Content Include="Design.config" />
     <None Include="web.config.Net3_5.MVC" />
