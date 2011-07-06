@@ -153,6 +153,7 @@
     <Compile Include="Data\SitecoreInfoHandlerFixture.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\SitecoreLinkedHandlerFixture.cs" />
     <Compile Include="Data\SitecoreParentHandlerFixture.cs">
       <SubType>Code</SubType>
     </Compile>

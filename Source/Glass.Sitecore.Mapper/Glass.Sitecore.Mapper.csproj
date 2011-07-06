@@ -75,9 +75,11 @@
     <Compile Include="Configuration\Fluent\FluentConfigurationLoader.cs" />
     <Compile Include="Configuration\Fluent\SitecoreClass.cs" />
     <Compile Include="Configuration\IConfigurationLoader.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreLinkedAttribute.cs" />
     <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClass.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Data\SitecoreLinkedHandler.cs" />
     <Compile Include="Data\QueryParameters\ItemIdNoBracketsParameter.cs" />
     <Compile Include="Data\QueryParameters\ISitecoreQueryParameter.cs" />
     <Compile Include="Data\QueryParameters\ItemDateNowParameter.cs" />
