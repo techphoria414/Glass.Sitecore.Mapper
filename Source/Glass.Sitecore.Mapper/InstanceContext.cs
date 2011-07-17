@@ -66,6 +66,16 @@ namespace Glass.Sitecore.Mapper
             return Classes[type];
         }
 
+        public SitecoreClassConfig GetSitecoreClass(Guid templateId)
+        {
+            //would it be quicker to have a second dictionary that recorded classes by their template ID?
+            if (Classes.Any(x => x.Value.TemplateId == templateId))
+            {
+                return Classes.First(x => x.Value.TemplateId == templateId).Value;
+            }
+            else return null;
+        }
+
 
         #region ICloneable Members
 

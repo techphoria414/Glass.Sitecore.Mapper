@@ -31,12 +31,13 @@ namespace Glass.Sitecore.Mapper.Data
 
         List<ISitecoreQueryParameter> _parameters;
 
-        protected bool IsLazy { get; set; }
+        public bool IsLazy { get; set; }
 
-        protected bool IsRelative { get; set; }
+        public bool IsRelative { get; set; }
 
-        protected string Query { get; set; }
+        public string Query { get; set; }
 
+        public bool InferType { get; set; }
 
         public SitecoreQueryHandler(IEnumerable<ISitecoreQueryParameter> parameters)
         {
@@ -91,7 +92,7 @@ namespace Glass.Sitecore.Mapper.Data
                         });
                     }
 
-                    return service.CreateClasses(IsLazy, genericType, getItems);
+                    return service.CreateClasses(IsLazy, InferType, genericType, getItems);
                 }
                 else throw new NotSupportedException("Generic type not supported {0}. Must be IEnumerable<>.".Formatted(outerType.FullName));
             }
@@ -140,6 +141,7 @@ namespace Glass.Sitecore.Mapper.Data
             IsLazy = attr.IsLazy;
             IsRelative = attr.IsRelative;
             Query = attr.Query;
+            InferType = attr.InferType;
 
             base.ConfigureDataHandler(scProperty);
         }

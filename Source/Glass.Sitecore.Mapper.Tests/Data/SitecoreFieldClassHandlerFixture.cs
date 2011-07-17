@@ -53,6 +53,39 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                          Type = typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass),
                          DataHandlers = new AbstractSitecoreDataHandler[]{}
                     },
+                    new SitecoreClassConfig(){
+                       ClassAttribute = new SitecoreClassAttribute(),
+                       Properties = new SitecoreProperty[]{
+                            new SitecoreProperty(){
+                                Attribute = new SitecoreIdAttribute(),
+                                Property = typeof(SitecoreFieldClassHandlerFixtureNS.BaseType).GetProperty("Id")
+                            }
+                       },
+                       Type = typeof(SitecoreFieldClassHandlerFixtureNS.BaseType),
+                       DataHandlers = new AbstractSitecoreDataHandler []{
+                        new SitecoreIdDataHandler(){
+                               Property = typeof(SitecoreFieldClassHandlerFixtureNS.BaseType).GetProperty("Id")
+                        }
+                       }
+                   },
+                   new SitecoreClassConfig(){
+                       ClassAttribute = new SitecoreClassAttribute(){
+                           
+                       },
+                       Properties = new SitecoreProperty[]{
+                            new SitecoreProperty(){
+                                Attribute = new SitecoreIdAttribute(),
+                                Property = typeof(SitecoreFieldClassHandlerFixtureNS.TypeOne).GetProperty("Id")
+                            }
+                       },
+                       Type = typeof(SitecoreFieldClassHandlerFixtureNS.TypeOne),
+                       DataHandlers = new AbstractSitecoreDataHandler []{
+                        new SitecoreIdDataHandler(){
+                               Property = typeof(SitecoreFieldClassHandlerFixtureNS.TypeOne).GetProperty("Id")
+                        }
+                       },
+                       TemplateId = new Guid("{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")
+                   },
                     
                 }).ToDictionary(),
                 new AbstractSitecoreDataHandler[] { }
@@ -62,9 +95,108 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _service = new SitecoreService(_db, context);
 
+            // /sitecore/content/Glass/Test2
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
 
         }
+
+
+        #region ConfigureHandler
+        [Test]
+        public void ConfigureHandler_SetIsLazy_True()
+        {
+            //Assign
+            SitecoreFieldAttribute attr = new SitecoreFieldAttribute();
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = attr,
+                Property = new FakePropertyInfo(typeof(string))//this can be anything                
+            };
+
+            //Act
+            _handler.ConfigureDataHandler(property);
+
+            //Assert
+            Assert.IsTrue(_handler.IsLazy);
+        }
+
+        [Test]
+        public void ConfigureHandler_SetIsLazy_False()
+        {
+            //Assign
+            SitecoreFieldAttribute attr = new SitecoreFieldAttribute();
+            attr.Setting = SitecoreFieldSettings.DontLoadLazily;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = attr,
+                Property = new FakePropertyInfo(typeof(string))//this can be anything                
+            };
+
+            //Act
+            _handler.ConfigureDataHandler(property);
+
+            //Assert
+            Assert.IsFalse(_handler.IsLazy);
+        }
+        [Test]
+        public void ConfigureHandler_SetIsLazy_True_InferType_False()
+        {
+            //Assign
+            SitecoreFieldAttribute attr = new SitecoreFieldAttribute();
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = attr,
+                Property = new FakePropertyInfo(typeof(string))//this can be anything                
+            };
+
+            //Act
+            _handler.ConfigureDataHandler(property);
+
+            //Assert
+            Assert.IsTrue(_handler.IsLazy);
+            Assert.IsFalse(_handler.InferType);
+        }
+        [Test]
+        public void ConfigureHandler_SetIsLazy_True_InferType_True()
+        {
+            //Assign
+            SitecoreFieldAttribute attr = new SitecoreFieldAttribute();
+            attr.Setting = SitecoreFieldSettings.InferType;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = attr,
+                Property = new FakePropertyInfo(typeof(string))//this can be anything                
+            };
+
+            //Act
+            _handler.ConfigureDataHandler(property);
+
+            //Assert
+            Assert.IsTrue(_handler.IsLazy);
+            Assert.IsTrue(_handler.InferType);
+        }
+        [Test]
+        public void ConfigureHandler_SetIsLazy_False_InferType_True()
+        {
+            //Assign
+            SitecoreFieldAttribute attr = new SitecoreFieldAttribute();
+            attr.Setting = SitecoreFieldSettings.DontLoadLazily | SitecoreFieldSettings.InferType;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = attr,
+                Property = new FakePropertyInfo(typeof(string))//this can be anything                
+            };
+
+            //Act
+            _handler.ConfigureDataHandler(property);
+
+            //Assert
+            Assert.IsFalse(_handler.IsLazy);
+            Assert.IsTrue(_handler.InferType);
+        }
+
+        #endregion
+
 
         #region WillHandle
 
@@ -338,6 +470,58 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
 
         #endregion
+
+        //TODO: Test infer type with lazy and not lazy
+
+        [Test]
+        public void InferType_NotLazy()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            _handler.Property = new FakePropertyInfo(typeof(BaseItem));
+            _handler.IsLazy = false;
+            _handler.InferType = true;
+            //Act
+            var result = _handler.GetFieldValue(
+                _itemId.ToString(),
+                item,
+                _service) as SitecoreFieldClassHandlerFixtureNS.BaseType ;
+
+           
+            //Assert
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result is SitecoreFieldClassHandlerFixtureNS.TypeOne);
+            Assert.AreEqual(_itemId, result.Id);
+
+
+
+
+        }
+
+        [Test]
+        public void InferType_IsLazy()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            _handler.Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.BaseType));
+            _handler.IsLazy = false;
+            _handler.InferType = true;
+            //Act
+            var result = _handler.GetFieldValue(
+                _itemId.ToString(),
+                item,
+                _service) as SitecoreFieldClassHandlerFixtureNS.BaseType;
+
+
+            //Assert
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result is SitecoreFieldClassHandlerFixtureNS.TypeOne);
+            Assert.AreEqual(_itemId, result.Id);
+        }
     }
 
     namespace SitecoreFieldClassHandlerFixtureNS
@@ -354,6 +538,20 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public class NotLoadedClass
         {
             public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass]
+        public class BaseType
+        {
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass(TemplateId = "{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")]
+        public class TypeOne : BaseType
+        {
+
         }
     }
 }

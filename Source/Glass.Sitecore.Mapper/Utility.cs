@@ -34,6 +34,7 @@ namespace Glass.Sitecore.Mapper
         {
             Type[] types = type.GetGenericArguments();
             if(types.Count() > 1) throw new MapperException("Type {0} has more than one generic argument".Formatted(type.FullName));
+            if (types.Count() == 0) throw new MapperException("The type {0} does not contain any generic arguments".Formatted(type.FullName));
             return types[0];
         }
         public static Type GetGenericOuter(Type type)

@@ -158,8 +158,11 @@ namespace Glass.Sitecore.Mapper
 
 
         T CreateClass<T>(bool isLazy, Item item) where T : class;
+        T CreateClass<T>(bool isLazy, bool inferType, Item item) where T : class;
         object CreateClass(bool isLazy, Type type, Item item);
+        object CreateClass(bool isLazy,bool inferType,  Type type, Item item);
         IEnumerable CreateClasses(bool isLazy, Type type, Func<IEnumerable<Item>> getItems);
+        IEnumerable CreateClasses(bool isLazy, bool inferType, Type type, Func<IEnumerable<Item>> getItems);
 
     }
 }

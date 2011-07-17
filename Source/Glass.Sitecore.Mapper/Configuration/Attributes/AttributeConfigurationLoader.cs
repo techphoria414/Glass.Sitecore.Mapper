@@ -88,10 +88,16 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
                         if (attr != null)
                         {
-                            return new SitecoreClassConfig() { 
+                            var config = new SitecoreClassConfig() { 
                                 Type = x,
-                                ClassAttribute = attr
+                                ClassAttribute = attr,
+                                
                             };
+                            //TODO need to wrap in exception handler
+                            if (!attr.BranchId.IsNullOrEmpty()) config.BranchId = new Guid(attr.BranchId);
+                            if (!attr.TemplateId.IsNullOrEmpty()) config.TemplateId = new Guid(attr.TemplateId);
+
+                            return config;
                         }
                     }
                     return null;

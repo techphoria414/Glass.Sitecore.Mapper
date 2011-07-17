@@ -136,6 +136,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         #endregion
 
+        //TODO need to do test on infertype
+
     }
     namespace SitecoreLinkedHandlerFixtureNS
     {

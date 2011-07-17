@@ -52,7 +52,59 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                         },
                         Type = typeof(SitecoreQueryHandlerFixtureNS.TestClass),
                         DataHandlers = new AbstractSitecoreDataHandler[]{}
-                    }
+                    },
+                     new SitecoreClassConfig(){
+                       ClassAttribute = new SitecoreClassAttribute(),
+                       Properties = new SitecoreProperty[]{
+                            new SitecoreProperty(){
+                                Attribute = new SitecoreIdAttribute(),
+                                Property = typeof(SitecoreQueryHandlerFixtureNS.BaseType).GetProperty("Id")
+                            }
+                       },
+                       Type = typeof(SitecoreQueryHandlerFixtureNS.BaseType),
+                       DataHandlers = new AbstractSitecoreDataHandler []{
+                        new SitecoreIdDataHandler(){
+                               Property = typeof(SitecoreQueryHandlerFixtureNS.BaseType).GetProperty("Id")
+                        }
+                       }
+                   },
+                   new SitecoreClassConfig(){
+                       ClassAttribute = new SitecoreClassAttribute(){
+                           
+                       },
+                       Properties = new SitecoreProperty[]{
+                            new SitecoreProperty(){
+                                Attribute = new SitecoreIdAttribute(),
+                                Property = typeof(SitecoreQueryHandlerFixtureNS.TypeOne).GetProperty("Id")
+                            }
+                       },
+                       Type = typeof(SitecoreQueryHandlerFixtureNS.TypeOne),
+                       DataHandlers = new AbstractSitecoreDataHandler []{
+                        new SitecoreIdDataHandler(){
+                               Property = typeof(SitecoreQueryHandlerFixtureNS.TypeOne).GetProperty("Id")
+                        }
+                       },
+                       TemplateId = new Guid("{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}")
+                   },
+                   new SitecoreClassConfig(){
+                       ClassAttribute = new SitecoreClassAttribute(){
+                          
+                       },
+                       Properties = new SitecoreProperty[]{
+                            new SitecoreProperty(){
+                                Attribute = new SitecoreIdAttribute(),
+                                Property = typeof(SitecoreQueryHandlerFixtureNS.TypeTwo).GetProperty("Id")
+                            }
+                       },
+                       Type = typeof(SitecoreQueryHandlerFixtureNS.TypeTwo),
+                       DataHandlers = new AbstractSitecoreDataHandler []{
+                        new SitecoreIdDataHandler(){
+                               Property = typeof(SitecoreQueryHandlerFixtureNS.TypeTwo).GetProperty("Id")
+                        }
+                       },
+                       TemplateId = new Guid("{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}")
+                   }
+
                 }).ToDictionary(),
                 new AbstractSitecoreDataHandler[] { });
 
@@ -82,7 +134,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue( _item,  _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue(_item, _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
 
             //Assert
             Assert.AreEqual(_item.Children.Count, result.Count());
@@ -106,7 +158,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue( _item,  _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue(_item, _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
 
             //Assert
             Assert.AreEqual(_item.Children.Count, result.Count());
@@ -129,7 +181,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue( _item, _service) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue(_item, _service) as SitecoreQueryHandlerFixtureNS.TestClass;
 
             //Assert
             Assert.AreNotEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.GetType());
@@ -151,7 +203,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue( _item,  _service) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue(_item, _service) as SitecoreQueryHandlerFixtureNS.TestClass;
 
             //Assert
 
@@ -178,7 +230,50 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         }
 
         #endregion
+
+        [Test]
+        public void InferringType_ReturnsClasses()
+        {
+            //Assign
+            _handler.InferType = true;
+            _handler.IsLazy = true;
+            _handler.Property = new FakePropertyInfo(typeof(IEnumerable<SitecoreQueryHandlerFixtureNS   .BaseType>));
+            _handler.Query = "/sitecore/content/home/*";
+
+            Item home = _db.GetItem("{98F907F7-CD1A-4C88-AF11-8F38A21A7FE1}");
+
+            //Act
+            var results = _handler.GetValue(home, _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.BaseType>;
+
+            //Assert
+            Assert.AreEqual(home.Children.Count, results.Count());
+
+            Guid typeOneTemp = new Guid("{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}");
+            Guid typeTwoTemp = new Guid("{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}");
+            foreach (Item child in home.Children)
+            {
+                var itemClass = results.FirstOrDefault(x => x.Id == child.ID.Guid);
+
+                Assert.IsNotNull(itemClass, "Failed to load item");
+
+                if (child.TemplateID.Guid == typeOneTemp)
+                {
+                    Assert.IsTrue(itemClass is SitecoreQueryHandlerFixtureNS.TypeOne);
+                }
+                else if (child.TemplateID.Guid == typeTwoTemp)
+                {
+                    Assert.IsTrue(itemClass is SitecoreQueryHandlerFixtureNS.TypeTwo);
+                }
+                else
+                {
+                    Assert.IsTrue(itemClass is SitecoreQueryHandlerFixtureNS.BaseType);
+                }
+
+            }
+        }
     }
+
+
     namespace SitecoreQueryHandlerFixtureNS
     {
 
@@ -188,6 +283,25 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             public virtual IEnumerable<TestClass> Results { get; set; }
             public virtual TestClass SingleResult { get; set; }
         }
+        [SitecoreClass]
+        public class BaseType
+        {
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass(TemplateId = "{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}")]
+        public class TypeOne : BaseType
+        {
+
+        }
+        [SitecoreClass(TemplateId = "{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}")]
+        public class TypeTwo : BaseType
+        {
+
+        }
     }
 }
+
 

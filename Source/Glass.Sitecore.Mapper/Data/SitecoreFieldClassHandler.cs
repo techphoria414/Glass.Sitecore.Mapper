@@ -27,6 +27,8 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreFieldClassHandler:AbstractSitecoreField
     {
+        public bool IsLazy { get; set; }
+        public bool InferType { get; set; }
 
 
         public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
@@ -53,9 +55,7 @@ namespace Glass.Sitecore.Mapper.Data
             }
 
             if (target == null) return null;
-            bool isLazy = Setting != SitecoreFieldSettings.DontLoadLazily;
-
-            return service.CreateClass(isLazy, Property.PropertyType, target);
+                        return service.CreateClass(IsLazy, InferType, Property.PropertyType, target);
             
         }
 
@@ -69,7 +69,13 @@ namespace Glass.Sitecore.Mapper.Data
         {
             get { throw new NotImplementedException(); }
         }
-
+        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        {
+     
+            base.ConfigureDataHandler(scProperty);
+            IsLazy = (Setting & SitecoreFieldSettings.DontLoadLazily) != SitecoreFieldSettings.DontLoadLazily;
+            InferType = (Setting & SitecoreFieldSettings.InferType) == SitecoreFieldSettings.InferType;
+        }
       
         
     }

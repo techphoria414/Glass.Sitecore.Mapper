@@ -28,7 +28,9 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreChildrenHandler : AbstractSitecoreDataHandler
     {
-        protected bool IsLazy { get; set; }
+        public bool IsLazy { get; set; }
+
+        public bool InferType { get; set; }
 
         #region ISitecoreDataHandler Members
 
@@ -51,7 +53,7 @@ namespace Glass.Sitecore.Mapper.Data
                     return item.Children.Cast<Item>();
                 });
 
-                return service.CreateClasses(IsLazy, genericType, getItems);
+                return service.CreateClasses(IsLazy, InferType, genericType, getItems);
         }
 
         public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)
@@ -71,6 +73,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             SitecoreChildrenAttribute attr = scProperty.Attribute as SitecoreChildrenAttribute;
             IsLazy = attr.IsLazy;
+            InferType = attr.InferType;
 
             base.ConfigureDataHandler(scProperty);
         }

@@ -46,7 +46,59 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                        Properties = new SitecoreProperty[]{},
                        Type = typeof(SitecoreChildrenHandlerFixtureNS.SubClass),
                        DataHandlers = new AbstractSitecoreDataHandler []{}
+                   },
+                   new SitecoreClassConfig(){
+                       ClassAttribute = new SitecoreClassAttribute(),
+                       Properties = new SitecoreProperty[]{
+                            new SitecoreProperty(){
+                                Attribute = new SitecoreIdAttribute(),
+                                Property = typeof(SitecoreChildrenHandlerFixtureNS.BaseType).GetProperty("Id")
+                            }
+                       },
+                       Type = typeof(SitecoreChildrenHandlerFixtureNS.BaseType),
+                       DataHandlers = new AbstractSitecoreDataHandler []{
+                        new SitecoreIdDataHandler(){
+                               Property = typeof(SitecoreChildrenHandlerFixtureNS.BaseType).GetProperty("Id")
+                        }
+                       }
+                   },
+                   new SitecoreClassConfig(){
+                       ClassAttribute = new SitecoreClassAttribute(){
+                           
+                       },
+                       Properties = new SitecoreProperty[]{
+                            new SitecoreProperty(){
+                                Attribute = new SitecoreIdAttribute(),
+                                Property = typeof(SitecoreChildrenHandlerFixtureNS.TypeOne).GetProperty("Id")
+                            }
+                       },
+                       Type = typeof(SitecoreChildrenHandlerFixtureNS.TypeOne),
+                       DataHandlers = new AbstractSitecoreDataHandler []{
+                        new SitecoreIdDataHandler(){
+                               Property = typeof(SitecoreChildrenHandlerFixtureNS.TypeOne).GetProperty("Id")
+                        }
+                       },
+                       TemplateId = new Guid("{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}")
+                   },
+                   new SitecoreClassConfig(){
+                       ClassAttribute = new SitecoreClassAttribute(){
+                          
+                       },
+                       Properties = new SitecoreProperty[]{
+                            new SitecoreProperty(){
+                                Attribute = new SitecoreIdAttribute(),
+                                Property = typeof(SitecoreChildrenHandlerFixtureNS.TypeTwo).GetProperty("Id")
+                            }
+                       },
+                       Type = typeof(SitecoreChildrenHandlerFixtureNS.TypeTwo),
+                       DataHandlers = new AbstractSitecoreDataHandler []{
+                        new SitecoreIdDataHandler(){
+                               Property = typeof(SitecoreChildrenHandlerFixtureNS.TypeTwo).GetProperty("Id")
+                        }
+                       },
+                       TemplateId = new Guid("{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}")
                    }
+
                }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
 
 
@@ -60,9 +112,9 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         }
 
         #region GetValue
-        
+
         [Test]
-        public  void GetValue_ReturnsChildren_UsingLazy()
+        public void GetValue_ReturnsChildren_UsingLazy()
         {
             //Assign
             Item item = _db.GetItem(new ID(_itemId));
@@ -74,7 +126,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue( item, _service) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
+            var result = _handler.GetValue(item, _service) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
             SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
             assignTest.Children = result;
             //Assert
@@ -100,7 +152,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(item,  _service) as IEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
+            var result = _handler.GetValue(item, _service) as IEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
             SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
             assignTest.Children = result;
             //Assert
@@ -152,6 +204,46 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         }
 
         #endregion
+
+        [Test]
+        public void InferringType_ReturnsClasses()
+        {
+            //Assign
+            _handler.InferType = true;
+            _handler.IsLazy = true;
+            _handler.Property = new FakePropertyInfo(typeof(IEnumerable<SitecoreChildrenHandlerFixtureNS.BaseType>));
+
+            Item home = _db.GetItem("{98F907F7-CD1A-4C88-AF11-8F38A21A7FE1}");
+
+            //Act
+            var results = _handler.GetValue(home, _service) as IEnumerable<SitecoreChildrenHandlerFixtureNS.BaseType>;
+
+            //Assert
+            Assert.AreEqual(home.Children.Count, results.Count());
+            
+            Guid typeOneTemp = new Guid("{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}");
+            Guid typeTwoTemp = new Guid("{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}");
+            foreach(Item child in home.Children){
+                var itemClass = results.FirstOrDefault(x=>x.Id == child.ID.Guid);
+
+                Assert.IsNotNull(itemClass, "Failed to load item");
+
+                if(child.TemplateID.Guid == typeOneTemp){
+                       Assert.IsTrue(itemClass is SitecoreChildrenHandlerFixtureNS.TypeOne);
+                }
+                else if(child.TemplateID.Guid == typeTwoTemp){
+                       Assert.IsTrue(itemClass is SitecoreChildrenHandlerFixtureNS.TypeTwo);
+                }
+                else{
+                    Assert.IsTrue(itemClass is SitecoreChildrenHandlerFixtureNS.BaseType);
+                }
+
+            }
+
+
+
+
+        }
     }
 
     namespace SitecoreChildrenHandlerFixtureNS
@@ -162,5 +254,24 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             public virtual IList<SubClass> List { get; set; }
         }
         public class SubClass { }
+
+        [SitecoreClass]
+        public class BaseType
+        {
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass(TemplateId = "{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}")]
+        public class TypeOne : BaseType
+        {
+           
+        }
+        [SitecoreClass(TemplateId = "{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}")]
+        public class TypeTwo : BaseType
+        {
+           
+        }
     }
 }

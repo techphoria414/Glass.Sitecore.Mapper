@@ -41,8 +41,10 @@ namespace Glass.Sitecore.Mapper.Demo.Application.Domain
 
         [SitecoreInfo(Glass.Sitecore.Mapper.Configuration.SitecoreInfoType.Url)]
         public virtual string Url { get; set; }
-    }
 
+       // [SitecoreField]
+        public virtual IList<Tag> Tags { get; set; }
+    }
     public class Home { }
 
     [SitecoreClass]
@@ -85,6 +87,37 @@ namespace Glass.Sitecore.Mapper.Demo.Application.Domain
         IEnumerable<IProduct> RelatedProducts { get; set; }
     }
     [SitecoreClass]
-    public class Tag { }
+    public class Tag {
 
+        public void CalculateDiscount(Guid id)
+        {
+            ISitecoreContext context = new SitecoreContext();
+            
+            var product = context.GetItem<Product>(id);
+
+            //if the product is older than 30 days discount 10%
+            if(product.ReleaseDate.AddDays(30) < DateTime.Now){
+                product.Price = product.Price * 0.9;
+                product.Title += " - Discount!";
+
+                Tag tag = context.GetItem<Tag>("/sitecore/content/home/tags/discount");
+                product.Tags.Add(tag);
+
+                context.Save<Product>(product);
+            }
+        }
+
+
+    
+    }
+
+
+    public class Orders
+    {
+        
+    }
+
+    public class Order{
+
+    }
 }

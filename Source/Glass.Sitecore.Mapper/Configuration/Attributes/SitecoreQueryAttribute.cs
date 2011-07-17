@@ -36,7 +36,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// Indicates that the field is relative to the current item.
         /// </summary>
         public bool IsRelative { get; set; }
-        
+
+        /// <summary>
+        /// Indicates the type should be inferred from the item template
+        /// </summary>
+        public bool InferType { get; set; }
 
         /// <summary>
         /// Indicates that the property should be populated with the result of a query.

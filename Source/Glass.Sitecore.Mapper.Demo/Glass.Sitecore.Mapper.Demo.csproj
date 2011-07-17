@@ -194,7 +194,9 @@
     <Content Include="App_Config\Prefetch\Master.config" />
     <Content Include="App_Config\Prefetch\Web.config" />
     <Content Include="App_Config\Prototypes.config" />
-    <Content Include="App_Config\Sitecore.config" />
+    <Content Include="App_Config\Sitecore.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Config\XamlSharp.config" />
     <Content Include="Global.asax" />
     <Content Include="Layouts\Content.ascx" />
@@ -207,13 +209,20 @@
     <None Include="App_Config\Include\DataFolder.config.example" />
     <None Include="App_Config\Include\EventHandler.config.example" />
     <None Include="App_Config\Include\ForwardingSecurityEvents.config.example" />
+    <Content Include="App_Config\Include\Glass.config">
+      <SubType>Designer</SubType>
+    </Content>
     <None Include="App_Config\Include\LiveMode.config.example" />
     <None Include="App_Config\Include\ScalabilitySettings.config.example" />
-    <Content Include="App_Config\Include\Sitecore.Analytics.config" />
+    <Content Include="App_Config\Include\Sitecore.Analytics.config">
+      <SubType>Designer</SubType>
+    </Content>
     <Content Include="App_Config\Include\Sitecore.Analytics.ExcludeRobots.config" />
     <Content Include="App_Config\Include\Sitecore.WebDAV.config" />
     <None Include="App_Config\Include\SitecoreSettings.config.example" />
-    <None Include="App_Config\Include\SiteDefinition.config.example" />
+    <None Include="App_Config\Include\SiteDefinition.config.example">
+      <SubType>Designer</SubType>
+    </None>
     <None Include="App_Config\Include\WebDeploy.config.example" />
     <None Include="App_Config\Include\XslExtension.config.example" />
     <Content Include="App_Config\Security\Domains.config" />
@@ -229,6 +238,10 @@
     <ProjectReference Include="..\Glass.Sitecore.Mapper\Glass.Sitecore.Mapper.csproj">
       <Project>{564CDD78-0939-436B-9C90-7AF9D95B9024}</Project>
       <Name>Glass.Sitecore.Mapper</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Glass.Sitecore.Misc\Glass.Sitecore.Misc.csproj">
+      <Project>{6805B0AC-2E52-4721-B5FF-FEA340118ADB}</Project>
+      <Name>Glass.Sitecore.Misc</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />

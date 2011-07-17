@@ -179,20 +179,17 @@ namespace Glass.Sitecore.Mapper
                 throw new MapperException("Could not find parent item");
 
             SitecoreClassConfig scClass = InstanceContext.GetSitecoreClass(typeof(T));
-
-            string templateSt = scClass.ClassAttribute.TemplateId;
-            string branchSt = scClass.ClassAttribute.BranchId;
             
-            Guid templateId = Guid.Empty;
-            Guid branchId = Guid.Empty;
+            Guid templateId = scClass.TemplateId;
+            Guid branchId = scClass.BranchId;
 
             Item item = null;
 
-            if (!templateSt.IsNullOrEmpty() && templateSt.GuidTryParse(out templateId))
+            if (templateId != Guid.Empty)
             {
                 item = pItem.Add(name, new TemplateID(new ID(templateId)));
             }
-            else if (!branchSt.IsNullOrEmpty() && branchSt.GuidTryParse(out branchId))
+            else if (branchId != Guid.Empty)
             {
                 item = pItem.Add(name, new BranchId(new ID(branchId)));
             }
@@ -242,15 +239,36 @@ namespace Glass.Sitecore.Mapper
 
         public T CreateClass<T>(bool isLazy, Item item) where T:class
         {
-            return (T) CreateClass(isLazy, typeof(T), item);
+            return (T) CreateClass(isLazy, false, typeof(T), item);
         }
 
-        public object CreateClass(bool isLazy, Type type, Item item)
+        public T CreateClass<T>(bool isLazy, bool inferType, Item item) where T : class
+        {
+            return (T)CreateClass(isLazy, inferType, typeof(T), item);
+        }
+
+        public object CreateClass(bool isLazy, bool inferType, Type type, Item item)
         {
             if (item == null) return null;
+
+             SitecoreClassConfig config=null;
+            if (!inferType)
+            {
+                //this retrieves the class based on return type
+                config = InstanceContext.GetSitecoreClass(type);
+            }
+            else
+            {
+                //this retrieves the class by inferring the type from the template ID
+                //if ths return type can not be found then the system will try to create a type 
+                //base on the return type
+                config = InstanceContext.GetSitecoreClass(item.TemplateID.Guid);
+                if (config == null) config = InstanceContext.GetSitecoreClass(type);
+                
+            }
+
             if (isLazy || type.IsInterface)
             {
-                SitecoreClassConfig config = InstanceContext.GetSitecoreClass(type);
                 return ProxyGenerator.CreateProxy(config, this, item);
             }
             else
@@ -258,10 +276,9 @@ namespace Glass.Sitecore.Mapper
                 if (item == null) return null;
 
                 //get the class information
-                var scClass = InstanceContext.GetSitecoreClass(type);
-                object t = scClass.Type.Assembly.CreateInstance(scClass.Type.FullName);
+                object t = config.Type.Assembly.CreateInstance(config.Type.FullName);
 
-                foreach (var handler in scClass.DataHandlers)
+                foreach (var handler in config.DataHandlers)
                 {
                     handler.SetProperty(t, item, this);
                 }
@@ -279,8 +296,15 @@ namespace Glass.Sitecore.Mapper
         /// <returns></returns>
         public IEnumerable CreateClasses(bool isLazy, Type type, Func<IEnumerable<Item>> getItems)
         {
-            return Utility.CreateGenericType(typeof(Enumerable<>), new Type[] { type }, getItems, this, isLazy) as IEnumerable;
+            return CreateClasses(isLazy, false, type, getItems);                
         }
+        public IEnumerable CreateClasses(bool isLazy, bool inferType, Type type, Func<IEnumerable<Item>> getItems)
+        {
+            return Utility.CreateGenericType(typeof(Enumerable<>), new Type[] { type }, getItems, this, isLazy, inferType) as IEnumerable;
+        }
+
+
+
         #endregion
 
         #region Private Methods
@@ -303,5 +327,13 @@ namespace Glass.Sitecore.Mapper
 
         #endregion
 
+
+
+        public object CreateClass(bool isLazy, Type type, Item item)
+        {
+           return CreateClass(isLazy, false, type, item);
+        }
+
+        
     }
 }

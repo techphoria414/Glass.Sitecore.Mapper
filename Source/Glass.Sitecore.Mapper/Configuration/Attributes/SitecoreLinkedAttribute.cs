@@ -40,6 +40,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             get;
             set;
         }
+
+        /// <summary>
+        /// Indicates the type should be inferred from the item template
+        /// </summary>
+        public bool InferType { get; set; }
        
     }
 }

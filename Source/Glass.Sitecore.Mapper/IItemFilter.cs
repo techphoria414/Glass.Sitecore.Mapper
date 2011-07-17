@@ -18,20 +18,21 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Glass.Sitecore.Mapper.Configuration.Attributes;
-using Glass.Sitecore.Mapper.Data;
+using Sitecore.Data.Items;
 
-namespace Glass.Sitecore.Mapper.Configuration
+namespace Glass.Sitecore.Mapper
 {
-    public class SitecoreClassConfig 
+    /// <summary>
+    /// The filter allows you to define which item should and shouldn't be loaded when a property is called
+    /// </summary>
+    public interface IItemFilter
     {
-        public Type Type { get; set; }
-        public Guid TemplateId { get; set; }
-        public Guid BranchId { get; set; }
-
-        internal IEnumerable<AbstractSitecoreDataHandler> DataHandlers { get; set; }
-
-        public IEnumerable<SitecoreProperty> Properties { get; set; }
-        public SitecoreClassAttribute ClassAttribute {get;set;}
+        /// <summary>
+        /// Used to determine if the item should be loaded
+        /// </summary>
+        /// <param name="item">The item to test</param>
+        /// <param name="service">The current service loading the item</param>
+        /// <returns>True if the item should be loaded, false if it shouldn't</returns>
+        bool LoadItem(Item item, ISitecoreService service);            
     }
 }
