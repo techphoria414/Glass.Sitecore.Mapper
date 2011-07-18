@@ -23,6 +23,25 @@ namespace Glass.Sitecore.Mapper
 {
     public interface ISitecoreContext : ISitecoreService
     {
+        /// <summary>
+        /// Retrieves the current item as the specified type
+        /// </summary>
+        /// <typeparam name="T">The type to return.</typeparam>
+        /// <returns>The current item as the specified type</returns>
         T GetCurrentItem<T>() where T : class;
+
+        /// <summary>
+        /// Performs a query relative to the current item
+        /// </summary>
+        /// <typeparam name="T">The type to cast classes to</typeparam>
+        /// <returns></returns>
+        IEnumerable<T> QueryRelative<T>(string query, bool isLazy, bool inferType) where T : class;
+
+        /// <summary>
+        /// Performs a query relative to the current item
+        /// </summary>
+        /// <typeparam name="T">The type to cast classes to</typeparam>
+        /// <returns></returns>
+        T QuerySingleRelative<T>(string query, bool isLazy, bool inferType) where T : class;
     }
 }

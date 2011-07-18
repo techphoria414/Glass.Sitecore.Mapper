@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Sitecore.Data.Items;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -34,6 +35,24 @@ namespace Glass.Sitecore.Mapper
             return base.GetItem<T>(global::Sitecore.Context.Item.ID.Guid);
         }
 
+        
+
+
+        public IEnumerable<T> QueryRelative<T>(string query, bool isLazy, bool inferType) where T : class
+        {
+            Item item = global::Sitecore.Context.Item;
+            var results = item.Axes.SelectItems(query);
+            return base.CreateClasses(isLazy, inferType, typeof(T), () => { return results; }) as IEnumerable<T>;
+
+        }
+
+        public T QuerySingleRelative<T>(string query, bool isLazy, bool inferType) where T : class
+        {
+            Item item = global::Sitecore.Context.Item;
+            var results = item.Axes.SelectSingleItem(query);
+            return base.CreateClass<T>(isLazy, inferType, item);
+        }
+        
         #endregion
     }
 }
