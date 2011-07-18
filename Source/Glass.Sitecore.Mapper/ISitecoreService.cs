@@ -156,12 +156,61 @@ namespace Glass.Sitecore.Mapper
         /// <param name="item">The class to delete</param>
         void Delete<T>(T item) where T : class;
 
-
+        /// <summary>
+        /// Creates a class from the specified item
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <returns>The item as the specified type</returns>
         T CreateClass<T>(bool isLazy, Item item) where T : class;
+
+        /// <summary>
+        /// Creates a class from the specified item
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <param name="inferType">Infer the type to be loaded from the template</param>
+        /// <returns>The item as the specified type</returns>
         T CreateClass<T>(bool isLazy, bool inferType, Item item) where T : class;
+
+        /// <summary>
+        /// Creates a class from the specified item
+        /// </summary>
+        /// <param name="type">The type to return</param>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <returns>The item as the specified type</returns>
         object CreateClass(bool isLazy, Type type, Item item);
+
+        /// <summary>
+        /// Creates a class from the specified item
+        /// </summary>
+        /// <param name="type">The type to return</param>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <param name="inferType">Infer the type to be loaded from the template</param>
+        /// <returns>The item as the specified type</returns>
         object CreateClass(bool isLazy,bool inferType,  Type type, Item item);
+
+        /// <summary>
+        /// Create a collection of classes from the specified type
+        /// </summary>
+        /// <param name="isLazy">If true creates a proxy for each class</param>
+        /// <param name="type">The type to return</param>
+        /// <param name="getItems">A function that returns the list of items to load</param>
+        /// <returns>An enumerable of the items as the specified type</returns>
         IEnumerable CreateClasses(bool isLazy, Type type, Func<IEnumerable<Item>> getItems);
+
+        /// <summary>
+        /// Create a collection of classes from the specified type
+        /// </summary>
+        /// <param name="isLazy">If true creates a proxy for each class</param>
+        /// <param name="type">The type to return</param>
+        /// <param name="getItems">A function that returns the list of items to load</param>
+        /// <param name="inferType">Infer the type to be loaded from the item template</param>
+        /// <returns>An enumerable of the items as the specified type</returns>
         IEnumerable CreateClasses(bool isLazy, bool inferType, Type type, Func<IEnumerable<Item>> getItems);
 
     }
