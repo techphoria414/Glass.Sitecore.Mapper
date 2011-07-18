@@ -120,13 +120,9 @@ namespace Glass.Sitecore.Mapper.Data
                 
             };
 
-            var handler = service.InstanceContext.Datas.FirstOrDefault(x => x.WillHandle(fakeProp, service.InstanceContext.Datas, service.InstanceContext.Classes)) as AbstractSitecoreField;
+            var handler = service.InstanceContext.GetDataHandler(fakeProp) as AbstractSitecoreField;
             if (handler == null) throw new NotSupportedException("No handler to support field type {0}".Formatted(type.FullName));
-
-            handler.ConfigureDataHandler(fakeProp);
             return handler;
-
-
         }
     }
 }

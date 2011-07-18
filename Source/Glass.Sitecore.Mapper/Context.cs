@@ -64,6 +64,9 @@ namespace Glass.Sitecore.Mapper
 
                         datas = LoadDefaultDataHandlers(datas);
 
+                        InstanceContext instance = new InstanceContext(classes, datas);
+                        StaticContext = instance;
+
                         //now assign a data handler to each property
                         foreach (var cls in classes)
                         {
@@ -71,15 +74,14 @@ namespace Glass.Sitecore.Mapper
 
                             foreach (var prop in cls.Value.Properties)
                             {
-                                var handler = SetDataHandler(prop, datas, classes);
+                                var handler =  instance.GetDataHandler(prop);
                                 handlers.Add(handler);
 
                             }
                             cls.Value.DataHandlers = handlers;
                         }
                         
-                        InstanceContext instance = new InstanceContext(classes, datas);
-                        StaticContext = instance;
+                       
 
                     }
                 }
@@ -98,28 +100,7 @@ namespace Glass.Sitecore.Mapper
             return StaticContext.Clone() as InstanceContext;
         }
 
-        /// <summary>
-        /// Can we move this so that it happens when the instance context is created
-        /// 
-        /// </summary>
-        /// <param name="property"></param>
-        private AbstractSitecoreDataHandler SetDataHandler(SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
-        {
-            AbstractSitecoreDataHandler handler = datas.FirstOrDefault(x => x.WillHandle(property, datas, classes));
-
-            if (handler == null)
-                throw new NotSupportedException("No data handler for: \n\r Class: {0} \n\r Member: {1} \n\r Attribute: {2}"
-                    .Formatted(
-                        property.Property.ReflectedType.Name,
-                        property.Property.Name,
-                        property.Attribute.GetType().Name
-                    ));
-
-            var newHandler = handler.Clone() as AbstractSitecoreDataHandler;
-            newHandler.ConfigureDataHandler(property);
-
-            return newHandler;
-        }
+       
 
         private IEnumerable<AbstractSitecoreDataHandler> LoadDefaultDataHandlers(IEnumerable<AbstractSitecoreDataHandler> handlers)
         {

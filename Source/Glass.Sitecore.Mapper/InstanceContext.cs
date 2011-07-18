@@ -42,7 +42,28 @@ namespace Glass.Sitecore.Mapper
         }
 
 
+        /// <summary>
+        /// Can we move this so that it happens when the instance context is created
+        /// 
+        /// </summary>
+        /// <param name="property"></param>
+        public AbstractSitecoreDataHandler GetDataHandler(SitecoreProperty property)
+        {
+            AbstractSitecoreDataHandler handler = Datas.FirstOrDefault(x => x.WillHandle(property, Datas, Classes));
 
+            if (handler == null)
+                throw new NotSupportedException("No data handler for: \n\r Class: {0} \n\r Member: {1} \n\r Attribute: {2}"
+                    .Formatted(
+                        property.Property.ReflectedType.Name,
+                        property.Property.Name,
+                        property.Attribute.GetType().Name
+                    ));
+
+            var newHandler = handler.Clone() as AbstractSitecoreDataHandler;
+            newHandler.ConfigureDataHandler(property);
+
+            return newHandler;
+        }
 
         
 
