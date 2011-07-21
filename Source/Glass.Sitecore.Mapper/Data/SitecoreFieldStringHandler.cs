@@ -53,7 +53,7 @@ namespace Glass.Sitecore.Mapper.Data
             }
             else
             {
-                string fieldValue = value.ToString();
+                string fieldValue = (value ?? "") .ToString();
                 item[FieldName] = fieldValue;
             }
         }

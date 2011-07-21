@@ -206,6 +206,37 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             }
         }
 
+        [Test]
+        public void SetValue_HandlesNullString()
+        {
+            //Assign
+            string value = null;
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(string), "RichText"),
+                Attribute = new SitecoreFieldAttribute()
+                {
+                    Setting = SitecoreFieldSettings.RichTextRaw
+                }
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            using (new SecurityDisabler())
+            {
+                //Act
+
+                _item.Editing.BeginEdit();
+                _handler.SetValue(_item, value, null);
+
+                //Assert
+                Assert.AreEqual(_item["RichText"], "");
+
+                _item.Editing.EndEdit();
+
+            }
+        }
+
 
         #endregion
     }
