@@ -30,10 +30,15 @@ namespace Glass.Sitecore.Mapper.Data
             return fieldValue == "1";
         }
 
-        public override string SetFieldValue( object value,  ISitecoreService service)
+        public override string SetFieldValue(object value, ISitecoreService service)
         {
-            if ((bool)value) return "1";
-            else return "0";
+            if (value is bool)
+            {
+                if ((bool)value) return "1";
+                else return "0";
+            }
+            else
+                throw new MapperException("The value is not of type System.Float");
         }
 
         public override Type TypeHandled

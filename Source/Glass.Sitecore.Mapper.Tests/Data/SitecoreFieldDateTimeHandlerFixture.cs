@@ -77,16 +77,27 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             DateTime date = new DateTime(2010, 09, 08, 06, 05, 04);
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Property = new FakePropertyInfo(typeof(DateTime))
-            };
+         
 
             //Act
             var result = _handler.SetFieldValue( date,  null);
 
             //Assert
             Assert.AreEqual("20100908T060504", result);
+        }
+
+        [Test]
+        [ExpectedException(typeof(MapperException))]            
+        public void SetFieldValue_NonDateTime_ThrowsException()
+        {
+            //Assign
+            object date = null;
+            
+
+            //Act
+            var result = _handler.SetFieldValue(date, null);
+
+          
         }
 
 

@@ -112,6 +112,29 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.AreEqual("44|535|22", result);
         }
 
+        [Test]
+        public void SetFieldValue_HandlesNull()
+        {
+            //Assign
+            IEnumerable<int> list = null;
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("IntList"),
+                Attribute = new SitecoreFieldAttribute()
+            };
+
+            _handler.ConfigureDataHandler(property);
+            //Act
+            var result = _handler.SetFieldValue(
+                list,
+
+                _service);
+
+            //Assert
+            Assert.AreEqual("", result);
+        }
+
         #endregion
 
 

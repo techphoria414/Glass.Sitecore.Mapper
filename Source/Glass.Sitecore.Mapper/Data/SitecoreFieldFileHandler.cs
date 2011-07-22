@@ -47,6 +47,12 @@ namespace Glass.Sitecore.Mapper.Data
             File  file = value as File;
             FileField field = new FileField(item.Fields[FieldName]);
 
+            if (file == null)
+            {
+                field.Clear();
+                return;
+            }
+
             if (field.MediaID.Guid != file.Id)
             {
                 if (file.Id == Guid.Empty)

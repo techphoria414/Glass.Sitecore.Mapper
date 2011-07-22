@@ -98,6 +98,21 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         }
 
+        [Test]
+        [ExpectedException(typeof(MapperException))]
+        public void SetFieldValue_NonDouble_ThrowsException()
+        {
+            //Assign
+            object value = null;
+
+
+            //Act
+            var result = _handler.SetFieldValue(value, null);
+
+            //Assert
+
+        }
+
         #endregion
     }
 }

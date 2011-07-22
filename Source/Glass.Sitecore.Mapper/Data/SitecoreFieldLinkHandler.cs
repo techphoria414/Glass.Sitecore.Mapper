@@ -50,7 +50,14 @@ namespace Glass.Sitecore.Mapper.Data
         {
 
             Link link = value as Link;
+
             LinkField field = new LinkField(item.Fields[FieldName]);
+            if (link == null)
+            {
+                field.Clear();
+                return;
+            }
+
 
             if (field.TargetID.Guid != link.TargetId)
             {

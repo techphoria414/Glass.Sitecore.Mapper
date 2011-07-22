@@ -36,7 +36,12 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override string SetFieldValue( object value, ISitecoreService service)
         {
-            return value.ToString();
+            if (value is decimal)
+            {
+                return value.ToString();
+            }
+            else
+                throw new MapperException("The value is not of type System.Decimal");
         }
 
         public override Type TypeHandled

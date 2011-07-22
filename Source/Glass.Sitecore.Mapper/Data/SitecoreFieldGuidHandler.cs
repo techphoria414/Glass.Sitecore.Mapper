@@ -41,6 +41,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override string SetFieldValue(object value, ISitecoreService service)
         {
+
             if (value is Guid)
             {
                 return ((Guid)value).ToString("B");

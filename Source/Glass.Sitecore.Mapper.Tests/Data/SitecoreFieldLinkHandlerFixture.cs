@@ -167,6 +167,38 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         }
 
+        [Test]
+        public void SetValue_NullLinkClearsField()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+            Guid targetId = new Guid("{D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}");
+
+
+            Link link = null;
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, link, null);
+
+                //Assert
+                Assert.AreEqual("",item.Fields["GeneralLink"].Value);
+
+                item.Editing.CancelEdit();
+            }
+        }
+
         #endregion
 
     }

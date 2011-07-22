@@ -193,6 +193,43 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 item.Editing.CancelEdit();
             }
         }
+
+
+        [Test]
+        public void SetValue_HandlesNull()
+        {
+            //Assign
+            // /sitecore/media library/Files/DSC01034
+            ID newMediaId = new ID(new Guid("{210FAF49-5AA4-471E-BBFE-B4D3ACB6ADC0}"));
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Image), "Image")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+
+            Item item = _db.GetItem(new ID(_itemId));
+
+            Image img = null;
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+                //Act
+                _handler.SetValue(item, img, null);
+
+
+                //Assert
+                Assert.AreEqual("", item.Fields["Image"].Value);
+
+                item.Editing.CancelEdit();
+            }
+
+
+
+        }
         #endregion
     }
 }

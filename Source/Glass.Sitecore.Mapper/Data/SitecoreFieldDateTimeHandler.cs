@@ -32,8 +32,13 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override string SetFieldValue(object value, ISitecoreService service)
         {
-            DateTime date = (DateTime)value;
-            return global::Sitecore.DateUtil.ToIsoDate(date);
+            if (value is DateTime)
+            {
+                DateTime date = (DateTime)value;
+                return global::Sitecore.DateUtil.ToIsoDate(date);
+            }
+            else
+                throw new MapperException("The value is not of type System.DateTime");
         }
 
         public override Type TypeHandled

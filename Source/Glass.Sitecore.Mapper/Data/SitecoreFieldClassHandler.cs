@@ -42,7 +42,9 @@ namespace Glass.Sitecore.Mapper.Data
         public override object GetFieldValue(string fieldValue, Item item, ISitecoreService service)
         {
             Item target = null;
-
+            
+            if (fieldValue.IsNullOrEmpty()) return null;
+            
             try
             {
                 Guid id = Guid.Empty;

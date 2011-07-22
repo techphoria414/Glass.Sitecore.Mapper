@@ -99,16 +99,26 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             bool value = false;
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Property = new FakePropertyInfo(typeof(Boolean))
-            };
+           
 
             //Act
             var result = _handler.SetFieldValue( value,  null);
 
             //Assert
             Assert.AreEqual("0", result);
+        }
+
+        [Test]
+        [ExpectedException(typeof(MapperException))]            
+        public void SetFieldValue_NonBool_ThrowsException()
+        {
+            //Assign
+            object value = null;
+
+            //Act
+            var result = _handler.SetFieldValue(value, null);
+
+            
         }
 
         #endregion

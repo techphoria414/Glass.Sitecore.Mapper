@@ -93,6 +93,21 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.AreEqual("{FC1D0AFD-71CC-47e2-84B3-7F1A2973248B}".ToLower(), result);
         }
 
+        [Test]
+        [ExpectedException(typeof(MapperException))]
+        public void SetFieldValue_NonGuid_ThrowsException()
+        {
+            //Assign
+            object guid = null;
+
+
+            //Act
+            var result = _handler.SetFieldValue(guid, null);
+
+            //Assert
+            Assert.AreEqual("", result);
+        }
+
         #endregion
     }
 }

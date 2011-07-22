@@ -35,7 +35,12 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override string SetFieldValue(object value, ISitecoreService service)
         {
-            return value.ToString();
+            if (value is double)
+            {
+                return value.ToString();
+            }
+            else
+                throw new MapperException("The value is not of type System.Double");
         }
 
         public override Type TypeHandled

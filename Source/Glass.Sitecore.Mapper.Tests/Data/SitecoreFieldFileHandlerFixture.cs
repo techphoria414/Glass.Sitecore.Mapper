@@ -142,6 +142,40 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         }
 
+        [Test]
+        public void SetValue_NullFile_BlanksField()
+        {
+            //Assign
+            Guid id = Guid.Empty;
+            Item item = _db.GetItem(new ID(_itemId));
+
+            File file = null;
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(File), "File")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, file, null);
+
+                //Assert
+                FileField field = new FileField(item.Fields["File"]);
+                Assert.AreEqual(null, field.MediaItem);
+                Assert.AreEqual(string.Empty, field.Src);
+
+                item.Editing.CancelEdit();
+            }
+
+        }
+
         #endregion
     }
 }

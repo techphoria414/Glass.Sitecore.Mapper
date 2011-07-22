@@ -66,6 +66,8 @@ namespace Glass.Sitecore.Mapper.Data
 
             IEnumerable list = value as IEnumerable;
 
+            if (list == null) return "";
+
             List<string> sList = new List<string>();
                        
 

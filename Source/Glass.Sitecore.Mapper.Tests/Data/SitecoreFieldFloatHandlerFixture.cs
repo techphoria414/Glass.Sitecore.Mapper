@@ -88,16 +88,26 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             float value = 10.11f;
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Property = new FakePropertyInfo(typeof(float))
-            };
-
+           
             //Act
             var result = _handler.SetFieldValue( value,  null);
 
             //Assert
             Assert.AreEqual("10.11", result);
+
+        }
+
+        [Test]
+        [ExpectedException(typeof(MapperException))]
+        public void SetFieldValue_NonFloat_ThrowsException()
+        {
+            //Assign
+            object value = null;
+           
+            //Act
+            var result = _handler.SetFieldValue(value, null);
+
+            
 
         }
 

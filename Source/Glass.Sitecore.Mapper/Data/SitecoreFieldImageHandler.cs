@@ -63,6 +63,11 @@ namespace Glass.Sitecore.Mapper.Data
             Image img = value as Image;
             ImageField scImg = new ImageField(item.Fields[FieldName]);
 
+            if (img == null)
+            {
+                scImg.Clear();
+                return;
+            }
 
             if (scImg.MediaID.Guid != img.MediaId)
             {
