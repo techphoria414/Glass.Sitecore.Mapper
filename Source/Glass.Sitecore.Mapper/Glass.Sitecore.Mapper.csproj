@@ -114,6 +114,7 @@
     <Compile Include="FieldTypes\File.cs" />
     <Compile Include="FieldTypes\Image.cs" />
     <Compile Include="FieldTypes\Link.cs" />
+    <Compile Include="FieldTypes\LinkType.cs" />
     <Compile Include="FieldTypes\TriState.cs" />
     <Compile Include="Html.cs" />
     <Compile Include="InstanceContext.cs" />

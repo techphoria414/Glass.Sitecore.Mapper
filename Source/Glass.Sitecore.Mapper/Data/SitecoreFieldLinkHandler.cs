@@ -35,11 +35,30 @@ namespace Glass.Sitecore.Mapper.Data
 
             Link link = new Link();
             LinkField field = new LinkField(item.Fields[FieldName]);
+
+            switch (field.LinkType)
+            {
+                case "media":
+                    global::Sitecore.Data.Items.MediaItem media = new global::Sitecore.Data.Items.MediaItem(field.TargetItem);
+                    link.Url = global::Sitecore.Resources.Media.MediaManager.GetMediaUrl(media);
+                    link.Type = LinkType.Media;
+                    break;
+                case "internal":
+                    link.Url = LinkManager.GetItemUrl(item);
+                    link.Type = LinkType.Internal;
+                    break;
+                default:
+                    link.Url = field.Url;
+                    link.Type = LinkType.GeneralLink;
+                    break;
+
+            }
+            
+
             link.Anchor = field.Anchor;
             link.Class = field.Class;
             link.Text = field.Text;
             link.Title = field.Title;
-            link.Url = field.Url;
             link.TargetId = field.TargetID.Guid;
             link.Target = field.Target;
 
@@ -59,7 +78,7 @@ namespace Glass.Sitecore.Mapper.Data
             }
 
 
-            if (field.TargetID.Guid != link.TargetId)
+            if (field.TargetID.Guid != link.TargetId )
             {
                 if (link.TargetId == Guid.Empty)
                 {
