@@ -5,14 +5,35 @@ using System.Text;
 using System.Linq.Expressions;
 using Sitecore.Data;
 using System.Collections.Specialized;
+using Sitecore.Data.Items;
+using Sitecore.Web.UI.WebControls;
+using Glass.Sitecore.Mapper.Data;
 
 namespace Glass.Sitecore.Mapper
 {
     /// <summary>
     /// This class contains a set of helpers that make converting items mapped in Glass.Sitecore.Mapper to HTML
     /// </summary>
-    public static class Html
+    public class Html
     {
+        Database _db;
+
+        /// <param name="service">The service that will be used to load and save data</param>
+        public Html(ISitecoreService service):this(service.Database){
+            
+        }
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="database">The database that will be used to load and save data</param>
+        public Html(string database):this(global::Sitecore.Configuration.Factory.GetDatabase(database))
+        {
+        }
+        /// <param name="database">The database that will be used to load and save data</param>
+        public Html(Database database)
+        {
+            _db = database;
+        }
 
         /// <summary>
         /// Makes the field editable using the Sitecore Page Editor. Using the specifed service to write data.
@@ -20,11 +41,10 @@ namespace Glass.Sitecore.Mapper
         /// <typeparam name="T">A class loaded by Class.Sitecore.Mapper</typeparam>
         /// <param name="field">The field that should be made editable</param>
         /// <param name="target">The target object that contains the item to be edited</param>
-        /// <param name="service">The service that will be used to load and save data</param>
         /// <returns>HTML output to either render the editable controls or normal HTML</returns>
-        public static string Editable<T>(Expression<Func<T, object>> field, T target, ISitecoreService service)
+        public string Editable<T>(Expression<Func<T, object>> field, T target)
         {
-            return Editable<T>(field, null, target, service);
+            return MakeEditable<T>(field, null, target, _db);
         }
         /// <summary>
         /// Makes the field editable using the Sitecore Page Editor.  Using the specifed service to write data.
@@ -35,68 +55,18 @@ namespace Glass.Sitecore.Mapper
         /// <param name="standardOutput">The output to display when the Sitecore Page Editor is not being used</param>
         /// <param name="service">The service that will be used to load and save data</param>
         /// <returns>HTML output to either render the editable controls or normal HTML</returns>
-        public static string Editable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target, ISitecoreService service)
+        public string Editable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target)
         {
-            return PageEditor.Editor.Editable<T>(field, standardOutput, target, service.Database);
+            return MakeEditable<T>(field, standardOutput, target, _db);
         }
-        /// <summary>
-        /// Makes the field editable using the Sitecore Page Editor. Uses the Context database (Sitecore.Context.Database) to write data.
-        /// </summary>
-        /// <typeparam name="T">A class loaded by Class.Sitecore.Mapper</typeparam>
-        /// <param name="field">The field that should be made editable</param>
-        /// <param name="target">The target object that contains the item to be edited</param>
-        /// <returns>HTML output to either render the editable controls or normal HTML</returns>
-        public static string Editable<T>(Expression<Func<T, object>> field, T target)
-        {
-          return Editable<T>(field, null, target);
-        }
-        /// <summary>
-        /// Makes the field editable using the Sitecore Page Editor. Uses the Context database (Sitecore.Context.Database) to write data.
-        /// </summary>
-        /// <typeparam name="T">A class loaded by Class.Sitecore.Mapper</typeparam>
-        /// <param name="field">The field that should be made editable</param>
-        /// <param name="target">The target object that contains the item to be edited</param>
-        /// <param name="standardOutput">The output to display when the Sitecore Page Editor is not being used</param>
-        /// <returns>HTML output to either render the editable controls or normal HTML</returns>
-        public static string Editable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target)
-        {
-            return PageEditor.Editor.Editable<T>(field, standardOutput, target, global::Sitecore.Context.Database);
-        }
-        /// <summary>
-        /// Makes the field editable using the Sitecore Page Editor. Using the database specified
-        /// </summary>
-        /// <typeparam name="T">A class loaded by Class.Sitecore.Mapper</typeparam>
-        /// <param name="field">The field that should be made editable</param>
-        /// <param name="target">The target object that contains the item to be edited</param>
-        /// <param name="database">The database to save data to</param>
-        /// <returns>HTML output to either render the editable controls or normal HTML</returns>
-        public static string Editable<T>(Expression<Func<T, object>> field, T target, string database)
-        {
-            return Editable<T>(field, null, target, database);
-        }
-        /// <summary>
-        /// Makes the field editable using the Sitecore Page Editor. Using the database specified
-        /// </summary>
-        /// <typeparam name="T">A class loaded by Class.Sitecore.Mapper</typeparam>
-        /// <param name="field">The field that should be made editable</param>
-        /// <param name="target">The target object that contains the item to be edited</param>
-        /// <param name="standardOutput">The output to display when the Sitecore Page Editor is not being used</param>
-        /// <param name="database">The database to save data to</param>
-        /// <returns>HTML output to either render the editable controls or normal HTML</returns>
-        public static string Editable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target, string database)
-        {
-            Database db = global::Sitecore.Configuration.Factory.GetDatabase(database);
-
-            return PageEditor.Editor.Editable<T>(field, standardOutput, target, db);
-        }
-
+       
         /// <summary>
         /// Renders HTML for an image
         /// </summary>
         /// <param name="image">The image to render</param>
         /// <param name="attributes">Additional attributes to add. Do not include alt or src</param>
         /// <returns>An img HTML element</returns>
-        public static string RenderImage(FieldTypes.Image image, NameValueCollection attributes)
+        public string RenderImage(FieldTypes.Image image, NameValueCollection attributes)
         {
             string format = "<img src='{0}' alt='{1}' class='{2}' {3}/>";
 
@@ -117,7 +87,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="link">The link to render</param>
         /// <param name="attributes">Addtiional attributes to add. Do not include href or title</param>
         /// <returns>An "a" HTML element </returns>
-        public static string RenderLink(FieldTypes.Link link, NameValueCollection attributes)
+        public  string RenderLink(FieldTypes.Link link, NameValueCollection attributes)
         {
             string format = "<a href='{0}{1}' title='{2}' target='{3}' class='{4}' {5}>{6}</a>";
 
@@ -138,7 +108,7 @@ namespace Glass.Sitecore.Mapper
         /// <summary>
         /// Indicates if the site is in editing mode
         /// </summary>
-        public static bool IsInEditingMode
+        public  bool IsInEditingMode
         {
             get
             {
@@ -147,6 +117,64 @@ namespace Glass.Sitecore.Mapper
                             && global::Sitecore.Context.PageMode.IsPageEditorEditing;
             }
         }
+
+        private string MakeEditable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target, Database database)
+        {
+            try
+            {
+
+                if (this.IsInEditingMode)
+                {
+                    if (field.Parameters.Count > 1)
+                        throw new MapperException("To many parameters in linq expression {0}".Formatted(field.Body));
+
+                    var site = global::Sitecore.Context.Site;
+                    Type type = typeof(T);
+
+                    InstanceContext context = Context.GetContext();
+
+                    Guid id = Guid.Empty;
+
+                    try
+                    {
+                        id = context.GetClassId(type, target);
+                    }
+                    catch (SitecoreIdException ex)
+                    {
+                        throw new MapperException("Page editting error. Type {0} can not be used for editing. See inner exception".Formatted(typeof(T).FullName), ex);
+                    }
+
+                    var scClass = context.GetSitecoreClass(typeof(T));
+
+                    var prop = Utility.GetPropertyInfo(type, field.Body);
+
+                    var dataHandler = scClass.DataHandlers.FirstOrDefault(x => x.Property == prop);
+
+                    var item = database.GetItem(new ID(id));
+
+                    using (new ContextItemSwitcher(item))
+                    {
+                        FieldRenderer renderer = new FieldRenderer();
+                        renderer.Item = item;
+                        renderer.FieldName = ((AbstractSitecoreField)dataHandler).FieldName;
+                        renderer.Parameters = "";
+                        return renderer.Render();
+                    }
+                }
+                else
+                {
+                    if (standardOutput != null)
+                        return standardOutput.Compile().Invoke(target);
+                    else
+                        return field.Compile().Invoke(target).ToString();
+                }
+            }
+            catch (Exception ex)
+            {
+                return "The following exception occured: {0} \n\r {1}".Formatted(ex.Message, ex.StackTrace);
+            }
+        }
+
     }
 }
   

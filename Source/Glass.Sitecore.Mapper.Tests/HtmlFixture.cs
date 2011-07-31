@@ -15,6 +15,8 @@ namespace Glass.Sitecore.Mapper.Tests
         [Test]
         public void RenderImage_RendersImageWithAttributes()
         {
+            Html html = new Html("");
+
             //Assign
             FieldTypes.Image img = new FieldTypes.Image();
             img.Alt = "Some alt test";
@@ -25,7 +27,7 @@ namespace Glass.Sitecore.Mapper.Tests
             attrs.Add("style", "allStyle");
             
             //Act
-            var result = Html.RenderImage(img, attrs);
+            var result = html.RenderImage(img, attrs);
 
             //Assert
             Assert.AreEqual("<img src='/cats.jpg' alt='Some alt test' class='classy' style='allStyle' />", result);
@@ -39,7 +41,9 @@ namespace Glass.Sitecore.Mapper.Tests
         [Test]
         public void RenderLink_RendersAValidaLink()
         {
+
             //Assign
+            Html html = new Html("");
 
             FieldTypes.Link link = new FieldTypes.Link();
             link.Class = "classy";
@@ -53,7 +57,7 @@ namespace Glass.Sitecore.Mapper.Tests
             attrs.Add("style", "got some");
 
             //Act
-            var result = Html.RenderLink(link, attrs);
+            var result = html.RenderLink(link, attrs);
 
             //Assert
             Assert.AreEqual("<a href='/yourpage#landSighted' title='You should click here' target='xMarksTheSpot' class='classy' style='got some' >Click here</a>", result);
