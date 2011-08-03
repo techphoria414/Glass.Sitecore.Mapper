@@ -44,7 +44,8 @@ namespace Glass.Sitecore.Mapper.Data
                     link.Type = LinkType.Media;
                     break;
                 case "internal":
-                    link.Url = LinkManager.GetItemUrl(item);
+                    if (field.TargetItem == null) link.Url = string.Empty;
+                    else link.Url = LinkManager.GetItemUrl(field.TargetItem);
                     link.Type = LinkType.Internal;
                     break;
                 default:

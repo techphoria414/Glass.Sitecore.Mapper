@@ -59,6 +59,16 @@ namespace Glass.Sitecore.Mapper
         {
             return MakeEditable<T>(field, standardOutput, target, _db);
         }
+
+        /// <summary>
+        /// Renders HTML for an image
+        /// </summary>
+        /// <param name="image">The image to render</param>
+        /// <returns>An img HTML element</returns>
+        public string RenderImage(FieldTypes.Image image)
+        {
+            return RenderImage(image, null);
+        }
        
         /// <summary>
         /// Renders HTML for an image
@@ -68,6 +78,8 @@ namespace Glass.Sitecore.Mapper
         /// <returns>An img HTML element</returns>
         public string RenderImage(FieldTypes.Image image, NameValueCollection attributes)
         {
+            if (attributes == null) attributes = new NameValueCollection();
+
             string format = "<img src='{0}' alt='{1}' class='{2}' {3}/>";
 
             string cls = attributes.AllKeys.Any(x=> x =="class") ? attributes["class"] : image.Class;
@@ -81,6 +93,19 @@ namespace Glass.Sitecore.Mapper
             return format.Formatted(image.Src, image.Alt, cls, Utility.ConvertAttributes(attributes));
         }
 
+
+        /// <summary>
+        /// Render HTML for a link
+        /// </summary>
+        /// <param name="link">The link to render</param>
+        /// <returns>An "a" HTML element </returns>
+        public string RenderLink(FieldTypes.Link link)
+        {
+
+            return RenderLink(link, null, string.Empty);
+
+        }
+
         /// <summary>
         /// Render HTML for a link
         /// </summary>
@@ -89,19 +114,36 @@ namespace Glass.Sitecore.Mapper
         /// <returns>An "a" HTML element </returns>
         public  string RenderLink(FieldTypes.Link link, NameValueCollection attributes)
         {
+
+            return RenderLink(link, attributes, string.Empty);
+
+        }
+
+        /// <summary>
+        /// Render HTML for a link
+        /// </summary>
+        /// <param name="link">The link to render</param>
+        /// <param name="attributes">Addtiional attributes to add. Do not include href or title</param>
+        /// <param name="contents">Content to go in the link instead of the standard text</param>
+        /// <returns>An "a" HTML element </returns>
+        public string RenderLink(FieldTypes.Link link, NameValueCollection attributes, string contents)
+        {
+
+            if (attributes == null) attributes = new NameValueCollection();
+
             string format = "<a href='{0}{1}' title='{2}' target='{3}' class='{4}' {5}>{6}</a>";
 
-            string cls = attributes.AllKeys.Any(x=> x =="class") ? attributes["class"] : link.Class;
-            string anchor = link.Anchor.IsNullOrEmpty() ? "" : "#"+link.Anchor;
+            string cls = attributes.AllKeys.Any(x => x == "class") ? attributes["class"] : link.Class;
+            string anchor = link.Anchor.IsNullOrEmpty() ? "" : "#" + link.Anchor;
             string target = attributes.AllKeys.Any(x => x == "target") ? attributes["target"] : link.Target;
-            
+
             attributes.Remove("href");
             attributes.Remove("title");
             attributes.Remove("target");
             attributes.Remove("class");
 
 
-            return format.Formatted(link.Url, anchor, link.Title, target, cls, Utility.ConvertAttributes(attributes), link.Text);
+            return format.Formatted(link.Url, anchor, link.Title, target, cls, Utility.ConvertAttributes(attributes), contents.IsNullOrEmpty() ?  link.Text : contents);
 
         }
 

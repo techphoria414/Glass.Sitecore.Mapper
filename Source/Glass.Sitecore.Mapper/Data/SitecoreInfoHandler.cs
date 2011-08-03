@@ -62,6 +62,8 @@ namespace Glass.Sitecore.Mapper.Data
                     return item.TemplateName;
                 case SitecoreInfoType.Url:
                     return LinkManager.GetItemUrl(item);
+                case SitecoreInfoType.FullUrl:
+                    return LinkManager.GetItemUrl(item, new UrlOptions() { AlwaysIncludeServerUrl = true });
                 case SitecoreInfoType.Version:
                     return item.Version.Number;
                 default:

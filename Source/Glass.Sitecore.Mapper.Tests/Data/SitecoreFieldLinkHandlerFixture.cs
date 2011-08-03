@@ -100,7 +100,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assert.AreEqual(Guid.Empty, result.TargetId);
             //Assert.AreEqual("Link Description Test", result.Text);
             //Assert.AreEqual("Alternate Text Test", result.Title);
-            Assert.AreEqual("/en/sitecore/content/Glass/Test1.aspx", result.Url);
+            Assert.AreEqual("/en/sitecore/content/Glass/Test2.aspx", result.Url);
         }
 
         [Test]
