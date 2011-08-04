@@ -97,7 +97,9 @@ namespace Glass.Sitecore.Mapper
         internal static InstanceContext GetContext()
         {
             if (StaticContext == null) throw new MapperException("Context has not been loaded");
-            return StaticContext.Clone() as InstanceContext;
+
+            //due to changes in the way that handlers are created we should no longer need to clone the instance context
+            return StaticContext; //.Clone() as InstanceContext;
         }
 
        
