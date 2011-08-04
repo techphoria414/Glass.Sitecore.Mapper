@@ -38,6 +38,8 @@ namespace Glass.Sitecore.Mapper
         public InstanceContext(Dictionary<Type, SitecoreClassConfig> classes, IEnumerable<AbstractSitecoreDataHandler> datas)
         {
             //This needs reworking
+            //this will be simplified to remove the need for three sets of data
+            
             Classes = classes;
             ClassesByType = new Hashtable(classes);
             ClassesById = new Hashtable();
