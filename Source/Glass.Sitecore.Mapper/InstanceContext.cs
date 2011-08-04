@@ -30,14 +30,23 @@ namespace Glass.Sitecore.Mapper
 {
     public class InstanceContext : ICloneable
     {
-
+        public Hashtable ClassesByType { get; private set; }
+        public Hashtable ClassesById { get; set; }
         public Dictionary<Type, SitecoreClassConfig> Classes { get; private set; }
         public IEnumerable<AbstractSitecoreDataHandler> Datas { get; private set; }
 
         public InstanceContext(Dictionary<Type, SitecoreClassConfig> classes, IEnumerable<AbstractSitecoreDataHandler> datas)
         {
-           
+            //This needs reworking
             Classes = classes;
+            ClassesByType = new Hashtable(classes);
+            ClassesById = new Hashtable();
+            foreach (var record in classes)
+            {
+                if (record.Value.TemplateId != Guid.Empty)
+                    ClassesById.Add(record.Value.TemplateId, record.Value);
+            }
+
             Datas = datas;
         }
 
@@ -65,34 +74,36 @@ namespace Glass.Sitecore.Mapper
             return newHandler;
         }
 
-        
 
-        public Guid GetClassId(Type type, object target){
+
+        public Guid GetClassId(Type type, object target)
+        {
             var scClass = GetSitecoreClass(type);
             var attribute = scClass.Properties.FirstOrDefault(x => x.Attribute is SitecoreIdAttribute);
 
-            if (attribute == null) 
+            if (attribute == null)
                 throw new SitecoreIdException("The type {0} does not contain a property with the Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreIdAttribute".Formatted(type.FullName));
 
-            Guid guid =  (Guid) attribute.Property.GetValue(target, null);
+            Guid guid = (Guid)attribute.Property.GetValue(target, null);
             return guid;
         }
 
 
         public SitecoreClassConfig GetSitecoreClass(Type type)
         {
-            if (!Classes.ContainsKey(type) || Classes[type] == null)
+            if (!ClassesByType.ContainsKey(type) || ClassesByType[type] == null)
                 throw new MapperException("Type {0} has not been loaded".Formatted(type.FullName));
 
-            return Classes[type];
+            return ClassesByType[type].CastTo<SitecoreClassConfig>();
         }
 
         public SitecoreClassConfig GetSitecoreClass(Guid templateId)
         {
+            string id = templateId.ToString();
             //would it be quicker to have a second dictionary that recorded classes by their template ID?
-            if (Classes.Any(x => x.Value.TemplateId == templateId))
+            if (!ClassesById.ContainsKey(templateId) || ClassesById[templateId] != null)
             {
-                return Classes.First(x => x.Value.TemplateId == templateId).Value;
+                return ClassesById[templateId].CastTo<SitecoreClassConfig>();
             }
             else return null;
         }
