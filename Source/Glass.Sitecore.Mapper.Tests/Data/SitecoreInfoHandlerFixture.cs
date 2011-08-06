@@ -251,6 +251,24 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assert
             Assert.AreEqual(_item.Version.Number, (int)result);
         }
+
+        [Test]
+        public void GetValue_Name()
+        {
+            //Assign
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreInfoAttribute(SitecoreInfoType.Name)
+            };
+            _handler.ConfigureDataHandler(property);
+
+
+            //Act
+            var result = _handler.GetValue(_item, null);
+
+            //Assert
+            Assert.AreEqual(_item.Name, result as string);
+        }
         #endregion
 
         #region SetValue
@@ -294,6 +312,45 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 //Assert
                 Assert.AreEqual("NewDisplayName", _item.DisplayName);
 
+                _item.Editing.EndEdit();
+
+
+            }
+
+
+        }
+
+        [Test]
+        public void SetValue_Name()
+        {
+            //Assign
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreInfoAttribute(SitecoreInfoType.Name)
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+
+            //Act
+            using (new SecurityDisabler())
+            {
+                _item.Editing.BeginEdit();
+
+                _handler.SetValue(_item, "NewItemName", null);
+
+
+                //Assert
+                Assert.AreEqual("NewItemName", _item.Name);
+
+                _item.Editing.EndEdit();
+
+                string newPath = "/sitecore/content/newitemname";
+
+                Assert.AreEqual(newPath, _item.Paths.FullPath.ToLower());
+
+                _item.Editing.BeginEdit();
+                _item.Name="Glass";
                 _item.Editing.EndEdit();
 
 

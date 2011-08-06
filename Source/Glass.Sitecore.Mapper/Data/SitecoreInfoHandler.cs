@@ -48,6 +48,8 @@ namespace Glass.Sitecore.Mapper.Data
                     return item.DisplayName;
                 case SitecoreInfoType.FullPath:
                     return item.Paths.FullPath;
+                case SitecoreInfoType.Name:
+                    return item.Name;
                 case SitecoreInfoType.Key:
                     return item.Key;
                 case SitecoreInfoType.MediaUrl:
@@ -83,6 +85,19 @@ namespace Glass.Sitecore.Mapper.Data
                     else
                         throw new NotSupportedException("Can't set DisplayName. Value is not of type System.String");
                     break;
+                case SitecoreInfoType.Name:
+                    if (value is string)
+                    {
+                        if (item.Name != value.ToString())
+                        {
+                            item.Name = value.ToString();
+                        }
+
+                        
+                    }
+                    else
+                        throw new NotSupportedException("Can't set Name. Value is not of type System.String");
+                    break;             
                 default:
                     throw new NotSupportedException("You can not save SitecoreInfo {0}".Formatted(InfoType));
             }
@@ -93,7 +108,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             get
             {
-                return false;
+                return (InfoType == SitecoreInfoType.DisplayName || InfoType == SitecoreInfoType.Name);
             }
         }
 
