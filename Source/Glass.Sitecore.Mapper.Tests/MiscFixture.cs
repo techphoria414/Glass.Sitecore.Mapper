@@ -479,10 +479,57 @@ namespace Glass.Sitecore.Mapper.Tests
                 }
             }
         }
+
+        [Test]
+        public void IList_SetListOfIntsAndClasses()
+        {
+            //Assign
+            MiscFixtureNS.IListTest target = _sitecore.GetItem<MiscFixtureNS.IListTest>("/sitecore/content/Glass/IListTest");
+
+
+            Assert.AreEqual(0, target.ListOfClasses.Count);
+            Assert.AreEqual(0, target.ListOfInts.Count);
+
+
+            MiscFixtureNS.LinkTest link1 = _sitecore.GetItem<MiscFixtureNS.LinkTest>("/sitecore/content/Glass/Test1");
+            MiscFixtureNS.LinkTest link2 = _sitecore.GetItem<MiscFixtureNS.LinkTest>("/sitecore/content/Glass/Test2");
+
+            //Act
+
+            target.ListOfInts.Add(45);
+            target.ListOfInts.Add(67);
+            string intString = "45|67";
+            
+            target.ListOfClasses.Add(link1);
+            target.ListOfClasses.Add(link2);
+            string classString = "{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}";
+            
+            using (new SecurityDisabler())
+            {
+             
+                _sitecore.Save<MiscFixtureNS.IListTest>(target);
+
+                //Assert
+                Item result = _db.GetItem("/sitecore/content/Glass/IListTest");
+                Assert.AreEqual(classString, result["ListOfClasses"]);
+                Assert.AreEqual(intString, result["ListOfInts"]);
+
+                result.Editing.BeginEdit();
+                result["ListOfClasses"] = "";
+                result["ListOfInts"] = "";
+                result.Editing.EndEdit();
+            }
+
+
+
+        }
     }
 
     namespace MiscFixtureNS
     {
+
+        
+
         [SitecoreClass(TemplateId="{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")]
         public class BasicTemplate
         {
@@ -648,6 +695,19 @@ namespace Glass.Sitecore.Mapper.Tests
             [SitecoreInfo(SitecoreInfoType.Path)]
             public virtual string Path { get; set; }
 
+        }
+
+        [SitecoreClass]
+        public interface IListTest
+        {
+            [SitecoreId]
+            Guid Id{get;set;}
+
+            [SitecoreField]
+            IList<int> ListOfInts { get; set; }
+
+            [SitecoreField]
+            IList<LinkTest> ListOfClasses { get; set; }
         }
 
         public enum TestEnum

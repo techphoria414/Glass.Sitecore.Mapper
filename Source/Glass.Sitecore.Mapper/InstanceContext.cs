@@ -54,8 +54,7 @@ namespace Glass.Sitecore.Mapper
 
 
         /// <summary>
-        /// Can we move this so that it happens when the instance context is created
-        /// 
+        ///
         /// </summary>
         /// <param name="property"></param>
         public AbstractSitecoreDataHandler GetDataHandler(SitecoreProperty property)
@@ -81,12 +80,11 @@ namespace Glass.Sitecore.Mapper
         public Guid GetClassId(Type type, object target)
         {
             var scClass = GetSitecoreClass(type);
-            var attribute = scClass.Properties.FirstOrDefault(x => x.Attribute is SitecoreIdAttribute);
-
-            if (attribute == null)
+            
+            if (scClass.IdProperty == null)
                 throw new SitecoreIdException("The type {0} does not contain a property with the Glass.Sitecore.Mapper.Configuration.Attributes.SitecoreIdAttribute".Formatted(type.FullName));
 
-            Guid guid = (Guid)attribute.Property.GetValue(target, null);
+            Guid guid = (Guid)scClass.IdProperty.Property.GetValue(target, null);
             return guid;
         }
 

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Data;
+using Glass.Sitecore.Mapper.Configuration.Attributes;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -74,7 +75,15 @@ namespace Glass.Sitecore.Mapper
 
                             foreach (var prop in cls.Value.Properties)
                             {
+                                
                                 var handler =  instance.GetDataHandler(prop);
+                              
+                                //set the ID property of the class
+                                //the ID property is needed later for writing and page editing, 
+                                //saves time having to look it
+                                if (prop.Attribute is SitecoreIdAttribute)
+                                    cls.Value.IdProperty = prop;
+                                
                                 handlers.Add(handler);
 
                             }

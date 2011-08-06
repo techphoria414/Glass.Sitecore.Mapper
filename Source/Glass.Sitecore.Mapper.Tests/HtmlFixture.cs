@@ -15,7 +15,7 @@ namespace Glass.Sitecore.Mapper.Tests
         [Test]
         public void RenderImage_RendersImageWithAttributes()
         {
-            Html html = new Html("");
+            Html html = new Html("master");
 
             //Assign
             FieldTypes.Image img = new FieldTypes.Image();
@@ -43,7 +43,7 @@ namespace Glass.Sitecore.Mapper.Tests
         {
 
             //Assign
-            Html html = new Html("");
+            Html html = new Html("master");
 
             FieldTypes.Link link = new FieldTypes.Link();
             link.Class = "classy";

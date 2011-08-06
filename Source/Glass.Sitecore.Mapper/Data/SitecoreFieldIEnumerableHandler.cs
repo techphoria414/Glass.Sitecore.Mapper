@@ -96,7 +96,7 @@ namespace Glass.Sitecore.Mapper.Data
             if (!type.IsGenericType) return false;
 
 
-            if (type.GetGenericTypeDefinition() != typeof(IEnumerable<>))
+            if (type.GetGenericTypeDefinition() != typeof(IEnumerable<>) && type.GetGenericTypeDefinition() != typeof(IList<>))
                 return false;
             
             return true;

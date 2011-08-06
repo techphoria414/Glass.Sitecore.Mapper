@@ -74,7 +74,8 @@ namespace Glass.Sitecore.Mapper.Tests
                     Type = typeof(InstanceContextFixtureNS.TestClass),
                     DataHandlers = new AbstractSitecoreDataHandler[]{
                         tc1HandlerId
-                    }
+                    },
+                    IdProperty = tc1Property
                 },
                 new SitecoreClassConfig(){
                     ClassAttribute = new SitecoreClassAttribute(),
