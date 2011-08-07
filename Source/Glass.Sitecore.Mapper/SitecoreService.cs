@@ -25,6 +25,7 @@ using Sitecore.Globalization;
 using Glass.Sitecore.Mapper.Proxies;
 using System.Collections;
 using Sitecore.Links;
+using Glass.Sitecore.Mapper.Configuration.Attributes;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -134,6 +135,101 @@ namespace Glass.Sitecore.Mapper
             
         }
 
+
+        /// <summary>
+        /// Creates a new Sitecore item. 
+        /// </summary>
+        /// <typeparam name="T">The type of the new item to create. This type must have either a TemplateId or BranchId defined on the SitecoreClassAttribute or fluent equivalent</typeparam>
+        /// <typeparam name="K">The type of the parent item</typeparam>
+        /// <param name="parent">The parent of the new item to create. Must have the SitecoreIdAttribute or fluent equivalent</param>
+        /// <param name="newItem">New item to create, must have the attribute SitecoreInfoAttribute of type SitecoreInfoType.Name or the fluent equivalent</param>
+        /// <returns></returns>
+        public T Create<T, K>(K parent, T newItem)
+            where T : class
+            where K : class
+        {
+            try
+            {
+                Guid id = InstanceContext.GetClassId(typeof(T), newItem);
+                if (id != Guid.Empty) throw new MapperException("You are trying to create an item on a class that doesn't have an empty ID value");
+            }
+            catch (SitecoreIdException ex)
+            {
+                //we can swallow this exception for now
+                //should look to do this beeter
+            }
+
+
+            Guid parentId = Guid.Empty;
+            try
+            {
+                parentId = InstanceContext.GetClassId(typeof(K), parent);
+            }
+            catch (SitecoreIdException ex)
+            {
+                throw new MapperException("Failed to get parent ID", ex);
+            }
+
+
+            if (parentId == Guid.Empty)
+                throw new MapperException("Guid for parent is empty");
+
+            Item pItem = _database.GetItem(new ID(parentId));
+            if (pItem == null)
+                throw new MapperException("Could not find parent item with ID {0}".Formatted(parentId));
+
+            SitecoreClassConfig scClass = InstanceContext.GetSitecoreClass(typeof(T));
+
+            var nameProperty = scClass.Properties.Where(x => x.Attribute is SitecoreInfoAttribute)
+                .Cast<SitecoreProperty>().FirstOrDefault(x => x.Attribute.CastTo<SitecoreInfoAttribute>().Type == SitecoreInfoType.Name);
+
+            if (nameProperty == null)
+                throw new MapperException("Type {0} does not have a property with SitecoreInfoType.Name".Formatted(typeof(T).FullName));
+
+            string name = nameProperty.Property.GetValue(newItem, null).ToString();
+
+            if (name.IsNullOrEmpty())
+                throw new MapperException("New class has no name");
+
+
+            Guid templateId = scClass.TemplateId;
+            Guid branchId = scClass.BranchId;
+
+            Item item = null;
+
+            if (templateId != Guid.Empty)
+            {
+                item = pItem.Add(name, new TemplateID(new ID(templateId)));
+            }
+            else if (branchId != Guid.Empty)
+            {
+                item = pItem.Add(name, new BranchId(new ID(branchId)));
+            }
+            else
+            {
+                throw new MapperException("Type {0} does not have a Template ID or Branch ID".Formatted(typeof(T).FullName));
+            }
+
+           
+            //write new data to the item
+
+            item.Editing.BeginEdit();
+            WriteToItem<T>(newItem, item);
+            item.Editing.EndEdit();
+
+            if (scClass.IdProperty != null)
+                scClass.IdProperty.Property.SetValue(newItem, item.ID.Guid, null);
+
+
+
+            return CreateClass<T>(false, item);
+
+        }
+
+
+        #region OBSOLETE
+
+        [Obsolete("Use Create<T,K>(K parent, T newItem)")]
         public T Create<T, K>(K parent, string name)
             where T : class
             where K : class
@@ -141,6 +237,8 @@ namespace Glass.Sitecore.Mapper
             return Create<T, K>(parent, name, null);
         }
 
+
+        [Obsolete("Use Create<T,K>(K parent, T newItem)")]
         public T Create<T, K>(K parent, string name, T data)  where T: class where K: class
         {
 
@@ -213,6 +311,9 @@ namespace Glass.Sitecore.Mapper
             return CreateClass<T>(false, item);
 
         }
+
+        #endregion
+
 
         public void Delete<T>(T item)  where T: class
         {
