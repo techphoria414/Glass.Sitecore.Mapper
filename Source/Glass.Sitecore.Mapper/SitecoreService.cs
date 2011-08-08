@@ -217,10 +217,8 @@ namespace Glass.Sitecore.Mapper
             WriteToItem<T>(newItem, item);
             item.Editing.EndEdit();
 
-            if (scClass.IdProperty != null)
-                scClass.IdProperty.Property.SetValue(newItem, item.ID.Guid, null);
-
-
+            //then read it back
+            ReadFromItem(newItem, item, scClass); 
 
             return CreateClass<T>(false, item);
 
@@ -379,10 +377,7 @@ namespace Glass.Sitecore.Mapper
                 //get the class information
                 object t = config.Type.Assembly.CreateInstance(config.Type.FullName);
 
-                foreach (var handler in config.DataHandlers)
-                {
-                    handler.SetProperty(t, item, this);
-                }
+                ReadFromItem(t, item, config);
 
                 return t;
             }
@@ -409,6 +404,14 @@ namespace Glass.Sitecore.Mapper
         #endregion
 
         #region Private Methods
+
+        private void ReadFromItem(object target, Item item, SitecoreClassConfig config)
+        {
+            foreach (var handler in config.DataHandlers)
+            {
+                handler.SetProperty(target, item, this);
+            }
+        }
 
         private void WriteToItem<T>(T target, Item item)
         {

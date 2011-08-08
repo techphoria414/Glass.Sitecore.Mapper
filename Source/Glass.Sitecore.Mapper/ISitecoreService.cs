@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper
 
         InstanceContext InstanceContext { get; }
 
-         /// <summary>
+        /// <summary>
         /// The database used by the Sitecore service, used by some internal processed.
         /// </summary>
         Database Database
@@ -44,8 +44,8 @@ namespace Glass.Sitecore.Mapper
         /// <typeparam name="T">The type to return the items as</typeparam>
         /// <param name="query">The query to execute</param>
         /// <returns>Sitecore items as concrete classes of the specified type</returns>
-        IEnumerable<T> Query<T>(string query) where T: class;
-        
+        IEnumerable<T> Query<T>(string query) where T : class;
+
         /// <summary>
         /// Query Sitecore for a set of items. Proxy classes are created.
         /// </summary>
@@ -69,7 +69,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="path">The path to the Sitecore item</param>
         /// <returns>The Sitecore item as the specified type</returns>
         T GetItem<T>(string path) where T : class;
-        
+
         /// <summary>
         /// Retrieve a Sitecore item as the specified type.
         /// </summary>
@@ -96,7 +96,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="id">The ID of the Sitecore item</param>
         /// <returns>The Sitecore item as the specified type</returns>
         T GetItem<T>(Guid id) where T : class;
-        
+
         /// <summary>
         /// Retrieve a Sitecore item as the specified type.
         /// </summary>
@@ -105,7 +105,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="id">The ID of the Sitecore item</param>
         /// <returns>The Sitecore item as the specified type</returns>
         T GetItem<T>(Guid id, Language language) where T : class;
-        
+
         /// <summary>
         /// Retrieve a Sitecore item as the specified type.
         /// </summary>
@@ -123,7 +123,7 @@ namespace Glass.Sitecore.Mapper
         /// <typeparam name="T">The type being saved. The type must have a property with the SitecoreIdAttribute.</typeparam>
         /// <param name="item">The class to save</param>
         void Save<T>(T item) where T : class;
-        
+
         /// <summary>
         /// Create a blank Sitecore item
         /// </summary>
@@ -132,6 +132,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="parent">The parent item. This item must have been load by Glass Sitecore Mapper</param>
         /// <param name="name">The name of the item</param>
         /// <returns></returns>
+        [Obsolete("Use Create<T,K>(K parent, T newItem)")]
         T Create<T, K>(K parent, string name)
             where T : class
             where K : class;
@@ -145,10 +146,24 @@ namespace Glass.Sitecore.Mapper
         /// <param name="name">The name of the item</param>
         /// <param name="data">The data to pre-populate the item with</param>
         /// <returns></returns>
+        [Obsolete("Use Create<T,K>(K parent, T newItem)")]
         T Create<T, K>(K parent, string name, T data)
             where T : class
             where K : class;
-        
+
+
+        /// <summary>
+        /// Creates a new Sitecore item. 
+        /// </summary>
+        /// <typeparam name="T">The type of the new item to create. This type must have either a TemplateId or BranchId defined on the SitecoreClassAttribute or fluent equivalent</typeparam>
+        /// <typeparam name="K">The type of the parent item</typeparam>
+        /// <param name="parent">The parent of the new item to create. Must have the SitecoreIdAttribute or fluent equivalent</param>
+        /// <param name="newItem">New item to create, must have the attribute SitecoreInfoAttribute of type SitecoreInfoType.Name or the fluent equivalent</param>
+        /// <returns></returns>
+        T Create<T, K>(K parent, T newItem)
+            where T : class
+            where K : class;
+
         /// <summary>
         /// Delete an item from Sitecore
         /// </summary>
@@ -192,7 +207,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="item">The item to load data from</param>
         /// <param name="inferType">Infer the type to be loaded from the template</param>
         /// <returns>The item as the specified type</returns>
-        object CreateClass(bool isLazy,bool inferType,  Type type, Item item);
+        object CreateClass(bool isLazy, bool inferType, Type type, Item item);
 
         /// <summary>
         /// Create a collection of classes from the specified type

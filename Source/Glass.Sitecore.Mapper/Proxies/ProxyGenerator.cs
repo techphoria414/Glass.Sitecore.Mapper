@@ -47,6 +47,7 @@ namespace Glass.Sitecore.Mapper.Proxies
                    service,
                    item));
             }
+
             return proxy;
 
         }

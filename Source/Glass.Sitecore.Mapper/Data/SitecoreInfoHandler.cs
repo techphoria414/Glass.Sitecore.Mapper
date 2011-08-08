@@ -77,22 +77,25 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)
         {
+            
             switch (InfoType)
             {
                 case SitecoreInfoType.DisplayName:
-                    if (value is string)
-                        item[Settings.DisplayNameFieldName] = value.ToString();
+                    if (value is string || value == null)
+                        item[Settings.DisplayNameFieldName] = (value ?? string.Empty).ToString();
                     else
                         throw new NotSupportedException("Can't set DisplayName. Value is not of type System.String");
                     break;
                 case SitecoreInfoType.Name:
-                    if (value is string)
+                    if (value is string || value == null)
                     {
+                        //if the name is null or empty nothing should happen
+                        if ((value ?? string.Empty).ToString().IsNullOrEmpty()) return;
+                        
                         if (item.Name != value.ToString())
                         {
                             item.Name = value.ToString();
                         }
-
                         
                     }
                     else
