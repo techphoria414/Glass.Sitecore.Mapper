@@ -83,6 +83,13 @@ namespace Glass.Sitecore.Mapper
                                 //saves time having to look it
                                 if (prop.Attribute is SitecoreIdAttribute)
                                     cls.Value.IdProperty = prop;
+                                else if (prop.Attribute is SitecoreInfoAttribute
+                                    && prop.Attribute.CastTo<SitecoreInfoAttribute>().Type == SitecoreInfoType.Language)
+                                    cls.Value.LanguageProperty = prop;
+                                else if (prop.Attribute is SitecoreInfoAttribute
+                                   && prop.Attribute.CastTo<SitecoreInfoAttribute>().Type == SitecoreInfoType.Version)
+                                    cls.Value.VersionProperty = prop;
+
                                 
                                 handlers.Add(handler);
 

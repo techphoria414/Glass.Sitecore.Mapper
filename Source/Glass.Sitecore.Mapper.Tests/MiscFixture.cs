@@ -28,6 +28,8 @@ using Sitecore.Links;
 using Sitecore.Data.Fields;
 using Sitecore.SecurityModel;
 using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Data.Managers;
+using Sitecore.Globalization;
 
 namespace Glass.Sitecore.Mapper.Tests
 {
@@ -523,11 +525,40 @@ namespace Glass.Sitecore.Mapper.Tests
 
 
         }
+
+        [Test]
+        public void AddingAVersionToAParticularLanguage()
+        {
+                       //Assign
+            MiscFixtureNS.LanguageTest target = _sitecore.GetItem<MiscFixtureNS.LanguageTest>(
+                "/sitecore/content/Glass/Language", LanguageManager.GetLanguage("af-ZA"));
+
+            //Act
+            using (new SecurityDisabler())
+            {
+                MiscFixtureNS.LanguageTest newVersion = _sitecore.AddVersion<MiscFixtureNS.LanguageTest>(target);
+
+                //Assert
+                Assert.AreEqual(target.Version + 1, newVersion.Version);
+            }
+        }
     }
 
     namespace MiscFixtureNS
     {
 
+        [SitecoreClass]
+        public class LanguageTest{
+            
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+            
+            [SitecoreInfo(SitecoreInfoType.Version)]
+            public virtual int Version { get; set; }
+
+            [SitecoreInfo(SitecoreInfoType.Language)]
+            public virtual Language Language { get; set; }
+        }
         
 
         [SitecoreClass(TemplateId="{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")]
@@ -716,5 +747,9 @@ namespace Glass.Sitecore.Mapper.Tests
             Test2,
             Test3
         }
+
+        
+    
+    
     }
 }

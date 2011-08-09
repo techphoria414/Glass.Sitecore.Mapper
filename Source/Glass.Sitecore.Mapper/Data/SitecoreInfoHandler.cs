@@ -68,6 +68,8 @@ namespace Glass.Sitecore.Mapper.Data
                     return LinkManager.GetItemUrl(item, new UrlOptions() { AlwaysIncludeServerUrl = true });
                 case SitecoreInfoType.Version:
                     return item.Version.Number;
+                case SitecoreInfoType.Language:
+                    return item.Language;
                 default:
                     throw new NotSupportedException("Value {0} not supported".Formatted(InfoType.ToString()));
             }

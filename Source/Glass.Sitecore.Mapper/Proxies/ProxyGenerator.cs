@@ -32,7 +32,7 @@ namespace Glass.Sitecore.Mapper.Proxies
         private static readonly Castle.DynamicProxy.ProxyGenerationOptions _options = new Castle.DynamicProxy.ProxyGenerationOptions(new ProxyGeneratorHook());
 
        
-        public static object CreateProxy(SitecoreClassConfig config,  ISitecoreService service, Item item){
+        public static object CreateProxy(SitecoreClassConfig config,  ISitecoreService service, Item item, bool inferType){
             object proxy = null;
 
             Type type = config.Type;
@@ -45,7 +45,7 @@ namespace Glass.Sitecore.Mapper.Proxies
             {
                 proxy = _generator.CreateClassProxy(type, _options, new ProxyClassInterceptor(type,
                    service,
-                   item));
+                   item, inferType));
             }
 
             return proxy;

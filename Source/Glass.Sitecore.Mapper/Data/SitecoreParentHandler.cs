@@ -27,7 +27,8 @@ namespace Glass.Sitecore.Mapper.Data
     public class SitecoreParentHandler : AbstractSitecoreDataHandler
     {
 
-        protected bool IsLazy { get; set; }
+        public bool IsLazy { get; private set; }
+        public bool InferType { get; private set; }
      
 
         public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
@@ -37,7 +38,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
-            return service.CreateClass(this.IsLazy, Property.PropertyType, item.Parent);
+            return service.CreateClass(this.IsLazy, this.InferType, Property.PropertyType, item.Parent);
         }
 
         public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)
@@ -57,6 +58,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             SitecoreParentAttribute attr = scProperty.Attribute as SitecoreParentAttribute;
             this.IsLazy = attr.IsLazy;
+            this.InferType = attr.InferType;
 
             base.ConfigureDataHandler(scProperty);
         }

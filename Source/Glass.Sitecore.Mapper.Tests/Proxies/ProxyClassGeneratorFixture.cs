@@ -66,7 +66,7 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
             SitecoreClassConfig config = _context.GetSitecoreClass(typeof(ProxyClassGeneratorFixtureNS.SubClass));
 
             //Act
-            var result = ProxyGenerator.CreateProxy(config, _service, item) as ProxyClassGeneratorFixtureNS.SubClass;
+            var result = ProxyGenerator.CreateProxy(config, _service, item, false) as ProxyClassGeneratorFixtureNS.SubClass;
             result.CallMe = "something";
 
             //Assert 

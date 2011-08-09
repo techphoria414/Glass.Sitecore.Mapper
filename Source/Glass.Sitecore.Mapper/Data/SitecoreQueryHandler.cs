@@ -107,7 +107,7 @@ namespace Glass.Sitecore.Mapper.Data
                 {
                     result = item.Database.SelectSingleItem(query);
                 }
-                return service.CreateClass(IsLazy, Property.PropertyType, result);
+                return service.CreateClass(IsLazy, InferType, Property.PropertyType, result);
             }
 
         }

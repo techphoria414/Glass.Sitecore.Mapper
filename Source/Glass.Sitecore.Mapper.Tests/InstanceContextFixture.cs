@@ -112,7 +112,7 @@ namespace Glass.Sitecore.Mapper.Tests
             Item item = null;
 
             //Act 
-            var result = _service.CreateClass<InstanceContextFixtureNS.TestClass>(false, item);
+            var result = _service.CreateClass<InstanceContextFixtureNS.TestClass>(false, false, item);
 
             //Assert 
             Assert.IsNull(result);
@@ -125,7 +125,7 @@ namespace Glass.Sitecore.Mapper.Tests
             Item item = _db.GetItem(new ID(_itemId));
 
             //Act
-            var result = _service.CreateClass<InstanceContextFixtureNS.TestClass>(false, item);
+            var result = _service.CreateClass<InstanceContextFixtureNS.TestClass>(false, false, item);
 
             //Assert
             Assert.IsNotNull(result);
@@ -137,7 +137,7 @@ namespace Glass.Sitecore.Mapper.Tests
             Item item = _db.GetItem(new ID(_itemId));
 
             //Act
-            var result = _service.CreateClass<InstanceContextFixtureNS.TestClass>(false, item);
+            var result = _service.CreateClass<InstanceContextFixtureNS.TestClass>(false, false, item);
 
             //Assert
             Assert.IsNotNull(result);

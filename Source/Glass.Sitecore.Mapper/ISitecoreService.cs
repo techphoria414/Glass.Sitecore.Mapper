@@ -125,6 +125,15 @@ namespace Glass.Sitecore.Mapper
         void Save<T>(T item) where T : class;
 
         /// <summary>
+        /// Adds a version of the item
+        /// </summary>
+        /// <typeparam name="T">The type being added. The type must have a property with the SitecoreIdAttribute.</typeparam>
+        /// <param name="target">The class to add a version to</param>
+        /// <returns></returns>
+        T AddVersion<T>(T target) where T : class;
+
+
+        /// <summary>
         /// Create a blank Sitecore item
         /// </summary>
         /// <typeparam name="T">The type to create</typeparam>
@@ -171,14 +180,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="item">The class to delete</param>
         void Delete<T>(T item) where T : class;
 
-        /// <summary>
-        /// Creates a class from the specified item
-        /// </summary>
-        /// <typeparam name="T">The type to return</typeparam>
-        /// <param name="isLazy">If true creates a proxy for the class</param>
-        /// <param name="item">The item to load data from</param>
-        /// <returns>The item as the specified type</returns>
-        T CreateClass<T>(bool isLazy, Item item) where T : class;
+    
 
         /// <summary>
         /// Creates a class from the specified item
@@ -189,15 +191,6 @@ namespace Glass.Sitecore.Mapper
         /// <param name="inferType">Infer the type to be loaded from the template</param>
         /// <returns>The item as the specified type</returns>
         T CreateClass<T>(bool isLazy, bool inferType, Item item) where T : class;
-
-        /// <summary>
-        /// Creates a class from the specified item
-        /// </summary>
-        /// <param name="type">The type to return</param>
-        /// <param name="isLazy">If true creates a proxy for the class</param>
-        /// <param name="item">The item to load data from</param>
-        /// <returns>The item as the specified type</returns>
-        object CreateClass(bool isLazy, Type type, Item item);
 
         /// <summary>
         /// Creates a class from the specified item

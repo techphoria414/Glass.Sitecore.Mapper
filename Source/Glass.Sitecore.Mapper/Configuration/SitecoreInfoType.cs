@@ -72,8 +72,12 @@ namespace Glass.Sitecore.Mapper.Configuration
         /// </summary>
         Version,
         /// <summary>
-        /// The item's Name
+        /// The item's Name. The property type must be System.String
         /// </summary>
-        Name
+        Name,
+        /// <summary>
+        /// The items language. The property type must be Sitecore.Globalization.Language
+        /// </summary>
+        Language
     }
 }

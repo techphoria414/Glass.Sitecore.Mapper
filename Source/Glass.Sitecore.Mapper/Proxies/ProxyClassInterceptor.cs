@@ -30,13 +30,14 @@ namespace Glass.Sitecore.Mapper.Proxies
         Item _item = null;
         Type _type;
         object _actual = null;
+        bool _inferType = false;
 
-
-        public ProxyClassInterceptor(Type type, ISitecoreService service, Item item)
+        public ProxyClassInterceptor(Type type, ISitecoreService service, Item item, bool inferType)
         {
             _service = service;
             _item = item;
             _type = type;
+            _inferType = inferType;
             
         }
 
@@ -48,7 +49,7 @@ namespace Glass.Sitecore.Mapper.Proxies
             //create class
             if (_actual == null)
             {
-                _actual = _service.CreateClass(false, _type, _item);
+                _actual = _service.CreateClass(false, _inferType, _type, _item);
             }
 
             invocation.ReturnValue = invocation.Method.Invoke(_actual, invocation.Arguments);

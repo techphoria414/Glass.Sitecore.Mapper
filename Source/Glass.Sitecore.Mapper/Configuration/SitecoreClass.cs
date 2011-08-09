@@ -34,5 +34,7 @@ namespace Glass.Sitecore.Mapper.Configuration
         public IEnumerable<SitecoreProperty> Properties { get; set; }
         public SitecoreClassAttribute ClassAttribute {get;set;}
         public SitecoreProperty IdProperty { get; set; }
+        public SitecoreProperty LanguageProperty { get; set; }
+        public SitecoreProperty VersionProperty { get; set; }
     }
 }
