@@ -268,9 +268,9 @@ namespace Glass.Sitecore.Mapper
             item.Editing.EndEdit();
 
             //then read it back
-            ReadFromItem(newItem, item, scClass); 
-
-            return CreateClass<T>(false, false, item);
+            ReadFromItem(newItem, item, scClass);
+            return newItem;
+         //   return CreateClass<T>(false, false, item);
 
         }
 

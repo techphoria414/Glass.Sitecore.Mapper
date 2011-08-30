@@ -33,8 +33,12 @@ namespace Glass.Sitecore.Mapper.Data
         public override object GetValue(global::Sitecore.Data.Items.Item item,  ISitecoreService service)
         {
 
+            var itemField = item.Fields[FieldName];
+
+            if (itemField == null) return null;
+
             Link link = new Link();
-            LinkField field = new LinkField(item.Fields[FieldName]);
+            LinkField field = new LinkField(itemField);
 
             switch (field.LinkType)
             {

@@ -33,7 +33,11 @@ namespace Glass.Sitecore.Mapper.Data
         public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
 
-            FileField field = new FileField(item.Fields[FieldName]);
+            var itemField = item.Fields[FieldName];
+
+            if (itemField == null) return null;
+
+            FileField field = new FileField(itemField);
             File file = new File();
             file.Src = field.Src;
             file.Id = field.MediaID.Guid;

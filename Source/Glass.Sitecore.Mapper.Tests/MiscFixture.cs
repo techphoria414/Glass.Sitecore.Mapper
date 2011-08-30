@@ -247,7 +247,7 @@ namespace Glass.Sitecore.Mapper.Tests
             //if you do this without the disabler the role manager throws an exception
             using (new SecurityDisabler())
             {
-                Assert.AreEqual(3, test.Query.Count());
+                Assert.AreEqual(4, test.Query.Count());
                 Assert.AreEqual(_test1.ID.Guid, test.Query.First().Id);
                 Assert.AreEqual(_test2.ID.Guid, test.Query.Take(2).Last().Id);
             }

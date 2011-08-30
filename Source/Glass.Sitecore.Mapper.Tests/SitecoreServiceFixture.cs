@@ -287,6 +287,8 @@ namespace Glass.Sitecore.Mapper.Tests
                 //Assert
                 Item item = _db.GetItem("/sitecore/content/Glass/Test1/Test3/Test6");
 
+
+                Assert.AreEqual(preClass, newItem);
                 Assert.AreEqual(item.ID.Guid, newItem.Id);
                 Assert.IsNotNull(item);
                 Assert.AreNotEqual(item.ID, newItem.Id);

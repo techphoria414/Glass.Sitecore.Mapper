@@ -50,11 +50,19 @@ namespace Glass.Sitecore.Mapper
             Type type = typeof(T);
             _itemList = Utility.CreateGenericType(typeof(List<>), new Type[] { type }) as IList<T>;
 
-            foreach (Item item in _getItems.Invoke().Where(x=>x != null))
+            if (_getItems == null) throw new NullReferenceException("No function to return items");
+
+            var items = _getItems.Invoke();
+
+            if (items != null)
             {
-                var result = _service.CreateClass<T>(_isLazy, _inferType, item);
-                _itemList.Add(result);
+                foreach (Item item in items.Where(x => x != null))
+                {
+                    var result = _service.CreateClass<T>(_isLazy, _inferType, item);
+                    _itemList.Add(result);
+                }
             }
+
             _loaded = true;
         }
 
