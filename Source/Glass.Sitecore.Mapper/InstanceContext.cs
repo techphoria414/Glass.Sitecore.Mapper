@@ -64,9 +64,9 @@ namespace Glass.Sitecore.Mapper
             if (handler == null)
                 throw new NotSupportedException("No data handler for: \n\r Class: {0} \n\r Member: {1} \n\r Attribute: {2}"
                     .Formatted(
-                        property.Property.ReflectedType.Name,
+                        property.Property.ReflectedType.FullName,
                         property.Property.Name,
-                        property.Attribute.GetType().Name
+                        property.Attribute.GetType().FullName
                     ));
 
             var newHandler = handler.Clone() as AbstractSitecoreDataHandler;
