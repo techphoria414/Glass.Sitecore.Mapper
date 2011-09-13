@@ -235,8 +235,17 @@ namespace Glass.Sitecore.Mapper
 
             if (nameProperty == null)
                 throw new MapperException("Type {0} does not have a property with SitecoreInfoType.Name".Formatted(typeof(T).FullName));
-
-            string name = nameProperty.Property.GetValue(newItem, null).ToString();
+            
+            string name = string.Empty;
+            
+            try
+            {
+                 name = nameProperty.Property.GetValue(newItem, null).ToString();
+            }
+            catch
+            {
+                throw new MapperException("Failed to get item name");
+            }
 
             if (name.IsNullOrEmpty())
                 throw new MapperException("New class has no name");
@@ -260,6 +269,7 @@ namespace Glass.Sitecore.Mapper
                 throw new MapperException("Type {0} does not have a Template ID or Branch ID".Formatted(typeof(T).FullName));
             }
 
+            if (item == null) throw new MapperException("Failed to create item");
            
             //write new data to the item
 
