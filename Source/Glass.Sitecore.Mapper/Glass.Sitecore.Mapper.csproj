@@ -66,6 +66,7 @@
     <Compile Include="Configuration\Attributes\SitecoreClassAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreFieldAttribute.cs" />
     <Compile Include="Configuration\Attributes\AbstractSitecorePropertyAttribute.cs" />
+    <Compile Include="Configuration\Attributes\SitecoreItemAttribute.cs" />
     <Compile Include="Configuration\SitecoreFieldSettings.cs" />
     <Compile Include="Configuration\Attributes\SitecoreIdAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreParentAttribute.cs" />
@@ -79,6 +80,7 @@
     <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClass.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Data\SitecoreItemHandler.cs" />
     <Compile Include="Data\SitecoreLinkedHandler.cs" />
     <Compile Include="Data\QueryParameters\ItemIdNoBracketsParameter.cs" />
     <Compile Include="Data\QueryParameters\ISitecoreQueryParameter.cs" />
