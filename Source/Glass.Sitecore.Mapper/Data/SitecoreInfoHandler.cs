@@ -26,7 +26,7 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreInfoHandler : AbstractSitecoreDataHandler
     {
-        protected SitecoreInfoType InfoType
+        public SitecoreInfoType InfoType
         {
             get;
             set;

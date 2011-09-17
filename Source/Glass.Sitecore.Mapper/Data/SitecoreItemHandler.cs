@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Data;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -18,7 +19,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         public string Path { get; set; }
         public Guid Id { get; set; }
-        public Type Type { get; set; }
+        public SitecoreProperty Property { get; set; }
 
         public override bool WillHandle(Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, Configuration.SitecoreClassConfig> classes)
         {
@@ -31,12 +32,12 @@ namespace Glass.Sitecore.Mapper.Data
             if (Id != Guid.Empty)
             {
                 var scItem = service.Database.GetItem(new ID(Id));
-                return service.CreateClass(IsLazy, false, Type, scItem);
+                return service.CreateClass(IsLazy, false, Property.Property.PropertyType, scItem);
             }
             else if (!Path.IsNullOrEmpty())
             {
                 var scItem = service.Database.GetItem(Path);
-                return service.CreateClass(IsLazy, false, Type, scItem);
+                return service.CreateClass(IsLazy, false, Property.Property.PropertyType, scItem);
             }
             else
             {
@@ -59,7 +60,7 @@ namespace Glass.Sitecore.Mapper.Data
 
             if (attr.Id.IsNullOrEmpty())
             {
-                attr.Path = Path;
+                Path = attr.Path;
             }
             else
             {
@@ -72,6 +73,9 @@ namespace Glass.Sitecore.Mapper.Data
                     throw new MapperException("Id is not a Guid on SitecoreItemAttribute\n\rClass: {0}\n\rMember:{1}".Formatted(scProperty.Property.ReflectedType.FullName, scProperty.Property.Name));
 
             }
+
+            this.IsLazy = attr.IsLazy;
+            this.Property = scProperty;
             base.ConfigureDataHandler(scProperty);
         }
     }
