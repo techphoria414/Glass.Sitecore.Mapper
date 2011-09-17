@@ -26,6 +26,8 @@ using Glass.Sitecore.Mapper.Proxies;
 using System.Collections;
 using Sitecore.Links;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
+using System.Linq.Expressions;
+using System.Reflection.Emit;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -425,7 +427,19 @@ namespace Glass.Sitecore.Mapper
                 if (item == null) return null;
 
                 //get the class information
-                object t = config.Type.Assembly.CreateInstance(config.Type.FullName);
+
+                if (config.CreateObject == null)
+                {
+
+                    Type objType = config.Type;
+                    var dynMethod = new DynamicMethod("DM$OBJ_FACTORY_" + objType.Name, objType, null, objType);
+                    ILGenerator ilGen = dynMethod.GetILGenerator();
+                    ilGen.Emit(OpCodes.Newobj, objType.GetConstructor(Type.EmptyTypes));
+                    ilGen.Emit(OpCodes.Ret);
+                    config.CreateObject = (SitecoreClassConfig.Instantiator)dynMethod.CreateDelegate(typeof(SitecoreClassConfig.Instantiator));
+                                      
+                }
+                object t = config.CreateObject();
 
                 ReadFromItem(t, item, config);
 

@@ -30,6 +30,8 @@ namespace Glass.Sitecore.Mapper.Configuration
         public Guid BranchId { get; set; }
 
         internal IEnumerable<AbstractSitecoreDataHandler> DataHandlers { get; set; }
+        internal delegate object Instantiator();
+        internal Instantiator CreateObject { get; set; }
 
         public IEnumerable<SitecoreProperty> Properties { get; set; }
         public SitecoreClassAttribute ClassAttribute {get;set;}
