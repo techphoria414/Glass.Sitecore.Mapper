@@ -147,7 +147,8 @@ namespace Glass.Sitecore.Mapper
                 new SitecoreIdDataHandler(),
                 new SitecoreInfoHandler(),
                 new SitecoreParentHandler(),
-                new SitecoreQueryHandler()
+                new SitecoreQueryHandler(),
+                new SitecoreItemHandler()
             });
 
             return _handlers;
