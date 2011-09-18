@@ -47,3 +47,4 @@ App_Config/
 Builds/
 !*.textile
 Source/Glass.Sitecore.Mapper.Demo/data/
+Glass.Sitecore.suo
