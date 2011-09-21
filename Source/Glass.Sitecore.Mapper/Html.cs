@@ -78,6 +78,8 @@ namespace Glass.Sitecore.Mapper
         /// <returns>An img HTML element</returns>
         public string RenderImage(FieldTypes.Image image, NameValueCollection attributes)
         {
+            if (image == null) return "";
+
             if (attributes == null) attributes = new NameValueCollection();
 
             string format = "<img src='{0}' alt='{1}' class='{2}' {3}/>";
@@ -128,7 +130,7 @@ namespace Glass.Sitecore.Mapper
         /// <returns>An "a" HTML element </returns>
         public string RenderLink(FieldTypes.Link link, NameValueCollection attributes, string contents)
         {
-
+            if (link == null) return "";
             if (attributes == null) attributes = new NameValueCollection();
 
             string format = "<a href='{0}{1}' title='{2}' target='{3}' class='{4}' {5}>{6}</a>";
