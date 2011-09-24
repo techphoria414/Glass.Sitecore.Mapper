@@ -330,6 +330,7 @@ namespace Glass.Sitecore.Mapper.Tests
             test.DropLink = new MiscFixtureNS.SubClass() { Id = _test3.ID.Guid };
             test.DropTree = new MiscFixtureNS.SubClass() { Id = _test3.ID.Guid };
             test.GeneralLink = new Link(){
+                Type = LinkType.External,
                 Anchor="test anchor",
                 Class="test class",
                 Target="test target",
@@ -396,7 +397,6 @@ namespace Glass.Sitecore.Mapper.Tests
             Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropLink"].ToUpper());
             Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropTree"].ToUpper());
             LinkField link = new LinkField(result.Fields["GeneralLink"]);
-            Assert.AreEqual("test anchor", link.Anchor);
             Assert.AreEqual("test class", link.Class);
             Assert.AreEqual("test target", link.Target);
             Assert.AreEqual("test text", link.Text);
