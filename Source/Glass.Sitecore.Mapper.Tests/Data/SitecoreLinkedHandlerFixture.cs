@@ -66,12 +66,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
 
 
-            SitecoreProperty linkedProperty = new SitecoreProperty()
-            {
-                Attribute = new SitecoreLinkedAttribute(),
-                Property = typeof(SitecoreLinkedHandlerFixtureNS.LinkedTestClass).GetProperty("Linked")
-            };
-            _handler.ConfigureDataHandler(linkedProperty);
+        
 
             _service = new SitecoreService(_database, context);
 
@@ -100,9 +95,16 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         #region GetValue
 
         [Test]
-        public void GetValue_ReturnsClasses()
+        public void GetValue_ReturnsClasses_All()
         {
-                //Assert
+                //Assign
+
+            SitecoreProperty linkedProperty = new SitecoreProperty()
+            {
+                Attribute = new SitecoreLinkedAttribute(),
+                Property = typeof(SitecoreLinkedHandlerFixtureNS.LinkedTestClass).GetProperty("Linked")
+            };
+            _handler.ConfigureDataHandler(linkedProperty);
 
             using (new SecurityDisabler())
             {
@@ -111,12 +113,65 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
                 //Assert
                 Assert.IsNotNull(result);
-                Assert.AreEqual(_target.Links.GetAllLinks().Count(), result.Count());
-                Assert.AreEqual(_target.Links.GetAllLinks().First().TargetItemID.Guid, result.First().Id);
-                Assert.AreEqual(_target.Links.GetAllLinks().Last().TargetItemID.Guid, result.Last().Id);
+                Assert.AreEqual(3, result.Count());
+              
             }
 
+        }
 
+        [Test]
+        public void GetValue_ReturnsClasses_Referrers()
+        {
+            //Assign
+
+            SitecoreProperty linkedProperty = new SitecoreProperty()
+            {
+                Attribute = new SitecoreLinkedAttribute()
+                {
+                    Option = SitecoreLinkedOptions.Referrers
+                },
+                Property = typeof(SitecoreLinkedHandlerFixtureNS.LinkedTestClass).GetProperty("Linked")
+            };
+            _handler.ConfigureDataHandler(linkedProperty);
+
+            using (new SecurityDisabler())
+            {
+                //Act
+                var result = _handler.GetValue(_target, _service) as IEnumerable<SitecoreLinkedHandlerFixtureNS.LinkedTestClass>;
+
+                //Assert
+                Assert.IsNotNull(result);
+                Assert.AreEqual(1, result.Count());
+               
+            }
+
+        }
+
+        [Test]
+        public void GetValue_ReturnsClasses_References()
+        {
+            //Assign
+
+            SitecoreProperty linkedProperty = new SitecoreProperty()
+            {
+                Attribute = new SitecoreLinkedAttribute()
+                {
+                    Option = SitecoreLinkedOptions.References
+                },
+                Property = typeof(SitecoreLinkedHandlerFixtureNS.LinkedTestClass).GetProperty("Linked")
+            };
+            _handler.ConfigureDataHandler(linkedProperty);
+
+            using (new SecurityDisabler())
+            {
+                //Act
+                var result = _handler.GetValue(_target, _service) as IEnumerable<SitecoreLinkedHandlerFixtureNS.LinkedTestClass>;
+
+                //Assert
+                Assert.IsNotNull(result);
+                Assert.AreEqual(2, result.Count());
+
+            }
 
         }
 

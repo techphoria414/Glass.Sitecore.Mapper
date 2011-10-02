@@ -23,6 +23,8 @@ using Glass.Sitecore.Mapper.Proxies;
 using System.Collections;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Links;
+using Sitecore;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -30,6 +32,7 @@ namespace Glass.Sitecore.Mapper.Data
     {
         public  bool IsLazy { get; set; }
         public bool InferType { get; set; }
+        public SitecoreLinkedOptions Options { get; set; }
 
         #region ISitecoreDataHandler Members
 
@@ -47,11 +50,26 @@ namespace Glass.Sitecore.Mapper.Data
                 Type genericType = Utility.GetGenericArgument(Property.PropertyType);
 
 
-                Func<IEnumerable<Item>> getItems = new Func<IEnumerable<Item>>(() =>
-                {
-                    var itemLinks = item.Links.GetAllLinks();
-                    return itemLinks.Select(x => x.GetTargetItem());
-                });
+              
+                    var getItems = new Func<IEnumerable<Item>>(() =>
+                    {
+                        IEnumerable<ItemLink> itemLinks = new ItemLink[]{};
+
+                        switch (Options)
+                        {
+                            case SitecoreLinkedOptions.All:
+                                itemLinks = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferences(item);
+                                itemLinks = itemLinks.Union(global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferrers(item));
+                                break;
+                            case SitecoreLinkedOptions.References:
+                                itemLinks = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferences(item);
+                                break;
+                            case SitecoreLinkedOptions.Referrers:
+                                itemLinks = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferrers(item);
+                                break;
+                        }
+                        return itemLinks.Select(x => x.GetTargetItem());
+                    });
 
                 return service.CreateClasses(IsLazy, InferType,  genericType, getItems);
         }
@@ -74,7 +92,7 @@ namespace Glass.Sitecore.Mapper.Data
             SitecoreLinkedAttribute attr = scProperty.Attribute as SitecoreLinkedAttribute;
             IsLazy = attr.IsLazy;
             InferType = attr.InferType;
-
+            Options = attr.Option;
             base.ConfigureDataHandler(scProperty);
         }
 
