@@ -53,22 +53,26 @@ namespace Glass.Sitecore.Mapper.Data
               
                     var getItems = new Func<IEnumerable<Item>>(() =>
                     {
-                        IEnumerable<ItemLink> itemLinks = new ItemLink[]{};
 
                         switch (Options)
                         {
                             case SitecoreLinkedOptions.All:
-                                itemLinks = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferences(item);
-                                itemLinks = itemLinks.Union(global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferrers(item));
+                                var itemLinks1 = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferences(item);
+                                var itemLinks2 = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferrers(item);
+                                return itemLinks1.Select(x => x.GetTargetItem()).Union(itemLinks2.Select(x=>x.GetSourceItem()));
                                 break;
                             case SitecoreLinkedOptions.References:
-                                itemLinks = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferences(item);
+                                var itemLinks3 = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferences(item);
+                                return itemLinks3.Select(x => x.GetTargetItem());
                                 break;
                             case SitecoreLinkedOptions.Referrers:
-                                itemLinks = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferrers(item);
+                                var itemLinks4 = global::Sitecore.Configuration.Factory.GetLinkDatabase().GetReferrers(item);
+                                return itemLinks4.Select(x => x.GetSourceItem());
                                 break;
+                            default:
+                                return new List<Item>();
                         }
-                        return itemLinks.Select(x => x.GetTargetItem());
+                        
                     });
 
                 return service.CreateClasses(IsLazy, InferType,  genericType, getItems);
