@@ -39,6 +39,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             return this;
         }
 
+        public SitecoreChildren<T> InferType()
+        {
+            _attr.InferType = true;
+            return this;
+        }
        
 
         internal override Glass.Sitecore.Mapper.Configuration.Attributes.AbstractSitecorePropertyAttribute Attribute

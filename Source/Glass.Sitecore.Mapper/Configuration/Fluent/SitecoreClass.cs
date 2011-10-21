@@ -24,7 +24,7 @@ using System.Text.RegularExpressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    public class SitecoreClass<T> : ISitecoreClass, ISitecoreClassFields<T>, ISitecoreClassInfos<T>, ISitecoreClassQueries<T>
+    public class SitecoreClass<T> : ISitecoreClass, ISitecoreClassFields<T>, ISitecoreClassInfos<T>, ISitecoreClassQueries<T>, ISitecoreClassItems<T>, ISitecoreLinkedItems<T>
     {
        
         List<SitecoreProperty> _properties;
@@ -103,6 +103,21 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             return builder;
         }
 
+        public SitecoreItem<T> Item(Expression<Func<T, object>> ex)
+        {
+            SitecoreItem<T> builder = new SitecoreItem<T>(ex);
+            AddProperty(builder);
+            return builder;
+        }
+
+        public SitecoreLinked<T> Linked(Expression<Func<T, object>> ex)
+        {
+            SitecoreLinked<T> builder = new SitecoreLinked<T>(ex);
+            AddProperty(builder);
+            return builder;
+        }
+
+
         public SitecoreClass<T> Fields(Action<ISitecoreClassFields<T>> fields)
         {
             fields.Invoke(this);
@@ -119,7 +134,17 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             queries.Invoke(this);
             return this;
         }
-
+        public SitecoreClass<T> Items(Action<ISitecoreClassItems<T>> items)
+        {
+            items.Invoke(this);
+            return this;
+        }
+        public SitecoreClass<T> Links(Action<ISitecoreLinkedItems<T>> links)
+        {
+            links.Invoke(this);
+            return this;
+        }
+        
 
 
 
@@ -162,6 +187,14 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
     public interface ISitecoreClassQueries<T>
     {
         SitecoreQuery<T> Query(Expression<Func<T, object>> ex);
+    }
+    public interface ISitecoreClassItems<T>
+    {
+        SitecoreItem<T> Item(Expression<Func<T, object>> ex);
+    }
+    public interface ISitecoreLinkedItems<T>
+    {
+        SitecoreLinked<T> Linked(Expression<Func<T, object>> ex);
     }
 
     #endregion

@@ -37,6 +37,18 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             return this;
         }
 
+        public SitecoreQuery<T> InferType()
+        {
+            _attr.InferType = true;
+            return this;
+        }
+
+        public SitecoreQuery<T> UseQueryContext()
+        {
+            _attr.UseQueryContext = true;
+            return this;
+        }
+
         public SitecoreQuery<T> IsRelative()
         {
             _attr.IsRelative = true;
