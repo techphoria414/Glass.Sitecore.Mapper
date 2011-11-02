@@ -24,6 +24,9 @@ using System.Text.RegularExpressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
+    /// <summary>
+    /// Indicates that the .Net class can be loaded by Glass.Sitecore.Mapper
+    /// </summary>
     public class SitecoreClass<T> : ISitecoreClass, ISitecoreClassFields<T>, ISitecoreClassInfos<T>, ISitecoreClassQueries<T>, ISitecoreClassItems<T>, ISitecoreLinkedItems<T>
     {
        
@@ -46,12 +49,17 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
 
             
         }
-
+        /// <summary>
+        /// Indicates the template to use when trying to create an item
+        /// </summary>
         public SitecoreClass<T> TemplateId(Guid id)
         {
             _config.ClassAttribute.TemplateId = id.ToString();
             return this;
         }
+        /// <summary>
+        /// Indicates the branch to use when trying to create and item. If a template id is also specified the template Id will be use instead.
+        /// </summary>
         public SitecoreClass<T> BranchId(Guid id)
         {
             _config.ClassAttribute.BranchId = id.ToString();

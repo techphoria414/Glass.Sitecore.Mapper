@@ -6,7 +6,7 @@ using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    class SitecoreLinked<T> : AbstractSitecoreAttributeBuilder<T>
+    public class SitecoreLinked<T> : AbstractSitecoreAttributeBuilder<T>
     {
         Configuration.Attributes.SitecoreLinkedAttribute _att;
 

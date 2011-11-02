@@ -21,6 +21,10 @@ using System.Text;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
+
+    /// <summary>
+    /// Indicates that the .Net class can be loaded by Glass.Sitecore.Mapper
+    /// </summary>
     [AttributeUsage(AttributeTargets.Class|AttributeTargets.Interface)]
     public class SitecoreClassAttribute : Attribute
     {

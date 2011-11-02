@@ -21,6 +21,10 @@ using System.Text;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
+    /// <summary>
+    /// Indicates that a query should be execute to load data into the property.
+    /// The query can be either absolute or relative to the current item.
+    /// </summary>
     public class SitecoreQueryAttribute : AbstractSitecorePropertyAttribute
     {
         /// <summary>

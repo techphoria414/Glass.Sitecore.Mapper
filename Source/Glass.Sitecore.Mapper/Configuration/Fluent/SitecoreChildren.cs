@@ -22,6 +22,9 @@ using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
+    /// <summary>
+    /// Indicates that the property should contain the children of the current item
+    /// </summary>
     public class SitecoreChildren<T> : AbstractSitecoreAttributeBuilder<T>
     {
 
@@ -32,13 +35,17 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
         {
             _attr = new Configuration.Attributes.SitecoreChildrenAttribute();
         }
-
+        /// <summary>
+        /// Indicates if children should not be loaded lazily.  If false all children will be loaded when the containing object is created.
+        /// </summary>
         public SitecoreChildren<T> IsNotLazy()
         {
             _attr.IsLazy = false;
             return this;
         }
-
+        /// <summary>
+        /// Indicates the type should be inferred from the item template
+        /// </summary>
         public SitecoreChildren<T> InferType()
         {
             _attr.InferType = true;

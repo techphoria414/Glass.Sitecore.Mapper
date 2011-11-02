@@ -21,6 +21,9 @@ using System.Text;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
+    /// <summary>
+    /// Indicates that the property should contain the children of the current item
+    /// </summary>
     public class SitecoreChildrenAttribute :AbstractSitecorePropertyAttribute
     {
         /// <summary>
@@ -31,7 +34,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             IsLazy = true;
         }
         /// <summary>
-        /// Indicates if children should be loaded lazily. Default value is true. If false all children will be loaded when the contain object is created.
+        /// Indicates if children should be loaded lazily. Default value is true. If false all children will be loaded when the containing object is created.
         /// </summary>
         public bool IsLazy
         {

@@ -22,6 +22,9 @@ using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
+    /// <summary>
+    /// Indicates that the property should be populated with the parent item.
+    /// </summary>
     public class SitecoreParent<T> : AbstractSitecoreAttributeBuilder<T>
     {
 
@@ -33,12 +36,17 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             _attr = new Configuration.Attributes.SitecoreParentAttribute();
         }
 
+        /// <summary>
+        /// Indicates if the parent shouldn't be loaded lazily.
+        /// </summary>
         public SitecoreParent<T> IsNotLazy()
         {
             _attr.IsLazy = false;
             return this;
         }
-
+        /// <summary>
+        /// Indicates the type should be inferred from the item template
+        /// </summary>
         public SitecoreParent<T> InferType()
         {
             _attr.InferType = true;

@@ -22,6 +22,10 @@ using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
+    /// <summary>
+    /// Indicates that a query should be execute to load data into the property.
+    /// The query can be either absolute or relative to the current item.
+    /// </summary>
     public class SitecoreQuery<T> : AbstractSitecoreAttributeBuilder<T>
     {
         Configuration.Attributes.SitecoreQueryAttribute _attr;
@@ -31,12 +35,18 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             _attr = new Configuration.Attributes.SitecoreQueryAttribute();
         }
 
+        /// <summary>
+        /// Indicates that the results should be loaded lazily
+        /// </summary>
+        /// <returns></returns>
         public SitecoreQuery<T> IsNotLazy()
         {
             _attr.IsLazy = false;
             return this;
         }
-
+        /// <summary>
+        /// Indicates the type should be inferred from the item template
+        /// </summary>
         public SitecoreQuery<T> InferType()
         {
             _attr.InferType = true;
@@ -48,12 +58,17 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             _attr.UseQueryContext = true;
             return this;
         }
-
+        /// <summary>
+        /// Indicates that the field is relative to the current item.
+        /// </summary>
         public SitecoreQuery<T> IsRelative()
         {
             _attr.IsRelative = true;
             return this;
         }
+        /// <summary>
+        /// The query to execute
+        /// </summary>
         public SitecoreQuery<T> Query(string query)
         {
             _attr.Query = query;
