@@ -66,6 +66,7 @@ namespace Glass.Sitecore.Mapper.Configuration
         /// <summary>
         //The item's Absolute URL. The property type must be System.String
         /// </summary>
+        [Obsolete("Use SitecoreInfoType.Url with UrlOption = SitecoreInfoUrlOptions.AlwaysIncludeServerUrl")]
         FullUrl,
         /// <summary>
         /// The item's version. The property type must be System.Int32
