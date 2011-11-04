@@ -189,6 +189,7 @@
     </None>
     <None Include="App_Config\ConnectionStrings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App_Config\ConnectionStringsOracle.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
