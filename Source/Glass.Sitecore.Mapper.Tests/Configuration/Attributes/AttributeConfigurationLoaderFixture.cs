@@ -119,6 +119,52 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Attributes
 
         #endregion
 
+        #region Test Set 5
+
+        [Test]
+        public void Load_LoadsInheritedFromInterface()
+        {
+            //Assign
+            Type testType = typeof(AttributeConfigurationLoaderFixtureNS.TestSet5.TestSet5);
+            var namespaces = new string[] { string.Format("{0},{1}", testType.Namespace, testType.Assembly) };
+            AttributeConfigurationLoader loader = new AttributeConfigurationLoader(namespaces);
+
+            //Act
+            var result = loader.Load();
+
+            //Assert
+            Assert.AreEqual(2, result.Count());
+            Assert.IsTrue(result.Any(x=>x.Type== testType));
+            Assert.AreEqual(2, result.First(x => x.Type == testType).Properties.Count());
+
+        }
+
+        #endregion
+
+        #region Test Set 6
+
+        [Test]
+        public void Load_LoadsInheritedFromClass()
+        {
+            //Assign
+            Type testType = typeof(AttributeConfigurationLoaderFixtureNS.TestSet6.TestSet6);
+            var namespaces = new string[] { string.Format("{0},{1}", testType.Namespace, testType.Assembly) };
+            AttributeConfigurationLoader loader = new AttributeConfigurationLoader(namespaces);
+
+            //Act
+            var result = loader.Load();
+
+            //Assert
+            Assert.AreEqual(2, result.Count());
+            Assert.IsTrue(result.Any(x => x.Type == testType));
+            Assert.AreEqual(2, result.First(x => x.Type == testType).Properties.Count());
+
+        }
+
+        #endregion
+
+
+
     }
 
     namespace AttributeConfigurationLoaderFixtureNS.TestSet1
@@ -163,5 +209,42 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Attributes
             public Guid Id { get; set; }
 
         }
+    }
+    namespace AttributeConfigurationLoaderFixtureNS.TestSet5
+    {
+        [SitecoreClass]
+        public interface TestSet5:TestSet5Sub
+        {
+            [SitecoreId]
+            Guid Id { get; set; }
+
+        }
+        [SitecoreClass]
+        public interface TestSet5Sub
+        {
+            [SitecoreField]
+            string TestField { get; set; }
+
+        }
+
+    }
+
+    namespace AttributeConfigurationLoaderFixtureNS.TestSet6
+    {
+        [SitecoreClass]
+        public class TestSet6 : TestSet6Sub
+        {
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+
+        }
+        [SitecoreClass]
+        public class TestSet6Sub
+        {
+            [SitecoreField]
+           public virtual string TestField { get; set; }
+
+        }
+
     }
 }
