@@ -192,6 +192,8 @@ namespace Glass.Sitecore.Mapper
 
                     var prop = Utility.GetPropertyInfo(type, field.Body);
 
+                    if (prop == null) throw new MapperException("Page editting error. Could not find property {0} on type {1}".Formatted(field.Body, type.FullName));
+
                     var dataHandler = scClass.DataHandlers.FirstOrDefault(x => x.Property == prop);
 
                     var item = database.GetItem(new ID(id));
