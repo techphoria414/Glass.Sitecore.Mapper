@@ -53,7 +53,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
         private IEnumerable<SitecoreProperty> GetProperties(Type type)
         {
-            IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            IEnumerable<PropertyInfo> properties = GetAllProperties(type);
 
             return properties.Select(x =>
             {
@@ -71,6 +71,29 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
                 else return null;
             }).Where(x=>x != null).ToList();
             
+        }
+
+        private static PropertyInfo[] GetAllProperties(Type type)
+        {
+            List<Type> typeList = new List<Type>();
+            typeList.Add(type);
+
+            if (type.IsInterface)
+            {
+                typeList.AddRange(type.GetInterfaces());
+            }
+
+            List<PropertyInfo> propertyList = new List<PropertyInfo>();
+
+            foreach (Type interfaceType in typeList)
+            {
+                foreach (PropertyInfo property in interfaceType.GetProperties())
+                {
+                    propertyList.Add(property);
+                }
+            }
+
+            return propertyList.ToArray();
         }
 
         private IEnumerable<SitecoreClassConfig> GetClass(string assembly, string namesp)
