@@ -129,7 +129,6 @@ namespace Glass.Sitecore.Mapper.Data
 
             InfoType = attr.Type;
 
-            if (attr.UrlOptions != 0)
                 UrlOptions = Utility.CreateUrlOptions(attr.UrlOptions);
 
             base.ConfigureDataHandler(scProperty);
