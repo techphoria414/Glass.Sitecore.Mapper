@@ -131,7 +131,43 @@ namespace Glass.Sitecore.Mapper
             }
 
             PropertyInfo info = type.GetProperty(name);
+
+            //if we don't find the property straight away then it is probably an interface
+            //and we need to check all inherited interfaces.
+            if (info == null)
+            {
+                info = GetAllProperties(type).FirstOrDefault(x => x.Name == name);
+            }
+
             return info;
+        }
+
+        /// <summary>
+        /// Gets all properties on a type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static PropertyInfo[] GetAllProperties(Type type)
+        {
+            List<Type> typeList = new List<Type>();
+            typeList.Add(type);
+
+            if (type.IsInterface)
+            {
+                typeList.AddRange(type.GetInterfaces());
+            }
+
+            List<PropertyInfo> propertyList = new List<PropertyInfo>();
+
+            foreach (Type interfaceType in typeList)
+            {
+                foreach (PropertyInfo property in interfaceType.GetProperties())
+                {
+                    propertyList.Add(property);
+                }
+            }
+
+            return propertyList.ToArray();
         }
 
         /// <summary>
