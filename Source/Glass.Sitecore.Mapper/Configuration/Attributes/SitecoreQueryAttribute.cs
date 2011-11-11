@@ -43,6 +43,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         public bool InferType { get; set; }
 
         /// <summary>
+        /// Use the Sitecore.Data.Query.QueryContext when querying for data
+        /// </summary>
+        public bool UseQueryContext { get; set; }
+
+        /// <summary>
         /// Indicates that the property should be populated with the result of a query.
         /// </summary>
         /// <param name="query">The query to execute</param>
@@ -50,6 +55,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         {
             Query = query;
             IsLazy = true;
+            UseQueryContext = false;
         }
 
         internal SitecoreQueryAttribute()

@@ -43,5 +43,7 @@ namespace Glass.Sitecore.Mapper
         /// <typeparam name="T">The type to cast classes to</typeparam>
         /// <returns></returns>
         T QuerySingleRelative<T>(string query, bool isLazy, bool inferType) where T : class;
+
+        T GetHomeItem<T>() where T : class;
     }
 }

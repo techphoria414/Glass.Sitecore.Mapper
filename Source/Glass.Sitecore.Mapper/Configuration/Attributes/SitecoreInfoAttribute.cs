@@ -27,6 +27,14 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// The type of information that should populate the property
         /// </summary>
         public SitecoreInfoType Type{get;set;}
+
+
+        /// <summary>
+        /// UrlOptions, use in conjunction with SitecoreInfoType.Url
+        /// </summary>
+        public SitecoreInfoUrlOptions UrlOptions { get; set; }
+
+
         
         /// <summary>
         /// Indicates that the property should be populated with data about the item such as URL, ID, etc.

@@ -28,6 +28,8 @@ using Sitecore.Links;
 using Sitecore.Data.Fields;
 using Sitecore.SecurityModel;
 using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Data.Managers;
+using Sitecore.Globalization;
 
 namespace Glass.Sitecore.Mapper.Tests
 {
@@ -245,7 +247,7 @@ namespace Glass.Sitecore.Mapper.Tests
             //if you do this without the disabler the role manager throws an exception
             using (new SecurityDisabler())
             {
-                Assert.AreEqual(3, test.Query.Count());
+                Assert.AreEqual(5, test.Query.Count());
                 Assert.AreEqual(_test1.ID.Guid, test.Query.First().Id);
                 Assert.AreEqual(_test2.ID.Guid, test.Query.Take(2).Last().Id);
             }
@@ -328,6 +330,7 @@ namespace Glass.Sitecore.Mapper.Tests
             test.DropLink = new MiscFixtureNS.SubClass() { Id = _test3.ID.Guid };
             test.DropTree = new MiscFixtureNS.SubClass() { Id = _test3.ID.Guid };
             test.GeneralLink = new Link(){
+                Type = LinkType.External,
                 Anchor="test anchor",
                 Class="test class",
                 Target="test target",
@@ -394,7 +397,6 @@ namespace Glass.Sitecore.Mapper.Tests
             Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropLink"].ToUpper());
             Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropTree"].ToUpper());
             LinkField link = new LinkField(result.Fields["GeneralLink"]);
-            Assert.AreEqual("test anchor", link.Anchor);
             Assert.AreEqual("test class", link.Class);
             Assert.AreEqual("test target", link.Target);
             Assert.AreEqual("test text", link.Text);
@@ -479,10 +481,86 @@ namespace Glass.Sitecore.Mapper.Tests
                 }
             }
         }
+
+        [Test]
+        public void IList_SetListOfIntsAndClasses()
+        {
+            //Assign
+            MiscFixtureNS.IListTest target = _sitecore.GetItem<MiscFixtureNS.IListTest>("/sitecore/content/Glass/IListTest");
+
+
+            Assert.AreEqual(0, target.ListOfClasses.Count);
+            Assert.AreEqual(0, target.ListOfInts.Count);
+
+
+            MiscFixtureNS.LinkTest link1 = _sitecore.GetItem<MiscFixtureNS.LinkTest>("/sitecore/content/Glass/Test1");
+            MiscFixtureNS.LinkTest link2 = _sitecore.GetItem<MiscFixtureNS.LinkTest>("/sitecore/content/Glass/Test2");
+
+            //Act
+
+            target.ListOfInts.Add(45);
+            target.ListOfInts.Add(67);
+            string intString = "45|67";
+            
+            target.ListOfClasses.Add(link1);
+            target.ListOfClasses.Add(link2);
+            string classString = "{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}";
+            
+            using (new SecurityDisabler())
+            {
+             
+                _sitecore.Save<MiscFixtureNS.IListTest>(target);
+
+                //Assert
+                Item result = _db.GetItem("/sitecore/content/Glass/IListTest");
+                Assert.AreEqual(classString, result["ListOfClasses"]);
+                Assert.AreEqual(intString, result["ListOfInts"]);
+
+                result.Editing.BeginEdit();
+                result["ListOfClasses"] = "";
+                result["ListOfInts"] = "";
+                result.Editing.EndEdit();
+            }
+
+
+
+        }
+
+        [Test]
+        public void AddingAVersionToAParticularLanguage()
+        {
+                       //Assign
+            MiscFixtureNS.LanguageTest target = _sitecore.GetItem<MiscFixtureNS.LanguageTest>(
+                "/sitecore/content/Glass/Language", LanguageManager.GetLanguage("af-ZA"));
+
+            //Act
+            using (new SecurityDisabler())
+            {
+                MiscFixtureNS.LanguageTest newVersion = _sitecore.AddVersion<MiscFixtureNS.LanguageTest>(target);
+
+                //Assert
+                Assert.AreEqual(target.Version + 1, newVersion.Version);
+            }
+        }
     }
 
     namespace MiscFixtureNS
     {
+
+        [SitecoreClass]
+        public class LanguageTest{
+            
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+            
+            [SitecoreInfo(SitecoreInfoType.Version)]
+            public virtual int Version { get; set; }
+
+            [SitecoreInfo(SitecoreInfoType.Language)]
+            public virtual Language Language { get; set; }
+        }
+        
+
         [SitecoreClass(TemplateId="{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")]
         public class BasicTemplate
         {
@@ -650,11 +728,28 @@ namespace Glass.Sitecore.Mapper.Tests
 
         }
 
+        [SitecoreClass]
+        public interface IListTest
+        {
+            [SitecoreId]
+            Guid Id{get;set;}
+
+            [SitecoreField]
+            IList<int> ListOfInts { get; set; }
+
+            [SitecoreField]
+            IList<LinkTest> ListOfClasses { get; set; }
+        }
+
         public enum TestEnum
         {
             Test1,
             Test2,
             Test3
         }
+
+        
+    
+    
     }
 }

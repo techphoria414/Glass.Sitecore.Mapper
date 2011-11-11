@@ -48,7 +48,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         #region GetValue
 
         [Test]
-        public void GetValue_ReturnsValidLink()
+        public void GetValue_ReturnsValidLink_External()
         {
             //Assign
             Item item = _db.GetItem(new ID(_itemId));
@@ -62,17 +62,195 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             _handler.ConfigureDataHandler(property);
 
-            //Act
-            Link result = _handler.GetValue(item, null) as Link;
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+                item["GeneralLink"] = "<link text=\"TestDesc\" querystring=\"TestQuery\" linktype=\"external\" url=\"http://www.google.com\" anchor=\"TestAnchor\" title=\"TestAlt\" class=\"TestClass\" target=\"_blank\" />";
+
+                //Act
+                Link result = _handler.GetValue(item, null) as Link;
+
+                Assert.AreEqual("TestAnchor", result.Anchor);
+                Assert.AreEqual("TestClass", result.Class);
+                Assert.AreEqual("TestQuery", result.Query);
+                Assert.AreEqual("_blank", result.Target);
+                Assert.AreEqual(Guid.Empty, result.TargetId);
+                Assert.AreEqual("TestDesc", result.Text);
+                Assert.AreEqual("TestAlt", result.Title);
+                Assert.AreEqual(LinkType.External, result.Type);
+                Assert.AreEqual("http://www.google.com", result.Url);
+
+
+
+
+
+
+
+                item.Editing.CancelEdit();
+
+            }
+           
 
             //Assert
-            Assert.AreEqual("", result.Anchor);
-            Assert.AreEqual("Style Class Test", result.Class);
-            Assert.AreEqual("_blank", result.Target);
-            Assert.AreEqual(Guid.Empty, result.TargetId);
-            Assert.AreEqual("Link Description Test", result.Text);
-            Assert.AreEqual("Alternate Text Test", result.Title);
-            Assert.AreEqual("http://www.google.com", result.Url);
+           
+        }
+
+        [Test]
+        public void GetValue_ReturnsValidLink_Anchor()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+                item["GeneralLink"] = "<link text=\"TestDesc\" linktype=\"anchor\" querystring=\"TestQuery\"  target=\"_blank\" url=\"http://\" anchor=\"TestAnchor\" title=\"TestAlt\" class=\"TestClass\" />";
+                //Act
+                Link result = _handler.GetValue(item, null) as Link;
+
+                Assert.AreEqual("TestAnchor", result.Anchor);
+                Assert.AreEqual("TestClass", result.Class);
+                Assert.AreEqual("TestQuery", result.Query);
+                Assert.AreEqual("_blank", result.Target);
+                Assert.AreEqual(Guid.Empty, result.TargetId);
+                Assert.AreEqual("TestDesc", result.Text);
+                Assert.AreEqual("TestAlt", result.Title);
+                Assert.AreEqual(LinkType.Anchor, result.Type);
+                Assert.AreEqual("TestAnchor", result.Url);
+
+                item.Editing.CancelEdit();
+
+            }
+
+
+            //Assert
+
+        }
+
+        [Test]
+        public void GetValue_ReturnsValidLink_MailTo()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+                item["GeneralLink"] = "<link text=\"TestDesc\"  querystring=\"TestQuery\" target=\"_blank\" linktype=\"mailto\" url=\"mailto:test@glass.lu\" anchor=\"TestAnchor\" title=\"TestAlt\" class=\"TestClass\" />";
+                //Act
+                Link result = _handler.GetValue(item, null) as Link;
+
+                Assert.AreEqual("TestAnchor", result.Anchor);
+                Assert.AreEqual("TestClass", result.Class);
+                Assert.AreEqual("TestQuery", result.Query);
+                Assert.AreEqual("_blank", result.Target);
+                Assert.AreEqual(Guid.Empty, result.TargetId);
+                Assert.AreEqual("TestDesc", result.Text);
+                Assert.AreEqual("TestAlt", result.Title);
+                Assert.AreEqual(LinkType.MailTo, result.Type);
+                Assert.AreEqual("mailto:test@glass.lu", result.Url);
+
+                item.Editing.CancelEdit();
+
+            }
+
+
+            //Assert
+
+        }
+
+
+        [Test]
+        public void GetValue_ReturnsValidLink_JavaScript()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+                item["GeneralLink"] = "<link querystring=\"TestQuery\" text=\"TestDesc\" target=\"_blank\" linktype=\"javascript\" url=\"javascript:JavaScript\" anchor=\"TestAnchor\" title=\"TestAlt\" class=\"TestClass\" />";
+                //Act
+                Link result = _handler.GetValue(item, null) as Link;
+
+                Assert.AreEqual("TestAnchor", result.Anchor);
+                Assert.AreEqual("TestClass", result.Class);
+                Assert.AreEqual("TestQuery", result.Query);
+                Assert.AreEqual("_blank", result.Target);
+                Assert.AreEqual(Guid.Empty, result.TargetId);
+                Assert.AreEqual("TestDesc", result.Text);
+                Assert.AreEqual("TestAlt", result.Title);
+                Assert.AreEqual(LinkType.JavaScript, result.Type);
+                Assert.AreEqual("javascript:JavaScript", result.Url);
+
+                item.Editing.CancelEdit();
+
+            }
+
+
+            //Assert
+
+        }
+
+
+        [Test]
+        public void GetValue_ReturnsValidLink_BlankField()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+                item["GeneralLink"] = " ";
+                //Act
+                Link result = _handler.GetValue(item, null) as Link;
+
+                Assert.IsNull(result);
+
+                item.Editing.CancelEdit();
+
+            }
+
+
+            //Assert
+
         }
 
         [Test]
@@ -100,7 +278,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assert.AreEqual(Guid.Empty, result.TargetId);
             //Assert.AreEqual("Link Description Test", result.Text);
             //Assert.AreEqual("Alternate Text Test", result.Title);
-            Assert.AreEqual("/en/sitecore/content/Glass/Test1.aspx", result.Url);
+            Assert.AreEqual("/en/sitecore/content/Glass/Test2.aspx", result.Url);
         }
 
         [Test]
@@ -135,111 +313,31 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         #region SetValue
 
         [Test]
-        public void SetValue_SetsLink()
+        public void SetValue_Internal()
         {
             //Assign
             Item item = _db.GetItem(new ID(_itemId));
-            Guid targetId = new Guid("{D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}");
 
+            string expected = "<link text=\"TestDesc\" linktype=\"internal\" url=\"/Home.aspx\" anchor=\"TestAnch\" querystring=\"TestQuery\" title=\"TestAlt\" class=\"TestClass\" target=\"_blank\" id=\"{98F907F7-CD1A-4C88-AF11-8F38A21A7FE1}\" />";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+            _handler.ConfigureDataHandler(property);
 
             Link link = new Link();
-            link.Anchor = "new anchor";
-            link.Class = "new class";
-            link.Target = "new target";
-            link.TargetId = targetId;
-            link.Text = "new text";
-            link.Title = "new title";
-            link.Url = "new url";
+            link.Text = "TestDesc";
+            link.Type = LinkType.Internal;
+            link.Anchor = "TestAnch";
+            link.Query = "TestQuery";
+            link.Title = "TestAlt";
+            link.Target = "_blank";
+            link.Class = "TestClass";
+            link.TargetId = new Guid("{98F907F7-CD1A-4C88-AF11-8F38A21A7FE1}");
 
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreFieldAttribute(),
-                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
-            };
-
-            _handler.ConfigureDataHandler(property);
-
-            using (new SecurityDisabler())
-            {
-                item.Editing.BeginEdit();
-
-                //Act
-                _handler.SetValue( item, link, null);
-
-                //Assert
-                LinkField field = new LinkField(item.Fields["GeneralLink"]);
-                Assert.AreEqual(link.Anchor, field.Anchor);
-                Assert.AreEqual(link.Class, field.Class);
-                Assert.AreEqual(link.Target, field.Target);
-                Assert.AreEqual(link.Text, field.Text);
-                Assert.AreEqual(link.Title, field.Title);
-                Assert.AreEqual(targetId, field.TargetItem.ID.Guid);
-
-                item.Editing.CancelEdit();
-            }
-        }
-
-        [Test]
-        public void SetValue_GuidEmptyTarget()
-        {
-            //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            Guid targetId = Guid.Empty;
-
-            Link link = new Link();
-            link.Anchor = "new anchor";
-            link.Class = "new class";
-            link.Target = "new target";
-            link.TargetId = targetId;
-            link.Text = "new text";
-            link.Title = "new title";
-            link.Url = "new url";
-
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreFieldAttribute(),
-                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
-            };
-            _handler.ConfigureDataHandler(property);
-
-            using (new SecurityDisabler())
-            {
-                item.Editing.BeginEdit();
-
-                //Act
-                _handler.SetValue( item, link, null);
-
-                //Assert
-                LinkField field = new LinkField(item.Fields["GeneralLink"]);
-                Assert.AreEqual(link.Anchor, field.Anchor);
-                Assert.AreEqual(link.Class, field.Class);
-                Assert.AreEqual(link.Target, field.Target);
-                Assert.AreEqual(link.Text, field.Text);
-                Assert.AreEqual(link.Title, field.Title);
-                Assert.AreEqual(null, field.TargetItem);
-
-                item.Editing.CancelEdit();
-            }
-
-        }
-
-        [Test]
-        public void SetValue_NullLinkClearsField()
-        {
-            //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            Guid targetId = new Guid("{D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}");
-
-
-            Link link = null;
-
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreFieldAttribute(),
-                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
-            };
-
-            _handler.ConfigureDataHandler(property);
+            string result = string.Empty;
 
             using (new SecurityDisabler())
             {
@@ -247,12 +345,347 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
                 //Act
                 _handler.SetValue(item, link, null);
+                LinkField field = new LinkField(item.Fields["GeneralLink"]);
+
+                Assert.AreEqual( "TestAnch", field.Anchor);
+                Assert.AreEqual( "TestClass",  field.Class);
+                Assert.AreEqual("internal", field.LinkType);
+                Assert.AreEqual("TestQuery", field.QueryString);
+                Assert.AreEqual(new Guid("{98F907F7-CD1A-4C88-AF11-8F38A21A7FE1}"), field.TargetID.Guid);
+                Assert.AreEqual("TestDesc", field.Text);
+                Assert.AreEqual("TestAlt", field.Title);
+                    
+                item.Editing.CancelEdit();
+            }
+
+
+
+           
+
+        }
+
+        [Test]
+        public void SetValue_Media()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            string expected = "<link text=\"TestDesc\" linktype=\"media\" url=\"/Files/Kitten1\" title=\"TestText\" class=\"TestClass\" target=\"_blank\" id=\"{223EEAE5-DF4C-4E30-95AC-17BE2F00E2CD}\" />";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+            _handler.ConfigureDataHandler(property);
+
+            Link link = new Link();
+            link.Text = "TestDesc";
+            link.Type = LinkType.Media;
+            link.Anchor = "TestAnch";
+            link.Query = "TestQuery";
+            link.Title = "TestAlt";
+            link.Target = "_blank";
+            link.Class = "TestClass";
+            link.TargetId = new Guid("{223EEAE5-DF4C-4E30-95AC-17BE2F00E2CD}");
+
+            string result = string.Empty;
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, link, null);
+                LinkField field = new LinkField(item.Fields["GeneralLink"]);
+
 
                 //Assert
-                Assert.AreEqual("",item.Fields["GeneralLink"].Value);
+                Assert.AreEqual("TestAnch", field.Anchor);
+                Assert.AreEqual("TestClass", field.Class);
+                Assert.AreEqual("media", field.LinkType);
+                Assert.AreEqual("TestQuery", field.QueryString);
+                Assert.AreEqual(new Guid("{223EEAE5-DF4C-4E30-95AC-17BE2F00E2CD}"), field.TargetID.Guid);
+                Assert.AreEqual("TestDesc", field.Text);
+                Assert.AreEqual("TestAlt", field.Title);
 
                 item.Editing.CancelEdit();
             }
+
+        }
+        [Test]
+        public void SetValue_Exteral()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            string expected = "<link text=\"TestDec\" linktype=\"external\" url=\"http://www.google.com\" anchor=\"\" title=\"TestAlt\" class=\"TestClass\" target=\"_blank\" />";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+            _handler.ConfigureDataHandler(property);
+
+            Link link = new Link();
+            link.Text = "TestDesc";
+            link.Type = LinkType.External;
+            link.Anchor = "TestAnch";
+            link.Query = "TestQuery";
+            link.Title = "TestAlt";
+            link.Target = "_blank";
+            link.Class = "TestClass";
+            link.Url = "http://www.google.com";
+
+
+            string result = string.Empty;
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, link, null);
+                LinkField field = new LinkField(item.Fields["GeneralLink"]);
+
+
+                //Assert
+                Assert.AreEqual("TestAnch", field.Anchor);
+                Assert.AreEqual("TestClass", field.Class);
+                Assert.AreEqual("external", field.LinkType);
+                Assert.AreEqual("TestQuery", field.QueryString);
+                Assert.AreEqual("TestDesc", field.Text);
+                Assert.AreEqual("TestAlt", field.Title);
+                Assert.AreEqual("http://www.google.com", field.Url);
+
+                item.Editing.CancelEdit();
+            }
+
+
+        }
+        [Test]
+        public void SetValue_Anchor()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            string expected = "<link text=\"TestDesc\" linktype=\"anchor\" url=\"TestAnch\" anchor=\"TestAnch\" title=\"TestAlt\" class=\"TestClass\" />";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+            _handler.ConfigureDataHandler(property);
+
+            Link link = new Link();
+            link.Text = "TestDesc";
+            link.Type = LinkType.Anchor;
+            link.Anchor = "TestAnch";
+            link.Query = "TestQuery";
+            link.Title = "TestAlt";
+            link.Target = "_blank";
+            link.Class = "TestClass";
+            link.Url = "TestUrl";
+
+
+            string result = string.Empty;
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, link, null);
+                LinkField field = new LinkField(item.Fields["GeneralLink"]);
+
+
+                //Assert
+                Assert.AreEqual("TestAnch", field.Anchor);
+                Assert.AreEqual("TestClass", field.Class);
+                Assert.AreEqual("anchor", field.LinkType);
+                Assert.AreEqual("TestQuery", field.QueryString);
+                Assert.AreEqual("TestDesc", field.Text);
+                Assert.AreEqual("TestAlt", field.Title);
+                Assert.AreEqual("TestAnch", field.Url);
+
+                item.Editing.CancelEdit();
+            }
+
+        }
+        [Test]
+        public void SetValue_MailTo()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            string expected = "<link text=\"TestDesc\" linktype=\"mailto\" url=\"mailto:test@glass.lu\" anchor=\"\" title=\"testalt\" class=\"testclass\" />";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+            _handler.ConfigureDataHandler(property);
+
+            Link link = new Link();
+            link.Text = "TestDesc";
+            link.Type = LinkType.MailTo;
+            link.Anchor = "TestAnch";
+            link.Query = "TestQuery";
+            link.Title = "TestAlt";
+            link.Target = "_blank";
+            link.Class = "TestClass";
+            link.Url = "mailto:test@glass.lu";
+
+
+            string result = string.Empty;
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, link, null);
+                LinkField field = new LinkField(item.Fields["GeneralLink"]);
+
+
+                //Assert
+                Assert.AreEqual("TestAnch", field.Anchor);
+                Assert.AreEqual("TestClass", field.Class);
+                Assert.AreEqual("mailto", field.LinkType);
+                Assert.AreEqual("TestQuery", field.QueryString);
+                Assert.AreEqual("TestDesc", field.Text);
+                Assert.AreEqual("TestAlt", field.Title);
+                Assert.AreEqual("mailto:test@glass.lu", field.Url);
+
+                item.Editing.CancelEdit();
+            }
+
+       
+
+        }
+        [Test]
+        public void SetValue_JavaScript()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            string expected = "<link text=\"Test\" linktype=\"javascript\" url=\"javascript:JavaScript\" anchor=\"\" title=\"text\" class=\"class\" />";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+            _handler.ConfigureDataHandler(property);
+
+            Link link = new Link();
+            link.Text = "TestDesc";
+            link.Type = LinkType.JavaScript;
+            link.Anchor = "TestAnch";
+            link.Query = "TestQuery";
+            link.Title = "TestAlt";
+            link.Target = "_blank";
+            link.Class = "TestClass";
+            link.Url = "javascript:JavaScript";
+
+
+            string result = string.Empty;
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, link, null);
+                LinkField field = new LinkField(item.Fields["GeneralLink"]);
+
+
+                //Assert
+                Assert.AreEqual("TestAnch", field.Anchor);
+                Assert.AreEqual("TestClass", field.Class);
+                Assert.AreEqual("javascript", field.LinkType);
+                Assert.AreEqual("TestQuery", field.QueryString);
+                Assert.AreEqual("TestDesc", field.Text);
+                Assert.AreEqual("TestAlt", field.Title);
+                Assert.AreEqual("javascript:JavaScript", field.Url);
+
+                item.Editing.CancelEdit();
+            }
+
+        }
+        [Test]
+        public void SetValue_NullValue()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            string expected = "";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+            _handler.ConfigureDataHandler(property);
+
+            Link link = null; 
+
+            string result = string.Empty;
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, link, null);
+                result = item.Fields["GeneralLink"].Value;
+
+                item.Editing.CancelEdit();
+            }
+
+            //Assert
+
+            Assert.AreEqual(expected, result);
+
+        }
+
+        [Test]
+        public void SetValue_LinkNoValues()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            string expected = "";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "GeneralLink")
+            };
+            _handler.ConfigureDataHandler(property);
+
+            Link link = new Link();
+
+            string result = string.Empty;
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, link, null);
+                result = item.Fields["GeneralLink"].Value;
+
+                item.Editing.CancelEdit();
+            }
+
+            //Assert
+
+            Assert.AreEqual(expected, result);
+
         }
 
         #endregion

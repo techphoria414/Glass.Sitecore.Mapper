@@ -153,6 +153,7 @@
     <Compile Include="Data\SitecoreInfoHandlerFixture.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Data\SitecoreItemHandlerFixture.cs" />
     <Compile Include="Data\SitecoreLinkedHandlerFixture.cs" />
     <Compile Include="Data\SitecoreParentHandlerFixture.cs">
       <SubType>Code</SubType>
@@ -188,6 +189,7 @@
     </None>
     <None Include="App_Config\ConnectionStrings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App_Config\ConnectionStringsOracle.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

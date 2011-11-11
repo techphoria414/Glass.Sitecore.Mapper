@@ -268,6 +268,44 @@ namespace Glass.Sitecore.Mapper.Tests
             }
         }
 
+
+        [Test]
+        public void Create_CreatesAnItem_PrePopulates_NewMethod()
+        {
+            //Assign
+            TestClass test3 = _sitecore.GetItem<TestClass>("/sitecore/content/Glass/Test1/Test3");
+            CreateClass preClass = new CreateClass() { SingleLineText = "some test data", Name = "Test6" };
+
+            using (new SecurityDisabler())
+            {
+
+
+                //Act
+                CreateClass newItem = _sitecore.Create<CreateClass, TestClass>(test3, preClass);
+
+
+                //Assert
+                Item item = _db.GetItem("/sitecore/content/Glass/Test1/Test3/Test6");
+
+
+                Assert.AreEqual(preClass, newItem);
+                Assert.AreEqual(item.ID.Guid, newItem.Id);
+                Assert.IsNotNull(item);
+                Assert.AreNotEqual(item.ID, newItem.Id);
+                Assert.AreEqual(preClass.SingleLineText, item["SingleLineText"]);
+
+                try
+                {
+                    //Clean up
+                    item.Delete();
+                }
+                catch (NullReferenceException ex)
+                {
+                    //this expection is thrown by Sitecore.Tasks.ItemEventHandler.OnItemDeleted
+                }
+            }
+        }
+
         #endregion
 
         #region Delete
@@ -323,6 +361,8 @@ namespace Glass.Sitecore.Mapper.Tests
         {
             [SitecoreId]
             public virtual Guid Id { get; set; }
+
+           
         }
 
         [SitecoreClass(TemplateId = "{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")]
@@ -333,6 +373,9 @@ namespace Glass.Sitecore.Mapper.Tests
 
             [SitecoreField]
             public virtual string SingleLineText { get; set; }
+
+            [SitecoreInfo(SitecoreInfoType.Name)]
+            public virtual string Name { get; set; }
         }
         
 

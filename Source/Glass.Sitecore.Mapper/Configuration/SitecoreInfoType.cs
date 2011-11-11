@@ -40,7 +40,7 @@ namespace Glass.Sitecore.Mapper.Configuration
         /// </summary>
         FullPath,
         /// <summary>
-        /// The item's key (name). The property type must be System.String
+        /// The item's key . The property type must be System.String
         /// </summary>
         Key,
         /// <summary>
@@ -64,8 +64,21 @@ namespace Glass.Sitecore.Mapper.Configuration
         /// </summary>
         Url,
         /// <summary>
+        //The item's Absolute URL. The property type must be System.String
+        /// </summary>
+        [Obsolete("Use SitecoreInfoType.Url with UrlOption = SitecoreInfoUrlOptions.AlwaysIncludeServerUrl")]
+        FullUrl,
+        /// <summary>
         /// The item's version. The property type must be System.Int32
         /// </summary>
-        Version
+        Version,
+        /// <summary>
+        /// The item's Name. The property type must be System.String
+        /// </summary>
+        Name,
+        /// <summary>
+        /// The items language. The property type must be Sitecore.Globalization.Language
+        /// </summary>
+        Language
     }
 }

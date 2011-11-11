@@ -25,6 +25,9 @@ using Sitecore.Globalization;
 using Glass.Sitecore.Mapper.Proxies;
 using System.Collections;
 using Sitecore.Links;
+using Glass.Sitecore.Mapper.Configuration.Attributes;
+using System.Linq.Expressions;
+using System.Reflection.Emit;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -47,7 +50,7 @@ namespace Glass.Sitecore.Mapper
 
         public SitecoreService(string database):this(global::Sitecore.Configuration.Factory.GetDatabase(database))
         {
-            
+           
         }
         public SitecoreService(Database database)
         {
@@ -85,47 +88,46 @@ namespace Glass.Sitecore.Mapper
 
 
         public T QuerySingle<T>(string query)  where T: class
-        {
-            Item item = _database.SelectSingleItem(query);
-            return CreateClass<T>(false, item);
+        {            
+            Item item = _database.SelectSingleItem(query);            
+            return CreateClass<T>(false, false,  item);
         }
 
         public T GetItem<T>(string path)  where T: class
         {
             Item item = _database.GetItem(path);
-            return CreateClass<T>(false, item);
+            return CreateClass<T>(false, false, item);
         }
         public T GetItem<T>(string path, Language language) where T:class
         {
             Item item = _database.GetItem(path, language);
-            return CreateClass<T>(false, item);
+            return CreateClass<T>(false, false, item);
         }
         public T GetItem<T>(string path, Language language, global::Sitecore.Data.Version version) where T : class
         {
             Item item = _database.GetItem(path, language, version);
-            return CreateClass<T>(false, item);
+            return CreateClass<T>(false, false, item);
         }
 
         public T GetItem<T>(Guid id)  where T: class
         {
             Item item = _database.GetItem(new  ID(id));
-            return CreateClass<T>(false, item);
+            return CreateClass<T>(false, false, item);
         }
         public T GetItem<T>(Guid id, Language language) where T : class
         {
             Item item = _database.GetItem(new ID(id), language);
-            return CreateClass<T>(false, item);
+            return CreateClass<T>(false, false, item);
         }
         public T GetItem<T>(Guid id, Language language, global::Sitecore.Data.Version version) where T : class
         {
             Item item = _database.GetItem(new ID(id), language, version);
-            return CreateClass<T>(false, item);
+            return CreateClass<T>(false, false, item);
         }
 
         public void Save<T>(T target)  where T: class
         {
-            Guid guid = InstanceContext.GetClassId(typeof(T), target);
-            Item item = _database.GetItem(new ID(guid));
+            Item item = GetItemFromSitecore<T>(target);
          
             item.Editing.BeginEdit();
             WriteToItem<T>(target, item);            
@@ -134,6 +136,164 @@ namespace Glass.Sitecore.Mapper
             
         }
 
+        public T AddVersion<T>(T target) where T:class
+        {
+            Item item = GetItemFromSitecore<T>(target);
+
+            Item newVersion = item.Versions.AddVersion();
+
+            return CreateClass<T>(false, false, newVersion);
+
+        }
+
+        /// <summary>
+        /// Retrieves an item based on the passed in class based on the version and language properties on the class
+        /// </summary>
+        /// <typeparam name="T"></typeparam>
+        /// <param name="target"></param>
+        /// <returns></returns>
+        private Item GetItemFromSitecore<T>(T target)
+        {
+            Guid guid = InstanceContext.GetClassId(typeof(T), target);
+
+            SitecoreClassConfig config = InstanceContext.GetSitecoreClass(typeof(T));
+            Language language = null;
+            int versionNumber = -1;
+
+            if (config.LanguageProperty != null)
+                language = config.LanguageProperty.Property.GetValue(target, null) as Language;
+            if (config.VersionProperty != null)
+            {
+                versionNumber = (int)config.VersionProperty.Property.GetValue(target, null);
+
+            }
+            if (language != null && versionNumber > 0)
+            {
+                return _database.GetItem(new ID(guid), language, new global::Sitecore.Data.Version(versionNumber));
+            }
+            else if (language != null)
+            {
+                return _database.GetItem(new ID(guid), language);
+            }
+            else
+            {
+                return _database.GetItem(new ID(guid));
+            }
+
+            
+
+            
+
+
+
+        }
+
+        /// <summary>
+        /// Creates a new Sitecore item. 
+        /// </summary>
+        /// <typeparam name="T">The type of the new item to create. This type must have either a TemplateId or BranchId defined on the SitecoreClassAttribute or fluent equivalent</typeparam>
+        /// <typeparam name="K">The type of the parent item</typeparam>
+        /// <param name="parent">The parent of the new item to create. Must have the SitecoreIdAttribute or fluent equivalent</param>
+        /// <param name="newItem">New item to create, must have the attribute SitecoreInfoAttribute of type SitecoreInfoType.Name or the fluent equivalent</param>
+        /// <returns></returns>
+        public T Create<T, K>(K parent, T newItem)
+            where T : class
+            where K : class
+        {
+            try
+            {
+                Guid id = InstanceContext.GetClassId(typeof(T), newItem);
+                if (id != Guid.Empty) throw new MapperException("You are trying to create an item on a class that doesn't have an empty ID value");
+            }
+            catch (SitecoreIdException ex)
+            {
+                //we can swallow this exception for now
+                //should look to do this beeter
+            }
+
+
+            Guid parentId = Guid.Empty;
+            try
+            {
+                parentId = InstanceContext.GetClassId(typeof(K), parent);
+            }
+            catch (SitecoreIdException ex)
+            {
+                throw new MapperException("Failed to get parent ID", ex);
+            }
+
+
+            if (parentId == Guid.Empty)
+                throw new MapperException("Guid for parent is empty");
+
+            Item pItem = GetItemFromSitecore<K>(parent);
+            if (pItem == null)
+                throw new MapperException("Could not find parent item with ID {0}".Formatted(parentId));
+
+            SitecoreClassConfig scClass = InstanceContext.GetSitecoreClass(typeof(T));
+
+            var nameProperty = scClass.Properties.Where(x => x.Attribute is SitecoreInfoAttribute)
+                .Cast<SitecoreProperty>().FirstOrDefault(x => x.Attribute.CastTo<SitecoreInfoAttribute>().Type == SitecoreInfoType.Name);
+
+            if (nameProperty == null)
+                throw new MapperException("Type {0} does not have a property with SitecoreInfoType.Name".Formatted(typeof(T).FullName));
+            
+            string name = string.Empty;
+            
+            try
+            {
+                 name = nameProperty.Property.GetValue(newItem, null).ToString();
+            }
+            catch
+            {
+                throw new MapperException("Failed to get item name");
+            }
+
+            if (name.IsNullOrEmpty())
+                throw new MapperException("New class has no name");
+
+
+            Guid templateId = scClass.TemplateId;
+            Guid branchId = scClass.BranchId;
+
+            Item item = null;
+
+            if (templateId != Guid.Empty)
+            {
+                item = pItem.Add(name, new TemplateID(new ID(templateId)));
+            }
+            else if (branchId != Guid.Empty)
+            {
+                item = pItem.Add(name, new BranchId(new ID(branchId)));
+            }
+            else
+            {
+                throw new MapperException("Type {0} does not have a Template ID or Branch ID".Formatted(typeof(T).FullName));
+            }
+
+            if (item == null) throw new MapperException("Failed to create item");
+           
+            //write new data to the item
+
+            item.Editing.BeginEdit();
+            WriteToItem<T>(newItem, item);
+            item.Editing.EndEdit();
+
+            //then read it back
+            ReadFromItem(newItem, item, scClass);
+            return newItem;
+         //   return CreateClass<T>(false, false, item);
+
+        }
+
+       
+
+
+     
+
+        #region OBSOLETE
+
+        [Obsolete("Use Create<T,K>(K parent, T newItem)")]
         public T Create<T, K>(K parent, string name)
             where T : class
             where K : class
@@ -141,22 +301,15 @@ namespace Glass.Sitecore.Mapper
             return Create<T, K>(parent, name, null);
         }
 
+
+        [Obsolete("Use Create<T,K>(K parent, T newItem)")]
         public T Create<T, K>(K parent, string name, T data)  where T: class where K: class
         {
 
             //check that the data is not null and if it has an ID check that it is empty
             if (data != null)
             {
-                try
-                {
-                    Guid id = InstanceContext.GetClassId(typeof(T), data);
-                    if (id != Guid.Empty) throw new MapperException("You are trying to create an item on a class that doesn't have an empty ID value");
-                }
-                catch (SitecoreIdException ex)
-                {
-                    //we can swallow this exception for now
-                    //should look to do this beeter
-                }
+               
 
             }
             
@@ -210,9 +363,12 @@ namespace Glass.Sitecore.Mapper
                 WriteToItem<T>(data, item);
                 item.Editing.EndEdit();
             }
-            return CreateClass<T>(false, item);
+            return CreateClass<T>(false, false, item);
 
         }
+
+        #endregion
+
 
         public void Delete<T>(T item)  where T: class
         {
@@ -235,11 +391,6 @@ namespace Glass.Sitecore.Mapper
                 throw new MapperException("Item not found");
 
             scItem.Delete();
-        }
-
-        public T CreateClass<T>(bool isLazy, Item item) where T:class
-        {
-            return (T) CreateClass(isLazy, false, typeof(T), item);
         }
 
         public T CreateClass<T>(bool isLazy, bool inferType, Item item) where T : class
@@ -269,19 +420,28 @@ namespace Glass.Sitecore.Mapper
 
             if (isLazy || type.IsInterface)
             {
-                return ProxyGenerator.CreateProxy(config, this, item);
+                return ProxyGenerator.CreateProxy(config, this, item, inferType);
             }
             else
             {
                 if (item == null) return null;
 
                 //get the class information
-                object t = config.Type.Assembly.CreateInstance(config.Type.FullName);
 
-                foreach (var handler in config.DataHandlers)
+                if (config.CreateObject == null)
                 {
-                    handler.SetProperty(t, item, this);
+
+                    Type objType = config.Type;
+                    var dynMethod = new DynamicMethod("DM$OBJ_FACTORY_" + objType.Name, objType, null, objType);
+                    ILGenerator ilGen = dynMethod.GetILGenerator();
+                    ilGen.Emit(OpCodes.Newobj, objType.GetConstructor(Type.EmptyTypes));
+                    ilGen.Emit(OpCodes.Ret);
+                    config.CreateObject = (SitecoreClassConfig.Instantiator)dynMethod.CreateDelegate(typeof(SitecoreClassConfig.Instantiator));
+                                      
                 }
+                object t = config.CreateObject();
+
+                ReadFromItem(t, item, config);
 
                 return t;
             }
@@ -309,6 +469,14 @@ namespace Glass.Sitecore.Mapper
 
         #region Private Methods
 
+        private void ReadFromItem(object target, Item item, SitecoreClassConfig config)
+        {
+            foreach (var handler in config.DataHandlers)
+            {
+                handler.SetProperty(target, item, this);
+            }
+        }
+
         private void WriteToItem<T>(T target, Item item)
         {
             var scClass = InstanceContext.GetSitecoreClass(typeof(T));
@@ -329,10 +497,7 @@ namespace Glass.Sitecore.Mapper
 
 
 
-        public object CreateClass(bool isLazy, Type type, Item item)
-        {
-           return CreateClass(isLazy, false, type, item);
-        }
+       
 
         
     }

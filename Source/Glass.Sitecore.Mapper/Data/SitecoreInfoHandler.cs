@@ -26,12 +26,18 @@ namespace Glass.Sitecore.Mapper.Data
 {
     public class SitecoreInfoHandler : AbstractSitecoreDataHandler
     {
-        protected SitecoreInfoType InfoType
+        public SitecoreInfoType InfoType
         {
             get;
             set;
         }
-       
+
+        public UrlOptions UrlOptions
+        {
+            get;
+            set;
+        }
+
         public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreInfoAttribute;
@@ -48,6 +54,8 @@ namespace Glass.Sitecore.Mapper.Data
                     return item.DisplayName;
                 case SitecoreInfoType.FullPath:
                     return item.Paths.FullPath;
+                case SitecoreInfoType.Name:
+                    return item.Name;
                 case SitecoreInfoType.Key:
                     return item.Key;
                 case SitecoreInfoType.MediaUrl:
@@ -61,9 +69,13 @@ namespace Glass.Sitecore.Mapper.Data
                 case SitecoreInfoType.TemplateName:
                     return item.TemplateName;
                 case SitecoreInfoType.Url:
-                    return LinkManager.GetItemUrl(item);
+                    return LinkManager.GetItemUrl(item, UrlOptions);
+                case SitecoreInfoType.FullUrl:
+                    return LinkManager.GetItemUrl(item, new UrlOptions() { AlwaysIncludeServerUrl = true });
                 case SitecoreInfoType.Version:
                     return item.Version.Number;
+                case SitecoreInfoType.Language:
+                    return item.Language;
                 default:
                     throw new NotSupportedException("Value {0} not supported".Formatted(InfoType.ToString()));
             }
@@ -73,14 +85,30 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)
         {
+            
             switch (InfoType)
             {
                 case SitecoreInfoType.DisplayName:
-                    if (value is string)
-                        item[Settings.DisplayNameFieldName] = value.ToString();
+                    if (value is string || value == null)
+                        item[Settings.DisplayNameFieldName] = (value ?? string.Empty).ToString();
                     else
                         throw new NotSupportedException("Can't set DisplayName. Value is not of type System.String");
                     break;
+                case SitecoreInfoType.Name:
+                    if (value is string || value == null)
+                    {
+                        //if the name is null or empty nothing should happen
+                        if ((value ?? string.Empty).ToString().IsNullOrEmpty()) return;
+                        
+                        if (item.Name != value.ToString())
+                        {
+                            item.Name = value.ToString();
+                        }
+                        
+                    }
+                    else
+                        throw new NotSupportedException("Can't set Name. Value is not of type System.String");
+                    break;             
                 default:
                     throw new NotSupportedException("You can not save SitecoreInfo {0}".Formatted(InfoType));
             }
@@ -91,7 +119,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             get
             {
-                return false;
+                return (InfoType == SitecoreInfoType.DisplayName || InfoType == SitecoreInfoType.Name);
             }
         }
 
@@ -101,9 +129,10 @@ namespace Glass.Sitecore.Mapper.Data
 
             InfoType = attr.Type;
 
+                UrlOptions = Utility.CreateUrlOptions(attr.UrlOptions);
+
             base.ConfigureDataHandler(scProperty);
         }
 
-        
     }
 }

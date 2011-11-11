@@ -7,9 +7,13 @@ namespace Glass.Sitecore.Mapper.FieldTypes
 {
     public enum LinkType
     {
-        Media,
+        NotSet,
+        Anchor,
+        External,
+        JavaScript,
         Internal,
-        GeneralLink
+        MailTo,
+        Media
 
     }
 }

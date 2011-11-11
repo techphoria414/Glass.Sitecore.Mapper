@@ -53,7 +53,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
         private IEnumerable<SitecoreProperty> GetProperties(Type type)
         {
-            IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            IEnumerable<PropertyInfo> properties = Utility.GetAllProperties(type);
 
             return properties.Select(x =>
             {
@@ -72,6 +72,8 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             }).Where(x=>x != null).ToList();
             
         }
+
+     
 
         private IEnumerable<SitecoreClassConfig> GetClass(string assembly, string namesp)
         {

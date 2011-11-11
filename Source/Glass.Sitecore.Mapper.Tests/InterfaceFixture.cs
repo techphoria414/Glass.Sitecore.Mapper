@@ -148,7 +148,7 @@ namespace Glass.Sitecore.Mapper.Tests
 
             using (new SecurityDisabler())
             {
-                Assert.AreEqual(3, inter.Query.Count());
+                Assert.AreEqual(5, inter.Query.Count());
                 Assert.AreEqual(_test1.ID.Guid, inter.Query.First().Id);
                 Assert.AreEqual(_test2.ID.Guid, inter.Query.Take(2).Last().Id);
             }

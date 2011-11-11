@@ -316,7 +316,7 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             //if you do this without the disabler the role manager throws an exception
             using (new SecurityDisabler())
             {
-                Assert.AreEqual(3, test.Query.Count());
+                Assert.AreEqual(5, test.Query.Count());
                 Assert.AreEqual(_test1.ID.Guid, test.Query.First().Id);
                 Assert.AreEqual(_test2.ID.Guid, test.Query.Take(2).Last().Id);
             }
@@ -399,6 +399,7 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             test.DropLink = new GeneralFluentFixtureNS.SubClass() { Id = _test3.ID.Guid };
             test.DropTree = new GeneralFluentFixtureNS.SubClass() { Id = _test3.ID.Guid };
             test.GeneralLink = new Link(){
+                Type = LinkType.External,
                 Anchor="test anchor",
                 Class="test class",
                 Target="test target",
@@ -465,7 +466,6 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropLink"].ToUpper());
             Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropTree"].ToUpper());
             LinkField link = new LinkField(result.Fields["GeneralLink"]);
-            Assert.AreEqual("test anchor", link.Anchor);
             Assert.AreEqual("test class", link.Class);
             Assert.AreEqual("test target", link.Target);
             Assert.AreEqual("test text", link.Text);

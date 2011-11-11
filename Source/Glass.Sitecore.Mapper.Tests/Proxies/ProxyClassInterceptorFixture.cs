@@ -69,7 +69,7 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
             ProxyClassInterceptor interceptor = new ProxyClassInterceptor(
                 typeof(ProxyClassInterceptorFixtureNS.TestClass),
                 _service,
-                item);
+                item, false);
 
             invocation.Setup(x=>x.Method).Returns(typeof(ProxyClassInterceptorFixtureNS.TestClass).GetMethod("TestCall"));
             invocation.SetupSet(x=>x.ReturnValue).Callback((object value)=>{

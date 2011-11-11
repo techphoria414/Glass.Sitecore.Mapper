@@ -40,27 +40,39 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void Setup()
         {
             _handler = new SitecoreFieldClassHandler();
+
+            var loadedClassIdProperty = new SitecoreProperty()
+            {
+                Attribute = new SitecoreIdAttribute(),
+                Property = typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass).GetProperty("Id")
+            };
+
+
+
+            var baseTypeIdProperty = new SitecoreProperty()
+            {
+                Attribute = new SitecoreIdAttribute(),
+                Property = typeof(SitecoreFieldClassHandlerFixtureNS.BaseType).GetProperty("Id")
+            };
+
+
             var context = new InstanceContext(
                 (new SitecoreClassConfig[]{
                     new SitecoreClassConfig(){
                          ClassAttribute = new SitecoreClassAttribute(),
                          Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute =new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass).GetProperty("Id")
-                            }
+                            loadedClassIdProperty
                          },
                          Type = typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass),
-                         DataHandlers = new AbstractSitecoreDataHandler[]{}
+                         DataHandlers = new AbstractSitecoreDataHandler[]{},
+                         IdProperty = loadedClassIdProperty
                     },
                     new SitecoreClassConfig(){
                        ClassAttribute = new SitecoreClassAttribute(),
                        Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreFieldClassHandlerFixtureNS.BaseType).GetProperty("Id")
-                            }
+                            baseTypeIdProperty
                        },
+                       IdProperty= baseTypeIdProperty,
                        Type = typeof(SitecoreFieldClassHandlerFixtureNS.BaseType),
                        DataHandlers = new AbstractSitecoreDataHandler []{
                         new SitecoreIdDataHandler(){

@@ -75,6 +75,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void GetValue_SingleLineText_GetsRawString()
         {
             //Assign
+            string value= "test single line text";
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreFieldAttribute(),
@@ -82,11 +83,19 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             };
             _handler.ConfigureDataHandler(property);
 
-            //Act
-            var result = _handler.GetValue(_item, null);
+            using (new SecurityDisabler())
+            {
+                _item.Editing.BeginEdit();
+                _item["SingleLineText"] = value;
 
-            //Assert
-            Assert.AreEqual("test single line text", result);
+                //Act
+                var result = _handler.GetValue(_item, null);
+
+                //Assert
+                Assert.AreEqual(value, result);
+
+                _item.Editing.CancelEdit();
+            }
 
         }
 

@@ -30,6 +30,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         public SitecoreLinkedAttribute()
         {
             this.IsLazy = true;
+            Option = SitecoreLinkedOptions.All;
         }
 
         /// <summary>
@@ -45,6 +46,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// Indicates the type should be inferred from the item template
         /// </summary>
         public bool InferType { get; set; }
+
+        /// <summary>
+        /// Indicate weather All, References or Referred should be loaded
+        /// </summary>
+        public SitecoreLinkedOptions Option { get; set; }
        
     }
 }

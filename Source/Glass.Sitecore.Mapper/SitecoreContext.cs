@@ -39,7 +39,7 @@ namespace Glass.Sitecore.Mapper
         public T GetHomeItem<T>() where T : class
         {
 
-            return base.GetItem<T>(global::Sitecore.Context.Site.RootPath);
+            return base.GetItem<T>(global::Sitecore.Context.Site.StartPath);
         }
 
         public IEnumerable<T> QueryRelative<T>(string query, bool isLazy, bool inferType) where T : class

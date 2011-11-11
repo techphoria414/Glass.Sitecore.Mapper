@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Data;
+using Glass.Sitecore.Mapper.Configuration.Attributes;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -74,7 +75,22 @@ namespace Glass.Sitecore.Mapper
 
                             foreach (var prop in cls.Value.Properties)
                             {
+                                
                                 var handler =  instance.GetDataHandler(prop);
+                              
+                                //set the ID property of the class
+                                //the ID property is needed later for writing and page editing, 
+                                //saves time having to look it
+                                if (prop.Attribute is SitecoreIdAttribute)
+                                    cls.Value.IdProperty = prop;
+                                else if (prop.Attribute is SitecoreInfoAttribute
+                                    && prop.Attribute.CastTo<SitecoreInfoAttribute>().Type == SitecoreInfoType.Language)
+                                    cls.Value.LanguageProperty = prop;
+                                else if (prop.Attribute is SitecoreInfoAttribute
+                                   && prop.Attribute.CastTo<SitecoreInfoAttribute>().Type == SitecoreInfoType.Version)
+                                    cls.Value.VersionProperty = prop;
+
+                                
                                 handlers.Add(handler);
 
                             }
@@ -97,7 +113,9 @@ namespace Glass.Sitecore.Mapper
         internal static InstanceContext GetContext()
         {
             if (StaticContext == null) throw new MapperException("Context has not been loaded");
-            return StaticContext.Clone() as InstanceContext;
+
+            //due to changes in the way that handlers are created we should no longer need to clone the instance context
+            return StaticContext; //.Clone() as InstanceContext;
         }
 
        
@@ -129,7 +147,10 @@ namespace Glass.Sitecore.Mapper
                 new SitecoreIdDataHandler(),
                 new SitecoreInfoHandler(),
                 new SitecoreParentHandler(),
-                new SitecoreQueryHandler()
+                new SitecoreQueryHandler(),
+                new SitecoreItemHandler(),
+                new SitecoreLinkedHandler()
+
             });
 
             return _handlers;

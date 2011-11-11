@@ -23,6 +23,7 @@ using Sitecore.Data.Items;
 using System.Collections;
 using Glass.Sitecore.Mapper.Data.QueryParameters;
 using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Data.Query;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -38,6 +39,8 @@ namespace Glass.Sitecore.Mapper.Data
         public string Query { get; set; }
 
         public bool InferType { get; set; }
+
+        public bool UseQueryContext { get; set; }
 
         public SitecoreQueryHandler(IEnumerable<ISitecoreQueryParameter> parameters)
         {
@@ -88,7 +91,22 @@ namespace Glass.Sitecore.Mapper.Data
                     {
                         getItems = new Func<IEnumerable<Item>>(() =>
                         {
-                            return item.Database.SelectItems(query);
+                            if (UseQueryContext)
+                            {
+                                Query conQuery = new Query(query);
+                                QueryContext queryContext = new QueryContext(item.Database.DataManager);
+
+                                object obj = conQuery.Execute(queryContext);
+                                QueryContext[] contextArray = obj as QueryContext[];
+                                QueryContext context = obj as QueryContext;
+
+                                if (contextArray == null)
+                                    contextArray = new QueryContext[] { context };
+
+                                return contextArray.Select(x => item.Database.GetItem(x.ID));
+                            }
+                            else
+                                return item.Database.SelectItems(query);
                         });
                     }
 
@@ -107,7 +125,7 @@ namespace Glass.Sitecore.Mapper.Data
                 {
                     result = item.Database.SelectSingleItem(query);
                 }
-                return service.CreateClass(IsLazy, Property.PropertyType, result);
+                return service.CreateClass(IsLazy, InferType, Property.PropertyType, result);
             }
 
         }
