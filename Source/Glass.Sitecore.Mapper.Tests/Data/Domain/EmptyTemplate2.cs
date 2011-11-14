@@ -22,10 +22,8 @@ using Glass.Sitecore.Mapper.Configuration.Attributes;
 
 namespace Glass.Sitecore.Mapper.Tests.Domain
 {
-    [SitecoreClass(TemplateId="{4AE4FCCE-F176-405F-9FFB-CF3AFC23F403}")]
+    [SitecoreClass(TemplateId = "{4AE4FCCE-F176-405F-9FFB-CF3AFC23F403}")]
     public class EmptyTemplate2 : EmptyTemplate1
     {
-        [SitecoreId]
-        public virtual Guid Id { get; set; }
     }
 }

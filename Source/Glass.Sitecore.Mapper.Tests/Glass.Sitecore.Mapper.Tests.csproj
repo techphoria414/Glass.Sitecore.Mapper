@@ -161,8 +161,8 @@
     <Compile Include="Data\SitecoreQueryHandlerFixture.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Domain\EmptyTemplate2.cs" />
-    <Compile Include="Domain\EmptyTemplate1.cs" />
+    <Compile Include="Data\Domain\EmptyTemplate2.cs" />
+    <Compile Include="Data\Domain\EmptyTemplate1.cs" />
     <Compile Include="HtmlFixture.cs" />
     <Compile Include="InstanceContextFixture.cs" />
     <Compile Include="InterfaceFixture.cs" />
