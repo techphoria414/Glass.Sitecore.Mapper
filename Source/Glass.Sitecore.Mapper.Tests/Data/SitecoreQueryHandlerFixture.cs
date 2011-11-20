@@ -24,6 +24,7 @@ using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Data;
 using Sitecore.Data.Items;
+using Glass.Sitecore.Mapper.Tests.Domain;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -40,82 +41,15 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void Setup()
         {
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
-            var context = new InstanceContext(
-                (new SitecoreClassConfig[]{
-                    new SitecoreClassConfig(){
-                        ClassAttribute = new SitecoreClassAttribute(),
-                        Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreQueryHandlerFixtureNS.TestClass).GetProperty("Id")
-                            }
-                        },
-                        Type = typeof(SitecoreQueryHandlerFixtureNS.TestClass),
-                        DataHandlers = new AbstractSitecoreDataHandler[]{}
-                    },
-                     new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(),
-                       Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreQueryHandlerFixtureNS.BaseType).GetProperty("Id")
-                            }
-                       },
-                       Type = typeof(SitecoreQueryHandlerFixtureNS.BaseType),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                        new SitecoreIdDataHandler(){
-                               Property = typeof(SitecoreQueryHandlerFixtureNS.BaseType).GetProperty("Id")
-                        }
-                       }
-                   },
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(){
-                           
-                       },
-                       Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreQueryHandlerFixtureNS.TypeOne).GetProperty("Id")
-                            }
-                       },
-                       Type = typeof(SitecoreQueryHandlerFixtureNS.TypeOne),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                        new SitecoreIdDataHandler(){
-                               Property = typeof(SitecoreQueryHandlerFixtureNS.TypeOne).GetProperty("Id")
-                        }
-                       },
-                       TemplateId = new Guid("{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}")
-                   },
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(){
-                          
-                       },
-                       Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreQueryHandlerFixtureNS.TypeTwo).GetProperty("Id")
-                            }
-                       },
-                       Type = typeof(SitecoreQueryHandlerFixtureNS.TypeTwo),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                        new SitecoreIdDataHandler(){
-                               Property = typeof(SitecoreQueryHandlerFixtureNS.TypeTwo).GetProperty("Id")
-                        }
-                       },
-                       TemplateId = new Guid("{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}")
-                   }
+            Context context = new Context(
+                  new AttributeConfigurationLoader(
+                      "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"), null);
 
-                }).ToDictionary(),
-                new AbstractSitecoreDataHandler[] { });
-
-            _service = new SitecoreService(_db, context);
+            _service = new SitecoreService(_db);
 
             _handler = new SitecoreQueryHandler();
 
-
-            _itemId = new Guid("{D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}");
-
-            _item = _db.GetItem(new ID(_itemId));
+            _item = _db.GetItem("/sitecore/content/Data/SitecoreQueryHandler");
         }
 
         #region GetValue
@@ -124,22 +58,22 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            string query = _item.Paths.FullPath + "/*";
+            string query = "/sitecore/content/Data/SitecoreQueryHandler/*";
 
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreQueryAttribute(query) { IsLazy = true },
-                Property = typeof(SitecoreQueryHandlerFixtureNS.TestClass).GetProperty("Results")
+                Property =  new FakePropertyInfo(typeof(IEnumerable<EmptyTemplate1>))
             };
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue(_item, _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue(_item, _service) as IEnumerable<EmptyTemplate1>;
 
             //Assert
-            Assert.AreEqual(_item.Children.Count, result.Count());
-            Assert.AreNotEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.First().GetType());
-            Assert.IsTrue(result.First() is SitecoreQueryHandlerFixtureNS.TestClass);
+            Assert.AreEqual(3, result.Count());
+            Assert.AreNotEqual(typeof(EmptyTemplate1), result.First().GetType());
+            Assert.IsTrue(result.First() is EmptyTemplate1);
 
         }
 
@@ -148,21 +82,22 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            string query = _item.Paths.FullPath + "/*";
+            string query = "/sitecore/content/Data/SitecoreQueryHandler/*";
 
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreQueryAttribute(query) { IsLazy = false },
-                Property = typeof(SitecoreQueryHandlerFixtureNS.TestClass).GetProperty("Results")
+                Property = new FakePropertyInfo(typeof(IEnumerable<EmptyTemplate1>))
+
             };
 
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue(_item, _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.TestClass>;
+            var result = _handler.GetValue(_item, _service) as IEnumerable<EmptyTemplate1>;
 
             //Assert
-            Assert.AreEqual(_item.Children.Count, result.Count());
-            Assert.AreEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.First().GetType());
+            Assert.AreEqual(3, result.Count());
+            Assert.AreEqual(typeof(EmptyTemplate1), result.First().GetType());
 
         }
 
@@ -171,21 +106,21 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            string query = _item.Paths.FullPath + "/*";
+            string query = "/sitecore/content/Data/SitecoreQueryHandler/*";
 
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreQueryAttribute(query) { IsLazy = true },
-                Property = typeof(SitecoreQueryHandlerFixtureNS.TestClass).GetProperty("SingleResult")
+                Property = new FakePropertyInfo(typeof(EmptyTemplate1))
             };
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(_item, _service) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue(_item, _service) as EmptyTemplate1;
 
             //Assert
-            Assert.AreNotEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.GetType());
-            Assert.IsTrue(result is SitecoreQueryHandlerFixtureNS.TestClass);
+            Assert.AreNotEqual(typeof(EmptyTemplate1), result.GetType());
+            Assert.IsTrue(result is EmptyTemplate1);
 
         }
 
@@ -194,20 +129,21 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            string query = _item.Paths.FullPath + "/*";
+            string query = "/sitecore/content/Data/SitecoreQueryHandler/*";
 
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreQueryAttribute(query) { IsLazy = false },
-                Property = typeof(SitecoreQueryHandlerFixtureNS.TestClass).GetProperty("SingleResult")
+                Property = new FakePropertyInfo(typeof(EmptyTemplate1))
+
             };
             _handler.ConfigureDataHandler(property);
             //Act
-            var result = _handler.GetValue(_item, _service) as SitecoreQueryHandlerFixtureNS.TestClass;
+            var result = _handler.GetValue(_item, _service) as EmptyTemplate1;
 
             //Assert
 
-            Assert.AreEqual(typeof(SitecoreQueryHandlerFixtureNS.TestClass), result.GetType());
+            Assert.AreEqual(typeof(EmptyTemplate1), result.GetType());
 
         }
         #endregion
@@ -237,71 +173,22 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assign
             _handler.InferType = true;
             _handler.IsLazy = true;
-            _handler.Property = new FakePropertyInfo(typeof(IEnumerable<SitecoreQueryHandlerFixtureNS   .BaseType>));
-            _handler.Query = "/sitecore/content/home/*";
+            _handler.Property = new FakePropertyInfo(typeof(IEnumerable<EmptyTemplate1>));
+            _handler.Query = "/sitecore/content/Data/SitecoreQueryHandler/*";
 
-            Item home = _db.GetItem("{98F907F7-CD1A-4C88-AF11-8F38A21A7FE1}");
 
             //Act
-            var results = _handler.GetValue(home, _service) as IEnumerable<SitecoreQueryHandlerFixtureNS.BaseType>;
+            var results = _handler.GetValue(_item, _service) as IEnumerable<EmptyTemplate1>;
 
             //Assert
-            Assert.AreEqual(home.Children.Count, results.Count());
+            Assert.AreEqual(3, results.Count());
 
-            Guid typeOneTemp = new Guid("{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}");
-            Guid typeTwoTemp = new Guid("{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}");
-            foreach (Item child in home.Children)
-            {
-                var itemClass = results.FirstOrDefault(x => x.Id == child.ID.Guid);
-
-                Assert.IsNotNull(itemClass, "Failed to load item");
-
-                if (child.TemplateID.Guid == typeOneTemp)
-                {
-                    Assert.IsTrue(itemClass is SitecoreQueryHandlerFixtureNS.TypeOne);
-                }
-                else if (child.TemplateID.Guid == typeTwoTemp)
-                {
-                    Assert.IsTrue(itemClass is SitecoreQueryHandlerFixtureNS.TypeTwo);
-                }
-                else
-                {
-                    Assert.IsTrue(itemClass is SitecoreQueryHandlerFixtureNS.BaseType);
-                }
-
-            }
+            Assert.AreEqual(3, results.Where(x => x is EmptyTemplate1).Count());
+            Assert.AreEqual(1, results.Where(x => x is EmptyTemplate2).Count());
         }
     }
 
 
-    namespace SitecoreQueryHandlerFixtureNS
-    {
-
-        public class TestClass
-        {
-            public virtual Guid Id { get; set; }
-            public virtual IEnumerable<TestClass> Results { get; set; }
-            public virtual TestClass SingleResult { get; set; }
-        }
-        [SitecoreClass]
-        public class BaseType
-        {
-
-            [SitecoreId]
-            public virtual Guid Id { get; set; }
-        }
-
-        [SitecoreClass(TemplateId = "{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}")]
-        public class TypeOne : BaseType
-        {
-
-        }
-        [SitecoreClass(TemplateId = "{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}")]
-        public class TypeTwo : BaseType
-        {
-
-        }
-    }
 }
 
 

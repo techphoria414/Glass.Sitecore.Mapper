@@ -24,6 +24,7 @@ using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Data;
 using Sitecore.Data;
 using Sitecore.Data.Items;
+using Glass.Sitecore.Mapper.Tests.Domain;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -32,82 +33,23 @@ namespace Glass.Sitecore.Mapper.Tests.Data
     {
         ISitecoreService _service;
         Database _db;
-        Guid _itemId;
+        string _itemPath = "";
 
         SitecoreChildrenHandler _handler;
 
         [SetUp]
         public void Setup()
         {
-            var context = new InstanceContext(
-              (new SitecoreClassConfig[]{
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(),
-                       Properties = new SitecoreProperty[]{},
-                       Type = typeof(SitecoreChildrenHandlerFixtureNS.SubClass),
-                       DataHandlers = new AbstractSitecoreDataHandler []{}
-                   },
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(),
-                       Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreChildrenHandlerFixtureNS.BaseType).GetProperty("Id")
-                            }
-                       },
-                       Type = typeof(SitecoreChildrenHandlerFixtureNS.BaseType),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                        new SitecoreIdDataHandler(){
-                               Property = typeof(SitecoreChildrenHandlerFixtureNS.BaseType).GetProperty("Id")
-                        }
-                       }
-                   },
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(){
-                           
-                       },
-                       Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreChildrenHandlerFixtureNS.TypeOne).GetProperty("Id")
-                            }
-                       },
-                       Type = typeof(SitecoreChildrenHandlerFixtureNS.TypeOne),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                        new SitecoreIdDataHandler(){
-                               Property = typeof(SitecoreChildrenHandlerFixtureNS.TypeOne).GetProperty("Id")
-                        }
-                       },
-                       TemplateId = new Guid("{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}")
-                   },
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(){
-                          
-                       },
-                       Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreChildrenHandlerFixtureNS.TypeTwo).GetProperty("Id")
-                            }
-                       },
-                       Type = typeof(SitecoreChildrenHandlerFixtureNS.TypeTwo),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                        new SitecoreIdDataHandler(){
-                               Property = typeof(SitecoreChildrenHandlerFixtureNS.TypeTwo).GetProperty("Id")
-                        }
-                       },
-                       TemplateId = new Guid("{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}")
-                   }
-
-               }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
-
-
+            Context context = new Context(
+                new AttributeConfigurationLoader(
+                    "Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixture,  Glass.Sitecore.Mapper.Tests",
+                    "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"), null);
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
-            _service = new SitecoreService(_db, context);
+            _service = new SitecoreService(_db);
+            _itemPath = "/sitecore/content/Data/SitecoreChildrenHandler/Root";
 
-            _itemId = new Guid("{D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}");
             _handler = new SitecoreChildrenHandler();
         }
 
@@ -117,23 +59,23 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void GetValue_ReturnsChildren_UsingLazy()
         {
             //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreChildrenAttribute(),
-                Property = typeof(SitecoreChildrenHandlerFixtureNS.TestClass).GetProperty("Children")
-            };
+            Item item = _db.GetItem(_itemPath);
 
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(ChildrenRoot).GetProperty("Children"));
             _handler.ConfigureDataHandler(property);
+                
             //Act
-            var result = _handler.GetValue(item, _service) as Enumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
-            SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
+            var result = _handler.GetValue(item, _service) as Enumerable<EmptyTemplate1>;
+            ChildrenRoot assignTest = new ChildrenRoot();
             assignTest.Children = result;
+
             //Assert
             Assert.AreEqual(item.Children.Count, result.Count());
             Assert.AreEqual(result, assignTest.Children);
-            Assert.AreNotEqual(typeof(SitecoreChildrenHandlerFixtureNS.SubClass), result.First().GetType());
-            Assert.IsTrue(result.First() is SitecoreChildrenHandlerFixtureNS.SubClass);
+            //if classes are being loaded lazy they should be of the proxy type and not the concrete type
+            Assert.AreNotEqual(typeof(EmptyTemplate1), result.First().GetType());
+            //but the proxy inherits from the concrete
+            Assert.IsTrue(result.First() is EmptyTemplate1);
 
         }
 
@@ -141,26 +83,53 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void GetValue_ReturnsChildren_NotLazy()
         {
             //Assign
-            Item item = _db.GetItem(new ID(_itemId));
+            Item item = _db.GetItem(_itemPath);
 
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreChildrenAttribute() { IsLazy = false },
-                Property = typeof(SitecoreChildrenHandlerFixtureNS.TestClass).GetProperty("Children")
-            };
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(ChildrenRoot).GetProperty("Children"));
+            property.Attribute.CastTo<SitecoreChildrenAttribute>().IsLazy = false;
 
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue(item, _service) as IEnumerable<SitecoreChildrenHandlerFixtureNS.SubClass>;
-            SitecoreChildrenHandlerFixtureNS.TestClass assignTest = new Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixtureNS.TestClass();
+            var result = _handler.GetValue(item, _service) as IEnumerable<EmptyTemplate1>;
+            ChildrenRoot assignTest = new ChildrenRoot();
             assignTest.Children = result;
             //Assert
             Assert.AreEqual(item.Children.Count, result.Count());
             Assert.AreEqual(result, assignTest.Children);
 
-            Assert.AreEqual(typeof(SitecoreChildrenHandlerFixtureNS.SubClass), result.First().GetType());
-            Assert.IsTrue(result.First() is SitecoreChildrenHandlerFixtureNS.SubClass);
+            //if not lazy loaded then the type loaded should be the concrete type
+            Assert.AreEqual(typeof(EmptyTemplate1), result.First().GetType());
+            Assert.IsTrue(result.First() is EmptyTemplate1);
+
+        }
+
+        [Test]
+        public void InferringType_ReturnsClasses()
+        {
+            //Assign
+            Item item = _db.GetItem(_itemPath);
+
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(ChildrenRoot).GetProperty("Children"));
+            property.Attribute.CastTo<SitecoreChildrenAttribute>().IsLazy = true;
+            property.Attribute.CastTo<SitecoreChildrenAttribute>().InferType = true;
+
+            _handler.ConfigureDataHandler(property);
+
+            //Act
+            var results = _handler.GetValue(item, _service) as IEnumerable<EmptyTemplate1>;
+
+            //Assert
+            Assert.AreEqual(item.Children.Count, results.Count());
+
+
+            //two of the item should be of type EmptyTemplate2
+
+            Assert.AreEqual(2, results.Count(x => x is EmptyTemplate2));
+
+
+
+
 
         }
 
@@ -172,11 +141,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void WillHandle_ReturnsTrue()
         {
             //Assign
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreChildrenAttribute(),
-                Property = typeof(SitecoreChildrenHandlerFixtureNS.TestClass).GetProperty("Children")
-            };
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(ChildrenRoot).GetProperty("Children"));
 
             //Act
             var result = _handler.WillHandle(property, null, null);
@@ -190,11 +155,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void WillHandle_ReturnsFalse()
         {
             //Assign
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreChildrenAttribute(),
-                Property = typeof(SitecoreChildrenHandlerFixtureNS.TestClass).GetProperty("List")
-            };
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(ChildrenRoot).GetProperty("List"));
+
 
             //Act
             var result = _handler.WillHandle(property, null, null);
@@ -205,73 +167,17 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         #endregion
 
-        [Test]
-        public void InferringType_ReturnsClasses()
-        {
-            //Assign
-            _handler.InferType = true;
-            _handler.IsLazy = true;
-            _handler.Property = new FakePropertyInfo(typeof(IEnumerable<SitecoreChildrenHandlerFixtureNS.BaseType>));
-
-            Item home = _db.GetItem("{98F907F7-CD1A-4C88-AF11-8F38A21A7FE1}");
-
-            //Act
-            var results = _handler.GetValue(home, _service) as IEnumerable<SitecoreChildrenHandlerFixtureNS.BaseType>;
-
-            //Assert
-            Assert.AreEqual(home.Children.Count, results.Count());
-            
-            Guid typeOneTemp = new Guid("{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}");
-            Guid typeTwoTemp = new Guid("{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}");
-            foreach(Item child in home.Children){
-                var itemClass = results.FirstOrDefault(x=>x.Id == child.ID.Guid);
-
-                Assert.IsNotNull(itemClass, "Failed to load item");
-
-                if(child.TemplateID.Guid == typeOneTemp){
-                       Assert.IsTrue(itemClass is SitecoreChildrenHandlerFixtureNS.TypeOne);
-                }
-                else if(child.TemplateID.Guid == typeTwoTemp){
-                       Assert.IsTrue(itemClass is SitecoreChildrenHandlerFixtureNS.TypeTwo);
-                }
-                else{
-                    Assert.IsTrue(itemClass is SitecoreChildrenHandlerFixtureNS.BaseType);
-                }
-
-            }
-
-
-
-
-        }
-    }
-
-    namespace SitecoreChildrenHandlerFixtureNS
-    {
-        public class TestClass
-        {
-            public virtual IEnumerable<SubClass> Children { get; set; }
-            public virtual IList<SubClass> List { get; set; }
-        }
-        public class SubClass { }
+       
 
         [SitecoreClass]
-        public class BaseType
+        public class ChildrenRoot : EmptyTemplate1
         {
-
-            [SitecoreId]
-            public virtual Guid Id { get; set; }
-        }
-
-        [SitecoreClass(TemplateId = "{5B684B69-F532-4BB2-8A98-02AFCDE4BB84}")]
-        public class TypeOne : BaseType
-        {
-           
-        }
-        [SitecoreClass(TemplateId = "{3902F503-7DC7-48B2-9FD8-1EB878CEBA93}")]
-        public class TypeTwo : BaseType
-        {
+            [SitecoreChildren]
+            public virtual IEnumerable<EmptyTemplate1> Children { get; set; }
+            [SitecoreQuery]
+            public virtual IEnumerable<EmptyTemplate1> List { get; set; }
            
         }
     }
-}
+
+    }

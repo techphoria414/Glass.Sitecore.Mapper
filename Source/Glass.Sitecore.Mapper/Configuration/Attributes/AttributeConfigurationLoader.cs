@@ -51,26 +51,31 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             return classes;
         }
 
-        private IEnumerable<SitecoreProperty> GetProperties(Type type)
+        public static  IEnumerable<SitecoreProperty> GetProperties(Type type)
         {
             IEnumerable<PropertyInfo> properties = Utility.GetAllProperties(type);
 
             return properties.Select(x =>
             {
-                var attrs = x.GetCustomAttributes(true);
-                var attr = attrs.FirstOrDefault(y => y is AbstractSitecorePropertyAttribute) as AbstractSitecorePropertyAttribute;
-
-                if (attr != null)
-                {
-                    return new SitecoreProperty()
-                    {
-                        Attribute = attr,
-                        Property = x                       
-                    };
-                }
-                else return null;
+               return GetProperty(x);
             }).Where(x=>x != null).ToList();
             
+        }
+
+        public static SitecoreProperty GetProperty(PropertyInfo info)
+        {
+            var attrs = info.GetCustomAttributes(true);
+            var attr = attrs.FirstOrDefault(y => y is AbstractSitecorePropertyAttribute) as AbstractSitecorePropertyAttribute;
+
+            if (attr != null)
+            {
+                return new SitecoreProperty()
+                {
+                    Attribute = attr,
+                    Property = info
+                };
+            }
+            else return null;
         }
 
      

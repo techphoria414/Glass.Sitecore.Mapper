@@ -35,9 +35,11 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void Setup()
         {
             _handler = new SitecoreFieldIEnumerableHandler();
-            var context = new InstanceContext(
-                new Dictionary<Type, SitecoreClassConfig>(),
-                new AbstractSitecoreDataHandler[] { new SitecoreFieldIntegerHandler() });
+            Context context = new Context(
+                new AttributeConfigurationLoader(
+                    "Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixture,  Glass.Sitecore.Mapper.Tests",
+                    "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"), null);
+
             _service = new SitecoreService("master");
         }
 
@@ -73,7 +75,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             string value = "45|535|22|";
             SitecoreProperty property = new SitecoreProperty()
                        {
-                           Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("Test"),
+                           Property = new FakePropertyInfo(typeof(IEnumerable<TestType>)),
                            Attribute = new SitecoreFieldAttribute()
                        };
             _handler.ConfigureDataHandler(property);
@@ -97,7 +99,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             SitecoreProperty property = new SitecoreProperty()
                 {
-                    Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("IntList"),
+                    Property = new FakePropertyInfo(typeof(IEnumerable<int>)),
                     Attribute = new SitecoreFieldAttribute()
                 };
 
@@ -120,7 +122,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             SitecoreProperty property = new SitecoreProperty()
             {
-                Property = typeof(SitecoreFieldIEnumerableHandlerFixtureNS.TestClass).GetProperty("IntList"),
+                Property = new FakePropertyInfo(typeof(IEnumerable<int>)),
                 Attribute = new SitecoreFieldAttribute()
             };
 
@@ -137,17 +139,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         #endregion
 
+        #region CLASSES
 
-
-    }
-    namespace SitecoreFieldIEnumerableHandlerFixtureNS
-    {
-        public class TestClass
-        {
-            public IEnumerable<TestType> Test { get; set; }
-            public IEnumerable<int> IntList { get; set; }
-        }
         public class TestType { }
+        
+        #endregion  
+
     }
+   
 
 }
