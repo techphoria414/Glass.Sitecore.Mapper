@@ -19,6 +19,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper.Tests.Domain
 {
@@ -27,5 +28,8 @@ namespace Glass.Sitecore.Mapper.Tests.Domain
     {
         [SitecoreId]
         public virtual Guid Id { get; set; }
+
+        [SitecoreInfo(SitecoreInfoType.Path)]
+        public virtual string Path { get; set; }
     }
 }

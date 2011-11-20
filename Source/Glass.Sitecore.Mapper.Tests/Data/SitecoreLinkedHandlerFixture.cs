@@ -25,6 +25,7 @@ using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Data.Items;
 using Sitecore.Data;
 using Sitecore.SecurityModel;
+using Glass.Sitecore.Mapper.Tests.Domain;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -41,34 +42,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             _handler = new SitecoreLinkedHandler();
             _database = global::Sitecore.Configuration.Factory.GetDatabase("master");
-            _target = _database.GetItem("/sitecore/content/Glass/ItemLinksTest");
+            _target = _database.GetItem("/sitecore/content/Data/SitecoreLinkedHandler/Root");
 
-            SitecoreProperty idProperty =  new SitecoreProperty(){
-                            Attribute = new SitecoreIdAttribute(),
-                            Property = typeof(SitecoreLinkedHandlerFixtureNS.LinkedTestClass).GetProperty("Id")
-                        };
-            SitecoreIdDataHandler idHandler = new SitecoreIdDataHandler();
-            idHandler.ConfigureDataHandler(idProperty);
-                 
+            Context context = new Context(
+                   new AttributeConfigurationLoader(
+                       "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"), null);
 
-            var context = new InstanceContext(
-              (new SitecoreClassConfig[]{
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(),
-                       Properties = new SitecoreProperty[]{
-                           idProperty                       
-                       },
-                       Type = typeof(SitecoreLinkedHandlerFixtureNS.LinkedTestClass),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                            idHandler
-                       }
-                   }
-               }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
-
-
-        
-
-            _service = new SitecoreService(_database, context);
+            _service = new SitecoreService(_database);
 
         }
 
@@ -80,7 +60,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assign
             SitecoreProperty property = new SitecoreProperty(){
                 Attribute = new SitecoreLinkedAttribute(),
-                Property = new FakePropertyInfo(typeof(IEnumerable<SitecoreLinkedHandlerFixtureNS.LinkedTestClass>))
+                Property = new FakePropertyInfo(typeof(IEnumerable<LinkTemplate>))
             };
 
 
@@ -102,14 +82,14 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             SitecoreProperty linkedProperty = new SitecoreProperty()
             {
                 Attribute = new SitecoreLinkedAttribute(),
-                Property = typeof(SitecoreLinkedHandlerFixtureNS.LinkedTestClass).GetProperty("Linked")
+                Property = new FakePropertyInfo(typeof(IEnumerable<LinkTemplate>))
             };
             _handler.ConfigureDataHandler(linkedProperty);
 
             using (new SecurityDisabler())
             {
              //Act
-                var result = _handler.GetValue(_target, _service) as IEnumerable<SitecoreLinkedHandlerFixtureNS.LinkedTestClass>;
+                var result = _handler.GetValue(_target, _service) as IEnumerable<LinkTemplate>;
 
                 //Assert
                 Assert.IsNotNull(result);
@@ -130,18 +110,21 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 {
                     Option = SitecoreLinkedOptions.Referrers
                 },
-                Property = typeof(SitecoreLinkedHandlerFixtureNS.LinkedTestClass).GetProperty("Linked")
+                Property = new FakePropertyInfo(typeof(IEnumerable<LinkTemplate>))
             };
             _handler.ConfigureDataHandler(linkedProperty);
 
             using (new SecurityDisabler())
             {
                 //Act
-                var result = _handler.GetValue(_target, _service) as IEnumerable<SitecoreLinkedHandlerFixtureNS.LinkedTestClass>;
+                var result = _handler.GetValue(_target, _service) as IEnumerable<LinkTemplate>;
 
                 //Assert
                 Assert.IsNotNull(result);
-                Assert.AreEqual(1, result.Count());
+                //the following items point at it:
+                // /sitecore/content/Data/SitecoreLinkedHandler/Root/Item1
+                // /sitecore/content/Data/SitecoreLinkedHandler/Root/Item2
+                Assert.AreEqual(2, result.Count());
                
             }
 
@@ -158,18 +141,19 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 {
                     Option = SitecoreLinkedOptions.References
                 },
-                Property = typeof(SitecoreLinkedHandlerFixtureNS.LinkedTestClass).GetProperty("Linked")
+                Property = new FakePropertyInfo(typeof(IEnumerable<LinkTemplate>))
             };
             _handler.ConfigureDataHandler(linkedProperty);
 
             using (new SecurityDisabler())
             {
                 //Act
-                var result = _handler.GetValue(_target, _service) as IEnumerable<SitecoreLinkedHandlerFixtureNS.LinkedTestClass>;
+                var result = _handler.GetValue(_target, _service) as IEnumerable<LinkTemplate>;
 
                 //Assert
                 Assert.IsNotNull(result);
-                Assert.AreEqual(2, result.Count());
+                //it only references it's template
+                Assert.AreEqual(1, result.Count());
 
             }
 
@@ -194,16 +178,5 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         //TODO need to do test on infertype
 
     }
-    namespace SitecoreLinkedHandlerFixtureNS
-    {
-        [SitecoreClass]
-        public class LinkedTestClass
-        {
-            [SitecoreId]
-            public virtual Guid Id { get; set; }
-
-            [SitecoreLinked]
-            public virtual IEnumerable<LinkedTestClass> Linked { get; set; }
-        }
-    }
+  
 }

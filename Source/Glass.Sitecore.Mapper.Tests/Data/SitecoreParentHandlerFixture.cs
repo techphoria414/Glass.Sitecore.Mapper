@@ -24,6 +24,7 @@ using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Data;
 using Sitecore.Data.Items;
+using Glass.Sitecore.Mapper.Tests.Domain;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -32,7 +33,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
     {
 
         SitecoreParentHandler _handler;
-        Guid _itemId;
+        string _itemPath;
         Database _db;
         ISitecoreService _service;
 
@@ -41,25 +42,14 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             _handler = new SitecoreParentHandler();
 
-            _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
-            _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
-            var context = new InstanceContext(
-                (new SitecoreClassConfig[]{
-                    new SitecoreClassConfig(){
-                        ClassAttribute = new SitecoreClassAttribute(),
-                        Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreParentHandlerFixtureNS.ChildClass).GetProperty("Id")
-                            }
-                        },
-                        Type = typeof(SitecoreParentHandlerFixtureNS.ChildClass),
-                        DataHandlers = new AbstractSitecoreDataHandler[]{}
-                    }
-                }).ToDictionary(),
-                new AbstractSitecoreDataHandler[] { });
+            _itemPath  = "/sitecore/content/Data/SitecoreParentHandler/Parent/Child";
 
-            _service = new SitecoreService(_db, context);
+            _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
+            Context context = new Context(
+                   new AttributeConfigurationLoader(
+                       "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"), null);
+
+            _service = new SitecoreService(_db);
         }
      
         #region WillHandle
@@ -108,22 +98,24 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             
             //Assign
-            SitecoreParentHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreParentHandlerFixtureNS.ParentClass();
-            Item item = _db.GetItem(new ID(_itemId));
+            
+            Item item = _db.GetItem(_itemPath);
+          
+            
             SitecoreProperty property = new SitecoreProperty(){
                 Attribute =new  SitecoreParentAttribute(),
-                Property = typeof(SitecoreParentHandlerFixtureNS.ParentClass).GetProperty("Child")
+                Property = new  FakePropertyInfo(typeof(EmptyTemplate1))
             };
 
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue( item, _service) as SitecoreParentHandlerFixtureNS.ChildClass;
-            parent.Child = result;
+            var result = _handler.GetValue( item, _service) as EmptyTemplate1;
+         
             //Assert
 
-            Assert.AreNotEqual(typeof(SitecoreParentHandlerFixtureNS.ChildClass), parent.Child.GetType());
-            Assert.IsTrue(parent.Child is SitecoreParentHandlerFixtureNS.ChildClass);
+            Assert.AreEqual(item.Parent.ID.Guid, result.Id);
+            Assert.AreNotEqual(typeof(EmptyTemplate1), result.GetType());
         }
 
         [Test]
@@ -131,22 +123,21 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            SitecoreParentHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreParentHandlerFixtureNS.ParentClass();
-            Item item = _db.GetItem(new ID(_itemId));
+            Item item = _db.GetItem(_itemPath);
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreParentAttribute() { IsLazy = false },
-                Property = typeof(SitecoreParentHandlerFixtureNS.ParentClass).GetProperty("Child")
+                Property = new FakePropertyInfo(typeof(EmptyTemplate1))
             };
 
             _handler.ConfigureDataHandler(property);
 
             //Act
-            var result = _handler.GetValue( item, _service) as SitecoreParentHandlerFixtureNS.ChildClass;
-            parent.Child = result;
+            var result = _handler.GetValue(item, _service) as EmptyTemplate1;
             //Assert
 
-            Assert.AreEqual(typeof(SitecoreParentHandlerFixtureNS.ChildClass), parent.Child.GetType());
+            Assert.AreEqual(item.Parent.ID.Guid, result.Id);
+            Assert.AreEqual(typeof(EmptyTemplate1), result.GetType());
         }
 
 
@@ -156,22 +147,21 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            SitecoreParentHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreParentHandlerFixtureNS.ParentClass();
-            Item item = _db.GetItem(new ID(_itemId));
+            Item item = _db.GetItem(_itemPath);
+
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreParentAttribute(),
-                Property = typeof(SitecoreParentHandlerFixtureNS.ParentClass).GetProperty("NotLoaded")
+                Property = new FakePropertyInfo(typeof(NotLoaded))
+
             };
 
             _handler.ConfigureDataHandler(property);
 
 
             //Act
-            var result = _handler.GetValue( item, _service) as SitecoreParentHandlerFixtureNS.ChildClassNotLoaded;
-            parent.NotLoaded = result;
+            var result = _handler.GetValue( item, _service) as EmptyTemplate1;
 
-            parent.NotLoaded.CallMe = "";
             //Assert
             //expecting an exception
         }
@@ -181,22 +171,5 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
     }
 
-    namespace SitecoreParentHandlerFixtureNS
-    {
-        public class ParentClass
-        {
-            public ChildClass Child{get;set;}
-            public ChildClassNotLoaded NotLoaded { get; set; }
-        }
-        public class ChildClass{
-            public virtual Guid Id { get; set; }
-            public virtual string CallMe{get;set;}
-        }
-        public class ChildClassNotLoaded
-        {
-            public virtual string CallMe { get; set; }
-
-        }
-        
-    }
+  
 }
