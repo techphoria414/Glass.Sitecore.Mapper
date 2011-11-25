@@ -43,7 +43,6 @@ App_Data/
 *.DS_Store
 temp/
 upload/
-App_Config/
 Builds/
 !*.textile
 Source/Glass.Sitecore.Mapper.Demo/data/
