@@ -413,7 +413,7 @@ namespace Glass.Sitecore.Mapper
                 //this retrieves the class by inferring the type from the template ID
                 //if ths return type can not be found then the system will try to create a type 
                 //base on the return type
-                config = InstanceContext.GetSitecoreClass(item.TemplateID.Guid);
+                config = InstanceContext.GetSitecoreClass(item.TemplateID.Guid, type);
                 if (config == null) config = InstanceContext.GetSitecoreClass(type);
                 
             }

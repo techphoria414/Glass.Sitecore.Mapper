@@ -61,7 +61,14 @@ namespace Glass.Sitecore.Mapper
             Dictionary<Type, SitecoreClassConfig> dicClasses = new Dictionary<Type, SitecoreClassConfig>();
             foreach (var cls in classes)
             {
-                dicClasses.Add(cls.Type, cls);
+                try
+                {
+                    dicClasses.Add(cls.Type, cls);
+                }
+                catch (ArgumentException ex)
+                {
+                    throw new MapperException("Dictionary already contains type {0}".Formatted(cls.Type.FullName), ex);
+                }
             }
 
             return dicClasses;

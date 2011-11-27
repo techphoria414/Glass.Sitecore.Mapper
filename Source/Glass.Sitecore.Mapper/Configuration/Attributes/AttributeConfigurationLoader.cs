@@ -39,16 +39,25 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         {
             if (_namespaces == null || _namespaces.Count() == 0) return new List<SitecoreClassConfig>();
 
-            List<SitecoreClassConfig> classes = new List<SitecoreClassConfig>();
+            Dictionary<Type,SitecoreClassConfig> classes = new Dictionary<Type, SitecoreClassConfig>();
             foreach (string space in _namespaces)
             {
                 string[] parts = space.Split(',');
-                    classes.AddRange(GetClass(parts[1], parts[0]));
+                var namespaceClasses = GetClass(parts[1], parts[0]);
+                namespaceClasses.ForEach(cls =>
+                {
+                    //stops duplicates being added
+                    if (!classes.ContainsKey(cls.Type))
+                    {
+                        classes.Add(cls.Type, cls);
+                    }
+                });
+                
             };
 
-            classes.ForEach(x => x.Properties = GetProperties(x.Type));
+            classes.ForEach(x => x.Value.Properties = GetProperties(x.Value.Type));
 
-            return classes;
+            return classes.Select(x => x.Value);
         }
 
         public static  IEnumerable<SitecoreProperty> GetProperties(Type type)
