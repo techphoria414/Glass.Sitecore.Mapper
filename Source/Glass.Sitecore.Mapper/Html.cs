@@ -82,7 +82,7 @@ namespace Glass.Sitecore.Mapper
 
             if (attributes == null) attributes = new NameValueCollection();
 
-            string format = "<img src='{0}' alt='{1}' class='{2}' {3}/>";
+            string format = "<img src='{0}' alt='{1}' class='{2}' height='{3}' width='{4}' {5}/>";
 
             string cls = attributes.AllKeys.Any(x=> x =="class") ? attributes["class"] : image.Class;
 
@@ -90,9 +90,10 @@ namespace Glass.Sitecore.Mapper
             attributes.Remove("class");
             attributes.Remove("alt");
             attributes.Remove("src");
-
+            attributes.Remove("height");
+            attributes.Remove("width");
             
-            return format.Formatted(image.Src, image.Alt, cls, Utility.ConvertAttributes(attributes));
+            return format.Formatted(image.Src, image.Alt, image.Height, image.Width, cls, Utility.ConvertAttributes(attributes));
         }
 
 
