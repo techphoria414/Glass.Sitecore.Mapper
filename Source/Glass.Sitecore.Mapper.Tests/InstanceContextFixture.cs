@@ -26,6 +26,8 @@ using Sitecore.Data.Items;
 using Sitecore.Data;
 using Sitecore.SecurityModel;
 using Glass.Sitecore.Mapper.Proxies;
+using Glass.Sitecore.Mapper.Tests.Domain;
+using Glass.Sitecore.Mapper.Tests.InstanceContextFixtureNS;
 
 namespace Glass.Sitecore.Mapper.Tests
 {
@@ -41,66 +43,19 @@ namespace Glass.Sitecore.Mapper.Tests
         [SetUp]
         public void Setup()
         {
-            #region TestClass1
+            Context context = new Context(
+                new AttributeConfigurationLoader(
+                    "Glass.Sitecore.Mapper.Tests.InstanceContextFixtureNS,  Glass.Sitecore.Mapper.Tests",
+                    "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"), null);
 
-            var tc1Property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreIdAttribute(),
-                Property = typeof(InstanceContextFixtureNS.TestClass).GetProperty("Id")
-            };
-            var tc1HandlerId = new SitecoreIdDataHandler();
-            tc1HandlerId.ConfigureDataHandler(tc1Property);
-
-            #endregion
-            #region TestClass4
-
-            var tc4Property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreFieldAttribute(),
-                Property = typeof(InstanceContextFixtureNS.TestClass4).GetProperty("SingleLineText")
-            };
-            var tc4HandlerString = new SitecoreFieldStringHandler();
-            tc4HandlerString.ConfigureDataHandler(tc4Property);
-
-            #endregion
-
-
-            var context = new InstanceContext((new SitecoreClassConfig[]{
-                new SitecoreClassConfig(){
-                    ClassAttribute = new SitecoreClassAttribute(),
-                    Properties = new SitecoreProperty[]{
-                        tc1Property
-                    },
-                    Type = typeof(InstanceContextFixtureNS.TestClass),
-                    DataHandlers = new AbstractSitecoreDataHandler[]{
-                        tc1HandlerId
-                    },
-                    IdProperty = tc1Property
-                },
-                new SitecoreClassConfig(){
-                    ClassAttribute = new SitecoreClassAttribute(),
-                    Properties = new SitecoreProperty[]{},
-                    Type = typeof(InstanceContextFixtureNS.TestClass2),
-                    DataHandlers = new AbstractSitecoreDataHandler[]{}
-                },
-                new SitecoreClassConfig(){
-                    ClassAttribute = new SitecoreClassAttribute(),
-                    Properties = new SitecoreProperty[]{
-                       tc4Property
-                    },
-                    Type = typeof(InstanceContextFixtureNS.TestClass4),
-                    DataHandlers = new AbstractSitecoreDataHandler[]{tc4HandlerString}
-                }
-            
-            }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
-            _service = new SitecoreService(_db, context);
+            _service = new SitecoreService(_db);
 
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
             _itemId2 = new Guid("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}");
-                
+
         }
 
         #region CreateClass
@@ -201,7 +156,7 @@ namespace Glass.Sitecore.Mapper.Tests
             SitecoreClassConfig config = null;
 
             //Act
-            config = _service.InstanceContext.GetSitecoreClass(typeof(InstanceContextFixtureNS.TestClass3));
+            config = _service.InstanceContext.GetSitecoreClass(typeof(Domain.NotLoaded));
 
             //Assert
             //no asserts, exception should be thrown
@@ -211,11 +166,62 @@ namespace Glass.Sitecore.Mapper.Tests
 
         #endregion
 
-     
+        #region InferredType Test
+
+        [Test]
+        public void GetsInferredType_InfersTypeCorrectly()
+        {
+            //Assign
+            Item item = _db.GetItem("/sitecore/content/InstanceContext/Item1");
+
+            //Act
+            EmptyTemplate1 temp1 = _service.CreateClass<EmptyTemplate1>(false, true, item);
+            
+            //Assert
+
+            Assert.IsNotNull(temp1);
+            Assert.IsTrue(temp1 is EmptyTemplate2);
+
+
+        }
+
+        [Test]
+        public void GetsInferredType_InfersTypeCorrectly_WithTwoDifferentClassesDefinedToSupportTheTemplate()
+        {
+            //Assign
+            Item item = _db.GetItem("/sitecore/content/InstanceContext/Item1");
+
+            //Act
+            EmptyTemplate1 temp1 = _service.CreateClass<EmptyTemplate1>(false, true, item);
+            InferredTypeBase temp2 = _service.CreateClass<InferredTypeBase>(false, true, item);
+
+            //Assert
+
+            Assert.IsNotNull(temp1);
+            Assert.IsTrue(temp1 is EmptyTemplate2);
+            Assert.IsNotNull(temp2);
+            Assert.IsTrue(temp2 is InferredTypeSub);
+
+
+        }
+        #endregion
+
+        
+
     }
 
     namespace InstanceContextFixtureNS
     {
+
+        [SitecoreClass]
+        public class InferredTypeBase
+        {
+        }
+        [SitecoreClass(TemplateId = "{4AE4FCCE-F176-405F-9FFB-CF3AFC23F403}")]
+        public class InferredTypeSub : InferredTypeBase
+        {
+        }
+
 
         [SitecoreClass]
         public class TestClass
@@ -229,11 +235,7 @@ namespace Glass.Sitecore.Mapper.Tests
         public class TestClass2
         {
         }
-
-        [SitecoreClass]
-        public class TestClass3
-        {
-        }
+       
         [SitecoreClass]
         public class TestClass4
         {
