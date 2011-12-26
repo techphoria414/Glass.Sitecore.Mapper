@@ -82,7 +82,7 @@ namespace Glass.Sitecore.Mapper.Data
         public abstract bool WillHandle(SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes);
 
         /// <summary>
-        /// Reads an item from the Sitecore item and returns it as the requested return type
+        /// Reads an item from the Sitecore and returns it as the requested return type
         /// </summary>
         /// <param name="target">The object that the value will be set on</param>
         /// <param name="item">The Sitecore item to work on</param>
