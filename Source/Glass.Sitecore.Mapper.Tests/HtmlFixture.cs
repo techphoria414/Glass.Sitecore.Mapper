@@ -30,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Tests
             var result = html.RenderImage(img, attrs);
 
             //Assert
-            Assert.AreEqual("<img src='/cats.jpg' alt='Some alt test' class='classy' style='allStyle' />", result);
+            Assert.AreEqual("<img src='/cats.jpg' style='allStyle' class='classy' alt='Some alt test' />", result);
 
         }
 
@@ -60,7 +60,7 @@ namespace Glass.Sitecore.Mapper.Tests
             var result = html.RenderLink(link, attrs);
 
             //Assert
-            Assert.AreEqual("<a href='/yourpage#landSighted' title='You should click here' target='xMarksTheSpot' class='classy' style='got some' >Click here</a>", result);
+            Assert.AreEqual("<a href='/yourpage#landSighted' title='You should click here' target='xMarksTheSpot' class='classy' style='got some' class='classy' target='xMarksTheSpot' title='You should click here' >Click here</a>", result);
 
 
         }

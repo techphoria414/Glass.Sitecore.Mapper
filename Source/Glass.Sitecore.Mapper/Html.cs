@@ -87,8 +87,10 @@ namespace Glass.Sitecore.Mapper
             //should there be some warning about these removals?
             AttributeCheck(attributes, "class", image.Class);
             AttributeCheck(attributes, "alt", image.Alt);
-            AttributeCheck(attributes, "height", image.Height.ToString());
-            AttributeCheck(attributes, "width", image.Width.ToString());
+            if(image.Height > 0)
+                AttributeCheck(attributes, "height", image.Height.ToString());
+            if(image.Width > 0)
+                AttributeCheck(attributes, "width", image.Width.ToString());
             
             return format.Formatted(image.Src, Utility.ConvertAttributes(attributes));
         }
