@@ -15,9 +15,6 @@
  
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Configuration;
@@ -25,7 +22,6 @@ using Glass.Sitecore.Mapper.Data;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Proxies;
-using Castle.Core.Interceptor;
 using Moq;
 using Castle.DynamicProxy;
 
