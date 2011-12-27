@@ -67,7 +67,7 @@ namespace Glass.Sitecore.Mapper.Data
         /// <summary>
         /// Reads settings from the property and sets up the data handler.
         /// </summary>
-        internal virtual void ConfigureDataHandler(SitecoreProperty scProperty)
+        public virtual void ConfigureDataHandler(SitecoreProperty scProperty)
         {
             Property = scProperty.Property;
         }
