@@ -71,7 +71,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             get { throw new NotImplementedException(); }
         }
-        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        public override void ConfigureDataHandler(SitecoreProperty scProperty)
         {
      
             base.ConfigureDataHandler(scProperty);

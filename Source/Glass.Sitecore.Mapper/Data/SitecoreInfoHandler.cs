@@ -123,7 +123,7 @@ namespace Glass.Sitecore.Mapper.Data
             }
         }
 
-        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        public override void ConfigureDataHandler(SitecoreProperty scProperty)
         {
             SitecoreInfoAttribute attr = scProperty.Attribute as SitecoreInfoAttribute;
 

@@ -68,7 +68,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         public abstract Type TypeHandled { get; }
 
-        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        public override void ConfigureDataHandler(SitecoreProperty scProperty)
         {
             SitecoreFieldAttribute attr = scProperty.Attribute as SitecoreFieldAttribute;
             

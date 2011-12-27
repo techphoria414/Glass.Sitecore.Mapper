@@ -54,7 +54,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             get { return false ; }
         }
-        internal override void ConfigureDataHandler(Configuration.SitecoreProperty scProperty)
+        public override void ConfigureDataHandler(Configuration.SitecoreProperty scProperty)
         {
             var attr = scProperty.Attribute as SitecoreItemAttribute;
 
