@@ -268,7 +268,6 @@ namespace Glass.Sitecore.Mapper.Tests
             }
         }
 
-
         [Test]
         public void Create_CreatesAnItem_PrePopulates_NewMethod()
         {
@@ -306,6 +305,7 @@ namespace Glass.Sitecore.Mapper.Tests
             }
         }
 
+        
         #endregion
 
         #region Delete
@@ -353,9 +353,81 @@ namespace Glass.Sitecore.Mapper.Tests
         }
 
         #endregion
+
+        #region Method - CreateClass
+        
+        [Test]
+        public void CreateClass_CreateAClassWithSingleConstructor()
+        {
+            //Assign
+            string path =  "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            Item item1 = _db.GetItem(path);
+            
+            //Act
+            TestClassOneParamConstructor result = _sitecore.CreateClass<TestClassOneParamConstructor, int>(false, false, item1, param1);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(10, result.Param1);
+        }
+
+        [Test]
+        public void CreateClass_CreateAClassWithDoubleConstructor()
+        {
+            //Assign
+            string path = "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            string param2 = "Hello world";
+
+            Item item1 = _db.GetItem(path);
+
+            //Act
+            TestClassTwoParamConstructor result = _sitecore.CreateClass<TestClassTwoParamConstructor, int, string>(false, false, item1, param1, param2);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(10, result.Param1);
+            Assert.AreEqual("Hello world", result.Param2);
+        }
+
+        #endregion
+
     }
     namespace SitecoreServiceFixtureNS
     {
+        [SitecoreClass]
+        public class TestClassOneParamConstructor
+        {
+
+            public TestClassOneParamConstructor(int param1)
+            {
+                Param1 = param1;
+            }
+
+            public int Param1 { get; set; }
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass]
+        public class TestClassTwoParamConstructor
+        {
+
+            public TestClassTwoParamConstructor(int param1, string param2)
+            {
+                Param1 = param1;
+                Param2 = param2;
+            }
+
+            public int Param1 { get; set; }
+            public string Param2 { get; set; }
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
         [SitecoreClass]
         public class TestClass
         {

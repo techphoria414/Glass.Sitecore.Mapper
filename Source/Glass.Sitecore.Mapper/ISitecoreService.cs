@@ -192,6 +192,10 @@ namespace Glass.Sitecore.Mapper
         /// <returns>The item as the specified type</returns>
         T CreateClass<T>(bool isLazy, bool inferType, Item item) where T : class;
 
+        T CreateClass<T, K>(bool isLazy, bool inferType, Item item, K param1);
+
+        T CreateClass<T, K, L>(bool isLazy, bool inferType, Item item, K param1, L param2);
+
         /// <summary>
         /// Creates a class from the specified item
         /// </summary>

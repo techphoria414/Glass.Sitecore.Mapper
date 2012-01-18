@@ -28,6 +28,7 @@ using Sitecore.Links;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
+using System.Reflection;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -400,7 +401,12 @@ namespace Glass.Sitecore.Mapper
 
         public object CreateClass(bool isLazy, bool inferType, Type type, Item item)
         {
+            return CreateClass(isLazy, inferType, type, item, null);
+        }
+        public object CreateClass (bool isLazy, bool inferType, Type type, Item item, params object []  conParams){
+
             if (item == null) return null;
+            if(conParams == null) conParams = new object[]{};
 
              SitecoreClassConfig config=null;
             if (!inferType)
@@ -428,18 +434,71 @@ namespace Glass.Sitecore.Mapper
 
                 //get the class information
 
-                if (config.CreateObject == null)
+                //The conKey is used to dermine which method should be used to construct the class
+                StringBuilder conKey = new StringBuilder();
+
+                if (conParams.Any())
+                    conParams.ForEach(x => conKey.Append(x.GetType().Name));
+                else
+                    conKey.Append("$EmptyTypes");
+
+                string finalConKey = conKey.ToString();
+
+                if (!config.CreateObjectMethods.ContainsKey(finalConKey) || config.CreateObjectMethods[finalConKey] == null)
                 {
+                    //the list of parameters to pass to the construtor
+                    Type[] typeList = conParams.Any() ? conParams.Select(x => x.GetType()).ToArray() : null ;
 
                     Type objType = config.Type;
-                    var dynMethod = new DynamicMethod("DM$OBJ_FACTORY_" + objType.Name, objType, null, objType);
+
+
+                    Type [] dynTypes = null;
+                    switch (conParams.Count())
+                    {
+                        case 0:
+                            dynTypes = null;
+                            break;
+                        case 1:
+                            dynTypes = new[] { typeof(object) };
+                            break;
+                        case 2:
+                            dynTypes = new[] { typeof(object), typeof(object) };
+                            break;
+                    }
+
+                    
+
+                    var dynMethod = new DynamicMethod("DM$OBJ_FACTORY_" + objType.Name, objType, typeList, objType);
+                    
                     ILGenerator ilGen = dynMethod.GetILGenerator();
-                    ilGen.Emit(OpCodes.Newobj, objType.GetConstructor(Type.EmptyTypes));
+                    ilGen.Emit(OpCodes.Newobj, objType.GetConstructor(typeList == null ? Type.EmptyTypes : typeList));
+                    for (int i = 0; i < conParams.Count(); i++)
+                    {
+                        ilGen.Emit(OpCodes.Ldarg, i);
+                    }
+
                     ilGen.Emit(OpCodes.Ret);
-                    config.CreateObject = (SitecoreClassConfig.Instantiator)dynMethod.CreateDelegate(typeof(SitecoreClassConfig.Instantiator));
+
+                    
                                       
+                    Type degType = null;
+                    switch (conParams.Count())
+                    {
+                        case 0:
+                            degType = typeof( SitecoreClassConfig.Instantiator0);
+                            break;
+                        case 1:
+                            degType = typeof(SitecoreClassConfig.Instantiator0);
+                            break;
+                        case 2:
+                            degType = typeof(SitecoreClassConfig.Instantiator0);
+                            break;
+                    }
+
+                    config.CreateObjectMethods[finalConKey] = dynMethod.CreateDelegate(degType);
+                                    
                 }
-                object t = config.CreateObject();
+                object t = config.CreateObjectMethods[finalConKey].DynamicInvoke(conParams);
 
                 ReadFromItem(t, item, config);
 
@@ -463,7 +522,17 @@ namespace Glass.Sitecore.Mapper
             return Utility.CreateGenericType(typeof(Enumerable<>), new Type[] { type }, getItems, this, isLazy, inferType) as IEnumerable;
         }
 
+        public T CreateClass<T, K>(bool isLazy, bool inferType, Item item, K param1)
+        {
+                        return (T) CreateClass(isLazy, inferType, typeof(T), item, param1);
 
+        }
+
+        public T CreateClass<T, K, L>(bool isLazy, bool inferType, Item item, K param1, L param2)
+        {
+            return (T)CreateClass(isLazy, inferType, typeof(T), item, param1, param2);
+        }
+         
 
         #endregion
 
@@ -496,9 +565,6 @@ namespace Glass.Sitecore.Mapper
         #endregion
 
 
-
        
-
-        
     }
 }
