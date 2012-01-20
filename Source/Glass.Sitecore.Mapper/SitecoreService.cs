@@ -401,14 +401,20 @@ namespace Glass.Sitecore.Mapper
 
         public object CreateClass(bool isLazy, bool inferType, Type type, Item item)
         {
-            return CreateClass(isLazy, inferType, type, item, null);
+            Type func = typeof(Func<>);
+            Type genFunc = func.MakeGenericType(type);
+            return CreateClass(isLazy, inferType, type, item, genFunc);
         }
-        public object CreateClass (bool isLazy, bool inferType, Type type, Item item, params object []  conParams){
 
+        public object CreateClass(bool isLazy, bool inferType, Type type, Item item, Type delegateType, params object[] constructorParameters)
+        {
+            //check there is an item to create a class from
             if (item == null) return null;
-            if(conParams == null) conParams = new object[]{};
+            //check that there are some constructor arguments 
+            if(constructorParameters == null) constructorParameters = new object[]{};
 
-             SitecoreClassConfig config=null;
+            SitecoreClassConfig config=null;
+
             if (!inferType)
             {
                 //this retrieves the class based on return type
@@ -424,86 +430,69 @@ namespace Glass.Sitecore.Mapper
                 
             }
 
+            //if the class should be lazy loaded or is an interface then load using a proxy
             if (isLazy || type.IsInterface)
             {
                 return ProxyGenerator.CreateProxy(config, this, item, inferType);
             }
             else
             {
-                if (item == null) return null;
-
-                //get the class information
-
-                //The conKey is used to dermine which method should be used to construct the class
-                StringBuilder conKey = new StringBuilder();
-
-                if (conParams.Any())
-                    conParams.ForEach(x => conKey.Append(x.GetType().Name));
-                else
-                    conKey.Append("$EmptyTypes");
-
-                string finalConKey = conKey.ToString();
-
-                if (!config.CreateObjectMethods.ContainsKey(finalConKey) || config.CreateObjectMethods[finalConKey] == null)
-                {
-                    //the list of parameters to pass to the construtor
-                    Type[] typeList = conParams.Any() ? conParams.Select(x => x.GetType()).ToArray() : null ;
-
-                    Type objType = config.Type;
-
-
-                    Type [] dynTypes = null;
-                    switch (conParams.Count())
-                    {
-                        case 0:
-                            dynTypes = null;
-                            break;
-                        case 1:
-                            dynTypes = new[] { typeof(object) };
-                            break;
-                        case 2:
-                            dynTypes = new[] { typeof(object), typeof(object) };
-                            break;
-                    }
-
-                    
-
-                    var dynMethod = new DynamicMethod("DM$OBJ_FACTORY_" + objType.Name, objType, typeList, objType);
-                    
-                    ILGenerator ilGen = dynMethod.GetILGenerator();
-                    ilGen.Emit(OpCodes.Newobj, objType.GetConstructor(typeList == null ? Type.EmptyTypes : typeList));
-                    for (int i = 0; i < conParams.Count(); i++)
-                    {
-                        ilGen.Emit(OpCodes.Ldarg, i);
-                    }
-
-                    ilGen.Emit(OpCodes.Ret);
-
-                    
-                                      
-                    Type degType = null;
-                    switch (conParams.Count())
-                    {
-                        case 0:
-                            degType = typeof( SitecoreClassConfig.Instantiator0);
-                            break;
-                        case 1:
-                            degType = typeof(SitecoreClassConfig.Instantiator0);
-                            break;
-                        case 2:
-                            degType = typeof(SitecoreClassConfig.Instantiator0);
-                            break;
-                    }
-
-                    config.CreateObjectMethods[finalConKey] = dynMethod.CreateDelegate(degType);
-                                    
-                }
-                object t = config.CreateObjectMethods[finalConKey].DynamicInvoke(conParams);
-
+                Delegate conMethod = GetConstructorDelegate(config, constructorParameters, delegateType);
+                object t = conMethod.DynamicInvoke(constructorParameters);
                 ReadFromItem(t, item, config);
-
                 return t;
             }
+        }
+
+
+        /// <summary>
+        /// Returns a delegate method that will load a class based on its constuctor
+        /// </summary>
+        /// <param name="classConfig">The SitecoreClassConfig to store the delegate method in</param>
+        /// <param name="constructorParameters">The list of contructor parameters</param>
+        /// <param name="delegateType">The type of the delegate function to create</param>
+        /// <returns></returns>
+        internal static Delegate GetConstructorDelegate(SitecoreClassConfig classConfig, object [] constructorParameters, Type delegateType)
+        {
+            //The conKey is used to dermine which method should be used to construct the class
+            StringBuilder conKey = new StringBuilder();
+
+            if (constructorParameters.Any())
+                constructorParameters.ForEach(x => conKey.Append(x.GetType().Name));
+            else
+                conKey.Append("$EmptyTypes");
+
+            string finalConKey = conKey.ToString();
+
+
+            if (!classConfig.CreateObjectMethods.ContainsKey(finalConKey) || classConfig.CreateObjectMethods[finalConKey] == null)
+            {
+                //the list of parameters to pass to the construtor
+                Type[] typeList = constructorParameters.Any() ? constructorParameters.Select(x => x.GetType()).ToArray() : null;
+
+                Type objType = classConfig.Type;
+
+                var dynMethod = new DynamicMethod("DM$OBJ_FACTORY_" + objType.Name, objType, typeList, objType);
+
+                ILGenerator ilGen = dynMethod.GetILGenerator();
+                for (int i = 0; i < constructorParameters.Count(); i++)
+                {
+                    ilGen.Emit(OpCodes.Ldarg, i);
+                }
+
+                ConstructorInfo constructor = objType.GetConstructor(typeList == null ? Type.EmptyTypes : typeList);
+
+                if(constructor == null) throw new MapperException("No constructor for class {0} with parameters {1}".Formatted(classConfig.Type.FullName, string.Join(",", constructorParameters.Select(x=>x.GetType().FullName).ToArray())));
+
+                ilGen.Emit(OpCodes.Newobj, constructor );
+
+                ilGen.Emit(OpCodes.Ret);
+
+                classConfig.CreateObjectMethods[finalConKey] = dynMethod.CreateDelegate(delegateType);
+
+            }
+           return  classConfig.CreateObjectMethods[finalConKey];
+
         }
         /// <summary>
         /// Creates an enumerable of the specified type
@@ -524,14 +513,25 @@ namespace Glass.Sitecore.Mapper
 
         public T CreateClass<T, K>(bool isLazy, bool inferType, Item item, K param1)
         {
-                        return (T) CreateClass(isLazy, inferType, typeof(T), item, param1);
+            return (T)CreateClass(isLazy, inferType, typeof(T), item, typeof(Func< K, T>), param1);
 
         }
 
-        public T CreateClass<T, K, L>(bool isLazy, bool inferType, Item item, K param1, L param2)
+        public T CreateClass<T,K,L>(bool isLazy, bool inferType, Item item, K param1, L param2)
+        {          
+            return (T)CreateClass(isLazy, inferType, typeof(T), item, typeof(Func<K,L,T>), param1, param2);
+        }
+
+        public T CreateClass<T, K, L, M>(bool isLazy, bool inferType, Item item, K param1, L param2, M param3)
         {
-            return (T)CreateClass(isLazy, inferType, typeof(T), item, param1, param2);
+            return (T)CreateClass(isLazy, inferType, typeof(T), item, typeof(Func<K, L, M, T>), param1, param2, param3);
         }
+
+        public T CreateClass<T, K, L, M, N>(bool isLazy, bool inferType, Item item, K param1, L param2, M param3, N param4)
+        {
+            return (T)CreateClass(isLazy, inferType, typeof(T), item, typeof(Func<K, L, M, N, T>), param1, param2, param3, param4);            
+        }
+
          
 
         #endregion

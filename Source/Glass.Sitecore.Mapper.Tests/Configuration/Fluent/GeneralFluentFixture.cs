@@ -40,9 +40,19 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
         SitecoreService _sitecore;
         Context _context;
         Database _db;
-        Item _test1;
-        Item _test2;
+        Item _query1;
+        Item _query2;
         Item _test3;
+        Item _check1;
+        Item _check2;
+        Item _multiList1;
+        Item _multiList2;
+        Item _treeList2;
+        Item _treeList1;
+        Item _link1;
+        Item _link2;
+        Item _link3;
+
 
         [SetUp]
         public void Setup()
@@ -61,7 +71,7 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
                 })
             .Queries(x =>
                 {
-                    x.Query(y => y.Query).Query("/sitecore/content/Glass/*[@@TemplateName='BasicTemplate']");
+                    x.Query(y => y.Query).Query("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/*[@@TemplateName='BasicTemplate']");
 
                 });
 
@@ -128,10 +138,22 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             _sitecore = new SitecoreService("master");
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
-            _test1 = _db.GetItem("/sitecore/content/Glass/Test1");
-            _test2 = _db.GetItem("/sitecore/content/Glass/Test2");
+            _query1 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item1");
+            _query2 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item2");
             _test3 = _db.GetItem("/sitecore/content/Glass/Test1/Test3");
 
+            _check1 = _db.GetItem("/sitecore/content/Lookups/CheckList/Check1");
+            _check2 = _db.GetItem("/sitecore/content/Lookups/CheckList/Check2");
+
+            _multiList1 = _db.GetItem("/sitecore/content/Lookups/Multilist/MultiList1");
+            _multiList2 = _db.GetItem("/sitecore/content/Lookups/Multilist/MultiList2");
+
+            _treeList1 = _db.GetItem("/sitecore/content/Lookups/TreeList/TreeList1");
+            _treeList2 = _db.GetItem("/sitecore/content/Lookups/TreeList/TreeList2");
+
+            _link1 = _db.GetItem("/sitecore/content/Lookups/Links/Link1");
+            _link2 = _db.GetItem("/sitecore/content/Lookups/Links/Link2");
+            _link3 = _db.GetItem("/sitecore/content/Lookups/Links/Link3");
         }
 
         #region Item Test1
@@ -144,13 +166,13 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             GeneralFluentFixtureNS.BasicTemplate test = null;
 
             //Act
-            test = _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Glass/Test1");
-
+            test = _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Configuration/Fluent/GeneralFluent/GetItemTest1");
+            var getTestItem1 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/GetItemTest1");
             //Assert
 
             #region SitecoreId
-            
-            Assert.AreEqual(_test1.ID.Guid, test.Id);
+
+            Assert.AreEqual(getTestItem1.ID.Guid, test.Id);
 
             #endregion
 
@@ -216,8 +238,8 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             #region List Types
 
             Assert.AreEqual(2, test.CheckList.Count());
-            Assert.AreEqual(_test1.ID.Guid, test.CheckList.First().Id);
-            Assert.AreEqual(_test2.ID.Guid, test.CheckList.Last().Id);
+            Assert.AreEqual(_check1.ID.Guid, test.CheckList.First().Id);
+            Assert.AreEqual(_check2.ID.Guid, test.CheckList.Last().Id);
 
             Assert.AreEqual(TestEnum.Test1, test.DropList);
 
@@ -225,18 +247,18 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 
             Assert.AreEqual(TestEnum.Test3, test.GroupedDropList);
 
-            Assert.AreEqual(_test1.ID.Guid, test.MultiList.First().Id);
+            Assert.AreEqual(_multiList1.ID.Guid, test.MultiList.First().Id);
 
-            Assert.AreEqual(_test3.ID.Guid, test.Treelist.First().Id);
+            Assert.AreEqual(_treeList1.ID.Guid, test.Treelist.First().Id);
 
-            Assert.AreEqual(_test2.ID.Guid, test.TreeListEx.First().Id);
+            Assert.AreEqual(_treeList2.ID.Guid, test.TreeListEx.First().Id);
 
             #endregion
             #region Link Types
 
-            Assert.AreEqual(_test1.ID.Guid, test.DropLink.Id);
+            Assert.AreEqual(_link1.ID.Guid, test.DropLink.Id);
 
-            Assert.AreEqual(_test1.ID.Guid, test.DropTree.Id);
+            Assert.AreEqual(_link2.ID.Guid, test.DropTree.Id);
 
             var link = new Link(){
                 Anchor = "",
@@ -275,38 +297,38 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 
             #region SitecoreInfo
 
-            Assert.AreEqual(_test1.Paths.ContentPath, test.ContentPath);
+            Assert.AreEqual(getTestItem1.Paths.ContentPath, test.ContentPath);
 
-            Assert.AreEqual(_test1.DisplayName, test.DisplayName);
+            Assert.AreEqual(getTestItem1.DisplayName, test.DisplayName);
 
-            Assert.AreEqual(_test1.Paths.FullPath, test.FullPath);
+            Assert.AreEqual(getTestItem1.Paths.FullPath, test.FullPath);
 
-            Assert.AreEqual(_test1.Key, test.Key);
+            Assert.AreEqual(getTestItem1.Key, test.Key);
 
             Console.WriteLine("Not test media URL");
 
-            Assert.AreEqual(_test1.Paths.Path, test.Path);
+            Assert.AreEqual(getTestItem1.Paths.Path, test.Path);
 
-            Assert.AreEqual(_test1.TemplateID.Guid, test.TemplateId);
+            Assert.AreEqual(getTestItem1.TemplateID.Guid, test.TemplateId);
 
-            Assert.AreEqual(_test1.TemplateName, test.TemplateName);
+            Assert.AreEqual(getTestItem1.TemplateName, test.TemplateName);
 
-            Assert.AreEqual(LinkManager.GetItemUrl(_test1), test.Url);
+            Assert.AreEqual(LinkManager.GetItemUrl(getTestItem1), test.Url);
 
-            Assert.AreEqual(_test1.Version.Number, test.Version);
+            Assert.AreEqual(getTestItem1.Version.Number, test.Version);
 
             #endregion
 
             #region SitecoreChildren
 
-            Assert.AreEqual(_test1.Children.Count, test.Children.Count());
-            Assert.AreEqual(_test3.ID.Guid, test.Children.First().Id);
+            Assert.AreEqual(getTestItem1.Children.Count, test.Children.Count());
+            Assert.AreEqual(getTestItem1.Children.First().ID.Guid, test.Children.First().Id);
 
             #endregion
 
             #region SitecoreParent
 
-            Assert.AreEqual(_test1.ParentID.Guid, test.Parent.Id);
+            Assert.AreEqual(getTestItem1.ParentID.Guid, test.Parent.Id);
 
             #endregion
 
@@ -316,9 +338,9 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             //if you do this without the disabler the role manager throws an exception
             using (new SecurityDisabler())
             {
-                Assert.AreEqual(5, test.Query.Count());
-                Assert.AreEqual(_test1.ID.Guid, test.Query.First().Id);
-                Assert.AreEqual(_test2.ID.Guid, test.Query.Take(2).Last().Id);
+                Assert.AreEqual(3, test.Query.Count());
+                Assert.AreEqual(_query1.ID.Guid, test.Query.First().Id);
+                Assert.AreEqual(_query2.ID.Guid, test.Query.Skip(1).First().Id);
             }
             #endregion
 
@@ -332,20 +354,22 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
         {
             //Assign 
             //clear all fields
+            var clearItem = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/SetItemTest2");
+
             using (new SecurityDisabler())
             {
-                _test2.BeginEdit();
-                foreach (Field field in _test2.Fields)
+                clearItem.BeginEdit();
+                foreach (Field field in clearItem.Fields)
                 {
                     field.Value = "";
                 }
-                _test2["GroupedDropList"] = "Test2";
-                _test2["DropList"] = "Test2";
-                _test2.EndEdit();
+                clearItem["GroupedDropList"] = "Test2";
+                clearItem["DropList"] = "Test2";
+                clearItem.EndEdit();
             }
 
             GeneralFluentFixtureNS.BasicTemplate test =
-                _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Glass/Test2");
+                _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Configuration/Fluent/GeneralFluent/SetItemTest2");
             
             //Simple Types
 
@@ -376,23 +400,22 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 
             //List Types
             test.CheckList = new GeneralFluentFixtureNS.SubClass[]{
-                new GeneralFluentFixtureNS.SubClass(){Id = _test1.ID.Guid},
-                new GeneralFluentFixtureNS.SubClass(){Id = _test2.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _check1.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _check2.ID.Guid},
             };
             test.DropList = GeneralFluentFixtureNS.TestEnum.Test3;
             test.GroupedDropLink = new GeneralFluentFixtureNS.SubClass() { Id = _test3.ID.Guid };
             test.GroupedDropList = GeneralFluentFixtureNS.TestEnum.Test3;
             test.MultiList = new GeneralFluentFixtureNS.SubClass[]{
-                new GeneralFluentFixtureNS.SubClass(){Id = _test1.ID.Guid},
-                new GeneralFluentFixtureNS.SubClass(){Id = _test2.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _multiList1.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _multiList2.ID.Guid},
             };
             test.Treelist = new GeneralFluentFixtureNS.SubClass[]{
-                new GeneralFluentFixtureNS.SubClass(){Id = _test1.ID.Guid},
-                new GeneralFluentFixtureNS.SubClass(){Id = _test2.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _treeList1.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _treeList2.ID.Guid},
             };
             test.TreeListEx = new GeneralFluentFixtureNS.SubClass[]{
-                new GeneralFluentFixtureNS.SubClass(){Id = _test1.ID.Guid},
-                new GeneralFluentFixtureNS.SubClass(){Id = _test2.ID.Guid},
+                new GeneralFluentFixtureNS.SubClass(){Id = _treeList1.ID.Guid},
             };
 
             //Link Types 
@@ -422,7 +445,7 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             //Assert
 
             //Simple Types
-            Item result = _db.GetItem(_test2.ID);
+            Item result = _db.GetItem(clearItem.ID);
             Assert.AreEqual("1", result["Checkbox"]);
             Assert.AreEqual("20110228T000000", result["Date"]);
             Assert.AreEqual("20110304T152312", result["DateTime"]);
@@ -454,13 +477,13 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             
             //List Types
 
-            Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["CheckList"].ToUpper());
+            Assert.AreEqual("{68B87391-CFF7-4FF2-848E-90C8FD8336A2}|{154CABCB-9B04-449A-9F6F-8FD2AD0783D9}", result["CheckList"].ToUpper());
             Assert.AreEqual("Test3", result["DropList"]);
             Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["GroupedDropLink"].ToUpper());
             Assert.AreEqual("Test3", result["GroupedDropList"]);
-            Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["MultiList"].ToUpper());
-            Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["Treelist"].ToUpper());
-            Assert.AreEqual("{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}", result["TreeListEx"].ToUpper());
+            Assert.AreEqual("{1BE4FAC5-90C2-4A5E-952C-071ECD7DA957}|{6127B3E3-B2EB-4B96-AE6D-51DF0212C0EA}", result["MultiList"].ToUpper());
+            Assert.AreEqual("{35E0CE21-2651-46CD-B87D-0B34216D3137}|{F52A1B3B-356E-45A4-B06C-DFAE28B6D78A}", result["Treelist"].ToUpper());
+            Assert.AreEqual("{35E0CE21-2651-46CD-B87D-0B34216D3137}", result["TreeListEx"].ToUpper());
 
             //Linked Types
             Assert.AreEqual(_test3.ID.Guid.ToString("B").ToUpper(), result["DropLink"].ToUpper());
