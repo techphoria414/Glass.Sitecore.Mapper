@@ -26,6 +26,7 @@ using Glass.Sitecore.Mapper.Data;
 using Sitecore.Data.Items;
 using Sitecore.Data;
 using Sitecore.SecurityModel;
+using Moq;
 
 namespace Glass.Sitecore.Mapper.Tests
 {
@@ -268,7 +269,6 @@ namespace Glass.Sitecore.Mapper.Tests
             }
         }
 
-
         [Test]
         public void Create_CreatesAnItem_PrePopulates_NewMethod()
         {
@@ -306,6 +306,7 @@ namespace Glass.Sitecore.Mapper.Tests
             }
         }
 
+        
         #endregion
 
         #region Delete
@@ -314,20 +315,23 @@ namespace Glass.Sitecore.Mapper.Tests
         public void Delete_DoesDeleteItem()
         {
             //Assign
-            string parentPath = "/sitecore/content/Glass";
+            string parentPath = "/sitecore/content/SitecoreService/Delete_DoesDeleteItem";
             string itemName = "Test4";
             Item parent = _db.GetItem(parentPath);
             Guid templateId = new Guid("{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}");
             Item child = null;
+
+            Assert.AreEqual(0, parent.Children.Count);
             using (new SecurityDisabler())
             {
+                 parent.DeleteChildren();
                  child = parent.Add(itemName, new TemplateID(new ID(templateId)));
             }
 
             Assert.IsNotNull(child);
             Guid childId = child.ID.Guid;
 
-            TestClass childClass = _sitecore.GetItem<TestClass>("/sitecore/content/Glass/Test4");
+            TestClass childClass = _sitecore.GetItem<TestClass>("/sitecore/content/SitecoreService/Delete_DoesDeleteItem/Test4");
             Assert.IsNotNull(childClass);
             Assert.AreEqual(childId, childClass.Id);
 
@@ -346,16 +350,275 @@ namespace Glass.Sitecore.Mapper.Tests
 
             //Assert
 
-            Item check = _db.GetItem("/sitecore/content/Glass/Test4");
+            Item check = _db.GetItem("/sitecore/content/SitecoreService/Delete_DoesDeleteItem/Test4");
             Assert.IsNull(check);
 
 
         }
 
         #endregion
+
+        #region Method - CreateClass
+        
+        [Test]
+        public void CreateClass_CreateAClassWithSingleConstructor()
+        {
+            //Assign
+            string path =  "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            Item item1 = _db.GetItem(path);
+            
+            //Act
+            TestClassOneParamConstructor result = _sitecore.CreateClass<TestClassOneParamConstructor, int>(false, false, item1, param1);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(10, result.Param1);
+        }
+
+        [Test]
+        public void CreateClass_CreateAClassWithTwoParametersConstructor()
+        {
+            //Assign
+            string path = "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            string param2 = "Hello world";
+
+            Item item1 = _db.GetItem(path);
+
+            //Act
+            TestClassTwoParamConstructor result = _sitecore.CreateClass<TestClassTwoParamConstructor, int, string>(false, false, item1, param1, param2);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(10, result.Param1);
+            Assert.AreEqual("Hello world", result.Param2);
+        }
+
+        [Test]
+        public void CreateClass_CreateAClassWithThreeParametersConstructor()
+        {
+            //Assign
+            string path = "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            string param2 = "Hello world";
+            bool param3 = true;
+
+            Item item1 = _db.GetItem(path);
+
+            //Act
+            TestClassThreeParamConstructor result = _sitecore.CreateClass<TestClassThreeParamConstructor, int, string, bool>(false, false, item1, param1, param2, param3);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(10, result.Param1);
+            Assert.AreEqual("Hello world", result.Param2);
+            Assert.AreEqual(true, result.Param3);
+        }
+
+        [Test]
+        public void CreateClass_CreateAClassWithFourParametersConstructor()
+        {
+            //Assign
+            string path = "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            string param2 = "Hello world";
+            bool param3 = true;
+            float param4 = 0.5f;
+
+            Item item1 = _db.GetItem(path);
+
+            //Act
+            TestClassFourParamConstructor result = _sitecore.CreateClass<TestClassFourParamConstructor, int, string, bool, float>(false, false, item1, param1, param2, param3, param4);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(10, result.Param1);
+            Assert.AreEqual("Hello world", result.Param2);
+            Assert.AreEqual(true, result.Param3);
+            Assert.AreEqual(0.5f, result.Param4);
+        }
+
+        [Test]
+        public void CreateClass_CreateAClassWithMultipleParametersConstructor()
+        {
+            //Assign
+            string path = "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            string param2 = "Hello world";
+            bool param3 = true;
+            float param4 = 0.5f;
+
+            Item item1 = _db.GetItem(path);
+
+            //Act
+            TestClassMultipleParamConstructor result1 = _sitecore.CreateClass<TestClassMultipleParamConstructor, int, string, bool, float>(false, false, item1, param1, param2, param3, param4);
+            TestClassMultipleParamConstructor result2 = _sitecore.CreateClass<TestClassMultipleParamConstructor, int, string, bool>(false, false, item1, param1, param2, param3);
+
+            //Assert
+            Assert.IsNotNull(result1);
+            Assert.AreEqual(10, result1.Param1);
+            Assert.AreEqual("Hello world", result1.Param2);
+            Assert.AreEqual(true, result1.Param3);
+            Assert.AreEqual(0.5f, result1.Param4);
+
+
+            Assert.IsNotNull(result1);
+            Assert.AreEqual(10, result1.Param1);
+            Assert.AreEqual("Hello world", result1.Param2);
+            Assert.AreEqual(true, result1.Param3);
+        }
+
+
+        [Test]
+        [ExpectedException(typeof(MapperException))]
+        public void CreateClass_CreateAClassWithFourParametersConstructor_WrongOrder()
+        {
+            //Assign
+            string path = "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            string param2 = "Hello world";
+            bool param3 = true;
+            float param4 = 0.5f;
+
+            Item item1 = _db.GetItem(path);
+
+            //Act
+            TestClassFourParamConstructor result = _sitecore.CreateClass<TestClassFourParamConstructor, int, string, float, bool>(false, false, item1, param1, param2, param4, param3);
+
+            //Assert
+            Assert.IsNotNull(result);
+            Assert.AreEqual(10, result.Param1);
+            Assert.AreEqual("Hello world", result.Param2);
+            Assert.AreEqual(true, result.Param3);
+            Assert.AreEqual(0.5f, result.Param4);
+        }
+
+        [Test]
+        [ExpectedException(typeof(MapperException))]
+        public void CreateClass_CreateAClassWithTwoParametersConstructorParametersIncorrectOrder()
+        {
+            //Assign
+            string path = "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            string param2 = "Hello world";
+
+            Item item1 = _db.GetItem(path);
+
+            //Act
+            TestClassTwoParamConstructor result = _sitecore.CreateClass<TestClassTwoParamConstructor, string, int>(false, false, item1, param2, param1);
+
+            //Assert
+            //expected exception
+
+
+        }
+
+        #endregion
+       
     }
     namespace SitecoreServiceFixtureNS
     {
+        [SitecoreClass]
+        public class TestClassOneParamConstructor
+        {
+
+            public TestClassOneParamConstructor(int param1)
+            {
+                Param1 = param1;
+            }
+
+            public int Param1 { get; set; }
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass]
+        public class TestClassTwoParamConstructor
+        {
+
+            public TestClassTwoParamConstructor(int param1, string param2)
+            {
+                Param1 = param1;
+                Param2 = param2;
+            }
+
+            public int Param1 { get; set; }
+            public string Param2 { get; set; }
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass]
+        public class TestClassThreeParamConstructor
+        {
+
+            public TestClassThreeParamConstructor(int param1, string param2, bool param3)
+            {
+                Param1 = param1;
+                Param2 = param2;
+                Param3 = param3;
+            }
+
+            public int Param1 { get; set; }
+            public string Param2 { get; set; }
+            public bool Param3{get;set;}
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass]
+        public class TestClassFourParamConstructor
+        {
+
+            public TestClassFourParamConstructor(int param1, string param2, bool param3, float param4)
+            {
+                Param1 = param1;
+                Param2 = param2;
+                Param3 = param3;
+                Param4 = param4;
+            }
+
+            public int Param1 { get; set; }
+            public string Param2 { get; set; }
+            public bool Param3 { get; set; }
+            public float Param4 { get; set; }
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass]
+        public class TestClassMultipleParamConstructor
+        {
+
+            public TestClassMultipleParamConstructor(int param1, string param2, bool param3)
+            {
+                Param1 = param1;
+                Param2 = param2;
+                Param3 = param3;
+            }
+
+            public TestClassMultipleParamConstructor(int param1, string param2, bool param3, float param4)
+            {
+                Param1 = param1;
+                Param2 = param2;
+                Param3 = param3;
+                Param4 = param4;
+            }
+
+            public int Param1 { get; set; }
+            public string Param2 { get; set; }
+            public bool Param3 { get; set; }
+            public float Param4 { get; set; }
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
         [SitecoreClass]
         public class TestClass
         {

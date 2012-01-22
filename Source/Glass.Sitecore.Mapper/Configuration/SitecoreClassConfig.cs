@@ -20,18 +20,23 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Data;
+using System.Reflection;
 
 namespace Glass.Sitecore.Mapper.Configuration
 {
     public class SitecoreClassConfig 
     {
+        public SitecoreClassConfig()
+        {
+            CreateObjectMethods = new Dictionary<ConstructorInfo, Delegate>();
+        }
+
         public Type Type { get; set; }
         public Guid TemplateId { get; set; }
         public Guid BranchId { get; set; }
 
         internal IEnumerable<AbstractSitecoreDataHandler> DataHandlers { get; set; }
-        internal delegate object Instantiator();
-        internal Instantiator CreateObject { get; set; }
+        internal Dictionary<ConstructorInfo, Delegate> CreateObjectMethods { get; set; }
 
         public IEnumerable<SitecoreProperty> Properties { get; set; }
         public SitecoreClassAttribute ClassAttribute {get;set;}

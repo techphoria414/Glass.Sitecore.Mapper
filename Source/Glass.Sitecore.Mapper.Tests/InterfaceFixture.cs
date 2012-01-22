@@ -40,6 +40,8 @@ namespace Glass.Sitecore.Mapper.Tests
         Item _test1;
         Item _test2;
         Item _test3;
+        Item _query1;
+        Item _query2;
 
         [SetUp]
         public void Setup()
@@ -57,6 +59,9 @@ namespace Glass.Sitecore.Mapper.Tests
             _test1 = _db.GetItem("/sitecore/content/Glass/Test1");
             _test2 = _db.GetItem("/sitecore/content/Glass/Test2");
             _test3 = _db.GetItem("/sitecore/content/Glass/Test1/Test3");
+
+            _query1 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item1");
+            _query2 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item2");
         }
 
         [Test]
@@ -148,9 +153,9 @@ namespace Glass.Sitecore.Mapper.Tests
 
             using (new SecurityDisabler())
             {
-                Assert.AreEqual(5, inter.Query.Count());
-                Assert.AreEqual(_test1.ID.Guid, inter.Query.First().Id);
-                Assert.AreEqual(_test2.ID.Guid, inter.Query.Take(2).Last().Id);
+                Assert.AreEqual(3, inter.Query.Count());
+                Assert.AreEqual(_query1.ID.Guid, inter.Query.First().Id);
+                Assert.AreEqual(_query2.ID.Guid, inter.Query.Skip(1).First().Id);
             }
         }
 
@@ -252,7 +257,7 @@ namespace Glass.Sitecore.Mapper.Tests
             [SitecoreParent]
             TestSubInterface Parent { get; set; }
 
-            [SitecoreQuery("/sitecore/content/Glass/*[@@TemplateName='BasicTemplate']")]
+            [SitecoreQuery("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/*[@@TemplateName='BasicTemplate']")]
             IEnumerable<TestSubInterface> Query { get; set; }
 
             [SitecoreField]

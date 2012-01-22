@@ -78,7 +78,7 @@
     <Compile Include="Configuration\SitecoreInfoUrlOptions.cs" />
     <Compile Include="Configuration\SitecoreLinkedOptions.cs" />
     <Compile Include="Configuration\SitecoreProperty.cs" />
-    <Compile Include="Configuration\SitecoreClass.cs" />
+    <Compile Include="Configuration\SitecoreClassConfig.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Data\SitecoreItemHandler.cs" />
     <Compile Include="Data\SitecoreLinkedHandler.cs" />

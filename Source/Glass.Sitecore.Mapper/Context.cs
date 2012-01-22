@@ -21,6 +21,7 @@ using System.Text;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Data;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
+using System.Reflection.Emit;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -42,7 +43,14 @@ namespace Glass.Sitecore.Mapper
 
         #endregion
 
-       
+        /// <summary>
+        /// The context constructor should only be called once. After the context has been created call GetContext for specific copies
+        /// </summary>
+        /// <param name="loader">The loader used to load classes.</param>
+        public Context(IConfigurationLoader loader):this(loader, null)
+        {
+
+        }
 
         /// <summary>
         /// The context constructor should only be called once. After the context has been created call GetContext for specific copies
@@ -72,6 +80,10 @@ namespace Glass.Sitecore.Mapper
                         foreach (var cls in classes)
                         {
                             IList<AbstractSitecoreDataHandler> handlers = new List<AbstractSitecoreDataHandler>();
+
+                            //create constructors
+
+                            CreateConstructorDelegates(cls.Value);
 
                             foreach (var prop in cls.Value.Properties)
                             {
@@ -104,6 +116,64 @@ namespace Glass.Sitecore.Mapper
             }
             else
                 throw new MapperException ("Context already loaded");
+        }
+
+        /// <summary>
+        /// Returns a delegate method that will load a class based on its constuctor
+        /// </summary>
+        /// <param name="classConfig">The SitecoreClassConfig to store the delegate method in</param>
+        /// <param name="constructorParameters">The list of contructor parameters</param>
+        /// <param name="delegateType">The type of the delegate function to create</param>
+        /// <returns></returns>
+        internal static void CreateConstructorDelegates(SitecoreClassConfig classConfig)
+        {
+            Type type = classConfig.Type;
+
+            var constructors = type.GetConstructors();
+
+            foreach (var constructor in constructors)
+            {
+                var parameters = constructor.GetParameters();
+
+                var dynMethod = new DynamicMethod("DM$OBJ_FACTORY_" + type.Name, type, parameters.Select(x => x.ParameterType).ToArray(), type);
+
+                ILGenerator ilGen = dynMethod.GetILGenerator();
+                for (int i = 0; i < parameters.Count(); i++)
+                {
+                    ilGen.Emit(OpCodes.Ldarg, i);
+                }
+
+                ilGen.Emit(OpCodes.Newobj, constructor);
+
+                ilGen.Emit(OpCodes.Ret);
+
+                Type genericType = null;
+                switch (parameters.Count())
+                {
+                    case 0:
+                        genericType = typeof(Func<>);
+                        break;
+                    case 1:
+                         genericType = typeof(Func<,>);
+                         break;
+                    case 2:
+                         genericType = typeof(Func<,,>);
+                         break;
+                    case 3:
+                         genericType = typeof(Func<,,,>);
+                        break;
+                    case 4:
+                         genericType = typeof(Func<,,,,>);
+                         break;
+                    default:
+                         throw new MapperException("Only supports constructors with  a maximum of 4 parameters");
+                }
+
+                var delegateType = genericType.MakeGenericType(parameters.Select(x=>x.ParameterType).Concat(new []{ type}).ToArray());
+
+
+                classConfig.CreateObjectMethods[constructor] = dynMethod.CreateDelegate(delegateType);
+            }
         }
 
         /// <summary>
