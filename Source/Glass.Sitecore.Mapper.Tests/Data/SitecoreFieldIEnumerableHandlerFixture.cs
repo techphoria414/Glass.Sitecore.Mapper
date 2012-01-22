@@ -38,7 +38,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Context context = new Context(
                 new AttributeConfigurationLoader(
                     "Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixture,  Glass.Sitecore.Mapper.Tests",
-                    "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"), null);
+                    "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"));
 
             _service = new SitecoreService("master");
         }

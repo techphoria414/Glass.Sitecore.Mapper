@@ -36,7 +36,7 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
 
         [SetUp]
         public void Setup(){
-            var context = new Context(new AttributeConfigurationLoader("Glass.Sitecore.Mapper.Tests.Proxies.ProxyClassInterceptorFixtureNS, Glass.Sitecore.Mapper.Tests"), null);
+            var context = new Context(new AttributeConfigurationLoader("Glass.Sitecore.Mapper.Tests.Proxies.ProxyClassInterceptorFixtureNS, Glass.Sitecore.Mapper.Tests"));
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 

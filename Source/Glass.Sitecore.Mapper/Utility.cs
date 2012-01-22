@@ -27,6 +27,7 @@ using System.Collections.Specialized;
 using System.Linq.Expressions;
 using Sitecore.Links;
 using Glass.Sitecore.Mapper.Configuration;
+using Glass.Sitecore.Mapper.Data;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -217,6 +218,37 @@ namespace Glass.Sitecore.Mapper
 
             return defaultUrl;
 
+        }
+
+        public static IEnumerable<AbstractSitecoreDataHandler> GetDefaultDataHanlders()
+        {
+
+            //load default handlers
+           return new List<AbstractSitecoreDataHandler>(){
+                new SitecoreChildrenHandler(),
+                new SitecoreFieldBooleanHandler(),
+                new SitecoreFieldClassHandler(),
+                new SitecoreFieldDateTimeHandler(),
+                new SitecoreFieldDecimalHandler(),
+                new SitecoreFieldDoubleHandler(),
+                new SitecoreFieldEnumHandler(),
+                new SitecoreFieldFileHandler(),
+                new SitecoreFieldFloatHandler(),
+                new SitecoreFieldGuidHandler(),
+                new SitecoreFieldIEnumerableHandler(),
+                new SitecoreFieldImageHandler(),
+                new SitecoreFieldIntegerHandler(),
+                new SitecoreFieldLinkHandler(),
+                new SitecoreFieldStreamHandler(),
+                new SitecoreFieldStringHandler(),
+                new SitecoreFieldTriStateHandler(),
+                new SitecoreIdDataHandler(),
+                new SitecoreInfoHandler(),
+                new SitecoreParentHandler(),
+                new SitecoreQueryHandler(),
+                new SitecoreItemHandler(),
+                new SitecoreLinkedHandler()
+            };
         }
 
         

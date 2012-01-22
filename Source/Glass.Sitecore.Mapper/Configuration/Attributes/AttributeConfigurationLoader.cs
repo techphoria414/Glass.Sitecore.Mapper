@@ -31,6 +31,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         public AttributeConfigurationLoader(params string [] namespaces)
         {
             _namespaces = namespaces;
+            DataHandlers = new List<Data.AbstractSitecoreDataHandler>(Utility.GetDefaultDataHanlders());
         }
 
         #region IConfigurationLoader Members
@@ -59,6 +60,16 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
             return classes.Select(x => x.Value);
         }
+
+
+        public IList<Data.AbstractSitecoreDataHandler> DataHandlers
+        {
+            get;
+            set;
+        }
+
+        #endregion
+
 
         public static  IEnumerable<SitecoreProperty> GetProperties(Type type)
         {
@@ -125,6 +136,5 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             }
             
         }
-        #endregion
     }
 }
