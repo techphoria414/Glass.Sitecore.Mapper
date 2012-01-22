@@ -108,7 +108,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             {
                 return assem.GetTypes().Select(x =>
                 {
-                    if (x != null && x.Namespace != null && x.Namespace.StartsWith(namesp))
+                    if (x != null && x.Namespace != null && (x.Namespace.Equals(namesp) || x.Namespace.StartsWith(namesp + "."))) 
                     {
                         IEnumerable<object> attrs = x.GetCustomAttributes(true);
                         SitecoreClassAttribute attr = attrs.FirstOrDefault(y=>y is SitecoreClassAttribute) as SitecoreClassAttribute;

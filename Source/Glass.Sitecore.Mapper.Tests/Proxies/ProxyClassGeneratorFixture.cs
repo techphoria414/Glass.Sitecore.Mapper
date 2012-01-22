@@ -32,7 +32,7 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
     [TestFixture]
     public class ProxyClassGeneratorFixture
     {
-        InstanceContext _context;
+        Context _context;
         Database _db;
         Guid _itemId;
         ISitecoreService _service;
@@ -42,7 +42,7 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
         {
 
 
-            Context context = new Context(
+            _context = new Context(
                 new AttributeConfigurationLoader("Glass.Sitecore.Mapper.Tests.Proxies.ProxyClassGeneratorFixtureNS, Glass.Sitecore.Mapper.Tests"));
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
@@ -56,7 +56,10 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
         {
             //Assign 
             Item item = _db.GetItem(new ID(_itemId));
-            SitecoreClassConfig config = _context.GetSitecoreClass(typeof(ProxyClassGeneratorFixtureNS.SubClass));
+            
+            InstanceContext instContext = Context.GetContext();
+
+            SitecoreClassConfig config = instContext.GetSitecoreClass(typeof(ProxyClassGeneratorFixtureNS.SubClass));
             
             Context.CreateConstructorDelegates(config);
             

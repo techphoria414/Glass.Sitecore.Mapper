@@ -58,6 +58,7 @@ namespace Glass.Sitecore.Mapper
 
         public static Dictionary<Type, SitecoreClassConfig> ToDictionary(this IEnumerable<SitecoreClassConfig> classes)
         {
+            
             Dictionary<Type, SitecoreClassConfig> dicClasses = new Dictionary<Type, SitecoreClassConfig>();
             foreach (var cls in classes)
             {
@@ -67,7 +68,7 @@ namespace Glass.Sitecore.Mapper
                 }
                 catch (ArgumentException ex)
                 {
-                    throw new MapperException("Dictionary already contains type {0}".Formatted(cls.Type.FullName), ex);
+                    throw new MapperException("You are trying to load the type {0} more than once. Check that the IConfigurationLoaders aren't loading the same classes.".Formatted(cls.Type.FullName), ex);
                 }
             }
 
