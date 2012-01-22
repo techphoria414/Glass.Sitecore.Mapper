@@ -26,6 +26,7 @@ using Glass.Sitecore.Mapper.Data;
 using Sitecore.Data.Items;
 using Sitecore.Data;
 using Sitecore.SecurityModel;
+using Moq;
 
 namespace Glass.Sitecore.Mapper.Tests
 {
@@ -323,6 +324,7 @@ namespace Glass.Sitecore.Mapper.Tests
             Assert.AreEqual(0, parent.Children.Count);
             using (new SecurityDisabler())
             {
+                 parent.DeleteChildren();
                  child = parent.Add(itemName, new TemplateID(new ID(templateId)));
             }
 
@@ -438,6 +440,38 @@ namespace Glass.Sitecore.Mapper.Tests
         }
 
         [Test]
+        public void CreateClass_CreateAClassWithMultipleParametersConstructor()
+        {
+            //Assign
+            string path = "/sitecore/content/Glass/Test1";
+            int param1 = 10;
+            string param2 = "Hello world";
+            bool param3 = true;
+            float param4 = 0.5f;
+
+            Item item1 = _db.GetItem(path);
+
+            //Act
+            TestClassMultipleParamConstructor result1 = _sitecore.CreateClass<TestClassMultipleParamConstructor, int, string, bool, float>(false, false, item1, param1, param2, param3, param4);
+            TestClassMultipleParamConstructor result2 = _sitecore.CreateClass<TestClassMultipleParamConstructor, int, string, bool>(false, false, item1, param1, param2, param3);
+
+            //Assert
+            Assert.IsNotNull(result1);
+            Assert.AreEqual(10, result1.Param1);
+            Assert.AreEqual("Hello world", result1.Param2);
+            Assert.AreEqual(true, result1.Param3);
+            Assert.AreEqual(0.5f, result1.Param4);
+
+
+            Assert.IsNotNull(result1);
+            Assert.AreEqual(10, result1.Param1);
+            Assert.AreEqual("Hello world", result1.Param2);
+            Assert.AreEqual(true, result1.Param3);
+        }
+
+
+        [Test]
+        [ExpectedException(typeof(MapperException))]
         public void CreateClass_CreateAClassWithFourParametersConstructor_WrongOrder()
         {
             //Assign
@@ -477,10 +511,11 @@ namespace Glass.Sitecore.Mapper.Tests
             //Assert
             //expected exception
 
+
         }
 
         #endregion
-
+       
     }
     namespace SitecoreServiceFixtureNS
     {
@@ -540,6 +575,34 @@ namespace Glass.Sitecore.Mapper.Tests
         {
 
             public TestClassFourParamConstructor(int param1, string param2, bool param3, float param4)
+            {
+                Param1 = param1;
+                Param2 = param2;
+                Param3 = param3;
+                Param4 = param4;
+            }
+
+            public int Param1 { get; set; }
+            public string Param2 { get; set; }
+            public bool Param3 { get; set; }
+            public float Param4 { get; set; }
+
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+        }
+
+        [SitecoreClass]
+        public class TestClassMultipleParamConstructor
+        {
+
+            public TestClassMultipleParamConstructor(int param1, string param2, bool param3)
+            {
+                Param1 = param1;
+                Param2 = param2;
+                Param3 = param3;
+            }
+
+            public TestClassMultipleParamConstructor(int param1, string param2, bool param3, float param4)
             {
                 Param1 = param1;
                 Param2 = param2;

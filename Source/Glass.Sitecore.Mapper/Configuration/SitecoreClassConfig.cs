@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Data;
+using System.Reflection;
 
 namespace Glass.Sitecore.Mapper.Configuration
 {
@@ -27,7 +28,7 @@ namespace Glass.Sitecore.Mapper.Configuration
     {
         public SitecoreClassConfig()
         {
-            CreateObjectMethods = new Dictionary<string, Delegate>();
+            CreateObjectMethods = new Dictionary<ConstructorInfo, Delegate>();
         }
 
         public Type Type { get; set; }
@@ -35,10 +36,7 @@ namespace Glass.Sitecore.Mapper.Configuration
         public Guid BranchId { get; set; }
 
         internal IEnumerable<AbstractSitecoreDataHandler> DataHandlers { get; set; }
-        internal delegate object Instantiator0();
-        internal delegate object Instantiator1(object arg1);
-        internal delegate object Instantiator2(object arg1, object arg2);
-        internal Dictionary<string, Delegate> CreateObjectMethods { get; set; }
+        internal Dictionary<ConstructorInfo, Delegate> CreateObjectMethods { get; set; }
 
         public IEnumerable<SitecoreProperty> Properties { get; set; }
         public SitecoreClassAttribute ClassAttribute {get;set;}
