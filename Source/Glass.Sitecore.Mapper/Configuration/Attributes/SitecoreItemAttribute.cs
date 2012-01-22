@@ -10,15 +10,13 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
     /// </summary>
     public class SitecoreItemAttribute:AbstractSitecorePropertyAttribute
     {
-         /// <summary>
-        /// Used to retrieve the children of an item as a specific type.
-        /// </summary>
+        
         public SitecoreItemAttribute()
         {
             IsLazy = true;
         }
         /// <summary>
-        /// Indicates if children should be loaded lazily. Default value is true. If false all children will be loaded when the contain object is created.
+        /// Indicates that the item should be loaded lazily. Default value is true. If false the item will be loaded when the containing object is created.
         /// </summary>
         public bool IsLazy
         {

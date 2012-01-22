@@ -52,7 +52,9 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             _attr.InferType = true;
             return this;
         }
-
+        /// <summary>
+        /// Use the Sitecore.Data.Query.QueryContext when querying for data
+        /// </summary>
         public SitecoreQuery<T> UseQueryContext()
         {
             _attr.UseQueryContext = true;

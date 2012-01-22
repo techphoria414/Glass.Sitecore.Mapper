@@ -22,6 +22,10 @@ using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
+
+    /// <summary>
+    /// Used to map item information to a class property
+    /// </summary>
     public class SitecoreInfo<T>: AbstractSitecoreAttributeBuilder<T>
 
     {
@@ -31,12 +35,22 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             _attr = new Configuration.Attributes.SitecoreInfoAttribute();
         }
 
+        /// <summary>
+        /// The type of information that should populate the property
+        /// </summary>
         public SitecoreInfo<T> InfoType(SitecoreInfoType type)
         {
             _attr.Type = type;
             return this;
         }
-
+        /// <summary>
+        /// UrlOptions, use in conjunction with SitecoreInfoType.Url
+        /// </summary>
+        public SitecoreInfo<T> UrlOptions(SitecoreInfoUrlOptions option)
+        {
+            _attr.UrlOptions = option;
+            return this;
+        }
 
         internal override Glass.Sitecore.Mapper.Configuration.Attributes.AbstractSitecorePropertyAttribute Attribute
         {

@@ -23,6 +23,9 @@ using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
+    /// <summary>
+    /// Used to populate the property with data from a Sitecore field
+    /// </summary>
 	public class SitecoreField<T>: AbstractSitecoreAttributeBuilder<T>
 	{
         Configuration.Attributes.SitecoreFieldAttribute _attr;
@@ -33,17 +36,25 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             _attr = new Configuration.Attributes.SitecoreFieldAttribute(); 
         }
 
+        /// <summary>
+        /// Indicate that the field can not be written to Sitecore
+        /// </summary>
         public SitecoreField<T> ReadOnly()
         {
             _attr.ReadOnly = true;
             return this;
         }
-
+        /// <summary>
+        /// The name of the field  to use if it is different to the property name
+        /// </summary>
         public SitecoreField<T> FieldName(string name)
         {
             _attr.FieldName = name;
             return this;
         }
+        /// <summary>
+        /// Options to override the behaviour of certain fields.
+        /// </summary>
         public SitecoreField<T> Setting(SitecoreFieldSettings setting)
         {
             _attr.Setting = setting;

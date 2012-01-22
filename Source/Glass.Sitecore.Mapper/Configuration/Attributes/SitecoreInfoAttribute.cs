@@ -21,6 +21,9 @@ using System.Text;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
+    /// <summary>
+    /// Used to map item information to a class property
+    /// </summary>
     public class SitecoreInfoAttribute:AbstractSitecorePropertyAttribute
     {
         /// <summary>

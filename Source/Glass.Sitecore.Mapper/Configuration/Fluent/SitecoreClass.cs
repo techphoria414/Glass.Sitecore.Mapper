@@ -65,8 +65,12 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             _config.ClassAttribute.BranchId = id.ToString();
             return this;
         }
-       
 
+        /// <summary>
+        /// Map item's  children  to a class property
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreChildren<T> Children(Expression<Func<T, object>> ex)
         {
             SitecoreChildren<T> builder = new SitecoreChildren<T>(ex);
@@ -76,7 +80,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
 
         
 
-
+        /// <summary>
+        /// Map an item field to a class property
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreField<T> Field(Expression<Func<T, object>> ex){
             SitecoreField<T> builder = new SitecoreField<T>(ex);
             AddProperty(builder);
@@ -85,25 +93,47 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
         }
 
       
-
+        /// <summary>
+        /// Map the item ID to a class property
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreId<T> Id(Expression<Func<T, object>> ex)
         {
             SitecoreId<T> builder = new SitecoreId<T>(ex);
             AddProperty(builder);
             return builder;
         }
+
+        /// <summary>
+        /// Map item information  to a class property
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreInfo<T> Info(Expression<Func<T, object>> ex)
         {
             SitecoreInfo<T> builder = new SitecoreInfo<T>(ex);
             AddProperty(builder);
             return builder;
         }
+
+        /// <summary>
+        /// Map an item's parent  to a class property
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreParent<T> Parent(Expression<Func<T, object>> ex)
         {
             SitecoreParent<T> builder = new SitecoreParent<T>(ex);
             AddProperty(builder);
             return builder;
         }
+
+        /// <summary>
+        /// Map a Sitecore Query to a class property
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreQuery<T> Query(Expression<Func<T, object>> ex)
         {
             SitecoreQuery<T> builder = new SitecoreQuery<T>(ex);
@@ -111,6 +141,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             return builder;
         }
 
+        /// <summary>
+        /// Map a Sitecore item to a class property
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreItem<T> Item(Expression<Func<T, object>> ex)
         {
             SitecoreItem<T> builder = new SitecoreItem<T>(ex);
@@ -118,6 +153,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             return builder;
         }
 
+        /// <summary>
+        /// Map an item's linked items to a class property
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreLinked<T> Linked(Expression<Func<T, object>> ex)
         {
             SitecoreLinked<T> builder = new SitecoreLinked<T>(ex);
@@ -125,28 +165,53 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             return builder;
         }
 
-
+        /// <summary>
+        /// Map item fields to a class properties
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreClass<T> Fields(Action<ISitecoreClassFields<T>> fields)
         {
             fields.Invoke(this);
             return this;
         }
 
+        /// <summary>
+        /// Map multiple item information to a class properties
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreClass<T> Infos(Action<ISitecoreClassInfos<T>> infos)
         {
             infos.Invoke(this);
             return this;
         }
+
+        /// <summary>
+        /// Map Sitecore queries to class properties
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreClass<T> Queries(Action<ISitecoreClassQueries<T>> queries)
         {
             queries.Invoke(this);
             return this;
         }
+        /// <summary>
+        /// Map Sitecore items to a class properties
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreClass<T> Items(Action<ISitecoreClassItems<T>> items)
         {
             items.Invoke(this);
             return this;
         }
+        /// <summary>
+        /// Map an item's linked items to a class properties
+        /// </summary>
+        /// <param name="ex"></param>
+        /// <returns></returns>
         public SitecoreClass<T> Links(Action<ISitecoreLinkedItems<T>> links)
         {
             links.Invoke(this);

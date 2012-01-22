@@ -22,6 +22,9 @@ using System.Linq.Expressions;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
+    /// <summary>
+    /// Indicates a field that contains the Sitecore item ID, this field must be a Guid
+    /// </summary>
     public  class SitecoreId<T> : AbstractSitecoreAttributeBuilder<T>
     {
         Configuration.Attributes.SitecoreIdAttribute _attr;
