@@ -60,20 +60,7 @@ namespace Glass.Sitecore.Mapper
             _database = database;
         }
         
-        #if DEBUG
-
-        /// <summary>
-        /// Used by the test assembly only!!
-        /// </summary>
-        /// <param name="database"></param>
-        /// <param name="context"></param>
-        internal SitecoreService(Database database, InstanceContext context){
-            InstanceContext = context;
-            _database = database;
-        
-        }
-
-        #endif
+       
 
         #region ISitecoreService Members
 
