@@ -38,7 +38,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _property = new SitecoreProperty()
             {
                 Attribute = new SitecoreFieldAttribute(),
-                Property = typeof(SitecoreFieldEnumHandlerFixtureNS.TestClass).GetProperty("Enum")
+                Property = typeof(TestClass).GetProperty("Enum")
             };
         }
 
@@ -69,10 +69,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(_property);
 
             //Act
-            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum)_handler.GetFieldValue(fieldValue,  null, null);
+            var result = (TestEnum)_handler.GetFieldValue(fieldValue,  null, null);
 
             //Assert
-            Assert.AreEqual(SitecoreFieldEnumHandlerFixtureNS.TestEnum.Oranges, result);
+            Assert.AreEqual(TestEnum.Oranges, result);
 
         }
 
@@ -85,7 +85,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(_property);
 
             //Act
-            var result = (SitecoreFieldEnumHandlerFixtureNS.TestEnum)_handler.GetFieldValue(fieldValue,  null, null);
+            var result = (TestEnum)_handler.GetFieldValue(fieldValue,  null, null);
 
             //Assert
 
@@ -99,11 +99,11 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void SetFieldValue_ReturnsEnumValue()
         {
             //Assign
-            SitecoreFieldEnumHandlerFixtureNS.TestEnum value = SitecoreFieldEnumHandlerFixtureNS.TestEnum.Berry;
+            TestEnum value = TestEnum.Berry;
             SitecoreProperty property = new SitecoreProperty()
             {
                 Attribute = new SitecoreFieldAttribute(),
-                Property = new FakePropertyInfo(typeof(SitecoreFieldEnumHandlerFixtureNS.TestEnum))
+                Property = new FakePropertyInfo(typeof(TestEnum))
             };
 
             _handler.ConfigureDataHandler(property);
@@ -117,9 +117,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         #endregion
 
-    }
-    namespace SitecoreFieldEnumHandlerFixtureNS
-    {
+        #region CLASSES
+
         public enum TestEnum
         {
             Oranges,
@@ -130,6 +129,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             public TestEnum Enum { get; set; }
         }
-    }
 
+        #endregion
+    }
+   
 }

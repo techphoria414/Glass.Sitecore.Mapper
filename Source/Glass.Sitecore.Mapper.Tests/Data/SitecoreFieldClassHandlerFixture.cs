@@ -24,6 +24,7 @@ using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Data;
 using Sitecore.Data.Items;
+using Glass.Sitecore.Mapper.Tests.Domain;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -33,7 +34,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         SitecoreFieldClassHandler _handler;
         ISitecoreService _service;
         Database _db;
-        Guid _itemId;
+        string _item1Path;
+        string _item2Path;
 
 
         [SetUp]
@@ -41,74 +43,16 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             _handler = new SitecoreFieldClassHandler();
 
-            var loadedClassIdProperty = new SitecoreProperty()
-            {
-                Attribute = new SitecoreIdAttribute(),
-                Property = typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass).GetProperty("Id")
-            };
-
-
-
-            var baseTypeIdProperty = new SitecoreProperty()
-            {
-                Attribute = new SitecoreIdAttribute(),
-                Property = typeof(SitecoreFieldClassHandlerFixtureNS.BaseType).GetProperty("Id")
-            };
-
-
-            var context = new InstanceContext(
-                (new SitecoreClassConfig[]{
-                    new SitecoreClassConfig(){
-                         ClassAttribute = new SitecoreClassAttribute(),
-                         Properties = new SitecoreProperty[]{
-                            loadedClassIdProperty
-                         },
-                         Type = typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass),
-                         DataHandlers = new AbstractSitecoreDataHandler[]{},
-                         IdProperty = loadedClassIdProperty
-                    },
-                    new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(),
-                       Properties = new SitecoreProperty[]{
-                            baseTypeIdProperty
-                       },
-                       IdProperty= baseTypeIdProperty,
-                       Type = typeof(SitecoreFieldClassHandlerFixtureNS.BaseType),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                        new SitecoreIdDataHandler(){
-                               Property = typeof(SitecoreFieldClassHandlerFixtureNS.BaseType).GetProperty("Id")
-                        }
-                       }
-                   },
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(){
-                           
-                       },
-                       Properties = new SitecoreProperty[]{
-                            new SitecoreProperty(){
-                                Attribute = new SitecoreIdAttribute(),
-                                Property = typeof(SitecoreFieldClassHandlerFixtureNS.TypeOne).GetProperty("Id")
-                            }
-                       },
-                       Type = typeof(SitecoreFieldClassHandlerFixtureNS.TypeOne),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                        new SitecoreIdDataHandler(){
-                               Property = typeof(SitecoreFieldClassHandlerFixtureNS.TypeOne).GetProperty("Id")
-                        }
-                       },
-                       TemplateId = new Guid("{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")
-                   },
-                    
-                }).ToDictionary(),
-                new AbstractSitecoreDataHandler[] { }
-                );
+            Context context = new Context(
+                new AttributeConfigurationLoader(
+                    "Glass.Sitecore.Mapper.Tests.Data.SitecoreChildrenHandlerFixture,  Glass.Sitecore.Mapper.Tests",
+                    "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"), null);
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
+            _service = new SitecoreService(_db);
 
-            _service = new SitecoreService(_db, context);
-
-            // /sitecore/content/Glass/Test2
-            _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
+            _item1Path = "/sitecore/content/Data/SitecoreFieldClassHandler/Item1";
+            _item2Path = "/sitecore/content/Data/SitecoreFieldClassHandler/Item2";
 
         }
 
@@ -217,9 +161,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
 
             //Assign
-            SitecoreProperty property = new SitecoreProperty();
-            property.Attribute = new SitecoreFieldAttribute();
-            property.Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass));
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(RootClass).GetProperty("LazyLoaded"));
 
             //Act
             var result = _handler.WillHandle(property, _service.InstanceContext.Datas, _service.InstanceContext.Classes);
@@ -234,7 +176,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             //Assign
             SitecoreProperty property = new SitecoreProperty();
-            property.Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.NotLoadedClass));
+            property.Property = new FakePropertyInfo(typeof(NotLoadedClass));
 
             //Act
             var result = _handler.WillHandle(property, _service.InstanceContext.Datas, _service.InstanceContext.Classes);
@@ -250,184 +192,133 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         #region GetFieldValue
 
         [Test]
-        public void GetFieldValue_GuidId_CreatesProxyClass_UsingSetOnProperty()
+        public void GetFieldValue_LazyLoads()
         {
             //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            SitecoreFieldClassHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.ParentClass();
-            SitecoreProperty property = new SitecoreProperty()
-                 {
-                     Attribute = new SitecoreFieldAttribute(),
-                     Property = typeof(SitecoreFieldClassHandlerFixtureNS.ParentClass).GetProperty("Child")
-                 };
+            Item item = _db.GetItem(_item1Path);
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(RootClass).GetProperty("LazyLoaded"));
 
             _handler.ConfigureDataHandler(property);
+            RootClass root = new RootClass();
+
+
             //Act
             var result = _handler.GetFieldValue(
-                _itemId.ToString(),                
+                item.ID.ToString(),                
                 item,                
                 _service);
 
-            parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
+            root.LazyLoaded = result as EmptyTemplate1;
 
             //Assert
-            Assert.AreNotEqual(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass), parent.Child.GetType());
-
-            parent.Child.CallMe = "test";
+            Assert.IsNotNull(root.LazyLoaded);
+            //should not be equal because of proxy class
+            Assert.AreNotEqual(typeof(EmptyTemplate1), root.LazyLoaded.GetType());
+                        
         }
-
-        [Test]
-        public void GetFieldValue_GuidId_CreatesProxyClass_UsingGetOnProperty()
-        {
-            //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            SitecoreFieldClassHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.ParentClass();
-            SitecoreProperty property = new SitecoreProperty()
-                {
-                    Attribute = new SitecoreFieldAttribute(),
-                    Property = typeof(SitecoreFieldClassHandlerFixtureNS.ParentClass).GetProperty("Child")
-                };
-
-            _handler.ConfigureDataHandler(property);
-            //Act
-            var result = _handler.GetFieldValue(
-                _itemId.ToString(),
-                item,
-                _service);
-
-            parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
-
-            //Assert
-            Assert.AreNotEqual(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass), parent.Child.GetType());
-
-            var callMe = parent.Child.CallMe;
-        }
-
-        [Test]
-        public void GetFieldValue_GuidId_SetOnProxyUpdatesActual()
-        {
-            //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            SitecoreFieldClassHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.ParentClass();
-            SitecoreProperty property = new SitecoreProperty()
-                {
-                    Attribute = new SitecoreFieldAttribute(),
-                    Property = typeof(SitecoreFieldClassHandlerFixtureNS.ParentClass).GetProperty("Child")
-                };
-
-            _handler.ConfigureDataHandler(property);
-            //Act
-            var result = _handler.GetFieldValue(
-                _itemId.ToString(),
-                item,
-                _service) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
-
-            parent.Child = result;
-            result.CallMe = "Some value";
-
-            //Assert
-
-            var test = parent.Child.CallMe;
-
-            Assert.AreEqual(result.CallMe, test);
-        }
-        [Test]
-        public void GetFieldValue_GuidId_SetOnActualUpdatesProxy()
-        {
-            //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-            SitecoreFieldClassHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.ParentClass();
-            SitecoreProperty property = new SitecoreProperty()
-                {
-                    Attribute = new SitecoreFieldAttribute(),
-                    Property = typeof(SitecoreFieldClassHandlerFixtureNS.ParentClass).GetProperty("Child")
-                };
-
-            _handler.ConfigureDataHandler(property);
-            
-            //Act
-            var result = _handler.GetFieldValue(
-                _itemId.ToString(),
-                item,
-                _service) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
-
-            parent.Child = result;
-            parent.Child.CallMe = "Some value";
-
-            //Assert
-
-            var test = result.CallMe;
-
-            Assert.AreEqual(result.CallMe, test);
-        }
-
-        [Test]
-        public void GetFieldValue_Path_CreatesProxyClass()
-        {
-            //Assign
-            string path = "/sitecore/content/Glass/Test1";
-
-            Item item = _db.GetItem(new ID(_itemId));
-            SitecoreFieldClassHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.ParentClass();
-            SitecoreProperty property = new SitecoreProperty()
-                {
-                    Attribute = new SitecoreFieldAttribute(),
-                    Property = typeof(SitecoreFieldClassHandlerFixtureNS.ParentClass).GetProperty("Child")
-                };
-            _handler.ConfigureDataHandler(property);
-            
-            //Act
-            var result = _handler.GetFieldValue(
-                path,
-                item,
-                _service);
-
-            parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
-
-            //Assert
-            Assert.AreNotEqual(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass), parent.Child.GetType());
-
-            parent.Child.CallMe = "test";
-        }
+     
         [Test]
         public void GetFieldValue_InvalidData_ReturnsNull()
         {
             //Assign
-            string path = "agfaegfaeg";
+            //Assign
+            Item item = _db.GetItem(_item1Path);
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(RootClass).GetProperty("LazyLoaded"));
 
-            Item item = _db.GetItem(new ID(_itemId));
-            SitecoreFieldClassHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.ParentClass();
-            SitecoreProperty property = new SitecoreProperty()
-                {
-                    Attribute = new SitecoreFieldAttribute(),
-                    Property = typeof(SitecoreFieldClassHandlerFixtureNS.ParentClass).GetProperty("Child")
-                };
             _handler.ConfigureDataHandler(property);
+            RootClass root = new RootClass();
             
             //Act
             var result = _handler.GetFieldValue(
-                path,
+                "random value",
                 item,               
                 _service);
 
-            parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
+            root.LazyLoaded = result as EmptyTemplate1;
 
             //Assert
-            Assert.IsNull(parent.Child);
+            Assert.IsNull(root.LazyLoaded);
         }
 
-        [Test]
-        public void GetFieldValue_IsLazyTrue_ProxyIsReturned()
-        {
-            //need to test that if SitecoreFieldAttribute.IsLazy is true return a proxy
-        }
+       
         [Test]
         public void GetFieldValue_IsLazyFalse_ReturnsConcrete()
         {
-            //need to test that if SitecoreFieldAttribute.IsLazy is flase return a concrete class
+            //Assign
+            Item item = _db.GetItem(_item1Path);
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(RootClass).GetProperty("NotLazyLoaded"));
+
+            _handler.ConfigureDataHandler(property);
+            RootClass root = new RootClass();
+
+
+            //Act
+            var result = _handler.GetFieldValue(
+                item.ID.ToString(),
+                item,
+                _service);
+
+            root.LazyLoaded = result as EmptyTemplate1;
+
+            //Assert
+            Assert.IsNotNull(root.LazyLoaded);
+            //should not be equal because of proxy class
+            Assert.AreEqual(typeof(EmptyTemplate1), root.LazyLoaded.GetType());
         }
 
+        [Test]
+        public void GetFieldValue_InferType_NotLazy_ReturnsConcrete()
+        {
+            //Assign
+            Item item = _db.GetItem(_item2Path);
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(RootClass).GetProperty("NotLazyLoadedInferred"));
 
+            _handler.ConfigureDataHandler(property);
+            RootClass root = new RootClass();
+
+
+            //Act
+            var result = _handler.GetFieldValue(
+                item.ID.ToString(),
+                item,
+                _service);
+
+            root.NotLazyLoadedInferred = result as EmptyTemplate1;
+
+            //Assert
+            Assert.IsNotNull(root.NotLazyLoadedInferred);
+            Assert.AreNotEqual(typeof(EmptyTemplate1), root.NotLazyLoadedInferred.GetType());
+            Assert.AreEqual(typeof(EmptyTemplate2), root.NotLazyLoadedInferred.GetType());
+            //the type is inferred so should be EmptyTemplate2
+            Assert.IsTrue(root.NotLazyLoadedInferred is EmptyTemplate2);
+        }
+
+        [Test]
+        public void GetFieldValue_InferType_Lazy_ReturnsConcrete()
+        {
+            //Assign
+            Item item = _db.GetItem(_item2Path);
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(RootClass).GetProperty("LazyLoadedInferred"));
+
+            _handler.ConfigureDataHandler(property);
+            RootClass root = new RootClass();
+
+
+            //Act
+            var result = _handler.GetFieldValue(
+                item.ID.ToString(),
+                item,
+                _service);
+
+            root.LazyLoadedInferred = result as EmptyTemplate1;
+
+            //Assert
+            Assert.IsNotNull(root.LazyLoadedInferred);
+            Assert.AreNotEqual(typeof(EmptyTemplate1), root.LazyLoadedInferred.GetType());
+            Assert.AreNotEqual(typeof(EmptyTemplate2), root.LazyLoadedInferred.GetType());
+            //the type is inferred so should be EmptyTemplate2
+            Assert.IsTrue(root.LazyLoadedInferred is EmptyTemplate2);
+        }
 
         #endregion
 
@@ -437,21 +328,17 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void SetFieldValue_ValidClass_ReturnsGuid()
         {
             //Assign
-            SitecoreFieldClassHandlerFixtureNS.LoadedClass target = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.LoadedClass();
-            target.Id = _itemId;
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreFieldAttribute(),
-                Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass))
-            };
-            _handler.ConfigureDataHandler(property);
+            EmptyTemplate1 target = new EmptyTemplate1();
+            target.Id = Guid.NewGuid();
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(RootClass).GetProperty("LazyLoaded"));
 
+            _handler.ConfigureDataHandler(property);
 
             //Act
             var result = _handler.SetFieldValue(target, _service);
 
             //Assert
-            Assert.AreEqual(_itemId, new Guid(result));
+            Assert.AreEqual(target.Id, new Guid(result));
 
         }
 
@@ -460,14 +347,10 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         public void SetFieldValue_NotLoadedClass_ThrowsException()
         {
             //Assign
-            SitecoreFieldClassHandlerFixtureNS.NotLoadedClass target = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.NotLoadedClass();
-            target.Id = _itemId;
+            NotLoadedClass target = new NotLoadedClass();
+            target.Id = Guid.NewGuid();
 
-            SitecoreProperty property = new SitecoreProperty()
-            {
-                Attribute = new SitecoreFieldAttribute(),
-                Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.NotLoadedClass))
-            };
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(RootClass).GetProperty("NotLoaded"));
 
             _handler.ConfigureDataHandler(property);
 
@@ -476,94 +359,40 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var result = _handler.SetFieldValue(target, _service);
 
             //Assert
-            Assert.AreEqual(_itemId, new Guid(result));
+            Assert.AreEqual(target.Id, new Guid(result));
 
         }
 
 
         #endregion
 
-        //TODO: Test infer type with lazy and not lazy
+        #region CLASSES
 
-        [Test]
-        public void InferType_NotLazy()
+        [SitecoreClass]
+        public class RootClass
         {
-            //Assign
-            Item item = _db.GetItem(new ID(_itemId));
+            [SitecoreField]
+            public virtual EmptyTemplate1 LazyLoaded { get; set; }
 
-            _handler.Property = new FakePropertyInfo(typeof(BaseItem));
-            _handler.IsLazy = false;
-            _handler.InferType = true;
-            //Act
-            var result = _handler.GetFieldValue(
-                _itemId.ToString(),
-                item,
-                _service) as SitecoreFieldClassHandlerFixtureNS.BaseType ;
+            [SitecoreField(Setting= SitecoreFieldSettings.DontLoadLazily)]
+            public virtual EmptyTemplate1 NotLazyLoaded { get; set; }
 
-           
-            //Assert
+            [SitecoreField(Setting = SitecoreFieldSettings.DontLoadLazily | SitecoreFieldSettings.InferType)]
+            public virtual EmptyTemplate1 NotLazyLoadedInferred { get; set; }
 
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result is SitecoreFieldClassHandlerFixtureNS.TypeOne);
-            Assert.AreEqual(_itemId, result.Id);
+            [SitecoreField(Setting = SitecoreFieldSettings.InferType)]
+            public virtual EmptyTemplate1 LazyLoadedInferred { get; set; }
 
-
-
-
+            [SitecoreField]
+            public virtual NotLoadedClass NotLoaded { get; set; }
         }
 
-        [Test]
-        public void InferType_IsLazy()
-        {
-            //Assign
-            Item item = _db.GetItem(new ID(_itemId));
-
-            _handler.Property = new FakePropertyInfo(typeof(SitecoreFieldClassHandlerFixtureNS.BaseType));
-            _handler.IsLazy = false;
-            _handler.InferType = true;
-            //Act
-            var result = _handler.GetFieldValue(
-                _itemId.ToString(),
-                item,
-                _service) as SitecoreFieldClassHandlerFixtureNS.BaseType;
-
-
-            //Assert
-
-            Assert.IsNotNull(result);
-            Assert.IsTrue(result is SitecoreFieldClassHandlerFixtureNS.TypeOne);
-            Assert.AreEqual(_itemId, result.Id);
-        }
-    }
-
-    namespace SitecoreFieldClassHandlerFixtureNS
-    {
-        public class ParentClass
-        {
-            public LoadedClass Child { get; set; }
-        }
-        public class LoadedClass
-        {
-            public virtual Guid Id { get; set; }
-            public virtual string CallMe { get; set; }
-        }
         public class NotLoadedClass
         {
             public virtual Guid Id { get; set; }
         }
 
-        [SitecoreClass]
-        public class BaseType
-        {
-
-            [SitecoreId]
-            public virtual Guid Id { get; set; }
-        }
-
-        [SitecoreClass(TemplateId = "{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}")]
-        public class TypeOne : BaseType
-        {
-
-        }
+        #endregion
     }
+
 }

@@ -31,7 +31,13 @@ namespace Glass.Sitecore.Mapper.Data
             get;
             set;
         }
-       
+
+        public UrlOptions UrlOptions
+        {
+            get;
+            set;
+        }
+
         public override bool WillHandle(Glass.Sitecore.Mapper.Configuration.SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
         {
             return property.Attribute is SitecoreInfoAttribute;
@@ -63,7 +69,7 @@ namespace Glass.Sitecore.Mapper.Data
                 case SitecoreInfoType.TemplateName:
                     return item.TemplateName;
                 case SitecoreInfoType.Url:
-                    return LinkManager.GetItemUrl(item);
+                    return LinkManager.GetItemUrl(item, UrlOptions);
                 case SitecoreInfoType.FullUrl:
                     return LinkManager.GetItemUrl(item, new UrlOptions() { AlwaysIncludeServerUrl = true });
                 case SitecoreInfoType.Version:
@@ -117,15 +123,16 @@ namespace Glass.Sitecore.Mapper.Data
             }
         }
 
-        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        public override void ConfigureDataHandler(SitecoreProperty scProperty)
         {
             SitecoreInfoAttribute attr = scProperty.Attribute as SitecoreInfoAttribute;
 
             InfoType = attr.Type;
 
+                UrlOptions = Utility.CreateUrlOptions(attr.UrlOptions);
+
             base.ConfigureDataHandler(scProperty);
         }
 
-        
     }
 }

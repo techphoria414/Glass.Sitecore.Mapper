@@ -153,7 +153,7 @@ namespace Glass.Sitecore.Mapper.Data
             }
         }
 
-        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        public override void ConfigureDataHandler(SitecoreProperty scProperty)
         {
             SitecoreQueryAttribute attr = scProperty.Attribute as SitecoreQueryAttribute;
             IsLazy = attr.IsLazy;

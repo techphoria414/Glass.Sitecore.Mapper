@@ -25,6 +25,8 @@ using Glass.Sitecore.Mapper.Proxies;
 using System.Text.RegularExpressions;
 using System.Collections.Specialized;
 using System.Linq.Expressions;
+using Sitecore.Links;
+using Glass.Sitecore.Mapper.Configuration;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -129,7 +131,43 @@ namespace Glass.Sitecore.Mapper
             }
 
             PropertyInfo info = type.GetProperty(name);
+
+            //if we don't find the property straight away then it is probably an interface
+            //and we need to check all inherited interfaces.
+            if (info == null)
+            {
+                info = GetAllProperties(type).FirstOrDefault(x => x.Name == name);
+            }
+
             return info;
+        }
+
+        /// <summary>
+        /// Gets all properties on a type
+        /// </summary>
+        /// <param name="type"></param>
+        /// <returns></returns>
+        public static PropertyInfo[] GetAllProperties(Type type)
+        {
+            List<Type> typeList = new List<Type>();
+            typeList.Add(type);
+
+            if (type.IsInterface)
+            {
+                typeList.AddRange(type.GetInterfaces());
+            }
+
+            List<PropertyInfo> propertyList = new List<PropertyInfo>();
+
+            foreach (Type interfaceType in typeList)
+            {
+                foreach (PropertyInfo property in interfaceType.GetProperties())
+                {
+                    propertyList.Add(property);
+                }
+            }
+
+            return propertyList.ToArray();
         }
 
         /// <summary>
@@ -147,6 +185,38 @@ namespace Glass.Sitecore.Mapper
             }
 
             return sb.ToString();
+        }
+
+
+        public static UrlOptions CreateUrlOptions(SitecoreInfoUrlOptions urlOptions)
+        {
+            UrlOptions defaultUrl = UrlOptions.DefaultOptions;
+
+            if (urlOptions == 0) return defaultUrl;
+
+            //check for any default overrides
+            defaultUrl.AddAspxExtension = (urlOptions & SitecoreInfoUrlOptions.AddAspxExtension) == SitecoreInfoUrlOptions.AddAspxExtension ? true : defaultUrl.AddAspxExtension;
+            defaultUrl.AlwaysIncludeServerUrl = (urlOptions & SitecoreInfoUrlOptions.AlwaysIncludeServerUrl) == SitecoreInfoUrlOptions.AlwaysIncludeServerUrl ? true : defaultUrl.AlwaysIncludeServerUrl;
+            defaultUrl.EncodeNames = (urlOptions & SitecoreInfoUrlOptions.EncodeNames) == SitecoreInfoUrlOptions.EncodeNames ? true : defaultUrl.EncodeNames;
+            defaultUrl.ShortenUrls = (urlOptions & SitecoreInfoUrlOptions.ShortenUrls) == SitecoreInfoUrlOptions.ShortenUrls ? true : defaultUrl.ShortenUrls;
+            defaultUrl.SiteResolving = (urlOptions & SitecoreInfoUrlOptions.SiteResolving) == SitecoreInfoUrlOptions.SiteResolving ? true : defaultUrl.SiteResolving;
+            defaultUrl.UseDisplayName = (urlOptions & SitecoreInfoUrlOptions.UseUseDisplayName) == SitecoreInfoUrlOptions.UseUseDisplayName ? true : defaultUrl.UseDisplayName;
+
+
+            if ((urlOptions & SitecoreInfoUrlOptions.LanguageEmbeddingAlways) == SitecoreInfoUrlOptions.LanguageEmbeddingAlways)
+                defaultUrl.LanguageEmbedding = LanguageEmbedding.Always;
+            else if ((urlOptions & SitecoreInfoUrlOptions.LanguageEmbeddingAsNeeded) == SitecoreInfoUrlOptions.LanguageEmbeddingAsNeeded)
+                defaultUrl.LanguageEmbedding = LanguageEmbedding.AsNeeded;
+            else if ((urlOptions & SitecoreInfoUrlOptions.LanguageEmbeddingNever) == SitecoreInfoUrlOptions.LanguageEmbeddingNever)
+                defaultUrl.LanguageEmbedding = LanguageEmbedding.Never;
+
+            if ((urlOptions & SitecoreInfoUrlOptions.LanguageLocationFilePath) == SitecoreInfoUrlOptions.LanguageLocationFilePath)
+                defaultUrl.LanguageLocation = LanguageLocation.FilePath;
+            else if ((urlOptions & SitecoreInfoUrlOptions.LanguageLocationQueryString) == SitecoreInfoUrlOptions.LanguageLocationQueryString)
+                defaultUrl.LanguageLocation = LanguageLocation.QueryString;
+
+            return defaultUrl;
+
         }
 
         

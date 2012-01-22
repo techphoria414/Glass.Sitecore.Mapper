@@ -82,19 +82,31 @@ namespace Glass.Sitecore.Mapper
 
             if (attributes == null) attributes = new NameValueCollection();
 
-            string format = "<img src='{0}' alt='{1}' class='{2}' {3}/>";
-
-            string cls = attributes.AllKeys.Any(x=> x =="class") ? attributes["class"] : image.Class;
-
-            //should there be some warning about these removals?
-            attributes.Remove("class");
-            attributes.Remove("alt");
-            attributes.Remove("src");
-
+            string format = "<img src='{0}' {1}/>";
             
-            return format.Formatted(image.Src, image.Alt, cls, Utility.ConvertAttributes(attributes));
+            //should there be some warning about these removals?
+            AttributeCheck(attributes, "class", image.Class);
+            AttributeCheck(attributes, "alt", image.Alt);
+            if(image.Height > 0)
+                AttributeCheck(attributes, "height", image.Height.ToString());
+            if(image.Width > 0)
+                AttributeCheck(attributes, "width", image.Width.ToString());
+            
+            return format.Formatted(image.Src, Utility.ConvertAttributes(attributes));
         }
 
+        /// <summary>
+        /// Checks it and attribute is part of the NameValueCollection and updates it with the 
+        /// default if it isn't.
+        /// </summary>
+        /// <param name="collection">The collection of attributes</param>
+        /// <param name="name">The name of the attribute in the collection</param>
+        /// <param name="defaultValue">The default value for the attribute</param>
+        public void AttributeCheck(NameValueCollection collection, string name, string defaultValue)
+        {
+            if (collection[name].IsNullOrEmpty() && !defaultValue.IsNullOrEmpty())
+                collection[name] = defaultValue;
+        }
 
         /// <summary>
         /// Render HTML for a link
@@ -139,10 +151,12 @@ namespace Glass.Sitecore.Mapper
             string anchor = link.Anchor.IsNullOrEmpty() ? "" : "#" + link.Anchor;
             string target = attributes.AllKeys.Any(x => x == "target") ? attributes["target"] : link.Target;
 
+
+            AttributeCheck(attributes, "class", link.Class);
+            AttributeCheck(attributes, "target", link.Target);
+            AttributeCheck(attributes, "title", link.Title);
+
             attributes.Remove("href");
-            attributes.Remove("title");
-            attributes.Remove("target");
-            attributes.Remove("class");
 
 
             return format.Formatted(link.Url, anchor, link.Title, target, cls, Utility.ConvertAttributes(attributes), contents.IsNullOrEmpty() ?  link.Text : contents);
@@ -191,6 +205,8 @@ namespace Glass.Sitecore.Mapper
                     var scClass = context.GetSitecoreClass(typeof(T));
 
                     var prop = Utility.GetPropertyInfo(type, field.Body);
+
+                    if (prop == null) throw new MapperException("Page editting error. Could not find property {0} on type {1}".Formatted(field.Body, type.FullName));
 
                     var dataHandler = scClass.DataHandlers.FirstOrDefault(x => x.Property == prop);
 

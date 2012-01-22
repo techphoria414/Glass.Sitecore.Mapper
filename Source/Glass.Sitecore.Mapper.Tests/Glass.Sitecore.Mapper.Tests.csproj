@@ -84,6 +84,7 @@
     <Compile Include="Configuration\Fluent\SitecoreClassFixture.cs" />
     <Compile Include="ContextFixture.cs" />
     <Compile Include="Data\AbstractSitecoreFieldFixture.cs" />
+    <Compile Include="Domain\LinkTemplate.cs" />
     <Compile Include="Data\QueryParameters\ItemDateNowParameterFixture.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -161,6 +162,9 @@
     <Compile Include="Data\SitecoreQueryHandlerFixture.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Domain\EmptyTemplate2.cs" />
+    <Compile Include="Domain\EmptyTemplate1.cs" />
+    <Compile Include="Domain\NotLoaded.cs" />
     <Compile Include="HtmlFixture.cs" />
     <Compile Include="InstanceContextFixture.cs" />
     <Compile Include="InterfaceFixture.cs" />
@@ -189,6 +193,7 @@
     </None>
     <None Include="App_Config\ConnectionStrings.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App_Config\ConnectionStringsOracle.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
@@ -267,6 +272,7 @@
     </None>
     <None Include="App_Config\Sitecore.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <SubType>Designer</SubType>
     </None>
     <None Include="App_Config\XamlSharp.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

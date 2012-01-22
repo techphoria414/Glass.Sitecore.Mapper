@@ -27,7 +27,7 @@ Thumbs.db
 *.lib
 *.sbr
 obj/
-[Rr]elease*/
+[Rr]elease/
 _ReSharper*/
 [Tt]est[Rr]esult*
 temp/
@@ -43,9 +43,9 @@ App_Data/
 *.DS_Store
 temp/
 upload/
-App_Config/
 Builds/
 !*.textile
 Source/Glass.Sitecore.Mapper.Demo/data/
+Glass.Sitecore.suo
 Glass.Sitecore.suo
 Glass.Sitecore.suo

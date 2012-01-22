@@ -39,39 +39,55 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         {
             if (_namespaces == null || _namespaces.Count() == 0) return new List<SitecoreClassConfig>();
 
-            List<SitecoreClassConfig> classes = new List<SitecoreClassConfig>();
+            Dictionary<Type,SitecoreClassConfig> classes = new Dictionary<Type, SitecoreClassConfig>();
             foreach (string space in _namespaces)
             {
                 string[] parts = space.Split(',');
-                    classes.AddRange(GetClass(parts[1], parts[0]));
+                var namespaceClasses = GetClass(parts[1], parts[0]);
+                namespaceClasses.ForEach(cls =>
+                {
+                    //stops duplicates being added
+                    if (!classes.ContainsKey(cls.Type))
+                    {
+                        classes.Add(cls.Type, cls);
+                    }
+                });
+                
             };
 
-            classes.ForEach(x => x.Properties = GetProperties(x.Type));
+            classes.ForEach(x => x.Value.Properties = GetProperties(x.Value.Type));
 
-            return classes;
+            return classes.Select(x => x.Value);
         }
 
-        private IEnumerable<SitecoreProperty> GetProperties(Type type)
+        public static  IEnumerable<SitecoreProperty> GetProperties(Type type)
         {
-            IEnumerable<PropertyInfo> properties = type.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.Instance);
+            IEnumerable<PropertyInfo> properties = Utility.GetAllProperties(type);
 
             return properties.Select(x =>
             {
-                var attrs = x.GetCustomAttributes(true);
-                var attr = attrs.FirstOrDefault(y => y is AbstractSitecorePropertyAttribute) as AbstractSitecorePropertyAttribute;
-
-                if (attr != null)
-                {
-                    return new SitecoreProperty()
-                    {
-                        Attribute = attr,
-                        Property = x                       
-                    };
-                }
-                else return null;
+               return GetProperty(x);
             }).Where(x=>x != null).ToList();
             
         }
+
+        public static SitecoreProperty GetProperty(PropertyInfo info)
+        {
+            var attrs = info.GetCustomAttributes(true);
+            var attr = attrs.FirstOrDefault(y => y is AbstractSitecorePropertyAttribute) as AbstractSitecorePropertyAttribute;
+
+            if (attr != null)
+            {
+                return new SitecoreProperty()
+                {
+                    Attribute = attr,
+                    Property = info
+                };
+            }
+            else return null;
+        }
+
+     
 
         private IEnumerable<SitecoreClassConfig> GetClass(string assembly, string namesp)
         {

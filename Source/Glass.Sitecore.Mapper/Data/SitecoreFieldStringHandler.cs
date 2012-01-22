@@ -35,7 +35,7 @@ namespace Glass.Sitecore.Mapper.Data
                 FieldRenderer renderer = new FieldRenderer();
                 renderer.Item = item;
                 renderer.FieldName = FieldName;
-                renderer.Parameters = "";
+                renderer.Parameters = string.Empty;
                 return renderer.Render();
             }
             else return item[FieldName];

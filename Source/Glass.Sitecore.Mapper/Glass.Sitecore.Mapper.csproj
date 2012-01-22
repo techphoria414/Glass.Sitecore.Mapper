@@ -37,12 +37,10 @@
     <DocumentationFile>bin\Release\Glass.Sitecore.Mapper.XML</DocumentationFile>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Castle.Core, Version=1.1.0.0, Culture=neutral, PublicKeyToken=407dd0808d44fbdc, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Castle.Core">
       <HintPath>..\..\Depends\Castle.Core.dll</HintPath>
     </Reference>
-    <Reference Include="Sitecore.Kernel, Version=6.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
+    <Reference Include="Sitecore.Kernel">
       <HintPath>..\..\Depends\Sitecore.Kernel.dll</HintPath>
     </Reference>
     <Reference Include="System" />
@@ -79,9 +77,10 @@
     <Compile Include="Configuration\Fluent\SitecoreClass.cs" />
     <Compile Include="Configuration\IConfigurationLoader.cs" />
     <Compile Include="Configuration\Attributes\SitecoreLinkedAttribute.cs" />
+    <Compile Include="Configuration\SitecoreInfoUrlOptions.cs" />
     <Compile Include="Configuration\SitecoreLinkedOptions.cs" />
     <Compile Include="Configuration\SitecoreProperty.cs" />
-    <Compile Include="Configuration\SitecoreClass.cs" />
+    <Compile Include="Configuration\SitecoreClassConfig.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Data\SitecoreItemHandler.cs" />
     <Compile Include="Data\SitecoreLinkedHandler.cs" />

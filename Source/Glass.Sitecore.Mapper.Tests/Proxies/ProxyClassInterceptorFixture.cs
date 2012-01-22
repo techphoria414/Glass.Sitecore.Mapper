@@ -15,9 +15,6 @@
  
 */
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Configuration;
@@ -25,7 +22,6 @@ using Glass.Sitecore.Mapper.Data;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Proxies;
-using Castle.Core.Interceptor;
 using Moq;
 using Castle.DynamicProxy;
 
@@ -40,19 +36,11 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
 
         [SetUp]
         public void Setup(){
-            var context  = new InstanceContext(
-               (new SitecoreClassConfig[]{
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(),
-                       Properties = new SitecoreProperty[]{},
-                       Type = typeof(ProxyClassInterceptorFixtureNS.TestClass),
-                       DataHandlers = new AbstractSitecoreDataHandler[]{}
-                   }
-               }).ToDictionary(), new AbstractSitecoreDataHandler[]{});
+            var context = new Context(new AttributeConfigurationLoader("Glass.Sitecore.Mapper.Tests.Proxies.ProxyClassInterceptorFixtureNS, Glass.Sitecore.Mapper.Tests"), null);
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
-            _service = new SitecoreService(_db, context);
+            _service = new SitecoreService(_db);
 
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
 
@@ -83,10 +71,98 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
             Assert.AreEqual("true", result);
         }
 
+        //TODO: more proxy tests
+
+        //[Test]
+        //public void GetFieldValue_GuidId_CreatesProxyClass_UsingGetOnProperty()
+        //{
+        //    //Assign
+        //    Item item = _db.GetItem(_item1Path);
+        //    SitecoreFieldClassHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.ParentClass();
+        //    SitecoreProperty property = new SitecoreProperty()
+        //    {
+        //        Attribute = new SitecoreFieldAttribute(),
+        //        Property = typeof(SitecoreFieldClassHandlerFixtureNS.ParentClass).GetProperty("Child")
+        //    };
+
+        //    _handler.ConfigureDataHandler(property);
+        //    //Act
+        //    var result = _handler.GetFieldValue(
+        //        _itemId.ToString(),
+        //        item,
+        //        _service);
+
+        //    parent.Child = result as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
+
+        //    //Assert
+        //    Assert.AreNotEqual(typeof(SitecoreFieldClassHandlerFixtureNS.LoadedClass), parent.Child.GetType());
+
+        //    var callMe = parent.Child.CallMe;
+        //}
+
+        //[Test]
+        //public void GetFieldValue_GuidId_SetOnProxyUpdatesActual()
+        //{
+        //    //Assign
+        //    Item item = _db.GetItem(new ID(_itemId));
+        //    SitecoreFieldClassHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.ParentClass();
+        //    SitecoreProperty property = new SitecoreProperty()
+        //    {
+        //        Attribute = new SitecoreFieldAttribute(),
+        //        Property = typeof(SitecoreFieldClassHandlerFixtureNS.ParentClass).GetProperty("Child")
+        //    };
+
+        //    _handler.ConfigureDataHandler(property);
+        //    //Act
+        //    var result = _handler.GetFieldValue(
+        //        _itemId.ToString(),
+        //        item,
+        //        _service) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
+
+        //    parent.Child = result;
+        //    result.CallMe = "Some value";
+
+        //    //Assert
+
+        //    var test = parent.Child.CallMe;
+
+        //    Assert.AreEqual(result.CallMe, test);
+        //}
+        //[Test]
+        //public void GetFieldValue_GuidId_SetOnActualUpdatesProxy()
+        //{
+        //    //Assign
+        //    Item item = _db.GetItem(new ID(_itemId));
+        //    SitecoreFieldClassHandlerFixtureNS.ParentClass parent = new Glass.Sitecore.Mapper.Tests.Data.SitecoreFieldClassHandlerFixtureNS.ParentClass();
+        //    SitecoreProperty property = new SitecoreProperty()
+        //    {
+        //        Attribute = new SitecoreFieldAttribute(),
+        //        Property = typeof(SitecoreFieldClassHandlerFixtureNS.ParentClass).GetProperty("Child")
+        //    };
+
+        //    _handler.ConfigureDataHandler(property);
+
+        //    //Act
+        //    var result = _handler.GetFieldValue(
+        //        _itemId.ToString(),
+        //        item,
+        //        _service) as SitecoreFieldClassHandlerFixtureNS.LoadedClass;
+
+        //    parent.Child = result;
+        //    parent.Child.CallMe = "Some value";
+
+        //    //Assert
+
+        //    var test = result.CallMe;
+
+        //    Assert.AreEqual(result.CallMe, test);
+        //}
+
     }
 
     namespace ProxyClassInterceptorFixtureNS{
         
+        [SitecoreClass]
         public class TestClass{
             public virtual string TestCall()
             {

@@ -19,24 +19,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
-using Glass.Sitecore.Mapper.Data;
 
-namespace Glass.Sitecore.Mapper.Configuration
+namespace Glass.Sitecore.Mapper.Tests.Domain
 {
-    public class SitecoreClassConfig 
+    [SitecoreClass(TemplateId = "{4AE4FCCE-F176-405F-9FFB-CF3AFC23F403}")]
+    public class EmptyTemplate2 : EmptyTemplate1
     {
-        public Type Type { get; set; }
-        public Guid TemplateId { get; set; }
-        public Guid BranchId { get; set; }
-
-        internal IEnumerable<AbstractSitecoreDataHandler> DataHandlers { get; set; }
-        internal delegate object Instantiator();
-        internal Instantiator CreateObject { get; set; }
-
-        public IEnumerable<SitecoreProperty> Properties { get; set; }
-        public SitecoreClassAttribute ClassAttribute {get;set;}
-        public SitecoreProperty IdProperty { get; set; }
-        public SitecoreProperty LanguageProperty { get; set; }
-        public SitecoreProperty VersionProperty { get; set; }
     }
 }

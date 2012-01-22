@@ -6,6 +6,7 @@ using Glass.Sitecore.Mapper.Data;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Configuration;
+using Glass.Sitecore.Mapper.Tests.Domain;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -24,35 +25,11 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
 
-            var testTypeIdProperty = new SitecoreProperty()
-            {
-                Attribute = new SitecoreIdAttribute(),
-                Property = typeof(SitecoreItemHandlerFixtureNS.TestClass).GetProperty("Id")
-            };
+            Context context = new Context(
+                new AttributeConfigurationLoader(                   
+                    "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"), null);
 
-            var context = new InstanceContext(
-                 (new SitecoreClassConfig[]{
-                     new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(),
-                       Properties = new SitecoreProperty[]{
-                            testTypeIdProperty
-                       },
-                       IdProperty= testTypeIdProperty,
-                       Type = typeof(SitecoreItemHandlerFixtureNS.TestClass),
-                       DataHandlers = new AbstractSitecoreDataHandler []{
-                        new SitecoreIdDataHandler(){
-                               Property = typeof(SitecoreItemHandlerFixtureNS.TestClass).GetProperty("Id")
-                        },
-                        new SitecoreInfoHandler(){
-                               Property = typeof(SitecoreItemHandlerFixtureNS.TestClass).GetProperty("Path"),
-                               InfoType = SitecoreInfoType.Path
-                        },
-                       }
-                   }
-                 }).ToDictionary(),
-                new AbstractSitecoreDataHandler[] { });
-
-            _service = new SitecoreService(db, context);
+            _service = new SitecoreService(db);
 
         }
 
@@ -103,15 +80,15 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
              //Assign
             SitecoreItemAttribute attr = new SitecoreItemAttribute();
-            attr.Id = "{1E7A2641-E27E-4346-ACDE-839480927CF6}";
+            attr.Id = "{66E62701-3FF2-492D-81A4-BD3E55428837}";
             attr.IsLazy = true;
             SitecoreProperty prop = new SitecoreProperty();
             prop.Attribute = attr;
-            prop.Property = new FakePropertyInfo(typeof(SitecoreItemHandlerFixtureNS.TestClass));
+            prop.Property = new FakePropertyInfo(typeof(EmptyTemplate1));
             _handler.ConfigureDataHandler(prop);
 
             //Act
-            SitecoreItemHandlerFixtureNS.TestClass result = _handler.GetValue(null, _service) as SitecoreItemHandlerFixtureNS.TestClass;
+            EmptyTemplate1 result = _handler.GetValue(null, _service) as EmptyTemplate1;
 
 
             //Assert
@@ -123,17 +100,17 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         {
             //Assign
             SitecoreItemAttribute attr = new SitecoreItemAttribute();
-            attr.Path = "/sitecore/content/Glass/SitecoreItemHandler";
+            attr.Path = "/sitecore/content/Data/SitecoreItemHandler/Item1";
             attr.IsLazy = true;
             SitecoreProperty prop = new SitecoreProperty();
             prop.Attribute = attr;
-            prop.Property = new FakePropertyInfo(typeof(SitecoreItemHandlerFixtureNS.TestClass));
+            prop.Property = new FakePropertyInfo(typeof(EmptyTemplate1));
 
 
             _handler.ConfigureDataHandler(prop);
 
             //Act
-            SitecoreItemHandlerFixtureNS.TestClass result = _handler.GetValue(null, _service) as SitecoreItemHandlerFixtureNS.TestClass;
+            EmptyTemplate1 result = _handler.GetValue(null, _service) as EmptyTemplate1;
 
 
             //Assert
@@ -145,17 +122,5 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
     }
 
-    namespace SitecoreItemHandlerFixtureNS
-    {
-        [SitecoreClass]
-        public class TestClass
-        {
-            [SitecoreId]
-            public virtual Guid Id { get; set; }
-
-            [SitecoreInfo(SitecoreInfoType.Path)]
-            public virtual string Path { get; set; }
-        }
-    
-    }
+   
 }

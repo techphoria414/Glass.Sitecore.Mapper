@@ -35,7 +35,7 @@ namespace Glass.Sitecore.Mapper.Tests
         {
 
             AttributeConfigurationLoader loader = new AttributeConfigurationLoader(
-              new string[] { "Glass.Sitecore.Mapper.Tests.SitecoreServiceFixtureNS, Glass.Sitecore.Mapper.Tests" }
+              new string[] { "Glass.Sitecore.Mapper.Tests.ContextFixtureNS, Glass.Sitecore.Mapper.Tests" }
               );
             _context = new Context(loader, new AbstractSitecoreDataHandler[] { });
         }
@@ -48,13 +48,26 @@ namespace Glass.Sitecore.Mapper.Tests
         {
             //Act
             InstanceContext instance = Context.GetContext();
-            
+
             //Assert
             Assert.AreEqual(2, instance.Classes.Count());
         }
 
         #endregion
 
+    }
+
+    namespace ContextFixtureNS
+    {
+
+        [SitecoreClass]
+        public class ContextFixtureTest1
+        {
+        }
+        [SitecoreClass]
+        public class ContextFixtureTest2
+        {
+        }
     }
 
 }

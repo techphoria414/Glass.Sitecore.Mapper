@@ -54,7 +54,7 @@ namespace Glass.Sitecore.Mapper.Data
             }
         }
 
-        internal override void ConfigureDataHandler(SitecoreProperty scProperty)
+        public override void ConfigureDataHandler(SitecoreProperty scProperty)
         {
             SitecoreParentAttribute attr = scProperty.Attribute as SitecoreParentAttribute;
             this.IsLazy = attr.IsLazy;

@@ -30,8 +30,7 @@ namespace Glass.Sitecore.Mapper
 {
     public class InstanceContext : ICloneable
     {
-        public Hashtable ClassesByType { get; private set; }
-        public Hashtable ClassesById { get; set; }
+        public Dictionary<Guid, IList <SitecoreClassConfig>> ClassesById { get; private set; }
         public Dictionary<Type, SitecoreClassConfig> Classes { get; private set; }
         public IEnumerable<AbstractSitecoreDataHandler> Datas { get; private set; }
 
@@ -41,14 +40,17 @@ namespace Glass.Sitecore.Mapper
             //this will be simplified to remove the need for three sets of data
             
             Classes = classes;
-            ClassesByType = new Hashtable(classes);
-            ClassesById = new Hashtable();
-            foreach (var record in classes)
+            ClassesById = new Dictionary<Guid, IList<SitecoreClassConfig>>();
+            foreach (var record in classes.Where(x => x.Value.TemplateId != Guid.Empty))
             {
-                if (record.Value.TemplateId != Guid.Empty)
-                    ClassesById.Add(record.Value.TemplateId, record.Value);
+                if (!ClassesById.ContainsKey(record.Value.TemplateId))
+                {
+                    ClassesById.Add(record.Value.TemplateId, new List<SitecoreClassConfig>());
+                }
+             
+                ClassesById[record.Value.TemplateId].Add(record.Value);
             }
-
+            
             Datas = datas;
         }
 
@@ -91,19 +93,25 @@ namespace Glass.Sitecore.Mapper
 
         public SitecoreClassConfig GetSitecoreClass(Type type)
         {
-            if (!ClassesByType.ContainsKey(type) || ClassesByType[type] == null)
+            if (!Classes.ContainsKey(type) || Classes[type] == null)
                 throw new MapperException("Type {0} has not been loaded".Formatted(type.FullName));
 
-            return ClassesByType[type].CastTo<SitecoreClassConfig>();
+            return Classes[type];
         }
 
-        public SitecoreClassConfig GetSitecoreClass(Guid templateId)
+        public SitecoreClassConfig GetSitecoreClass(Guid templateId, Type type)
         {
             string id = templateId.ToString();
             //would it be quicker to have a second dictionary that recorded classes by their template ID?
             if (!ClassesById.ContainsKey(templateId) || ClassesById[templateId] != null)
             {
-                return ClassesById[templateId].CastTo<SitecoreClassConfig>();
+                var types = ClassesById[templateId];
+                if (types.Count == 1) return types.First();
+                else
+                {
+                    return types.First(x => type.IsAssignableFrom(x.Type));
+                }
+                
             }
             else return null;
         }
