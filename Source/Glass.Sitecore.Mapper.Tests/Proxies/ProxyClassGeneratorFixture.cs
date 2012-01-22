@@ -32,7 +32,7 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
     [TestFixture]
     public class ProxyClassGeneratorFixture
     {
-        InstanceContext _context;
+        Context _context;
         Database _db;
         Guid _itemId;
         ISitecoreService _service;
@@ -40,22 +40,15 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
         [SetUp]
         public void Setup()
         {
-            
 
-            _context = new InstanceContext(
-               (new SitecoreClassConfig[]{
-                   new SitecoreClassConfig(){
-                       ClassAttribute = new SitecoreClassAttribute(),
-                       Properties = new SitecoreProperty[]{},
-                       Type = typeof(ProxyClassGeneratorFixtureNS.SubClass),
-                       DataHandlers = new AbstractSitecoreDataHandler[]{}
-                   }
-               }).ToDictionary(), new AbstractSitecoreDataHandler[] { });
+
+            _context = new Context(
+                new AttributeConfigurationLoader("Glass.Sitecore.Mapper.Tests.Proxies.ProxyClassGeneratorFixtureNS, Glass.Sitecore.Mapper.Tests"));
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
             _itemId = new Guid("{8A317CBA-81D4-4F9E-9953-64C4084AECCA}");
-            _service = new SitecoreService(_db, _context);
+            _service = new SitecoreService(_db);
         }
 
         [Test]
@@ -63,7 +56,10 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
         {
             //Assign 
             Item item = _db.GetItem(new ID(_itemId));
-            SitecoreClassConfig config = _context.GetSitecoreClass(typeof(ProxyClassGeneratorFixtureNS.SubClass));
+            
+            InstanceContext instContext = Context.GetContext();
+
+            SitecoreClassConfig config = instContext.GetSitecoreClass(typeof(ProxyClassGeneratorFixtureNS.SubClass));
             
             Context.CreateConstructorDelegates(config);
             
@@ -83,10 +79,11 @@ namespace Glass.Sitecore.Mapper.Tests.Proxies
 
     namespace ProxyClassGeneratorFixtureNS
     {
+        [SitecoreClass]
         public class TestClass {
             public SubClass Class { get; set; }
         }
-
+        [SitecoreClass]
         public class SubClass {
             private string _callMe;
             public virtual string CallMe

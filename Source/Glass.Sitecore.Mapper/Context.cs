@@ -47,17 +47,7 @@ namespace Glass.Sitecore.Mapper
         /// The context constructor should only be called once. After the context has been created call GetContext for specific copies
         /// </summary>
         /// <param name="loader">The loader used to load classes.</param>
-        public Context(IConfigurationLoader loader):this(loader, null)
-        {
-
-        }
-
-        /// <summary>
-        /// The context constructor should only be called once. After the context has been created call GetContext for specific copies
-        /// </summary>
-        /// <param name="loader">The loader used to load classes.</param>
-        /// <param name="datas">Custom data handlers.</param>
-        public Context(IConfigurationLoader loader, IEnumerable<AbstractSitecoreDataHandler> datas)
+        public Context(params IConfigurationLoader [] loaders)
         {
             //the setup must only run if the context has not been setup
             //second attempts to setup a context should throw an error
@@ -69,11 +59,17 @@ namespace Glass.Sitecore.Mapper
                     {
 
                         //load all classes
-                        var classes = loader.Load().ToDictionary();
+                        List<SitecoreClassConfig> configs = new List<SitecoreClassConfig>();
+                        List<AbstractSitecoreDataHandler> dataHandlers = new List<AbstractSitecoreDataHandler>();
+                       
+                        foreach(var loader in loaders){
+                            configs.AddRange(loader.Load());
+                            dataHandlers.AddRange(loader.DataHandlers);
+                        }
+                                                
+                        var classes = configs.ToDictionary();
 
-                        datas = LoadDefaultDataHandlers(datas);
-
-                        InstanceContext instance = new InstanceContext(classes, datas);
+                        InstanceContext instance = new InstanceContext(classes, dataHandlers);
                         StaticContext = instance;
 
                         //now assign a data handler to each property
@@ -87,9 +83,9 @@ namespace Glass.Sitecore.Mapper
 
                             foreach (var prop in cls.Value.Properties)
                             {
-                                
-                                var handler =  instance.GetDataHandler(prop);
-                              
+
+                                var handler = instance.GetDataHandler(prop);
+
                                 //set the ID property of the class
                                 //the ID property is needed later for writing and page editing, 
                                 //saves time having to look it
@@ -102,20 +98,57 @@ namespace Glass.Sitecore.Mapper
                                    && prop.Attribute.CastTo<SitecoreInfoAttribute>().Type == SitecoreInfoType.Version)
                                     cls.Value.VersionProperty = prop;
 
-                                
+
                                 handlers.Add(handler);
 
                             }
                             cls.Value.DataHandlers = handlers;
                         }
-                        
-                       
+
+
 
                     }
                 }
             }
             else
-                throw new MapperException ("Context already loaded");
+                throw new MapperException("Context already loaded");
+
+        }
+
+        /// <summary>
+        /// The context constructor should only be called once. After the context has been created call GetContext for specific copies
+        /// </summary>
+        /// <param name="loader">The loader used to load classes.</param>
+        /// <param name="datas">Custom data handlers.</param>
+        [Obsolete("Assign AbstractDataHandlers to the IConfigurationLoader.DataHandlers property instead of using this contructor")]
+        public Context(IConfigurationLoader loader, IEnumerable<AbstractSitecoreDataHandler> datas) :this(new TemporaryConfigurationLoader(loader, datas))        
+        {
+            
+        }
+        /// <summary>
+        /// A temporary class to bridge the gap between the original method of loading classes and the new solution
+        /// </summary>
+        private class TemporaryConfigurationLoader:IConfigurationLoader{
+
+            IConfigurationLoader _loader;
+
+            public TemporaryConfigurationLoader(IConfigurationLoader loader, IEnumerable<AbstractSitecoreDataHandler> datas)
+            {
+                _loader = loader;
+                DataHandlers = loader.DataHandlers;
+                datas.ForEach(x => DataHandlers.Add(x));
+            }
+
+            public IEnumerable<SitecoreClassConfig> Load()
+            {
+                return _loader.Load();
+            }
+
+            public IList<AbstractSitecoreDataHandler> DataHandlers
+            {
+                get;
+                set;
+            }
         }
 
         /// <summary>
@@ -190,42 +223,7 @@ namespace Glass.Sitecore.Mapper
 
        
 
-        private IEnumerable<AbstractSitecoreDataHandler> LoadDefaultDataHandlers(IEnumerable<AbstractSitecoreDataHandler> handlers)
-        {
-            if (handlers == null) handlers = new List<AbstractSitecoreDataHandler>();
-            List<AbstractSitecoreDataHandler> _handlers = new List<AbstractSitecoreDataHandler>(handlers);
-
-            //load default handlers
-            _handlers.AddRange(new List<AbstractSitecoreDataHandler>(){
-                new SitecoreChildrenHandler(),
-                new SitecoreFieldBooleanHandler(),
-                new SitecoreFieldClassHandler(),
-                new SitecoreFieldDateTimeHandler(),
-                new SitecoreFieldDecimalHandler(),
-                new SitecoreFieldDoubleHandler(),
-                new SitecoreFieldEnumHandler(),
-                new SitecoreFieldFileHandler(),
-                new SitecoreFieldFloatHandler(),
-                new SitecoreFieldGuidHandler(),
-                new SitecoreFieldIEnumerableHandler(),
-                new SitecoreFieldImageHandler(),
-                new SitecoreFieldIntegerHandler(),
-                new SitecoreFieldLinkHandler(),
-                new SitecoreFieldStreamHandler(),
-                new SitecoreFieldStringHandler(),
-                new SitecoreFieldTriStateHandler(),
-                new SitecoreIdDataHandler(),
-                new SitecoreInfoHandler(),
-                new SitecoreParentHandler(),
-                new SitecoreQueryHandler(),
-                new SitecoreItemHandler(),
-                new SitecoreLinkedHandler()
-
-            });
-
-            return _handlers;
-
-        }
+        
 
        
     }

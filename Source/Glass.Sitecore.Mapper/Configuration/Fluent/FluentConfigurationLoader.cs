@@ -27,6 +27,8 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
         public FluentConfigurationLoader(params ISitecoreClass [] configs)
         {
             _configs = configs;
+            DataHandlers = new List<Data.AbstractSitecoreDataHandler>(Utility.GetDefaultDataHanlders());
+
         }
         #region IConfigurationLoader Members
 
@@ -35,6 +37,12 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
             return _configs.Select(x => x.Config);
         }
 
+        public IList<Data.AbstractSitecoreDataHandler> DataHandlers
+        {
+            get; 
+            set;
+        }
         #endregion
+
     }
 }

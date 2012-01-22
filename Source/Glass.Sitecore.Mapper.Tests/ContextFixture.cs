@@ -34,10 +34,8 @@ namespace Glass.Sitecore.Mapper.Tests
         public void Setup()
         {
 
-            AttributeConfigurationLoader loader = new AttributeConfigurationLoader(
-              new string[] { "Glass.Sitecore.Mapper.Tests.ContextFixtureNS, Glass.Sitecore.Mapper.Tests" }
-              );
-            _context = new Context(loader, new AbstractSitecoreDataHandler[] { });
+            
+            
         }
 
 
@@ -47,10 +45,51 @@ namespace Glass.Sitecore.Mapper.Tests
         public void GetContext_ReturnsContextWithLoadedClass()
         {
             //Act
+            AttributeConfigurationLoader loader = new AttributeConfigurationLoader(
+              new string[] { "Glass.Sitecore.Mapper.Tests.ContextFixtureNS, Glass.Sitecore.Mapper.Tests" }
+              );
+            _context = new Context(loader, new AbstractSitecoreDataHandler[] { });
             InstanceContext instance = Context.GetContext();
 
             //Assert
             Assert.AreEqual(2, instance.Classes.Count());
+        }
+
+        [Test]
+        [ExpectedException(typeof(MapperException))]
+        public void GetContext_MutlipleConfigLoadersSameNamespace_ThrowsException()
+        {
+            //Act
+            AttributeConfigurationLoader loader1 = new AttributeConfigurationLoader(
+              new string[] { "Glass.Sitecore.Mapper.Tests.ContextFixtureNS, Glass.Sitecore.Mapper.Tests" }
+              );
+
+            AttributeConfigurationLoader loader2 = new AttributeConfigurationLoader(
+              new string[] { "Glass.Sitecore.Mapper.Tests.ContextFixtureNS, Glass.Sitecore.Mapper.Tests" }
+              );
+            _context = new Context(loader1, loader2);
+            InstanceContext instance = Context.GetContext();
+
+            //Assert
+            Assert.AreEqual(2, instance.Classes.Count());
+        }
+
+        [Test]
+        public void GetContext_MutlipleConfigLoadersDifferentNamespace_ReturnsContextWithLoadedClasses()
+        {
+            //Act
+            AttributeConfigurationLoader loader1 = new AttributeConfigurationLoader(
+              new string[] { "Glass.Sitecore.Mapper.Tests.ContextFixtureNS, Glass.Sitecore.Mapper.Tests" }
+              );
+
+            AttributeConfigurationLoader loader2 = new AttributeConfigurationLoader(
+              new string[] { "Glass.Sitecore.Mapper.Tests.ContextFixtureNS2, Glass.Sitecore.Mapper.Tests" }
+              );
+            _context = new Context(loader1, loader2);
+            InstanceContext instance = Context.GetContext();
+
+            //Assert
+            Assert.AreEqual(4, instance.Classes.Count());
         }
 
         #endregion
@@ -58,6 +97,19 @@ namespace Glass.Sitecore.Mapper.Tests
     }
 
     namespace ContextFixtureNS
+    {
+
+        [SitecoreClass]
+        public class ContextFixtureTest1
+        {
+        }
+        [SitecoreClass]
+        public class ContextFixtureTest2
+        {
+        }
+    }
+
+    namespace ContextFixtureNS2
     {
 
         [SitecoreClass]

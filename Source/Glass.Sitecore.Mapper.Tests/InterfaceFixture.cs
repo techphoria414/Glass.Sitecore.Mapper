@@ -48,7 +48,7 @@ namespace Glass.Sitecore.Mapper.Tests
         {
             _context = new Context(
                 new AttributeConfigurationLoader(
-                    "Glass.Sitecore.Mapper.Tests.InterfaceFixtureNS, Glass.Sitecore.Mapper.Tests"), null);
+                    "Glass.Sitecore.Mapper.Tests.InterfaceFixtureNS, Glass.Sitecore.Mapper.Tests"));
 
             global::Sitecore.Context.Site = global::Sitecore.Configuration.Factory.GetSite("website");
 
