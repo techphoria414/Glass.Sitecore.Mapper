@@ -64,55 +64,559 @@ namespace Glass.Sitecore.Mapper
 
         #region ISitecoreService Members
 
+        /// <summary>
+        /// Query Sitecore for a set of items. Concrete classes are created
+        /// </summary>
+        /// <typeparam name="T">The type to return the items as</typeparam>
+        /// <param name="query">The query to execute</param>
+        /// <returns>Sitecore items as concrete classes of the specified type</returns>
         public IEnumerable<T> Query<T>(string query) where T: class
         {
             return Query<T>(query, false);
         }
+
+        /// <summary>
+        /// Query Sitecore for a set of items. Proxy classes are created.
+        /// </summary>
+        /// <typeparam name="T">The type to return the items as</typeparam>
+        /// <param name="query">The query to execute</param>
+        /// <returns>Sitecore items as proxy classes of the specified type</returns>
         public IEnumerable<T> Query<T>( string query,bool isLazy) where T : class
         {
             Item[] items = _database.SelectItems(query);
             return CreateClasses(isLazy, typeof(T), () => { return items; }) as IEnumerable<T>;
         }
 
-
+        /// <summary>
+        /// Query Sitecore for a single item. 
+        /// </summary>
+        /// <typeparam name="T">The type to return the items as</typeparam>
+        /// <param name="query">The query to execute</param>
+        /// <returns>Sitecore item as the specified type</returns>
         public T QuerySingle<T>(string query)  where T: class
         {            
             Item item = _database.SelectSingleItem(query);            
             return CreateClass<T>(false, false,  item);
         }
 
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
         public T GetItem<T>(string path)  where T: class
         {
             Item item = _database.GetItem(path);
             return CreateClass<T>(false, false, item);
         }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K>(string path, K param1) where T : class
+        {
+            Item item = _database.GetItem(path);
+            return CreateClass<T, K>(false, false, item, param1);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L>(string path, K param1, L param2) where T : class
+        {
+            Item item = _database.GetItem(path);
+            return CreateClass<T, K, L>(false, false, item, param1, param2);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M>(string path, K param1, L param2, M param3) where T : class
+        {
+            Item item = _database.GetItem(path);
+            return CreateClass<T, K, L, M>(false, false, item, param1, param2, param3);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <typeparam name="N">The type of the fourth constructor parameter</typeparam>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <param name="param4">The value of the fourth parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M, N>(string path, K param1, L param2, M param3, N param4) where T : class
+        {
+            Item item = _database.GetItem(path);
+            return CreateClass<T, K, L, M, N>(false, false, item, param1, param2, param3, param4);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
         public T GetItem<T>(string path, Language language) where T:class
         {
             Item item = _database.GetItem(path, language);
             return CreateClass<T>(false, false, item);
         }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K>(string path, Language language, K param1) where T : class
+        {
+            Item item = _database.GetItem(path, language);
+            return CreateClass<T, K>(false, false, item, param1);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L>(string path, Language language, K param1, L param2) where T : class
+        {
+            Item item = _database.GetItem(path, language);
+            return CreateClass<T, K, L>(false, false, item, param1, param2);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M>(string path, Language language, K param1, L param2, M param3) where T : class
+        {
+            Item item = _database.GetItem(path, language);
+            return CreateClass<T, K, L, M>(false, false, item, param1, param2, param3);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <typeparam name="N">The type of the fourth constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <param name="param4">The value of the fourth parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M, N>(string path, Language language, K param1, L param2, M param3, N param4) where T : class
+        {
+            Item item = _database.GetItem(path, language);
+            return CreateClass<T, K, L, M, N>(false, false, item, param1, param2, param3, param4);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
         public T GetItem<T>(string path, Language language, global::Sitecore.Data.Version version) where T : class
         {
             Item item = _database.GetItem(path, language, version);
             return CreateClass<T>(false, false, item);
         }
 
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K>(string path, Language language, global::Sitecore.Data.Version version, K param1) where T : class
+        {
+            Item item = _database.GetItem(path, language, version);
+            return CreateClass<T, K>(false, false, item, param1);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L>(string path, Language language, global::Sitecore.Data.Version version, K param1, L param2) where T : class
+        {
+            Item item = _database.GetItem(path, language, version);
+            return CreateClass<T, K, L>(false, false, item, param1, param2);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M>(string path, Language language, global::Sitecore.Data.Version version, K param1, L param2, M param3) where T : class
+        {
+            Item item = _database.GetItem(path, language, version);
+            return CreateClass<T, K, L, M>(false, false, item, param1, param2, param3);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <typeparam name="N">The type of the fourth constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="path">The path to the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <param name="param4">The value of the fourth parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M, N>(string path, Language language, global::Sitecore.Data.Version version, K param1, L param2, M param3, N param4) where T : class
+        {
+            Item item = _database.GetItem(path, language, version);
+            return CreateClass<T, K, L, M, N>(false, false, item, param1, param2, param3, param4);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
         public T GetItem<T>(Guid id)  where T: class
         {
             Item item = _database.GetItem(new  ID(id));
             return CreateClass<T>(false, false, item);
         }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K>(Guid id, K param1) where T : class
+        {
+            Item item = _database.GetItem(new ID(id));
+            return CreateClass<T, K>(false, false, item, param1);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L>(Guid id, K param1, L param2) where T : class
+        {
+            Item item = _database.GetItem(new ID(id));
+            return CreateClass<T, K, L>(false, false, item, param1, param2);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M>(Guid id, K param1, L param2, M param3) where T : class
+        {
+            Item item = _database.GetItem(new ID(id));
+            return CreateClass<T, K, L, M>(false, false, item, param1, param2, param3);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <typeparam name="N">The type of the fourth constructor parameter</typeparam>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <param name="param4">The value of the fourth parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M, N>(Guid id, K param1, L param2, M param3, N param4) where T : class
+        {
+            Item item = _database.GetItem(new ID(id));
+            return CreateClass<T, K, L, M, N>(false, false, item, param1, param2, param3, param4);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="language">The language of the item to return</param>        
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
         public T GetItem<T>(Guid id, Language language) where T : class
         {
             Item item = _database.GetItem(new ID(id), language);
             return CreateClass<T>(false, false, item);
         }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>        
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K>(Guid id, Language language, K param1) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language);
+            return CreateClass<T, K>(false, false, item, param1);
+        
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>        
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L>(Guid id, Language language, K param1, L param2) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language);
+            return CreateClass<T, K, L>(false, false, item, param1, param2);
+        
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>        
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M>(Guid id, Language language, K param1, L param2, M param3) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language);
+            return CreateClass<T, K, L, M>(false, false, item, param1, param2, param3);
+        
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <typeparam name="N">The type of the fourth constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>        
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <param name="param4">The value of the fourth parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M, N>(Guid id, Language language, K param1, L param2, M param3, N param4) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language);
+            return CreateClass<T, K, L, M, N>(false, false, item, param1, param2, param3, param4);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <returns>The Sitecore item as the specified type</returns>
         public T GetItem<T>(Guid id, Language language, global::Sitecore.Data.Version version) where T : class
         {
             Item item = _database.GetItem(new ID(id), language, version);
             return CreateClass<T>(false, false, item);
         }
 
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K>(Guid id, Language language, global::Sitecore.Data.Version version, K param1) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language, version);
+            return CreateClass<T, K>(false, false, item, param1);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L>(Guid id, Language language, global::Sitecore.Data.Version version, K param1, L param2) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language, version);
+            return CreateClass<T, K, L>(false, false, item, param1, param2);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M>(Guid id, Language language, global::Sitecore.Data.Version version, K param1, L param2, M param3) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language, version);
+            return CreateClass<T, K, L, M>(false, false, item, param1, param2, param3);
+        }
+
+        /// <summary>
+        /// Retrieve a Sitecore item as the specified type.
+        /// </summary>
+        /// <typeparam name="T">The type to return the Sitecore item as</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <typeparam name="N">The type of the fourth constructor parameter</typeparam>
+        /// <param name="language">The language of the item to return</param>
+        /// <param name="version">The version of the item to return</param>
+        /// <param name="id">The ID of the Sitecore item</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <param name="param4">The value of the fourth parameter of the constructor</param>
+        /// <returns>The Sitecore item as the specified type</returns>
+        public T GetItem<T, K, L, M, N>(Guid id, Language language, global::Sitecore.Data.Version version, K param1, L param2, M param3, N param4) where T : class
+        {
+            Item item = _database.GetItem(new ID(id), language, version);
+            return CreateClass<T, K, L, M, N>(false, false, item, param1, param2, param3, param4);
+        }
+
+        /// <summary>
+        /// Saves a class back to Sitecore. 
+        /// </summary>
+        /// <typeparam name="T">The type being saved. The type must have a property with the SitecoreIdAttribute.</typeparam>
+        /// <param name="item">The class to save</param>
         public void Save<T>(T target)  where T: class
         {
             Item item = GetItemFromSitecore<T>(target);
@@ -124,6 +628,12 @@ namespace Glass.Sitecore.Mapper
             
         }
 
+        /// <summary>
+        /// Adds a version of the item
+        /// </summary>
+        /// <typeparam name="T">The type being added. The type must have a property with the SitecoreIdAttribute.</typeparam>
+        /// <param name="target">The class to add a version to</param>
+        /// <returns></returns>
         public T AddVersion<T>(T target) where T:class
         {
             Item item = GetItemFromSitecore<T>(target);
@@ -167,13 +677,6 @@ namespace Glass.Sitecore.Mapper
             {
                 return _database.GetItem(new ID(guid));
             }
-
-            
-
-            
-
-
-
         }
 
         /// <summary>
@@ -281,6 +784,14 @@ namespace Glass.Sitecore.Mapper
 
         #region OBSOLETE
 
+        /// <summary>
+        /// Create a blank Sitecore item
+        /// </summary>
+        /// <typeparam name="T">The type to create</typeparam>
+        /// <typeparam name="K">The type of the parent</typeparam>
+        /// <param name="parent">The parent item. This item must have been load by Glass Sitecore Mapper</param>
+        /// <param name="name">The name of the item</param>
+        /// <returns></returns>
         [Obsolete("Use Create<T,K>(K parent, T newItem)")]
         public T Create<T, K>(K parent, string name)
             where T : class
@@ -290,6 +801,15 @@ namespace Glass.Sitecore.Mapper
         }
 
 
+        /// <summary>
+        /// Create an item with pre-populated data
+        /// </summary>
+        /// <typeparam name="T">The type to create</typeparam>
+        /// <typeparam name="K">The type of the parent</typeparam>
+        /// <param name="parent">The parent item. This item must have been load by Glass Sitecore Mapper</param>
+        /// <param name="name">The name of the item</param>
+        /// <param name="data">The data to pre-populate the item with</param>
+        /// <returns></returns>
         [Obsolete("Use Create<T,K>(K parent, T newItem)")]
         public T Create<T, K>(K parent, string name, T data)  where T: class where K: class
         {
@@ -357,7 +877,11 @@ namespace Glass.Sitecore.Mapper
 
         #endregion
 
-
+        /// <summary>
+        /// Delete an item from Sitecore
+        /// </summary>
+        /// <typeparam name="T">The type being deleted. The type must have a property with the SitecoreIdAttribute.</typeparam>
+        /// <param name="item">The class to delete</param>
         public void Delete<T>(T item)  where T: class
         {
             Guid guid = Guid.Empty;
@@ -381,11 +905,28 @@ namespace Glass.Sitecore.Mapper
             scItem.Delete();
         }
 
+
+        /// <summary>
+        /// Creates a class from the specified item
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <param name="inferType">Infer the type to be loaded from the template</param>
+        /// <returns>The item as the specified type</returns>
         public T CreateClass<T>(bool isLazy, bool inferType, Item item) where T : class
         {
             return (T)CreateClass(isLazy, inferType, typeof(T), item);
         }
 
+        /// <summary>
+        /// Creates a class from the specified item
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <param name="inferType">Infer the type to be loaded from the template</param>
+        /// <returns>The item as the specified type</returns>
         public object CreateClass(bool isLazy, bool inferType, Type type, Item item)
         {
             //we have to add null to the list of parameters otherwise we get a stack overflow
@@ -434,41 +975,99 @@ namespace Glass.Sitecore.Mapper
             }
         }
 
-
-       
         /// <summary>
-        /// Creates an enumerable of the specified type
+        /// Create a collection of classes from the specified type
         /// </summary>
-        /// <param name="isLazy"></param>
-        /// <param name="type"></param>
-        /// <param name="getItems"></param>
-        /// <param name="context"></param>
-        /// <returns></returns>
+        /// <param name="isLazy">If true creates a proxy for each class</param>
+        /// <param name="type">The type to return</param>
+        /// <param name="getItems">A function that returns the list of items to load</param>
+        /// <returns>An enumerable of the items as the specified type</returns>
         public IEnumerable CreateClasses(bool isLazy, Type type, Func<IEnumerable<Item>> getItems)
         {
             return CreateClasses(isLazy, false, type, getItems);                
         }
+
+        /// <summary>
+        /// Create a collection of classes from the specified type
+        /// </summary>
+        /// <param name="isLazy">If true creates a proxy for each class</param>
+        /// <param name="type">The type to return</param>
+        /// <param name="getItems">A function that returns the list of items to load</param>
+        /// <param name="inferType">Infer the type to be loaded from the item template</param>
+        /// <returns>An enumerable of the items as the specified type</returns>
         public IEnumerable CreateClasses(bool isLazy, bool inferType, Type type, Func<IEnumerable<Item>> getItems)
         {
             return Utility.CreateGenericType(typeof(Enumerable<>), new Type[] { type }, getItems, this, isLazy, inferType) as IEnumerable;
         }
 
+        /// <summary>
+        /// Creates a class from the specified item with a single constructor parameter
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <param name="inferType">Infer the type to be loaded from the template</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <returns>The item as the specified type</returns>
         public T CreateClass<T, K>(bool isLazy, bool inferType, Item item, K param1)
         {
             return (T)CreateClass(isLazy, inferType, typeof(T), item, param1);
 
         }
 
+        /// <summary>
+        /// Creates a class from the specified item with a two constructor parameter
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <param name="inferType">Infer the type to be loaded from the template</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <returns>The item as the specified type</returns>
         public T CreateClass<T,K,L>(bool isLazy, bool inferType, Item item, K param1, L param2)
         {          
             return (T)CreateClass(isLazy, inferType, typeof(T), item, param1, param2);
         }
 
+        /// <summary>
+        /// Creates a class from the specified item with a two constructor parameter
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <param name="inferType">Infer the type to be loaded from the template</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <returns>The item as the specified type</returns>
         public T CreateClass<T, K, L, M>(bool isLazy, bool inferType, Item item, K param1, L param2, M param3)
         {
             return (T)CreateClass(isLazy, inferType, typeof(T), item, param1, param2, param3);
         }
 
+        /// <summary>
+        /// Creates a class from the specified item with a two constructor parameter
+        /// </summary>
+        /// <typeparam name="T">The type to return</typeparam>
+        /// <typeparam name="K">The type of the first constructor parameter</typeparam>
+        /// <typeparam name="L">The type of the second constructor parameter</typeparam>
+        /// <typeparam name="M">The type of the third constructor parameter</typeparam>
+        /// <typeparam name="N">The type of the fourth constructor parameter</typeparam>
+        /// <param name="isLazy">If true creates a proxy for the class</param>
+        /// <param name="item">The item to load data from</param>
+        /// <param name="inferType">Infer the type to be loaded from the template</param>
+        /// <param name="param1">The value of the first parameter of the constructor</param>       
+        /// <param name="param2">The value of the second parameter of the constructor</param>
+        /// <param name="param3">The value of the third parameter of the constructor</param>
+        /// <param name="param4">The value of the fourth parameter of the constructor</param>
+        /// <returns>The item as the specified type</returns>
         public T CreateClass<T, K, L, M, N>(bool isLazy, bool inferType, Item item, K param1, L param2, M param3, N param4)
         {
             return (T)CreateClass(isLazy, inferType, typeof(T), item, param1, param2, param3, param4);            
