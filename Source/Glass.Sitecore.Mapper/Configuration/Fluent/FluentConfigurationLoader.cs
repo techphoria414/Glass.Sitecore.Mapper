@@ -21,27 +21,21 @@ using System.Text;
 
 namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
-    public class FluentConfigurationLoader :IConfigurationLoader
+    public class FluentConfigurationLoader :AbstractConfigurationLoader
     {
         IEnumerable<ISitecoreClass> _configs;
         public FluentConfigurationLoader(params ISitecoreClass [] configs)
         {
             _configs = configs;
-            DataHandlers = new List<Data.AbstractSitecoreDataHandler>(Utility.GetDefaultDataHanlders());
 
         }
-        #region IConfigurationLoader Members
+        #region AbstractConfigurationLoader Members
 
-        public IEnumerable<SitecoreClassConfig> Load()
+        public override IEnumerable<SitecoreClassConfig> Load()
         {
             return _configs.Select(x => x.Config);
         }
-
-        public IList<Data.AbstractSitecoreDataHandler> DataHandlers
-        {
-            get; 
-            set;
-        }
+        
         #endregion
 
     }

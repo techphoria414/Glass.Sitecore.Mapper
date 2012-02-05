@@ -47,7 +47,7 @@ namespace Glass.Sitecore.Mapper
         /// The context constructor should only be called once. After the context has been created call GetContext for specific copies
         /// </summary>
         /// <param name="loader">The loader used to load classes.</param>
-        public Context(params IConfigurationLoader [] loaders)
+        public Context(params AbstractConfigurationLoader [] loaders)
         {
             //the setup must only run if the context has not been setup
             //second attempts to setup a context should throw an error
@@ -64,7 +64,8 @@ namespace Glass.Sitecore.Mapper
                        
                         foreach(var loader in loaders){
                             configs.AddRange(loader.Load());
-                            dataHandlers.AddRange(loader.DataHandlers);
+                            if(loader.DataHandlers != null)
+                                dataHandlers.AddRange(loader.DataHandlers);
                         }
                                                 
                         var classes = configs.ToDictionary();
@@ -121,34 +122,34 @@ namespace Glass.Sitecore.Mapper
         /// <param name="loader">The loader used to load classes.</param>
         /// <param name="datas">Custom data handlers.</param>
         [Obsolete("Assign AbstractDataHandlers to the IConfigurationLoader.DataHandlers property instead of using this contructor")]
-        public Context(IConfigurationLoader loader, IEnumerable<AbstractSitecoreDataHandler> datas) :this(new TemporaryConfigurationLoader(loader, datas))        
+        public Context(AbstractConfigurationLoader loader, IEnumerable<AbstractSitecoreDataHandler> datas) :this(new TemporaryConfigurationLoader(loader, datas))        
         {
             
         }
         /// <summary>
         /// A temporary class to bridge the gap between the original method of loading classes and the new solution
         /// </summary>
-        private class TemporaryConfigurationLoader:IConfigurationLoader{
+        private class TemporaryConfigurationLoader:AbstractConfigurationLoader{
 
-            IConfigurationLoader _loader;
+            AbstractConfigurationLoader _loader;
 
-            public TemporaryConfigurationLoader(IConfigurationLoader loader, IEnumerable<AbstractSitecoreDataHandler> datas)
+            public TemporaryConfigurationLoader(AbstractConfigurationLoader loader, IEnumerable<AbstractSitecoreDataHandler> datas)
             {
                 _loader = loader;
-                DataHandlers = loader.DataHandlers;
-                datas.ForEach(x => DataHandlers.Add(x));
+                //must push custom handlers to the top of the pile. 
+                datas.ForEach(x => _loader.AddDataHandler(x));
+                
+                this._dataHandlers = _loader.DataHandlers.ToList();
+
+                
             }
 
-            public IEnumerable<SitecoreClassConfig> Load()
+            public override IEnumerable<SitecoreClassConfig> Load()
             {
                 return _loader.Load();
             }
 
-            public IList<AbstractSitecoreDataHandler> DataHandlers
-            {
-                get;
-                set;
-            }
+           
         }
 
         /// <summary>

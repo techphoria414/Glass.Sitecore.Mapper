@@ -22,7 +22,7 @@ using System.Reflection;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
-    public class AttributeConfigurationLoader : IConfigurationLoader
+    public class AttributeConfigurationLoader : AbstractConfigurationLoader
     {
        
 
@@ -31,12 +31,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         public AttributeConfigurationLoader(params string [] namespaces)
         {
             _namespaces = namespaces;
-            DataHandlers = new List<Data.AbstractSitecoreDataHandler>(Utility.GetDefaultDataHanlders());
         }
 
-        #region IConfigurationLoader Members
+        #region AbstractConfigurationLoader Members
 
-        public IEnumerable<SitecoreClassConfig> Load()
+        public override IEnumerable<SitecoreClassConfig> Load()
         {
             if (_namespaces == null || _namespaces.Count() == 0) return new List<SitecoreClassConfig>();
 
@@ -61,12 +60,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             return classes.Select(x => x.Value);
         }
 
-
-        public IList<Data.AbstractSitecoreDataHandler> DataHandlers
-        {
-            get;
-            set;
-        }
+      
 
         #endregion
 

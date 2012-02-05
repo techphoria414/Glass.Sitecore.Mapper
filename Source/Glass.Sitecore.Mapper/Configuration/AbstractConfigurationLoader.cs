@@ -22,10 +22,27 @@ using Glass.Sitecore.Mapper.Data;
 
 namespace Glass.Sitecore.Mapper.Configuration
 {
-    public interface IConfigurationLoader
+    public abstract class AbstractConfigurationLoader
     {
-        IEnumerable<SitecoreClassConfig> Load();
+        public AbstractConfigurationLoader()
+        {
+            _dataHandlers = new List<Data.AbstractSitecoreDataHandler>(Utility.GetDefaultDataHanlders());
+        }
+        public abstract IEnumerable<SitecoreClassConfig> Load();
 
-        IList<AbstractSitecoreDataHandler> DataHandlers { get; set; }
+        protected IList<Data.AbstractSitecoreDataHandler> _dataHandlers;
+
+        public IEnumerable<Data.AbstractSitecoreDataHandler> DataHandlers
+        {
+            get
+            {
+                return _dataHandlers;
+            }
+        }
+
+        public void AddDataHandler(Data.AbstractSitecoreDataHandler data)
+        {
+            this._dataHandlers.Insert(0, data);
+        }
     }
 }
