@@ -53,8 +53,8 @@ namespace Glass.Sitecore.Mapper
         public T QuerySingleRelative<T>(string query, bool isLazy, bool inferType) where T : class
         {
             Item item = global::Sitecore.Context.Item;
-            var results = item.Axes.SelectSingleItem(query);
-            return base.CreateClass<T>(isLazy, inferType, item);
+            var result = item.Axes.SelectSingleItem(query);
+            return base.CreateClass<T>(isLazy, inferType, result);
         }
         
         #endregion
