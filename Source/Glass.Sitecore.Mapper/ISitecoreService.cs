@@ -620,5 +620,12 @@ namespace Glass.Sitecore.Mapper
         /// <returns>An enumerable of the items as the specified type</returns>
         IEnumerable CreateClasses(bool isLazy, bool inferType, Type type, Func<IEnumerable<Item>> getItems);
 
+        /// <summary>
+        /// Writes data from a class to a Sitecore item
+        /// </summary>
+        /// <typeparam name="T">The type of the class to read from</typeparam>
+        /// <param name="target">The class to read from</param>
+        /// <param name="item">The item to write to</param>
+        void WriteToItem<T>(T target, Item item);
     }
 }

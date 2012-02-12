@@ -127,6 +127,7 @@
     <Compile Include="ISitecoreContext.cs" />
     <Compile Include="ISitecoreService.cs" />
     <Compile Include="Enumerable.cs" />
+    <Compile Include="ItemExtensions.cs" />
     <Compile Include="NullLog.cs" />
     <Compile Include="PersistenceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
