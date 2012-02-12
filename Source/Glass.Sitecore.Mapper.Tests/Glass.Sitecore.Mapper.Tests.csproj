@@ -169,12 +169,14 @@
     <Compile Include="HtmlFixture.cs" />
     <Compile Include="InstanceContextFixture.cs" />
     <Compile Include="InterfaceFixture.cs" />
+    <Compile Include="ItemExtensionsFixture.cs" />
     <Compile Include="LoadTesting.cs" />
     <Compile Include="MiscFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\ProxyClassGeneratorFixture.cs" />
     <Compile Include="Proxies\ProxyClassInterceptorFixture.cs" />
     <Compile Include="SitecoreConnectionFixture.cs" />
+    <Compile Include="SitecoreContextFixture.cs" />
     <Compile Include="SitecoreServiceFixture.cs" />
     <Compile Include="UtilityFixture.cs" />
   </ItemGroup>

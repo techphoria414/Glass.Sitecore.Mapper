@@ -1087,7 +1087,7 @@ namespace Glass.Sitecore.Mapper
             }
         }
 
-        private void WriteToItem<T>(T target, Item item)
+        public void WriteToItem<T>(T target, Item item)
         {
             var scClass = InstanceContext.GetSitecoreClass(typeof(T));
 
