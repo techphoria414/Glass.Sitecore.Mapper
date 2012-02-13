@@ -56,7 +56,10 @@ namespace Glass.Sitecore.Mapper
             var result = item.Axes.SelectSingleItem(query);
             return base.CreateClass<T>(isLazy, inferType, result);
         }
-        
+
+
+       
+
         #endregion
     }
 }

@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Glass.Sitecore.Mapper</RootNamespace>
     <AssemblyName>Glass.Sitecore.Mapper</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -114,6 +114,7 @@
     <Compile Include="Data\SitecoreFieldStringHandler.cs" />
     <Compile Include="Data\SitecoreInfoHandler.cs" />
     <Compile Include="Data\SitecoreQueryHandler.cs" />
+    <Compile Include="Dynamic\DynamicItem.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FakePropertyInfo.cs" />
     <Compile Include="FieldTypes\Blob.cs" />
