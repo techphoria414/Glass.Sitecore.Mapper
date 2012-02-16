@@ -16,19 +16,11 @@ namespace Glass.Sitecore.Mapper.Tests.Dynamic
     {
 
         Database _db;
-        ISitecoreService _sitecore;
 
         [SetUp]
         public void Setup()
         {
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
-
-
-            Context context = new Context(
-                   new AttributeConfigurationLoader(
-                       "Glass.Sitecore.Mapper.Tests.Domain,  Glass.Sitecore.Mapper.Tests"));
-
-            _sitecore = new SitecoreService(_db);
 
             global::Sitecore.Context.Site = global::Sitecore.Sites.SiteContext.GetSite("website");
         }

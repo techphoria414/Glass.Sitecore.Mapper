@@ -114,6 +114,8 @@
     <Compile Include="Data\SitecoreFieldStringHandler.cs" />
     <Compile Include="Data\SitecoreInfoHandler.cs" />
     <Compile Include="Data\SitecoreQueryHandler.cs" />
+    <Compile Include="Dynamic\Dy.cs" />
+    <Compile Include="Dynamic\DynamicCollection.cs" />
     <Compile Include="Dynamic\DynamicItem.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FakePropertyInfo.cs" />

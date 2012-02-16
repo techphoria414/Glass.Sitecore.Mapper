@@ -53,8 +53,7 @@ namespace Glass.Sitecore.Mapper.Dynamic
                     result = new DynamicItem(_item.Parent);
                     break;
                 case "Children":
-                    
-                    result = _item.Children.Select(x => new DynamicItem(x)).ToArray();
+                    result = new DynamicCollection(_item.Children.Select(x => new DynamicItem(x)).ToArray());
                     break;
             }
             if (result != null) return true;
@@ -62,6 +61,8 @@ namespace Glass.Sitecore.Mapper.Dynamic
             throw new NotSupportedException("No field of Sitecore info matches the name {0} for item {1}".Formatted(name, _item.Paths.FullPath));
 
         }
+
+       
 
       
     }

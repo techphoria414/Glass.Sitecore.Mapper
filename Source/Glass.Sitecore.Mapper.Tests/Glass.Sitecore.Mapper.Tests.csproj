@@ -167,6 +167,8 @@
     <Compile Include="Domain\EmptyTemplate2.cs" />
     <Compile Include="Domain\EmptyTemplate1.cs" />
     <Compile Include="Domain\NotLoaded.cs" />
+    <Compile Include="Dynamic\DynamicCollectionFixture.cs" />
+    <Compile Include="Dynamic\DynamicExtensions.cs" />
     <Compile Include="Dynamic\DynamicItemFixture.cs" />
     <Compile Include="HtmlFixture.cs" />
     <Compile Include="InstanceContextFixture.cs" />
