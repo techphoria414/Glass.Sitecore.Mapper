@@ -114,7 +114,6 @@ namespace Glass.Sitecore.Mapper.Tests.Dynamic
         }
 
 
-
         [Test]
         public void LastOrDefault()
         {
@@ -246,7 +245,7 @@ namespace Glass.Sitecore.Mapper.Tests.Dynamic
         }
 
         [Test]
-        public void WhereAndSelect()
+        public void Where_Select_First_DyamicsTypes()
         {
             //Assign
             Item item = _db.GetItem("/sitecore/content/DynamicItem/Test");
@@ -261,6 +260,7 @@ namespace Glass.Sitecore.Mapper.Tests.Dynamic
             Assert.AreEqual("Child2", child.NewName);
 
         }
+
 
         [Test]
         public void Count()
@@ -315,6 +315,7 @@ namespace Glass.Sitecore.Mapper.Tests.Dynamic
         public class Known
         {
             public string Name { get; set; }
+            public string Path { get; set; }
         }
     }
 }

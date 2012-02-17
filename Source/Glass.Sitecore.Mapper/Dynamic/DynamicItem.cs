@@ -53,7 +53,7 @@ namespace Glass.Sitecore.Mapper.Dynamic
                     result = new DynamicItem(_item.Parent);
                     break;
                 case "Children":
-                    result = new DynamicCollection(_item.Children.Select(x => new DynamicItem(x)).ToArray());
+                    result = new DynamicCollection<DynamicItem>(_item.Children.Select(x => new DynamicItem(x)).ToArray());
                     break;
             }
             if (result != null) return true;

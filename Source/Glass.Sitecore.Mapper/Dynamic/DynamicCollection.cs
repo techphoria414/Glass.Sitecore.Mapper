@@ -10,14 +10,25 @@ using System.Reflection;
 
 namespace Glass.Sitecore.Mapper.Dynamic
 {
-    public class DynamicCollection : DynamicObject, IEnumerable<DynamicItem>
+    public class DynamicCollection<T> : DynamicObject, IEnumerable<T>
     {
-        IEnumerable<DynamicItem> _collection;
+        IList<T> _collection;
 
-        public DynamicCollection(IEnumerable<DynamicItem> collection)
+        public DynamicCollection()
         {
-            _collection = collection;
+            _collection = new List<T>();
         }
+        public DynamicCollection(IEnumerable<T> collection)
+        {
+            _collection = new List<T>(collection);
+        }
+
+
+        public void Add(T t)
+        {
+            _collection.Add(t);
+        }
+
 
         public override bool TryInvokeMember(InvokeMemberBinder binder, object[] args, out object result)
         {
@@ -30,17 +41,17 @@ namespace Glass.Sitecore.Mapper.Dynamic
             switch (method)
             {
                 case "First":
-                    result = hasArg ? _collection.First((Func<dynamic, bool>)args[0]) : _collection.First();
+                    result = hasArg ? _collection.First((Func<T, bool>)args[0]) : _collection.First();
                     
                     break;
                 case "Last":
-                    result = hasArg ? _collection.Last((Func<dynamic, bool>)args[0]) : _collection.Last();
+                    result = hasArg ? _collection.Last((Func<T, bool>)args[0]) : _collection.Last();
                     break;
                 case "FirstOrDefault":
-                    result = hasArg ? _collection.FirstOrDefault((Func<dynamic, bool>)args[0]) : _collection.FirstOrDefault();
+                    result = hasArg ? _collection.FirstOrDefault((Func<T, bool>)args[0]) : _collection.FirstOrDefault();
                     break;
                 case "LastOrDefault":
-                    result = hasArg ? _collection.LastOrDefault((Func<dynamic, bool>)args[0]) : _collection.LastOrDefault();
+                    result = hasArg ? _collection.LastOrDefault((Func<T, bool>)args[0]) : _collection.LastOrDefault();
                     break;
                 case "Count":
                     result = _collection.Count();
@@ -49,20 +60,20 @@ namespace Glass.Sitecore.Mapper.Dynamic
                     result = _collection.ElementAt((int)args[0]);
                     break;
                 case "Where":
-                    var arrayWhere = _collection.Where((Func<dynamic, bool>)args[0]).Select(x=> x as DynamicItem); 
-                    result = new DynamicCollection(arrayWhere);
+                    var arrayWhere = _collection.Where((Func<T, bool>)args[0]).Select(x=> x as DynamicItem); 
+                    result = new DynamicCollection<DynamicItem>(arrayWhere);
                     break;
                 case "Any":
-                    result = hasArg ? _collection.Any((Func<dynamic, bool>)args[0]) : _collection.Any();
+                    result = hasArg ? _collection.Any((Func<T, bool>)args[0]) : _collection.Any();
                     break;
                 case "All":
-                    result = _collection.All((Func<dynamic, bool>)args[0]);
+                    result = _collection.All((Func<T, bool>)args[0]);
                     break;
                 case "Select":
                     var type =  args[0].GetType();
                     var generic2 = type.GetGenericArguments()[1];
 
-                    var enumGeneric = typeof(List<>);
+                    var enumGeneric = typeof(DynamicCollection<>);
                     var enumType = enumGeneric.MakeGenericType(generic2);
                     
                     var list = Activator.CreateInstance(enumType);
@@ -87,7 +98,7 @@ namespace Glass.Sitecore.Mapper.Dynamic
             return true;
         }
 
-        public IEnumerator<DynamicItem> GetEnumerator()
+        public IEnumerator<T> GetEnumerator()
         {
             return _collection.GetEnumerator();
         }
