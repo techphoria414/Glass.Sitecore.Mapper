@@ -15,7 +15,7 @@ namespace Glass.Sitecore.Mapper.Dynamic
     public class DynamicItem : DynamicObject
     {
         Item _item;
-
+       
         public DynamicItem(Item item)
         {
             _item = item;

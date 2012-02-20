@@ -125,7 +125,7 @@
     <Compile Include="FieldTypes\Link.cs" />
     <Compile Include="FieldTypes\LinkType.cs" />
     <Compile Include="FieldTypes\TriState.cs" />
-    <Compile Include="Html.cs" />
+    <Compile Include="GlassHtml.cs" />
     <Compile Include="InstanceContext.cs" />
     <Compile Include="ISitecoreContext.cs" />
     <Compile Include="ISitecoreService.cs" />

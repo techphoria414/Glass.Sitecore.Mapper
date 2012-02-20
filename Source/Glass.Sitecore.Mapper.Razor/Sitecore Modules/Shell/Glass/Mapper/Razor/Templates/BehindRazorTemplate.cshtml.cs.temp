@@ -1,0 +1,25 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using Glass.Sitecore.Mapper.Razor.Web.Ui;
+using Glass.Sitecore.Mapper;
+
+namespace {{namespace}};
+{
+    public class BehindRazorTemplate : AbstractRazorControl<{{insertYourType}}>
+    {
+        ISitecoreContext _context;
+
+        protected override void OnLoad(EventArgs e)
+        {
+            _context = new SitecoreContext();
+
+            Model = _context.GetCurrentItem<{{type}}>();
+
+
+
+            base.OnLoad(e);
+        }
+    }
+}

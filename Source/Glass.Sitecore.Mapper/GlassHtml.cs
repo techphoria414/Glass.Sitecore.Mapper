@@ -14,23 +14,23 @@ namespace Glass.Sitecore.Mapper
     /// <summary>
     /// This class contains a set of helpers that make converting items mapped in Glass.Sitecore.Mapper to HTML
     /// </summary>
-    public class Html
+    public class GlassHtml
     {
         Database _db;
 
         /// <param name="service">The service that will be used to load and save data</param>
-        public Html(ISitecoreService service):this(service.Database){
+        public GlassHtml(ISitecoreService service):this(service.Database){
             
         }
         /// <summary>
         /// 
         /// </summary>
         /// <param name="database">The database that will be used to load and save data</param>
-        public Html(string database):this(global::Sitecore.Configuration.Factory.GetDatabase(database))
+        public GlassHtml(string database):this(global::Sitecore.Configuration.Factory.GetDatabase(database))
         {
         }
         /// <param name="database">The database that will be used to load and save data</param>
-        public Html(Database database)
+        public GlassHtml(Database database)
         {
             _db = database;
         }
