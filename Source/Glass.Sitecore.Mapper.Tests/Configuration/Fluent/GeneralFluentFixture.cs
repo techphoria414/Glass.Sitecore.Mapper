@@ -201,7 +201,7 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
                 Height = 540,
                 HSpace = 50,
                 MediaId = new Guid("{223EEAE5-DF4C-4E30-95AC-17BE2F00E2CD}"),
-                Src = "/~/media/Files/Kitten1.ashx",
+                Src = "~/media/Files/Kitten1.ashx",
                 VSpace = 60,
                 Width = 720,
             };

@@ -24,6 +24,7 @@ using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Configuration;
 using Sitecore.Data;
 using Sitecore.Links;
+using Sitecore.Resources.Media;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -54,7 +55,8 @@ namespace Glass.Sitecore.Mapper.Data
             img.Height = height;
             img.HSpace = hSpace;
             img.MediaId = scImg.MediaID.Guid;
-            img.Src = scImg.Src;
+            if(scImg.MediaItem != null)
+                img.Src = MediaManager.GetMediaUrl(scImg.MediaItem);
             img.VSpace = vSpace;
             img.Width = width;
 
