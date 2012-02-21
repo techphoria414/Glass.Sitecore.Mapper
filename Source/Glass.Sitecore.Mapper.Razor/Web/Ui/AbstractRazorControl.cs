@@ -14,6 +14,32 @@ namespace Glass.Sitecore.Mapper.Razor.Web.Ui
 {
     public abstract class AbstractRazorControl<T> : WebControl, IRazorControl, global::Sitecore.Layouts.IExpandable
     {
+        private readonly object _key = new object();
+        private readonly object _viewKey = new object();
+
+        protected static Dictionary<string, string> ViewCache { get; private set; }
+
+        Func<string, string> _viewLoader = viewPath =>
+        {
+            var fullPath = System.Web.HttpContext.Current.Server.MapPath(viewPath);
+            //TODO: more error catching
+            return  File.ReadAllText(fullPath);
+
+        };
+
+        public AbstractRazorControl()
+        {
+            if (ViewCache == null)
+            {
+                lock (_key)
+                {
+                    if (ViewCache == null)
+                    {
+                        ViewCache = new Dictionary<string, string>();
+                    }
+                }
+            }
+        }
 
         public IEnumerable<string> Placeholders
         {
@@ -26,12 +52,11 @@ namespace Glass.Sitecore.Mapper.Razor.Web.Ui
             get;
             set;
         }
-        public string AssemblyName { get; set; }
 
         public T Model
         {
             get;
-            set;
+            private set;
         }
 
         public NameValueCollection Form
@@ -42,41 +67,66 @@ namespace Glass.Sitecore.Mapper.Razor.Web.Ui
             }
         }
 
+        /// <summary>
+        /// Put your logic to create your model here
+        /// </summary>
+        /// <returns></returns>
+        public abstract T GetModel();
+        
     
         
         protected override void DoRender(HtmlTextWriter output)
         {
-        
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(View);
-            TextReader reader = new StringReader(new StreamReader(stream).ReadToEnd());
-            //global::RazorEngine.Razor.de.Namespaces.Add("Glass.Sitecore.Mapper.FieldTypes");
 
-            if (Model == null) throw new NullReferenceException("The model for the razor view is empty");
+            Model = GetModel();
+
+            var viewContents = GetRazorView(View, _viewLoader);
 
             try
             {
-                using (new global::Sitecore.SecurityModel.SecurityDisabler())
-                {
-
-                    var rzControl = this;
-
                     TemplateModel<T> tModel = new TemplateModel<T>();
                     tModel.Control = this;
                     tModel.Model = Model;
 
-                  
-
-                    string content = global::RazorEngine.Razor.Parse<TemplateModel<T>>(reader.ReadToEnd(), tModel);
+                    string content = global::RazorEngine.Razor.Parse<TemplateModel<T>>(viewContents, tModel);
 
                     output.Write(content);
-                }
-               // base.RenderContents(writer);
             }
             catch (RazorEngine.Templating.TemplateCompilationException ex)
             {
                 throw new Exception(ex.Errors.First().ErrorText, ex);
             }
         }
+
+
+        public string GetRazorView(string viewPath, Func<string, string> viewLoader)
+        {
+            string finalview = null;
+
+            if (ViewCache.ContainsKey(viewPath))
+                finalview = ViewCache[viewPath];
+            else
+            {
+                finalview = viewLoader(viewPath);
+                if (finalview == null) throw new NullReferenceException("Could not find file {0}.".Formatted(viewPath));
+
+                //we added to the collection making sure no one else added it before
+                if (!ViewCache.ContainsKey(viewPath))
+                {
+                    lock (_viewKey)
+                    {
+                        if (!ViewCache.ContainsKey(viewPath))
+                        {
+                            ViewCache.Add(viewPath, finalview);
+                        }
+                    }
+                }
+            }
+
+            return finalview;
+        }
+
+
 
         public void Expand()
         {

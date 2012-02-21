@@ -16,6 +16,9 @@ namespace Glass.Sitecore.Mapper.Razor.Model
         public string View { get; set; }
 
         [SitecoreField]
-        public string Code { get; set; }
+        public string Type { get; set; }
+
+        [SitecoreField]
+        public string Assembly { get; set; }
     }
 }

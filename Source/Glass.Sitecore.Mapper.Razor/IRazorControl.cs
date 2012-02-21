@@ -12,10 +12,6 @@ namespace Glass.Sitecore.Mapper.Razor
             get;
             set;
         }
-        string AssemblyName
-        {
-            get;
-            set;
-        }
+
     }
 }

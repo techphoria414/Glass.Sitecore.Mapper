@@ -5,21 +5,17 @@ using System.Text;
 using Glass.Sitecore.Mapper.Razor.Web.Ui;
 using Glass.Sitecore.Mapper;
 
-namespace {{namespace}};
+namespace {{namespace}}
 {
-    public class BehindRazorTemplate : AbstractRazorControl<{{insertYourType}}>
+    public class {{className}} : AbstractRazorControl<{{insertYourType}}>
     {
         ISitecoreContext _context;
-
-        protected override void OnLoad(EventArgs e)
+		             
+        public override {{insertYourType}} GetModel()
         {
             _context = new SitecoreContext();
 
-            Model = _context.GetCurrentItem<{{type}}>();
-
-
-
-            base.OnLoad(e);
+           return  _context.GetCurrentItem<{{insertYourType}}>();
         }
     }
 }

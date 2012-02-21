@@ -1,2 +1,2 @@
-﻿@inherits Glass.Sitecore.Mapper.Razor.Web.Ui.AbstractRazorControl<{{insertYourType}}>
+﻿@inherits Glass.Sitecore.Mapper.Razor.Web.Ui.TemplateBase<{{insertYourType}}>
 

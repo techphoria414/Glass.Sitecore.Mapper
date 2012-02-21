@@ -73,7 +73,8 @@ namespace Glass.Sitecore.Mapper.Razor.Shell.Wizards
                 GlassBehindRazor item = new GlassBehindRazor();
                 item.Name = FileName.Value;
                 item.View = GetRelativeFilePath();
-                item.Code = "{0}.{1}, {2}".Formatted(Namespace.Value, ClassName.Value, AssemblyName.Value);
+                item.Type = "{0}.{1}".Formatted(Namespace.Value, FileName.Value );
+                item.Assembly = AssemblyName.Value;
                 CreateItem(item);
 
                 global::Sitecore.Context.ClientPage.SendMessage(this, "item:refreshchildren");

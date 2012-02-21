@@ -11,7 +11,7 @@ using RazorEngine;
 using System.Web.UI.WebControls;
 using Glass.Sitecore.Mapper.Razor.Web.Ui;
 
-namespace Glass.Sitecore.Mapper.Razor
+namespace Glass.Sitecore.Mapper.Razor.RenderingTypes
 {
     public class DynamicRazorRenderingType : RenderingType
     {
@@ -21,7 +21,7 @@ namespace Glass.Sitecore.Mapper.Razor
 
             IRazorControl control = global::Sitecore.Reflection.ReflectionUtil.CreateObject(typeof(DynamicControl)) as IRazorControl;
             control.View = view;
-            control.AssemblyName = "Glass.Demo.Application";
+            
             return control as System.Web.UI.WebControls.WebControl;
 
         }

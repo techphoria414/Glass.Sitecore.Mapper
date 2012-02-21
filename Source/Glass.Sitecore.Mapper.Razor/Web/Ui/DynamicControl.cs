@@ -8,13 +8,9 @@ namespace Glass.Sitecore.Mapper.Razor.Web.Ui
 {
     public class DynamicControl : AbstractRazorControl<dynamic>
     {
-
-        protected override void DoRender(System.Web.UI.HtmlTextWriter output)
+        public override dynamic GetModel()
         {
-            Model = new DynamicItem(global::Sitecore.Context.Item);
-
-            base.DoRender(output);
+           return  new DynamicItem(global::Sitecore.Context.Item);
         }
-
     }
 }

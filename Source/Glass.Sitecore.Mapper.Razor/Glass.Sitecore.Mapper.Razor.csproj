@@ -67,6 +67,9 @@
     </Compile>
     <Compile Include="Model\GlassRazorFolder.cs" />
     <Compile Include="Model\GlassStrongRazor.cs" />
+    <Compile Include="RenderingTypes\AbstractCachingRenderingType.cs" />
+    <Compile Include="RenderingTypes\BehindRazorRenderingType.cs" />
+    <Compile Include="RenderingTypes\StrongRazorRenderingType.cs" />
     <Compile Include="Shell\AbtractFileCreateWizard.cs" />
     <Compile Include="ContextRazorView.cs" />
     <Compile Include="Shell\Commands\CreateBehindRazor.cs" />
@@ -75,14 +78,15 @@
     <Compile Include="Shell\Wizards\StrongWizard.cs" />
     <None Include="Sitecore Modules\Shell\Glass\Mapper\Razor\Templates\BehindRazorTemplate.cshtml.cs.temp" />
     <Compile Include="Web\Ui\DynamicControl.cs" />
+    <Compile Include="Web\Ui\DynamicTemplate.cs" />
     <Compile Include="IRazorControl.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Web\Ui\AbstractRazorControl.cs" />
     <Compile Include="RenderingTypes\DynamicRazorRenderingType.cs" />
-    <Compile Include="RenderingTypes\RazorRenderingType.cs" />
     <Compile Include="Shell\Commands\CreateDynamicRazor.cs" />
     <Compile Include="Shell\Wizards\DynamicWizard.cs" />
     <Compile Include="Web\Ui\StrongControl.cs" />
+    <Compile Include="Web\Ui\StrongTemplate.cs" />
     <Compile Include="Web\Ui\TemplateBase.cs" />
     <Compile Include="Web\Ui\TemplateModel.cs" />
     <None Include="Sitecore Modules\Shell\Glass\Mapper\Razor\Templates\BehindRazorTemplate.cshtml.temp" />
