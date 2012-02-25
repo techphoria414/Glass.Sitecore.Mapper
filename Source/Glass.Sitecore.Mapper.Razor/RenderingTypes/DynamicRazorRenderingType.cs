@@ -17,7 +17,14 @@ namespace Glass.Sitecore.Mapper.Razor.RenderingTypes
     {
         public override Control GetControl(NameValueCollection parameters, bool assert)
         {
+            if(!parameters.AllKeys.Any(x=>x=="Name"))
+                throw new RazorException("Parameters does not contain parameter 'Name'");
+            
+            
             string view = parameters["Name"];
+
+            if(view.IsNullOrEmpty())
+                throw new NullReferenceException("Parameter 'Name' is null or empty");
 
             IRazorControl control = global::Sitecore.Reflection.ReflectionUtil.CreateObject(typeof(DynamicControl)) as IRazorControl;
             control.View = view;
