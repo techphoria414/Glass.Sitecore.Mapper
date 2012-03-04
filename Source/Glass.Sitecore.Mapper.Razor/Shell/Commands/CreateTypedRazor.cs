@@ -8,7 +8,7 @@ using Sitecore;
 
 namespace Glass.Sitecore.Mapper.Razor.Shell.Commands
 {
-    public class CreateStrongRazor : global::Sitecore.Shell.Framework.Commands.Command
+    public class CreateTypedRazor : global::Sitecore.Shell.Framework.Commands.Command
     {
         public override void Execute(global::Sitecore.Shell.Framework.Commands.CommandContext context)
         {
@@ -32,7 +32,7 @@ namespace Glass.Sitecore.Mapper.Razor.Shell.Commands
 
         protected void Run(ClientPipelineArgs args)
         {
-            UrlString str = new UrlString(UIUtil.GetUri("control:GlassStrongRazor", "id={AE723732-6D09-4DBA-B553-A1B399EB077D}&locationId=" + args.Parameters["id"]));
+            UrlString str = new UrlString(UIUtil.GetUri("control:GlassTypedRazor", "id={AE723732-6D09-4DBA-B553-A1B399EB077D}&locationId=" + args.Parameters["id"]));
 
             if (!args.IsPostBack)
             {

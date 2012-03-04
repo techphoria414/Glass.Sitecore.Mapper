@@ -13,7 +13,7 @@ using Glass.Sitecore.Mapper.Razor.Web.Ui;
 
 namespace Glass.Sitecore.Mapper.Razor.RenderingTypes
 {
-    public class StrongRazorRenderingType : AbstractCachingRenderingType
+    public class TypedRazorRenderingType : AbstractCachingRenderingType
     {
 
         Func<string, Type> _typeLoader = typeName =>

@@ -66,17 +66,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Model\GlassRazorFolder.cs" />
-    <Compile Include="Model\GlassStrongRazor.cs" />
+    <Compile Include="Model\GlassTypedRazor.cs" />
     <Compile Include="RazorException.cs" />
     <Compile Include="RenderingTypes\AbstractCachingRenderingType.cs" />
     <Compile Include="RenderingTypes\BehindRazorRenderingType.cs" />
-    <Compile Include="RenderingTypes\StrongRazorRenderingType.cs" />
+    <Compile Include="RenderingTypes\TypedRazorRenderingType.cs" />
     <Compile Include="Shell\AbtractFileCreateWizard.cs" />
     <Compile Include="ContextRazorView.cs" />
     <Compile Include="Shell\Commands\CreateBehindRazor.cs" />
-    <Compile Include="Shell\Commands\CreateStrongRazor.cs" />
+    <Compile Include="Shell\Commands\CreateTypedRazor.cs" />
     <Compile Include="Shell\Wizards\BehindWizard.cs" />
-    <Compile Include="Shell\Wizards\StrongWizard.cs" />
+    <Compile Include="Shell\Wizards\TypedWizard.cs" />
     <None Include="Sitecore Modules\Shell\Glass\Mapper\Razor\Templates\BehindRazorTemplate.cshtml.cs.temp" />
     <Compile Include="Web\Ui\DynamicControl.cs" />
     <Compile Include="Web\Ui\DynamicTemplate.cs" />
@@ -86,12 +86,12 @@
     <Compile Include="RenderingTypes\DynamicRazorRenderingType.cs" />
     <Compile Include="Shell\Commands\CreateDynamicRazor.cs" />
     <Compile Include="Shell\Wizards\DynamicWizard.cs" />
-    <Compile Include="Web\Ui\StrongControl.cs" />
-    <Compile Include="Web\Ui\StrongTemplate.cs" />
+    <Compile Include="Web\Ui\TypedControl.cs" />
+    <Compile Include="Web\Ui\TypedTemplate.cs" />
     <Compile Include="Web\Ui\TemplateBase.cs" />
     <Compile Include="Web\Ui\TemplateModel.cs" />
     <None Include="Sitecore Modules\Shell\Glass\Mapper\Razor\Templates\BehindRazorTemplate.cshtml.temp" />
-    <None Include="Sitecore Modules\Shell\Glass\Mapper\Razor\Templates\StrongRazorTemplate.cshtml.temp" />
+    <None Include="Sitecore Modules\Shell\Glass\Mapper\Razor\Templates\TypedRazorTemplate.cshtml.temp" />
     <None Include="Sitecore Modules\Shell\Glass\Mapper\Razor\Templates\DynamicRazorTemplate.cshtml.temp" />
   </ItemGroup>
   <ItemGroup>
@@ -110,7 +110,7 @@
   <ItemGroup>
     <Content Include="Items.txt" />
     <Content Include="Sitecore Modules\Shell\Glass\Mapper\Razor\BehindRazor.xml" />
-    <Content Include="Sitecore Modules\Shell\Glass\Mapper\Razor\StrongRazor.xml" />
+    <Content Include="Sitecore Modules\Shell\Glass\Mapper\Razor\TypedRazor.xml" />
     <Content Include="Sitecore Modules\Shell\Glass\Mapper\Razor\DynamicRazor.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

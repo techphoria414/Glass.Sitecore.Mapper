@@ -9,6 +9,7 @@ using System.Web;
 using System.Collections.Specialized;
 using Sitecore.Web.UI;
 using System.Web.UI;
+using Sitecore.Data.Items;
 
 namespace Glass.Sitecore.Mapper.Razor.Web.Ui
 {
@@ -72,7 +73,16 @@ namespace Glass.Sitecore.Mapper.Razor.Web.Ui
         /// </summary>
         /// <returns></returns>
         public abstract T GetModel();
-        
+
+        /// <summary>
+        /// Returns either the data source item or if no data source is specified the context item
+        /// </summary>
+        /// <returns></returns>
+        protected Item GetDataSourceOrContext()
+        {
+            return this.DataSource.IsNullOrEmpty() ? global::Sitecore.Context.Item :
+                global::Sitecore.Context.Database.GetItem(this.DataSource);
+        }
     
         
         protected override void DoRender(HtmlTextWriter output)

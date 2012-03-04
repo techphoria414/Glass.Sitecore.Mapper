@@ -15,12 +15,12 @@ using Sitecore.Shell.Framework;
 
 namespace Glass.Sitecore.Mapper.Razor.Shell.Wizards
 {
-    public class StrongWizard : AbtractFileCreateWizard<GlassStrongRazor>
+    public class TypedWizard : AbtractFileCreateWizard<GlassTypedRazor>
     {
         protected Edit TypeName { get; set; }
         protected Edit AssemblyName { get; set; }
 
-        protected const string TemplateCsHtml = "/sitecore modules/shell/glass/mapper/razor/templates/StrongRazorTemplate.cshtml.temp";
+        protected const string TemplateCsHtml = "/sitecore modules/shell/glass/mapper/razor/templates/TypedRazorTemplate.cshtml.temp";
 
 
         protected override bool ActivePageChanging(string page, ref string newpage)
@@ -73,7 +73,7 @@ namespace Glass.Sitecore.Mapper.Razor.Shell.Wizards
 
                 CreateCsHtmlFile(parameters, TemplateCsHtml);
 
-                GlassStrongRazor item = new GlassStrongRazor();
+                GlassTypedRazor item = new GlassTypedRazor();
                 item.Name = FileName.Value;
                 item.View = GetRelativeFilePath();
                 item.Type = TypeName.Value;

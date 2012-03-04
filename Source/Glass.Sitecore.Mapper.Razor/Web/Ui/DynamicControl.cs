@@ -10,7 +10,9 @@ namespace Glass.Sitecore.Mapper.Razor.Web.Ui
     {
         public override dynamic GetModel()
         {
-           return  new DynamicItem(global::Sitecore.Context.Item);
+
+
+            return new DynamicItem(GetDataSourceOrContext());
         }
     }
 }

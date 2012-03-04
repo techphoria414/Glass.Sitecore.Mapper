@@ -11,8 +11,7 @@ namespace Glass.Sitecore.Mapper.Razor.Web.Ui
         public override T GetModel()
         {
             ISitecoreContext _context = new SitecoreContext();
-
-            return _context.GetCurrentItem<T>();
+            return _context.CreateClass<T>(false, false, GetDataSourceOrContext());
         }
     }
 }

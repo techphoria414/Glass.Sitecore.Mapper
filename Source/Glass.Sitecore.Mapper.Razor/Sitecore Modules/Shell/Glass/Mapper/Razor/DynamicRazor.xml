@@ -6,11 +6,10 @@
         <Border Class="scWizardWelcomeTitle">
           <Literal ID="Welcome" Text="Welcome to the Glass Dynamic Razor View Wizard."/>
         </Border>
-        <Literal Text="This wizard will take you through the process of creating a page Razor CSHTML page that uses the Glass Dynamic integration for Razor."/>
-
+        <Literal Text="This wizard will take you through the process of creating a Razor CSHTML page that uses the Glass Dynamic Sitecore integration."/>
 
       </WizardFormFirstPage>
-      <WizardFormPage ID="fileNamePage" Header="File Name" Text="Enter a name for the file." Icon="Software/32x32/text_code.png">
+      <WizardFormPage ID="fileNamePage" Header="File Name" Text="Enter a name for the new CSHTML file." Icon="Software/32x32/text_code.png">
         <WizardFormIndent>
           <GridPanel Width="100%" CellPadding="2" Columns="2">
             <Literal Text="File Name:" Style="white-space:nowrap"/>
@@ -19,7 +18,7 @@
         </WizardFormIndent>
       </WizardFormPage>
 
-      <WizardFormPage ID="fileLocationPage" Header="File Location" Text="Select the location for the new Razor View." Icon="Software/32x32/text_code.png">
+      <WizardFormPage ID="fileLocationPage" Header="File Location" Text="Select the location for the new Razor CSHTML file." Icon="Software/32x32/text_code.png">
         <DataContext ID="FileDataContext" DataViewName="FileSystem" Root="/" Folder="/" Filter="Contains('${Sitecore.Data.DataProviders.FileSystemDataProvider.FolderID.ToString()}', @@templateid)"/>
         <WizardFormIndent>
           <GridPanel Width="100%" Height="100%" Style="table-layout:fixed">
@@ -30,7 +29,7 @@
         </WizardFormIndent>
       </WizardFormPage>
 
-      <WizardFormPage ID="itemLocationPage" Header="File Location" Text="Select the location for the new Razor View Item." Icon="Software/32x32/text_code.png">
+      <WizardFormPage ID="itemLocationPage" Header="File Location" Text="Select the location for the new Razor view item." Icon="Software/32x32/text_code.png">
         <DataContext ID="ItemDataContext" DataViewName="Master" Root="{A97EE6DA-D936-4AA0-B44A-5E68C45BF6A0}" Filter="Contains('{A4F60160-BD14-4471-B362-CB56905E9564}', @@templateid)"/>
         <WizardFormIndent>
           <GridPanel Width="100%" Height="100%" Style="table-layout:fixed">
@@ -43,7 +42,7 @@
 
 
       <WizardFormLastPage ID="finalPage" Icon="Software/32x32/text_code.png">
-        <Literal Text="You new Glass Dynamic Razor View has been added."/>
+        <Literal Text="Your new Glass Dynamic Sitecore Razor view has been added."/>
       </WizardFormLastPage>
     </WizardForm>
   </GlassDynamicRazor>
