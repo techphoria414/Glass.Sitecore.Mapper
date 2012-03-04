@@ -188,7 +188,7 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 
             var file=new File(){
                     Id = new Guid("{368A358E-5835-458B-AFE6-BA5F80334F5A}"),
-                    Src ="/~/media/Files/SimpleTextFile.ashx"
+                    Src ="~/media/Files/SimpleTextFile.ashx"
                 };
             Assert.AreEqual(file.Id, test.File.Id);
             Assert.AreEqual(file.Src, test.File.Src);

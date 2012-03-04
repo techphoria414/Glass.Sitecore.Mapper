@@ -64,7 +64,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             var result = _handler.GetValue(item, null) as File;
 
             //Assert
-            Assert.AreEqual("/~/media/Files/SimpleTextFile.ashx", result.Src);
+            Assert.AreEqual("~/media/Files/SimpleTextFile.ashx", result.Src);
             Assert.AreEqual(new Guid("{368A358E-5835-458B-AFE6-BA5F80334F5A}"), result.Id);
 
         }
