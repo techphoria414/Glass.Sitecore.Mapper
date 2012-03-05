@@ -1,0 +1,7 @@
+h2. Glass Sitecore Mapper
+
+The Beta folder contains release of Glass.Sitecore.Mapper before they are ready for general release. They may contain fixes that have not been put out as a final version and are still in testing.
+
+Feel free to download the betas but be aware that they are subject to change and features or bugs fixed here maybe dropped from future releases.
+
+Mike Edwards

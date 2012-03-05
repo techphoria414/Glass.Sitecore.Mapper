@@ -24,6 +24,7 @@ using Sitecore.Links;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Resources.Media;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -39,7 +40,8 @@ namespace Glass.Sitecore.Mapper.Data
 
             FileField field = new FileField(itemField);
             File file = new File();
-            file.Src = field.Src;
+            if (field.MediaItem != null)
+                file.Src = MediaManager.GetMediaUrl(field.MediaItem);
             file.Id = field.MediaID.Guid;
 
             return file;
