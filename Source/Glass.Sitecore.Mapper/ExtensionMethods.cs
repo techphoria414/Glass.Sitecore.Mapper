@@ -19,10 +19,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration;
+using Glass.Sitecore.Mapper;
 
-namespace Glass.Sitecore.Mapper
+namespace Glass.Sitecore
 {
-    internal static class ExtensionMethods
+    public static class ExtensionMethods
     {
         public static string Formatted(this string target, params object[] args)
         {

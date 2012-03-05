@@ -10,7 +10,7 @@
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>Glass.Sitecore.Mapper.Tests</RootNamespace>
     <AssemblyName>Glass.Sitecore.Mapper.Tests</AssemblyName>
-    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <FileUpgradeFlags>
     </FileUpgradeFlags>
@@ -44,6 +44,7 @@
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\Depends\HtmlAgilityPack.dll</HintPath>
     </Reference>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="Moq, Version=4.0.10827.0, Culture=neutral, PublicKeyToken=69f491c39445e920, processorArchitecture=MSIL">
       <SpecificVersion>False</SpecificVersion>
       <HintPath>..\..\packages\Moq.4.0.10827\lib\NET35\Moq.dll</HintPath>
@@ -166,6 +167,9 @@
     <Compile Include="Domain\EmptyTemplate2.cs" />
     <Compile Include="Domain\EmptyTemplate1.cs" />
     <Compile Include="Domain\NotLoaded.cs" />
+    <Compile Include="Dynamic\DynamicCollectionFixture.cs" />
+    <Compile Include="Dynamic\DynamicExtensions.cs" />
+    <Compile Include="Dynamic\DynamicItemFixture.cs" />
     <Compile Include="HtmlFixture.cs" />
     <Compile Include="InstanceContextFixture.cs" />
     <Compile Include="InterfaceFixture.cs" />

@@ -31,6 +31,13 @@ namespace Glass.Sitecore.Mapper
         T GetCurrentItem<T>() where T : class;
 
         /// <summary>
+        /// Retrieves the current item as the specified type
+        /// </summary>
+        /// <param name="type">The type to return.</param>
+        /// <returns>The current item as the specified type</returns>
+        object GetCurrentItem(Type type);
+
+        /// <summary>
         /// Performs a query relative to the current item
         /// </summary>
         /// <typeparam name="T">The type to cast classes to</typeparam>

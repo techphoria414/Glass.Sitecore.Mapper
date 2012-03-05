@@ -21,6 +21,7 @@ using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Links;
 using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Data.Items;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -45,8 +46,14 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
-            
-            switch (InfoType)
+           return GetItemInfo(InfoType, item, this.UrlOptions);
+        }
+
+        public static object GetItemInfo(SitecoreInfoType infoType, Item item, UrlOptions urlOptions)
+        {
+            if (urlOptions == null) urlOptions = new UrlOptions();
+
+            switch (infoType)
             {
                 case SitecoreInfoType.ContentPath:
                     return item.Paths.ContentPath;
@@ -69,7 +76,7 @@ namespace Glass.Sitecore.Mapper.Data
                 case SitecoreInfoType.TemplateName:
                     return item.TemplateName;
                 case SitecoreInfoType.Url:
-                    return LinkManager.GetItemUrl(item, UrlOptions);
+                    return LinkManager.GetItemUrl(item, urlOptions);
                 case SitecoreInfoType.FullUrl:
                     return LinkManager.GetItemUrl(item, new UrlOptions() { AlwaysIncludeServerUrl = true });
                 case SitecoreInfoType.Version:
@@ -77,11 +84,10 @@ namespace Glass.Sitecore.Mapper.Data
                 case SitecoreInfoType.Language:
                     return item.Language;
                 default:
-                    throw new NotSupportedException("Value {0} not supported".Formatted(InfoType.ToString()));
+                    throw new NotSupportedException("Value {0} not supported".Formatted(infoType.ToString()));
             }
-
-
         }
+
 
         public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)
         {
