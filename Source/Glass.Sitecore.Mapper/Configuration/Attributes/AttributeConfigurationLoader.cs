@@ -100,29 +100,42 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
             if (assem != null)
             {
-                return assem.GetTypes().Select(x =>
+                try
                 {
-                    if (x != null && x.Namespace != null && (x.Namespace.Equals(namesp) || x.Namespace.StartsWith(namesp + "."))) 
+
+                    return assem.GetTypes().Select(x =>
                     {
-                        IEnumerable<object> attrs = x.GetCustomAttributes(true);
-                        SitecoreClassAttribute attr = attrs.FirstOrDefault(y=>y is SitecoreClassAttribute) as SitecoreClassAttribute;
-
-                        if (attr != null)
+                        if (x != null && x.Namespace != null && (x.Namespace.Equals(namesp) || x.Namespace.StartsWith(namesp + ".")))
                         {
-                            var config = new SitecoreClassConfig() { 
-                                Type = x,
-                                ClassAttribute = attr,
-                                
-                            };
-                            //TODO need to wrap in exception handler
-                            if (!attr.BranchId.IsNullOrEmpty()) config.BranchId = new Guid(attr.BranchId);
-                            if (!attr.TemplateId.IsNullOrEmpty()) config.TemplateId = new Guid(attr.TemplateId);
+                            IEnumerable<object> attrs = x.GetCustomAttributes(true);
+                            SitecoreClassAttribute attr = attrs.FirstOrDefault(y => y is SitecoreClassAttribute) as SitecoreClassAttribute;
 
-                            return config;
+                            if (attr != null)
+                            {
+                                var config = new SitecoreClassConfig()
+                                {
+                                    Type = x,
+                                    ClassAttribute = attr,
+
+                                };
+                                //TODO need to wrap in exception handler
+                                if (!attr.BranchId.IsNullOrEmpty()) config.BranchId = new Guid(attr.BranchId);
+                                if (!attr.TemplateId.IsNullOrEmpty()) config.TemplateId = new Guid(attr.TemplateId);
+
+                                return config;
+                            }
                         }
-                    }
-                    return null;
-                }).Where(x => x != null).ToList();
+                        return null;
+                    }).Where(x => x != null).ToList();
+
+                }
+                catch (ReflectionTypeLoadException ex)
+                {
+
+                    
+                    throw new MapperException("Failed to load types {0}".Formatted(ex.LoaderExceptions.First().Message), ex);
+
+                }
             }
             else
             {
