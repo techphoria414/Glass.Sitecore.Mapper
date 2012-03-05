@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<VisualState xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" ShowCheckBoxes="false">
+  <TopNode>[0-1000]F:\Glass\Glass.Sitecore.Mapper\Source\Glass.Sitecore.Mapper.Tests\bin\Debug\Glass.Sitecore.Mapper.Tests.nunit</TopNode>
+  <SelectedNode>[0-1291]F:\Glass\Glass.Sitecore.Mapper\Source\Glass.Sitecore.Mapper.Razor.Tests\bin\Release\Glass.Sitecore.Mapper.Razor.Tests.dll</SelectedNode>
+  <ExcludeCategories>false</ExcludeCategories>
+  <Nodes>
+    <Node UniqueName="[0-1000]F:\Glass\Glass.Sitecore.Mapper\Source\Glass.Sitecore.Mapper.Tests\bin\Debug\Glass.Sitecore.Mapper.Tests.nunit" Expanded="true" />
+    <Node UniqueName="[0-1277]Glass" Expanded="true" />
+    <Node UniqueName="[0-1278]Glass.Sitecore" Expanded="true" />
+    <Node UniqueName="[0-1279]Glass.Sitecore.Mapper" Expanded="true" />
+    <Node UniqueName="[0-1280]Glass.Sitecore.Mapper.Tests" Expanded="true" />
+    <Node UniqueName="[0-1282]Glass.Sitecore.Mapper.Tests.Configuration" Expanded="true" />
+    <Node UniqueName="[0-1283]Glass.Sitecore.Mapper.Tests.Configuration.Attributes" Expanded="true" />
+    <Node UniqueName="[0-1285]Glass.Sitecore.Mapper.Tests.Configuration.Fluent" Expanded="true" />
+    <Node UniqueName="[0-1281]Glass.Sitecore.Mapper.Tests.Data" Expanded="true" />
+    <Node UniqueName="[0-1284]Glass.Sitecore.Mapper.Tests.Data.QueryParameters" Expanded="true" />
+    <Node UniqueName="[0-1286]Glass.Sitecore.Mapper.Tests.Proxies" Expanded="true" />
+    <Node UniqueName="[0-1291]F:\Glass\Glass.Sitecore.Mapper\Source\Glass.Sitecore.Mapper.Razor.Tests\bin\Release\Glass.Sitecore.Mapper.Razor.Tests.dll" Expanded="true" />
+    <Node UniqueName="[0-1292]Glass" Expanded="true" />
+    <Node UniqueName="[0-1293]Glass.Sitecore" Expanded="true" />
+    <Node UniqueName="[0-1294]Glass.Sitecore.Mapper" Expanded="true" />
+    <Node UniqueName="[0-1295]Glass.Sitecore.Mapper.Razor" Expanded="true" />
+    <Node UniqueName="[0-1296]Glass.Sitecore.Mapper.Razor.Tests" Expanded="true" />
+    <Node UniqueName="[0-1297]Glass.Sitecore.Mapper.Razor.Tests.RenderingTypes" Expanded="true" />
+  </Nodes>
+</VisualState>

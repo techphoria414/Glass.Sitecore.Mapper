@@ -29,6 +29,7 @@ using Glass.Sitecore.Mapper.Configuration.Attributes;
 using System.Linq.Expressions;
 using System.Reflection.Emit;
 using System.Reflection;
+using Glass.Sitecore.Mapper.Dynamic;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -1105,7 +1106,8 @@ namespace Glass.Sitecore.Mapper
 
         #endregion
 
-
        
+
+
     }
 }

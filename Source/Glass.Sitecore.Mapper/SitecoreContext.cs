@@ -32,7 +32,7 @@ namespace Glass.Sitecore.Mapper
 
         public T GetCurrentItem<T>() where T:class
         {
-            return base.GetItem<T>(global::Sitecore.Context.Item.ID.Guid);
+            return base.CreateClass<T>(false, false, global::Sitecore.Context.Item);
         }
 
 
@@ -56,7 +56,16 @@ namespace Glass.Sitecore.Mapper
             var result = item.Axes.SelectSingleItem(query);
             return base.CreateClass<T>(isLazy, inferType, result);
         }
-        
+
+
+        public object GetCurrentItem(Type type)
+        {
+            return base.CreateClass(false, false, type, global::Sitecore.Context.Item);
+        }
+
         #endregion
+
+
+       
     }
 }
