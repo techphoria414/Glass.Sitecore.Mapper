@@ -25,20 +25,20 @@ namespace Glass.Sitecore.Mapper.Tests.Dynamic
             global::Sitecore.Context.Site = global::Sitecore.Sites.SiteContext.GetSite("website");
         }
 
-        #region 
+        #region
 
         [Test]
         public void DynamicFields_ReturnsFields()
         {
             //Assign
             Item item = _db.GetItem("/sitecore/content/DynamicItem/Test");
-            
+
             dynamic d = new DynamicItem(item);
 
-           //Act
+            //Act
             string dateTime = d.DateTime;
 
-            string text =  d.SingleLineText;
+            string text = d.SingleLineText;
 
 
             //Assert
@@ -61,7 +61,7 @@ namespace Glass.Sitecore.Mapper.Tests.Dynamic
             //Assert
             Assert.AreEqual("/sitecore/content/DynamicItem/Test", path);
             Assert.AreEqual("Test", name);
-                
+
 
         }
 
@@ -95,19 +95,37 @@ namespace Glass.Sitecore.Mapper.Tests.Dynamic
             var children = d.Children;
 
             //Assert
-            Assert.AreEqual(3, children.Length);
+            Assert.AreEqual(3, children.Count());
 
             foreach (var child in d.Children)
             {
                 string path = child.Path;
                 Assert.IsTrue(path.StartsWith("/sitecore/content/DynamicItem/Test/"));
             }
-            
-           
+        }
 
+        [Test]
+        public void DynamicParent_ReturnsLastChild()
+        {
+            //Assign
+            Item item = _db.GetItem("/sitecore/content/DynamicItem/Test");
+
+            dynamic d = new DynamicItem(item);
+
+            //Act
+
+            var children = d.Children;
+
+            //Assert
+            Assert.AreEqual(3, children.Count());
+
+            var child = d.Children.Last();
+
+                string path = child.Path;
+                Assert.IsTrue(path.StartsWith("/sitecore/content/DynamicItem/Test/"));
         }
         #endregion
     }
 
- 
+
 }

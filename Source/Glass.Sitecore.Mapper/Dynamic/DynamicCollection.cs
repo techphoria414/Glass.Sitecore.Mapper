@@ -70,7 +70,7 @@ namespace Glass.Sitecore.Mapper.Dynamic
                     result = hasArg ? _collection.LastOrDefault((Func<T, bool>)args[0]) : _collection.LastOrDefault();
                     break;
                 case "Count":
-                    result = _collection.Count();
+                    result = _collection.Count;
                     break;
                 case "ElementAt":
                     result = _collection.ElementAt((int)args[0]);
@@ -123,6 +123,8 @@ namespace Glass.Sitecore.Mapper.Dynamic
         {
             return _collection.GetEnumerator();
         }
+
+       
     }
 
 }
