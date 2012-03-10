@@ -6,6 +6,8 @@ To get started read the "Wiki":https://github.com/Glass-lu/Glass.Sitecore.Mapper
 
 Glass Sitecore Mapper is released under the Apache License Version 2, please see the "License":https://github.com/Glass-lu/Glass.Sitecore.Mapper/blob/master/License.txt file for more information.
 
+Join the "Glass.Sitecore.Mapper Google Group":https://groups.google.com/forum/?fromgroups#!forum/glasssitecoremapper to stay up to date and get support.
+
 
 Thanks
 
