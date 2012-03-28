@@ -84,6 +84,7 @@
     <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClassConfig.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Data\QueryParameters\ItemEscapedPathParameter.cs" />
     <Compile Include="Data\SitecoreItemHandler.cs" />
     <Compile Include="Data\SitecoreLinkedHandler.cs" />
     <Compile Include="Data\QueryParameters\ItemIdNoBracketsParameter.cs" />
