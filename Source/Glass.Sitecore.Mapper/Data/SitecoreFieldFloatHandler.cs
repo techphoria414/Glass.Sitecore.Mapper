@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration;
 using Sitecore.Data.Items;
+using System.Globalization;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -29,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             if (fieldValue.IsNullOrEmpty()) return (float)0.0;
             float fValue = 0.0f;
-            if (float.TryParse(fieldValue, out fValue)) return fValue;
+            if (float.TryParse(fieldValue, NumberStyles.Any, CultureInfo.InvariantCulture, out fValue)) return fValue;
             else throw new MapperException("Could not convert value to float");
         }
 

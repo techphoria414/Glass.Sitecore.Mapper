@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Configuration;
+using System.Globalization;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -29,7 +30,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             if (fieldValue.IsNullOrEmpty()) return 0;
             int iValue = 0;
-            if (int.TryParse(fieldValue, out iValue)) return iValue;
+            if (int.TryParse(fieldValue, NumberStyles.Any, CultureInfo.InvariantCulture, out iValue)) return iValue;
             else throw new MapperException("Could not convert value to integer.");
         }
 
