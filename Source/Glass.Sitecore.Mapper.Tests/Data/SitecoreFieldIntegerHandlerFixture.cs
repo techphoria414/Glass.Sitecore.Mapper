@@ -21,6 +21,8 @@ using System.Text;
 using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
 using Glass.Sitecore.Mapper.Configuration;
+using System.Globalization;
+using System.Threading;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -74,6 +76,28 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
             //Assert
             //error should have  been thrown
+        }
+
+        [Test]
+        public void GetFieldValue_ValidInt_ReturnsValue_RegardlessOfCulture([Values("en-GB", "en-US", "de-DE", "da-DK", "fr-FR")]string culture)
+        {
+            //Assign
+            string sitecoreNumericFieldValueInInvariantCultureFormat = "10,000";
+            CultureInfo systemCulture = CultureInfo.CurrentCulture;
+            Thread.CurrentThread.CurrentCulture = CultureInfo.GetCultureInfo(culture);
+
+            //Act
+            var result = _handler.GetFieldValue(sitecoreNumericFieldValueInInvariantCultureFormat, null, null);
+
+            //Assert
+            try
+            {
+                Assert.That(result, Is.EqualTo(10000));
+            }
+            finally
+            {
+                Thread.CurrentThread.CurrentCulture = systemCulture;
+            }
         }
         #endregion
         #region SetFieldValue
