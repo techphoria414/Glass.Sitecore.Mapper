@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration;
 using Sitecore.Data.Items;
+using System.Globalization;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -30,7 +31,7 @@ namespace Glass.Sitecore.Mapper.Data
             if (fieldValue.IsNullOrEmpty()) return 0M;
 
             decimal dValue = 0;
-            if (decimal.TryParse(fieldValue, out dValue)) return dValue;
+            if (decimal.TryParse(fieldValue, NumberStyles.Any, CultureInfo.InvariantCulture, out dValue)) return dValue;
             else throw new MapperException("Could not convert value to decimal");
         }
 

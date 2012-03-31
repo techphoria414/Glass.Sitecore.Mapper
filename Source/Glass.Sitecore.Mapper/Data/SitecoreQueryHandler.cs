@@ -54,6 +54,7 @@ namespace Glass.Sitecore.Mapper.Data
             _parameters.Add(new ItemIdParameter());
             _parameters.Add(new ItemPathParameter());
             _parameters.Add(new ItemIdNoBracketsParameter());
+            _parameters.Add(new ItemEscapedPathParameter());
 
         }
         public SitecoreQueryHandler():this(null)
