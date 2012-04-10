@@ -26,7 +26,7 @@ using System.Reflection;
 
 namespace Glass.Sitecore.Mapper.Dynamic
 {
-    public class DynamicCollection<T> : DynamicObject, IEnumerable<T>
+    public class DynamicCollection<T> : DynamicObject, IEnumerable<T> where T:class
     {
         IList<T> _collection;
 
@@ -76,8 +76,8 @@ namespace Glass.Sitecore.Mapper.Dynamic
                     result = _collection.ElementAt((int)args[0]);
                     break;
                 case "Where":
-                    var arrayWhere = _collection.Where((Func<T, bool>)args[0]).Select(x=> x as DynamicItem); 
-                    result = new DynamicCollection<DynamicItem>(arrayWhere);
+                    var arrayWhere = _collection.Where((Func<T, bool>)args[0]).Select(x=> x as T); 
+                    result = new DynamicCollection<T>(arrayWhere);
                     break;
                 case "Any":
                     result = hasArg ? _collection.Any((Func<T, bool>)args[0]) : _collection.Any();

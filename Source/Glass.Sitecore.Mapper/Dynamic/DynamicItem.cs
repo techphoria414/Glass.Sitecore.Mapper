@@ -37,6 +37,15 @@ namespace Glass.Sitecore.Mapper.Dynamic
             _item = item;
         }
 
+        protected virtual object GetField(string fieldName, Item item){
+            return new DynamicField(fieldName, item);
+        }
+
+        protected virtual DynamicItem CreateNew(Item item)
+        {
+            return new DynamicItem(item);
+        }
+
         public override bool TryGetMember(GetMemberBinder binder, out object result)
         {
             result = null;
@@ -46,12 +55,8 @@ namespace Glass.Sitecore.Mapper.Dynamic
 
             if (_item.Fields[name] != null)
             {
-                FieldRenderer render = new FieldRenderer();
-                render.FieldName = name;
-                render.Item = _item;
-
-                result = render.Render();
-                return true;
+                result = GetField(name, _item);
+               return true;
             }
 
             SitecoreInfoType infoType;
@@ -66,10 +71,10 @@ namespace Glass.Sitecore.Mapper.Dynamic
             switch (name)
             {
                 case "Parent":
-                    result = new DynamicItem(_item.Parent);
+                    result = CreateNew(_item.Parent);
                     break;
                 case "Children":
-                    result = new DynamicCollection<DynamicItem>(_item.Children.Select(x => new DynamicItem(x)).ToArray());
+                    result = new DynamicCollection<DynamicItem>(_item.Children.Select(x => CreateNew(x)).ToArray());
                     break;
             }
             if (result != null) return true;
