@@ -103,7 +103,7 @@ namespace Glass.Sitecore.Mapper
         {
             string id = templateId.ToString();
             //would it be quicker to have a second dictionary that recorded classes by their template ID?
-            if (!ClassesById.ContainsKey(templateId) || ClassesById[templateId] != null)
+            if (ClassesById.ContainsKey(templateId) && ClassesById[templateId] != null)
             {
                 var types = ClassesById[templateId];
                 if (types.Count == 1) return types.First();
