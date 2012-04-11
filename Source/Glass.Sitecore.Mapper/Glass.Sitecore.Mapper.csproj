@@ -117,6 +117,7 @@
     <Compile Include="Data\SitecoreQueryHandler.cs" />
     <Compile Include="Dynamic\Dy.cs" />
     <Compile Include="Dynamic\DynamicCollection.cs" />
+    <Compile Include="Dynamic\DynamicField.cs" />
     <Compile Include="Dynamic\DynamicItem.cs" />
     <Compile Include="ExtensionMethods.cs" />
     <Compile Include="FakePropertyInfo.cs" />
@@ -145,6 +146,15 @@
     <Compile Include="SitecoreIdException.cs" />
     <Compile Include="SitecoreService.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="Web\Ui\AbstractGlassUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Ui\GlassDynamicUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
+    <Compile Include="Web\Ui\GlassUserControl.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\Fluent\AbstractSitecoreAttributeBuilder.cs" />
