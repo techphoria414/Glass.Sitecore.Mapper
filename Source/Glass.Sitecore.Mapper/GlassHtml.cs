@@ -182,7 +182,7 @@ namespace Glass.Sitecore.Mapper
         /// <summary>
         /// Indicates if the site is in editing mode
         /// </summary>
-        public  bool IsInEditingMode
+        public static  bool IsInEditingMode
         {
             get
             {
@@ -194,10 +194,9 @@ namespace Glass.Sitecore.Mapper
 
         private string MakeEditable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target, Database database)
         {
-            try
-            {
+            
 
-                if (this.IsInEditingMode)
+                if (IsInEditingMode)
                 {
                     if (field.Parameters.Count > 1)
                         throw new MapperException("To many parameters in linq expression {0}".Formatted(field.Body));
@@ -244,11 +243,7 @@ namespace Glass.Sitecore.Mapper
                     else
                         return field.Compile().Invoke(target).ToString();
                 }
-            }
-            catch (Exception ex)
-            {
-                return "The following exception occured: {0} \n\r {1}".Formatted(ex.Message, ex.StackTrace);
-            }
+         
         }
 
     }
