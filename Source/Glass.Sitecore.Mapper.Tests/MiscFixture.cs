@@ -65,11 +65,6 @@ namespace Glass.Sitecore.Mapper.Tests
             _demo = _db.GetItem("/sitecore/content/Glass/Demo");
         }
 
-        #region Item Test1
-       
-
-        #endregion
-
         #region Item Test 
         [Test]
         public void SetItem_Test2()
@@ -355,10 +350,164 @@ namespace Glass.Sitecore.Mapper.Tests
                 Assert.AreEqual(target.Version + 1, newVersion.Version);
             }
         }
+
+        #region AccessModifiersTest
+
+        [Test]
+        public void AccessModifiers_AllPropertiesFilled()
+        {
+            //Assign
+
+            MiscFixtureNS.AccessModifiersTest target = null;
+            Guid id = new Guid("{6FEE384F-3A05-4520-A80C-F80A6A454608}");
+
+            //Act
+            target = _sitecore.GetItem<MiscFixtureNS.AccessModifiersTest>(id);
+
+            //Assert
+            Assert.AreEqual("Some test content", target.PublicSingleLineText);
+            Assert.AreEqual("Some test content", target.GetProtectedSingleLineText);            
+            Assert.AreEqual("Some test content", target.GetPrivateSingleLineText);
+
+        }
+
+        [Test]
+        public void AccessModifiers_PrivatePropertiesWriteToField()
+        {
+            //Assign
+
+            MiscFixtureNS.AccessModifiersPrivate target = null;
+            Guid id = new Guid("{6FEE384F-3A05-4520-A80C-F80A6A454608}");
+
+            Item item = _db.GetItem(new ID(id));
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                item["SingleLineText"] = string.Empty;
+
+                target = new MiscFixtureNS.AccessModifiersPrivate();
+                target.GetPrivateSingleLineText = "private test";
+
+                _sitecore.WriteToItem(target, item);
+
+                Assert.AreEqual("private test", item["SingleLineText"]);
+
+                item.Editing.CancelEdit();
+            }
+        }
+
+        [Test]
+        public void AccessModifiers_ProtectedPropertiesWriteToField()
+        {
+            //Assign
+
+            MiscFixtureNS.AccessModifiersProtected target = null;
+            Guid id = new Guid("{6FEE384F-3A05-4520-A80C-F80A6A454608}");
+
+            Item item = _db.GetItem(new ID(id));
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                item["SingleLineText"] = string.Empty;
+
+                target = new MiscFixtureNS.AccessModifiersProtected();
+                target.GetProtectedSingleLineText = "Protected test";
+
+                _sitecore.WriteToItem(target, item);
+
+                Assert.AreEqual("Protected test", item["SingleLineText"]);
+
+                item.Editing.CancelEdit();
+            }
+        }
+
+        [Test]
+        public void AccessModifiers_PublicPrivatePropertiesWriteAndReadsField()
+        {
+            //Assign
+
+            MiscFixtureNS.AccessModifiersPublicPrivate target = null;
+            Guid id = new Guid("{6FEE384F-3A05-4520-A80C-F80A6A454608}");
+
+            Item item = _db.GetItem(new ID(id));
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                item["SingleLineText"] = "pre value";
+
+                target = _sitecore.CreateClass<MiscFixtureNS.AccessModifiersPublicPrivate>(false, false, item);
+
+                Assert.AreEqual("pre value", target.SingleLineText);
+
+                target.GetPrivateSingleLineText = "Protected test";
+
+                _sitecore.WriteToItem(target, item);
+
+                Assert.AreEqual("Protected test", item["SingleLineText"]);
+
+                item.Editing.CancelEdit();
+            }
+        }
+
+        #endregion
+
     }
 
     namespace MiscFixtureNS
     {
+
+        [SitecoreClass]
+        public class AccessModifiersPublicPrivate
+        {
+            [SitecoreField("SingleLineText")]
+            public string SingleLineText { get; private set; }
+
+
+            public string GetPrivateSingleLineText { get { return SingleLineText; } set { SingleLineText = value; } }
+        }
+
+
+        [SitecoreClass]
+        public class AccessModifiersPrivate
+        {
+            [SitecoreField("SingleLineText")]
+            private string PrivateSingleLineText { get; set; }
+
+
+            public string GetPrivateSingleLineText { get { return PrivateSingleLineText; } set { PrivateSingleLineText = value; } }
+        }
+
+        [SitecoreClass]
+        public class AccessModifiersProtected
+        {
+            [SitecoreField("SingleLineText")]
+            private string ProtectedSingleLineText { get; set; }
+
+
+            public string GetProtectedSingleLineText { get { return ProtectedSingleLineText; } set { ProtectedSingleLineText = value; } }
+        }
+
+        [SitecoreClass]
+        public class AccessModifiersTest
+        {
+            [SitecoreField("SingleLineText")]
+            public virtual string PublicSingleLineText { get; set; }
+
+            [SitecoreField("SingleLineText")]
+            private string PrivateSingleLineText { get; set; }
+
+            [SitecoreField("SingleLineText")]
+            protected virtual string ProtectedSingleLineText { get; set; }
+
+            public string GetPrivateSingleLineText { get { return PrivateSingleLineText; } }
+            public string GetProtectedSingleLineText { get { return ProtectedSingleLineText; } }
+        }
 
         [SitecoreClass]
         public class LanguageTest{
