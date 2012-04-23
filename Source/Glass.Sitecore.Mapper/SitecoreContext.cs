@@ -30,10 +30,7 @@ namespace Glass.Sitecore.Mapper
         }
         #region ISitecoreContext Members
 
-        public T GetCurrentItem<T>() where T:class
-        {
-            return base.CreateClass<T>(false, false, global::Sitecore.Context.Item);
-        }
+      
 
 
         public T GetHomeItem<T>() where T : class
@@ -63,9 +60,37 @@ namespace Glass.Sitecore.Mapper
             return base.CreateClass(false, false, type, global::Sitecore.Context.Item);
         }
 
+        public T GetCurrentItem<T>() where T : class
+        {
+            return base.CreateClass<T>(false, false, global::Sitecore.Context.Item);
+        }
+
+        public T GetCurrentItem<T, K>(K param1) where T : class
+        {
+
+            return base.CreateClass<T,K>(false, false, global::Sitecore.Context.Item, param1);
+
+        }
+
+        public T GetCurrentItem<T, K, L>(K param1, L param2) where T : class
+        {
+            return base.CreateClass<T, K, L>(false, false, global::Sitecore.Context.Item, param1, param2);
+
+        }
+
+        public T GetCurrentItem<T, K, L, M>(K param1, L param2, M param3) where T : class
+        {
+            return base.CreateClass<T, K, L, M>(false, false, global::Sitecore.Context.Item, param1, param2, param3);
+
+        }
+
+        public T GetCurrentItem<T, K, L, M, N>(K param1, L param2, M param3, N param4) where T : class
+        {
+            return base.CreateClass<T, K, L, M, N>(false, false, global::Sitecore.Context.Item, param1, param2, param3, param4);
+
+        }
+
         #endregion
 
-
-       
     }
 }
