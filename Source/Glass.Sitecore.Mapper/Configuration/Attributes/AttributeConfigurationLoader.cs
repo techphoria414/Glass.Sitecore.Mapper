@@ -39,7 +39,17 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         {
             if (_namespaces == null || _namespaces.Count() == 0) return new List<SitecoreClassConfig>();
 
-            Dictionary<Type,SitecoreClassConfig> classes = new Dictionary<Type, SitecoreClassConfig>();
+            IDictionary<Type, SitecoreClassConfig> classes = LoadClasses();
+
+            classes.ForEach(x => x.Value.Properties = GetProperties(x.Value.Type));
+
+            return classes.Select(x => x.Value);
+        }
+
+
+        public virtual IDictionary<Type, SitecoreClassConfig> LoadClasses()
+        {
+            var classes =  new Dictionary<Type, SitecoreClassConfig>();
             foreach (string space in _namespaces)
             {
                 string[] parts = space.Split(',');
@@ -52,14 +62,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
                         classes.Add(cls.Type, cls);
                     }
                 });
-                
+
             };
 
-            classes.ForEach(x => x.Value.Properties = GetProperties(x.Value.Type));
-
-            return classes.Select(x => x.Value);
+            return classes;
         }
-
       
 
         #endregion
