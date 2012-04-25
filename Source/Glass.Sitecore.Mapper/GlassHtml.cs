@@ -214,7 +214,7 @@ namespace Glass.Sitecore.Mapper
                     }
                     catch (SitecoreIdException ex)
                     {
-                        throw new MapperException("Page editting error. Type {0} can not be used for editing. See inner exception".Formatted(typeof(T).FullName), ex);
+                        throw new MapperException("Page editting error. Type {0} can not be used for editing. Could not find property with SitecoreID attribute. See inner exception".Formatted(typeof(T).FullName), ex);
                     }
 
                     var scClass = context.GetSitecoreClass(typeof(T));

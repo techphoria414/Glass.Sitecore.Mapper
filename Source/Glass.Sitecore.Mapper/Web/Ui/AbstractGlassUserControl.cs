@@ -13,6 +13,10 @@ namespace Glass.Sitecore.Mapper.Web.Ui
         ISitecoreContext _sitecoreContext;
         GlassHtml _glassHtml;
 
+
+        /// <summary>
+        /// Represents the current Sitecore context
+        /// </summary>
         public ISitecoreContext SitecoreContext
         {
             get
@@ -25,6 +29,9 @@ namespace Glass.Sitecore.Mapper.Web.Ui
             }
         }
 
+        /// <summary>
+        /// Access to rendering helpers
+        /// </summary>
         protected virtual GlassHtml GlassHtml
         {
             get
@@ -33,6 +40,9 @@ namespace Glass.Sitecore.Mapper.Web.Ui
             }
         }
 
+        /// <summary>
+        /// The custom data source for the sublayout
+        /// </summary>
         public string DataSource
         {
             get

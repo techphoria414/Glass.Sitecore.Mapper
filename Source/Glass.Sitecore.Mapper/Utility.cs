@@ -162,7 +162,7 @@ namespace Glass.Sitecore.Mapper
 
             foreach (Type interfaceType in typeList)
             {
-                foreach (PropertyInfo property in interfaceType.GetProperties())
+                foreach (PropertyInfo property in interfaceType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy|BindingFlags.Instance))
                 {
                     propertyList.Add(property);
                 }

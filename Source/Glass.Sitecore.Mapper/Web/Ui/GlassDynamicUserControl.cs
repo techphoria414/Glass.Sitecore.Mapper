@@ -11,6 +11,10 @@ namespace Glass.Sitecore.Mapper.Web.Ui
 {
     public class GlassDynamicUserControl : AbstractGlassUserControl
     {
+
+        /// <summary>
+        /// Model to render on the sublayout
+        /// </summary>
         public dynamic Model { get; private set; }
 
 
