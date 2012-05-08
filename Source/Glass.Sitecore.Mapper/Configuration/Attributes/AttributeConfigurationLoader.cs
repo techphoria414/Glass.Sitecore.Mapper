@@ -28,6 +28,19 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
         IEnumerable<string> _namespaces;
 
+        bool _loadAll = false;
+
+        //TODO: get this working. Problem loading types.
+        //public AttributeConfigurationLoader()
+        //{
+        //    _loadAll = true;
+            
+        //}
+
+        /// <summary>
+        /// Load types from certian namespaces only or specify just assemblies
+        /// </summary>
+        /// <param name="namespaces"></param>
         public AttributeConfigurationLoader(params string [] namespaces)
         {
             _namespaces = namespaces;
@@ -37,9 +50,17 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
         public override IEnumerable<SitecoreClassConfig> Load()
         {
-            if (_namespaces == null || _namespaces.Count() == 0) return new List<SitecoreClassConfig>();
+            IDictionary<Type, SitecoreClassConfig> classes;
 
-            IDictionary<Type, SitecoreClassConfig> classes = LoadClasses();
+            if (_loadAll)
+            {
+                classes = LoadAllClasses();
+            }
+            else
+            {
+                if (_namespaces == null || _namespaces.Count() == 0) return new List<SitecoreClassConfig>();
+                classes = LoadNamespaceClasses();
+            }
 
             classes.ForEach(x => x.Value.Properties = GetProperties(x.Value.Type));
 
@@ -47,13 +68,73 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         }
 
 
-        public virtual IDictionary<Type, SitecoreClassConfig> LoadClasses()
+        private IDictionary<Type, SitecoreClassConfig> LoadAllClasses()
+        {
+            var classes = new Dictionary<Type, SitecoreClassConfig>();
+
+            AppDomain domain = AppDomain.CurrentDomain;
+            Assembly[] assemblies = domain.GetAssemblies();
+
+            foreach (var assem in assemblies)
+            {
+                try
+                {
+                    //don't load assemblies from the GAC
+                    if (assem.GlobalAssemblyCache)
+                        continue;
+
+                    //sssem.SecurityRuleSet\
+
+                    Func<Type, bool> namespacePredicate = (x) => true;
+
+                    var namespaceClasses = ProcessAssembly(assem, namespacePredicate);
+
+                    namespaceClasses.ForEach(cls =>
+                    {
+                        //stops duplicates being added
+                        if (!classes.ContainsKey(cls.Type))
+                        {
+                            classes.Add(cls.Type, cls);
+                        }
+                    });
+                }
+                catch (Exception ex)
+                {
+                    throw new MapperException("Could not load assembly {0}".Formatted(assem.Location), ex);
+                }
+
+            };
+
+            return classes;
+        }
+
+
+        public virtual IDictionary<Type, SitecoreClassConfig> LoadNamespaceClasses()
         {
             var classes =  new Dictionary<Type, SitecoreClassConfig>();
             foreach (string space in _namespaces)
             {
                 string[] parts = space.Split(',');
-                var namespaceClasses = GetClass(parts[1], parts[0]);
+
+
+
+                string assembly = parts.Length > 1 ? parts[1] : parts[0];
+
+                Assembly assem = Assembly.Load(assembly);
+
+                string namesp =  parts.Length > 1 ? parts[0] : string.Empty;
+
+
+                Func<Type, bool> namespacePredicate = null;
+
+                if (namesp.IsNullOrEmpty()) namespacePredicate = (x) => true;
+                else namespacePredicate = (x) => x != null && x.Namespace != null && (x.Namespace.Equals(namesp) || x.Namespace.StartsWith(namesp + "."));
+
+
+
+                var namespaceClasses = ProcessAssembly(assem, namespacePredicate);
+
+
                 namespaceClasses.ForEach(cls =>
                 {
                     //stops duplicates being added
@@ -99,20 +180,20 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             else return null;
         }
 
-     
 
-        private IEnumerable<SitecoreClassConfig> GetClass(string assembly, string namesp)
+
+
+
+        private IEnumerable<SitecoreClassConfig> ProcessAssembly(Assembly assem, Func<Type, bool> predicate)
         {
-            Assembly assem = Assembly.Load(assembly);
 
             if (assem != null)
             {
                 try
                 {
-
                     return assem.GetTypes().Select(x =>
                     {
-                        if (x != null && x.Namespace != null && (x.Namespace.Equals(namesp) || x.Namespace.StartsWith(namesp + ".")))
+                        if (predicate(x))
                         {
                             IEnumerable<object> attrs = x.GetCustomAttributes(true);
                             SitecoreClassAttribute attr = attrs.FirstOrDefault(y => y is SitecoreClassAttribute) as SitecoreClassAttribute;
@@ -138,17 +219,15 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
                 }
                 catch (ReflectionTypeLoadException ex)
                 {
-
-                    
                     throw new MapperException("Failed to load types {0}".Formatted(ex.LoaderExceptions.First().Message), ex);
-
                 }
             }
             else
             {
                 return new List<SitecoreClassConfig>();
             }
-            
         }
+
+    
     }
 }
