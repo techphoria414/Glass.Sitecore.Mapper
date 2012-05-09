@@ -1,4 +1,8 @@
-﻿<#@ template hostspecific="True" debug="True" #> 
+﻿// For more information see http://www.glass.lu
+// Model.TT version 1.0.2.0
+
+
+<#@ template hostspecific="True" debug="True" #> 
 <#@ assembly name="System.Core.dll" #>
 <#@ assembly name="C:\Program Files (x86)\Hedgehog Development\Team Development for Sitecore (VS2010)\HedgehogDevelopment.SitecoreCommon.Data.dll" #> 
 <#@ assembly name="C:\Program Files (x86)\Hedgehog Development\Team Development for Sitecore (VS2010)\HedgehogDevelopment.SitecoreCommon.Data.Parser.dll" #> 
@@ -41,7 +45,7 @@ foreach(TemplateItem item in Templates){
 private string RootNamespace = "Glass.Demo.Application.Models.";
 
 //The root path to the templates to create using the T4 template
-private string RootTemplatePath = "/sitecore/templates/";
+private string RootTemplatePath = "/sitecore/templates/"; 
 
 
 private string BaseDir;
@@ -51,7 +55,7 @@ private Dictionary<string, List<TemplateItem>> Namespaces = new Dictionary<strin
 private void Init()
 {
 	// Put the relative path to your templates node of your TDS project
-	BaseDir = Host.ResolvePath(@"..\Glass.Sitecore.Mapper.Tutorial.TDS"); 
+	BaseDir = Host.ResolvePath(@"..\Glass.Sitecore.Mapper.Tutorial.Tds"); 
 	
 	SerializedTreeDataSource tds = new SerializedTreeDataSource(BaseDir);
 	Templates = tds.Templates.Where(t=>t.Path.StartsWith(RootTemplatePath)).OrderBy( t=> t.Path).ToList();
@@ -112,7 +116,7 @@ public static string GetFieldType(TemplateFieldItem field)
 			case "treelist descriptive":
 			case "checklist":
 			case "multilist":
-                return "List<Guid>";
+                return string.Empty;
 
 			case "grouped droplink":
 			case "droplink":
@@ -123,17 +127,17 @@ public static string GetFieldType(TemplateFieldItem field)
 				return "Guid";
 		
 			case "file":
-				return "MediaField";
+				return "File";
 		
 			case "image":
-				return "ImageField";
+				return "Image";
 		
 			case "rich text":
 			case "html":
 				return "string";
 		
 			case "general link":
-				return "LinkField";
+				return "Link";
 		
 			case "single-line text":
 			case "multi-line text":
@@ -145,7 +149,7 @@ public static string GetFieldType(TemplateFieldItem field)
 			case "valuelookup":
 				return "string";	                                                                                                                            
 			default:
-				return "string /* Unmapped Type!!! - " + field.Fields["Type"].ToLower() + " */";
+				return string.Empty;
 		}
 	}
     else 
@@ -170,8 +174,8 @@ private string GetBases(TemplateItem item)
 
 	if (inherits.Count > 0)
 	{
-		var ints = string.Join(", ", inherits.Select(x=> x).ToArray());
-		return ","+ ints;
+		var ints = string.Join(", global::", inherits.Select(x=> x).ToArray());
+		return ", global::"+ ints;
 	}
 	return " ";
 }
@@ -219,7 +223,7 @@ private string GetNamespace(TemplateItem item)
 	segments.RemoveAt(segments.Count-1);
 	ns = string.Join(".", segments);
 	ns = ns.Trim(".".ToCharArray());
-	return ns;
+	return ns.Replace(" ", string.Empty);
 }
 
 public string TitleCase(string name)
@@ -243,6 +247,10 @@ public string TitleCase(string name)
 		foreach (TemplateFieldItem fieldItem in fieldsBySection[section]){
 			bool hasAttribute = true;
 			string fieldType = GetFieldType(fieldItem);
+
+			if(string.IsNullOrEmpty(fieldType))
+				continue;
+
 			string fieldName = fieldItem.Name;
 			string propertyName = TitleCase(fieldName);
 			if (fieldType == "Guid"){
@@ -279,7 +287,7 @@ namespace <#=GetNamespace(item)#>
 	/// <para>Path: <#= item.Path ?? string.Empty #></para>	
 	/// <para>Help: <#= item.Fields["__Short description"] ?? string.Empty#></para>		
 	/// </summary> 
-    public partial interface I<#=TitleCase(item.Name)#> : IGlassBase <#=GetBases(item)#> 
+    public partial interface I<#=TitleCase(item.Name)#> : global::<#=RootNamespace#>IGlassBase <#=GetBases(item)#> 
 	{
 
 		<#+CreateField(true, item); #>
@@ -291,7 +299,7 @@ namespace <#=GetNamespace(item)#>
 	/// <para>Help: <#= item.Fields["__Short description"] ?? string.Empty#></para>		
 	/// </summary>
 	[SitecoreClass(TemplateId="<#=item.ID#>")]
-	public <#=modifier#> class <#=TitleCase(item.Name)#> : GlassBase, I<#=TitleCase(item.Name)#> 
+	public <#=modifier#> class <#=TitleCase(item.Name)#> : global::<#=RootNamespace#>GlassBase, I<#=TitleCase(item.Name)#> 
 	{
 
 		<#+CreateField(false, item); #>		
@@ -317,11 +325,9 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Configuration;
+using Glass.Sitecore.Mapper.FieldTypes;
+
 using Sitecore.Globalization;
-
-
-
-
 
 
 namespace <#= RootNamespace.Substring(0, RootNamespace.Length-1)#>
