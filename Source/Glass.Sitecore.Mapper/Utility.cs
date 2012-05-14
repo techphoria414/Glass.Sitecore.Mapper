@@ -60,6 +60,13 @@ namespace Glass.Sitecore.Mapper
             });
         }
 
+        public static object InvokeMethod(string methodName, object target, params object [] parameters)
+        {
+            MethodInfo method = target.GetType().GetMethod(methodName);
+
+                return method.Invoke(target, parameters);
+        }
+
         /// <summary>
         /// Creates a generic type via reflection
         /// </summary>
@@ -87,6 +94,11 @@ namespace Glass.Sitecore.Mapper
             return obj;
             
         }
+
+
+     
+
+
 
         /// <summary>
         /// Checks if a method is a set property method
