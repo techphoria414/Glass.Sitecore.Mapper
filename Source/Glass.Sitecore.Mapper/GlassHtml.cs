@@ -86,7 +86,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="field">The field that should be made editable</param>
         /// <param name="target">The target object that contains the item to be edited</param>
         /// <returns>HTML output to either render the editable controls or normal HTML</returns>
-        [Obsolete("Use Editable<T>(T target, Expression<Func<T, object>> field)" ]
+        [Obsolete("Use Editable<T>(T target, Expression<Func<T, object>> field)") ]
         public string Editable<T>(Expression<Func<T, object>> field, T target)
         {
             return MakeEditable<T>(field, null, target, _db);
@@ -100,7 +100,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="standardOutput">The output to display when the Sitecore Page Editor is not being used</param>
         /// <param name="service">The service that will be used to load and save data</param>
         /// <returns>HTML output to either render the editable controls or normal HTML</returns>
-        [Obsolete("Use Editable<T>(T target, Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput)" ]
+        [Obsolete("Use Editable<T>(T target, Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput)") ]
         public string Editable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target)
         {
             return MakeEditable<T>(field, standardOutput, target, _db);
