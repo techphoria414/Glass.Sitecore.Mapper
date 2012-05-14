@@ -163,7 +163,40 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Attributes
 
         #endregion
 
+        #region Constructor
+        [Test]
+        public void Constructor_LoadClassesByAssembly()
+        {
+            //Assign
 
+            AttributeConfigurationLoader loader = new AttributeConfigurationLoader("Glass.Sitecore.Mapper.Tests");
+
+            //Act
+            var result = loader.Load();
+
+            //Result 
+
+            Assert.IsTrue(result.Count() > 0);
+            Console.WriteLine("Classes loaded by assembly: " + result.Count());
+        }
+
+        [Test]
+        public void Constructor_NoParameters()
+        {
+            //Assign
+
+            AttributeConfigurationLoader loader = new AttributeConfigurationLoader();
+
+            //Act
+            var result = loader.Load();
+
+            //Result 
+
+            Assert.IsTrue(result.Count() > 0);
+            Console.WriteLine("Classes loaded by assembly: " + result.Count());
+        }
+
+        #endregion
 
     }
 
