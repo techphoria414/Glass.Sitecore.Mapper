@@ -181,7 +181,7 @@ private string GetBases(TemplateItem item)
 }
 
 /// Gets all fields from the current template and its bases grouped by template.section name
-private Dictionary<string, List<TemplateFieldItem>> GetAllFieldsForTemplate(TemplateItem item, bool includeBase){
+private Dictionary<string, List<TemplateFieldItem>> GetAllFieldsForTemplate(TemplateItem item){
 	Dictionary<string, List<TemplateFieldItem>> dic = new Dictionary<string, List<TemplateFieldItem>>();
 	
 	// own fields
@@ -193,24 +193,7 @@ private Dictionary<string, List<TemplateFieldItem>> GetAllFieldsForTemplate(Temp
 		}
 		dic.Add(sectionName, fields);
 	}
-
-	if(includeBase){
-		var usedInterfaces = AllClasses.Where(i=> item.BaseTemplateIds.Contains(i.ID));
-		foreach(var inter in usedInterfaces)
-		{
-			foreach(TemplateSectionItem si in inter.Sections){
-				string sectionName = string.Concat(inter.Name, '-', si.Name);
-				List<TemplateFieldItem> fields = new List<TemplateFieldItem>();
-				foreach (TemplateFieldItem ti in si.OwnFields)
-				{
-						fields.Add(ti);
-				}
-				dic.Add(sectionName, fields);
-			}
-		}
-	}
 	return dic;
-
 }
 
 private string GetNamespace(TemplateItem item)
@@ -240,7 +223,20 @@ public string TitleCase(string name)
 <#+private void CreateField(bool isInterface, TemplateItem item){#>
 
 <#+
-	Dictionary<string, List<TemplateFieldItem>> fieldsBySection = GetAllFieldsForTemplate(item, !isInterface);
+	if (!isInterface) // for classes go recursively and generate all fields from all inherited interfaces
+	{
+		var usedInterfaces = AllClasses.Where(i=> item.BaseTemplateIds.Contains(i.ID));
+		foreach(var i in usedInterfaces)
+		{
+				CreateField(false, i);
+		}
+#>
+
+	// fields for template <#= item.Name #>
+
+<#+
+	}
+	Dictionary<string, List<TemplateFieldItem>> fieldsBySection = GetAllFieldsForTemplate(item);
     foreach(string section in fieldsBySection.Keys){
 #>
     <#+
