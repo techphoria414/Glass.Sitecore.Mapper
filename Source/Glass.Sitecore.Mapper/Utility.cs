@@ -259,7 +259,13 @@ namespace Glass.Sitecore.Mapper
                 new SitecoreParentHandler(),
                 new SitecoreQueryHandler(),
                 new SitecoreItemHandler(),
-                new SitecoreLinkedHandler()
+                new SitecoreLinkedHandler(),
+                new SitecoreFieldNullableHandler<DateTime?, SitecoreFieldDateTimeHandler>(),
+                new SitecoreFieldNullableHandler<decimal?, SitecoreFieldDecimalHandler>(),
+                new SitecoreFieldNullableHandler<double?, SitecoreFieldDoubleHandler>(),
+                new SitecoreFieldNullableHandler<float?, SitecoreFieldFloatHandler>(),
+                new SitecoreFieldNullableHandler<Guid?, SitecoreFieldGuidHandler>(),
+                new SitecoreFieldNullableHandler<int?, SitecoreFieldIntegerHandler>()
             };
         }
 

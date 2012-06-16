@@ -86,6 +86,7 @@
     <Compile Include="Configuration\Fluent\SitecoreClassFixture.cs" />
     <Compile Include="ContextFixture.cs" />
     <Compile Include="Data\AbstractSitecoreFieldFixture.cs" />
+    <Compile Include="Data\SitecoreNullableHandlerFixture.cs" />
     <Compile Include="Domain\LinkTemplate.cs" />
     <Compile Include="Data\QueryParameters\ItemDateNowParameterFixture.cs">
       <SubType>Code</SubType>
