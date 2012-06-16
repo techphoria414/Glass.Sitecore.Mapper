@@ -8,6 +8,10 @@ Glass Sitecore Mapper is released under the Apache License Version 2, please see
 
 Join the "Glass.Sitecore.Mapper Google Group":https://groups.google.com/forum/?fromgroups#!forum/glasssitecoremapper to stay up to date and get support.
 
+h3. Development
+
+Glass.Sitecore.Mapper use "Git Flow":https://github.com/nvie/gitflow to manage branching. If you are not familiar or don't want to use Git Flow please branch and make changes on the "develop branch":https://github.com/Glass-lu/Glass.Sitecore.Mapper/tree/develop and not the master branch.
+
 
 Thanks
 
