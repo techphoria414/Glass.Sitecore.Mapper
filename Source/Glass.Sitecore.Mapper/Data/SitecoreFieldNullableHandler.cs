@@ -51,5 +51,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             get { return typeof(TNullable); }
         }
+
+        
     }
 }
