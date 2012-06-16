@@ -181,6 +181,7 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Attributes
         }
 
         [Test]
+        [Ignore]
         public void Constructor_NoParameters()
         {
             //Assign
