@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Glass.Sitecore.Mapper.Data;
 
 namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
@@ -26,5 +27,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
     /// </summary>
     [AttributeUsage(AttributeTargets.Property)]
     public abstract class AbstractSitecorePropertyAttribute : Attribute{
+
+        /// <summary>
+        /// Custom data handler for processing this particular field on this property. Use when you have very specific data customisations.
+        /// </summary>
+        public Type DataHandler { get; set; }
+
     }
 }
