@@ -321,7 +321,6 @@ namespace Glass.Sitecore.Mapper.Tests
             Guid templateId = new Guid("{1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}");
             Item child = null;
 
-            Assert.AreEqual(0, parent.Children.Count);
             using (new SecurityDisabler())
             {
                  parent.DeleteChildren();
