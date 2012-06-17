@@ -67,7 +67,7 @@ namespace Glass.Sitecore.Mapper
             if (property.Attribute.DataHandler != null)
             {
                 Type dataType = property.Attribute.DataHandler;
-                if (dataType.IsAssignableFrom(dataType))
+                if (typeof(AbstractSitecoreDataHandler).IsAssignableFrom(dataType))
                 {
                     try
                     {

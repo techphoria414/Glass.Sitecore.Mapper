@@ -206,7 +206,59 @@ namespace Glass.Sitecore.Mapper.Tests
         }
         #endregion
 
-        
+        #region Method - GetDataHandler
+
+        [Test]
+        public void GetDataHandler_HandlerFromStandardList()
+        {
+            //Assign
+            InstanceContext context = new InstanceContext(new Dictionary<Type,SitecoreClassConfig>(), Utility.GetDefaultDataHanlders());
+            SitecoreProperty property = new SitecoreProperty();
+            property.Attribute = new SitecoreFieldAttribute();
+            property.Property = typeof(InstanceContextFixtureNS.GetDataHandlerClass).GetProperty("IntProperty");
+
+            //Act
+            var result = context.GetDataHandler(property);
+
+            //Assert
+            Assert.IsTrue(result is SitecoreFieldIntegerHandler);
+        }
+
+        [Test]
+        public void GetDataHandler_HandlerFromDataHandler()
+        {
+            //Assign
+            InstanceContext context = new InstanceContext(new Dictionary<Type, SitecoreClassConfig>(), Utility.GetDefaultDataHanlders());
+            SitecoreProperty property = new SitecoreProperty();
+            property.Attribute = new SitecoreFieldAttribute();
+            property.Property = typeof(InstanceContextFixtureNS.GetDataHandlerClass).GetProperty("IntProperty");
+            property.Attribute.DataHandler = typeof(InstanceContextFixtureNS.CustomDataHandler);
+
+            //Act
+            var result = context.GetDataHandler(property);
+
+            //Assert
+            Assert.IsTrue(result is InstanceContextFixtureNS.CustomDataHandler);
+        }
+
+        [Test]
+        [ExpectedException(typeof(MapperException))]
+        public void GetDataHandler_HandlerFromDataHandlerNotCorrectClass_ThrowsException()
+        {
+            //Assign
+            InstanceContext context = new InstanceContext(new Dictionary<Type, SitecoreClassConfig>(), Utility.GetDefaultDataHanlders());
+            SitecoreProperty property = new SitecoreProperty();
+            property.Attribute = new SitecoreFieldAttribute();
+            property.Property = typeof(InstanceContextFixtureNS.GetDataHandlerClass).GetProperty("IntProperty");
+            property.Attribute.DataHandler = typeof(InstanceContextFixtureNS.GetDataHandlerClass);
+
+            //Act
+            var result = context.GetDataHandler(property);
+
+            //Assert
+        }
+
+        #endregion
 
     }
 
@@ -241,6 +293,33 @@ namespace Glass.Sitecore.Mapper.Tests
         {
             [SitecoreField]
             public virtual string SingleLineText { get; set; }
+        }
+
+        public class GetDataHandlerClass
+        {
+            public virtual int IntProperty { get; set; }
+        }
+        public class CustomDataHandler : AbstractSitecoreDataHandler
+        {
+            public override bool WillHandle(SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override object GetValue(Item item, ISitecoreService service)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override void SetValue(Item item, object value, ISitecoreService service)
+            {
+                throw new NotImplementedException();
+            }
+
+            public override bool CanSetValue
+            {
+                get { throw new NotImplementedException(); }
+            }
         }
 
 
