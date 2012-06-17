@@ -14,7 +14,10 @@ namespace Glass.Sitecore.Mapper
 
         public ClassManager()
         {
+            TypeInferrer = new DefaultTypeInferrer();
         }
+
+        public DefaultTypeInferrer TypeInferrer { get; set; }
 
         public virtual object CreateClass(ISitecoreService service, bool isLazy, bool inferType, Type type, Item item, params object[] constructorParameters)
         {
@@ -34,8 +37,7 @@ namespace Glass.Sitecore.Mapper
                 //this retrieves the class by inferring the type from the template ID
                 //if ths return type can not be found then the system will try to create a type 
                 //base on the return type
-                config = Context.StaticContext.GetSitecoreClass(item.TemplateID.Guid, type);
-                if (config == null) config = Context.StaticContext.GetSitecoreClass(type);
+                config = TypeInferrer.InferrerType(item, type);
 
             }
 

@@ -117,6 +117,7 @@
     <Compile Include="Data\SitecoreFieldStringHandler.cs" />
     <Compile Include="Data\SitecoreInfoHandler.cs" />
     <Compile Include="Data\SitecoreQueryHandler.cs" />
+    <Compile Include="DefaultTypeInferrer.cs" />
     <Compile Include="Dynamic\Dy.cs" />
     <Compile Include="Dynamic\DynamicCollection.cs" />
     <Compile Include="Dynamic\DynamicField.cs" />
