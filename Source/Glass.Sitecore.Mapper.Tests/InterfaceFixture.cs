@@ -56,9 +56,9 @@ namespace Glass.Sitecore.Mapper.Tests
 
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
-            _test1 = _db.GetItem("/sitecore/content/Glass/Test1");
-            _test2 = _db.GetItem("/sitecore/content/Glass/Test2");
-            _test3 = _db.GetItem("/sitecore/content/Glass/Test1/Test3");
+            _test1 = _db.GetItem("/sitecore/content/InterfaceFixture/Test1");
+            _test2 = _db.GetItem("/sitecore/content/InterfaceFixture/Test2");
+            _test3 = _db.GetItem("/sitecore/content/InterfaceFixture/Test1/Test3");
 
             _query1 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item1");
             _query2 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item2");
@@ -71,7 +71,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test1");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
             //Assert
             Assert.IsNotNull(inter);
@@ -85,7 +85,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test1");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
             //Assert
             Assert.IsNotNull(inter);
@@ -99,7 +99,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test1");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
             //Assert
             Assert.IsNotNull(inter);
@@ -114,7 +114,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test1");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
             //Assert
             Assert.IsNotNull(inter);
@@ -131,7 +131,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test1");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
             //Assert
             Assert.IsNotNull(inter);
@@ -146,7 +146,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test1");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
             //Assert
             Assert.IsNotNull(inter);
@@ -166,7 +166,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test1");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
             //Assert
             Assert.IsNotNull(inter);
@@ -181,7 +181,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test1");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
             //Assert
             Assert.IsNotNull(inter);
@@ -196,7 +196,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test1");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
             //Assert
             Assert.IsNotNull(inter);
@@ -214,7 +214,7 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/Glass/Test2");
+            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test2");
 
             inter.MultiLineText = "Test MultiLineText";
             inter.Number = 986;

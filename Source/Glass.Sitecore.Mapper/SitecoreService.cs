@@ -772,7 +772,7 @@ namespace Glass.Sitecore.Mapper
             item.Editing.EndEdit();
 
             //then read it back
-            ReadFromItem(newItem, item, scClass);
+            InstanceContext.ClassManager.ReadFromItem(this, newItem, item, scClass);
             return newItem;
          //   return CreateClass<T>(false, false, item);
 
@@ -931,50 +931,10 @@ namespace Glass.Sitecore.Mapper
         public object CreateClass(bool isLazy, bool inferType, Type type, Item item)
         {
             //we have to add null to the list of parameters otherwise we get a stack overflow
-            return CreateClass(isLazy, inferType, type, item, null);
+            return  InstanceContext.ClassManager.CreateClass(this, isLazy, inferType, type, item, null);
         }
 
-        public object CreateClass(bool isLazy, bool inferType, Type type, Item item, params object[] constructorParameters)
-        {
-            //check there is an item to create a class from
-            if (item == null) return null;
-            //check that there are some constructor arguments 
-
-            SitecoreClassConfig config=null;
-
-            if (!inferType)
-            {
-                //this retrieves the class based on return type
-                config = InstanceContext.GetSitecoreClass(type);
-            }
-            else
-            {
-                //this retrieves the class by inferring the type from the template ID
-                //if ths return type can not be found then the system will try to create a type 
-                //base on the return type
-                config = InstanceContext.GetSitecoreClass(item.TemplateID.Guid, type);
-                if (config == null) config = InstanceContext.GetSitecoreClass(type);
-                
-            }
-
-            //if the class should be lazy loaded or is an interface then load using a proxy
-            if (isLazy || type.IsInterface)
-            {
-                return ProxyGenerator.CreateProxy(config, this, item, inferType);
-            }
-            else
-            {
-
-                ConstructorInfo constructor = config.Type.GetConstructor(constructorParameters == null || constructorParameters.Count() == 0 ? Type.EmptyTypes : constructorParameters.Select(x=>x.GetType()).ToArray());
-
-                if (constructor == null) throw new MapperException("No constructor for class {0} with parameters {1}".Formatted(config.Type.FullName, string.Join(",", constructorParameters.Select(x => x.GetType().FullName).ToArray())));
-
-                Delegate conMethod = config.CreateObjectMethods[constructor];
-                object t = conMethod.DynamicInvoke(constructorParameters);
-                ReadFromItem(t, item, config);
-                return t;
-            }
-        }
+       
 
         /// <summary>
         /// Create a collection of classes from the specified type
@@ -1013,7 +973,7 @@ namespace Glass.Sitecore.Mapper
         /// <returns>The item as the specified type</returns>
         public T CreateClass<T, K>(bool isLazy, bool inferType, Item item, K param1)
         {
-            return (T)CreateClass(isLazy, inferType, typeof(T), item, param1);
+            return (T)InstanceContext.ClassManager.CreateClass(this,isLazy, inferType, typeof(T), item, param1);
 
         }
 
@@ -1031,7 +991,7 @@ namespace Glass.Sitecore.Mapper
         /// <returns>The item as the specified type</returns>
         public T CreateClass<T,K,L>(bool isLazy, bool inferType, Item item, K param1, L param2)
         {          
-            return (T)CreateClass(isLazy, inferType, typeof(T), item, param1, param2);
+            return (T)InstanceContext.ClassManager.CreateClass(this, isLazy, inferType, typeof(T), item, param1, param2);
         }
 
         /// <summary>
@@ -1050,7 +1010,7 @@ namespace Glass.Sitecore.Mapper
         /// <returns>The item as the specified type</returns>
         public T CreateClass<T, K, L, M>(bool isLazy, bool inferType, Item item, K param1, L param2, M param3)
         {
-            return (T)CreateClass(isLazy, inferType, typeof(T), item, param1, param2, param3);
+            return (T)InstanceContext.ClassManager.CreateClass(this, isLazy, inferType, typeof(T), item, param1, param2, param3);
         }
 
         /// <summary>
@@ -1071,7 +1031,7 @@ namespace Glass.Sitecore.Mapper
         /// <returns>The item as the specified type</returns>
         public T CreateClass<T, K, L, M, N>(bool isLazy, bool inferType, Item item, K param1, L param2, M param3, N param4)
         {
-            return (T)CreateClass(isLazy, inferType, typeof(T), item, param1, param2, param3, param4);            
+            return (T)InstanceContext.ClassManager.CreateClass(this, isLazy, inferType, typeof(T), item, param1, param2, param3, param4);            
         }
 
          
@@ -1080,13 +1040,7 @@ namespace Glass.Sitecore.Mapper
 
         #region Private Methods
 
-        private void ReadFromItem(object target, Item item, SitecoreClassConfig config)
-        {
-            foreach (var handler in config.DataHandlers)
-            {
-                handler.SetProperty(target, item, this);
-            }
-        }
+       
 
         public void WriteToItem<T>(T target, Item item)
         {

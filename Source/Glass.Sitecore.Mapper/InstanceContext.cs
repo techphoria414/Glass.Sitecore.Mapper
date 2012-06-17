@@ -30,6 +30,8 @@ namespace Glass.Sitecore.Mapper
 {
     public class InstanceContext : ICloneable
     {
+        ClassManager _manager = new ClassManager();
+
         public Dictionary<Guid, IList <SitecoreClassConfig>> ClassesById { get; private set; }
         public Dictionary<Type, SitecoreClassConfig> Classes { get; private set; }
         public IEnumerable<AbstractSitecoreDataHandler> Datas { get; private set; }
@@ -38,7 +40,7 @@ namespace Glass.Sitecore.Mapper
         {
             //This needs reworking
             //this will be simplified to remove the need for three sets of data
-            
+
             Classes = classes;
             ClassesById = new Dictionary<Guid, IList<SitecoreClassConfig>>();
             foreach (var record in classes.Where(x => x.Value.TemplateId != Guid.Empty))
@@ -115,6 +117,8 @@ namespace Glass.Sitecore.Mapper
             }
             else return null;
         }
+
+        public ClassManager ClassManager { get { return _manager; } set { _manager = value; } }
 
 
         #region ICloneable Members
