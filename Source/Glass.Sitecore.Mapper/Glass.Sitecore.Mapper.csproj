@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassManager.cs" />
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoader.cs" />
     <Compile Include="Configuration\Attributes\SitecoreChildrenAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreClassAttribute.cs" />
@@ -85,6 +86,7 @@
     <Compile Include="Configuration\SitecoreClassConfig.cs" />
     <Compile Include="Context.cs" />
     <Compile Include="Data\QueryParameters\ItemEscapedPathParameter.cs" />
+    <Compile Include="Data\SitecoreFieldNullableHandler.cs" />
     <Compile Include="Data\SitecoreItemHandler.cs" />
     <Compile Include="Data\SitecoreLinkedHandler.cs" />
     <Compile Include="Data\QueryParameters\ItemIdNoBracketsParameter.cs" />
@@ -115,6 +117,7 @@
     <Compile Include="Data\SitecoreFieldStringHandler.cs" />
     <Compile Include="Data\SitecoreInfoHandler.cs" />
     <Compile Include="Data\SitecoreQueryHandler.cs" />
+    <Compile Include="DefaultTypeInferrer.cs" />
     <Compile Include="Dynamic\Dy.cs" />
     <Compile Include="Dynamic\DynamicCollection.cs" />
     <Compile Include="Dynamic\DynamicField.cs" />

@@ -27,7 +27,18 @@ namespace Glass.Sitecore.Mapper
 {
     public class Context
     {
-        
+
+        public ClassManager ClassManager
+        {
+            get
+            {
+                return StaticContext.ClassManager;
+            }
+            set
+            {
+                StaticContext.ClassManager = value;
+            }
+        }
 
         #region STATICS
 

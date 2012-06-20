@@ -30,6 +30,8 @@ namespace Glass.Sitecore.Mapper
 {
     public class InstanceContext : ICloneable
     {
+        ClassManager _manager = new ClassManager();
+
         public Dictionary<Guid, IList <SitecoreClassConfig>> ClassesById { get; private set; }
         public Dictionary<Type, SitecoreClassConfig> Classes { get; private set; }
         public IEnumerable<AbstractSitecoreDataHandler> Datas { get; private set; }
@@ -38,7 +40,7 @@ namespace Glass.Sitecore.Mapper
         {
             //This needs reworking
             //this will be simplified to remove the need for three sets of data
-            
+
             Classes = classes;
             ClassesById = new Dictionary<Guid, IList<SitecoreClassConfig>>();
             foreach (var record in classes.Where(x => x.Value.TemplateId != Guid.Empty))
@@ -61,6 +63,26 @@ namespace Glass.Sitecore.Mapper
         /// <param name="property"></param>
         public AbstractSitecoreDataHandler GetDataHandler(SitecoreProperty property)
         {
+
+            if (property.Attribute.DataHandler != null)
+            {
+                Type dataType = property.Attribute.DataHandler;
+                if (typeof(AbstractSitecoreDataHandler).IsAssignableFrom(dataType))
+                {
+                    try
+                    {
+                        return (AbstractSitecoreDataHandler)dataType.Assembly.CreateInstance(dataType.FullName);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new MapperException("Failed to create instance of the data handler {0} configured on property {0} on class {1}"
+                            .Formatted(dataType.FullName, property.Property.Name, property.Property.ReflectedType.FullName), ex);
+                    }
+                }
+                else
+                    throw new MapperException("Custom data handler does not inherit from AbstractSitecoreDataHandler for {0} on class".Formatted(property.Property.Name, property.Property.ReflectedType.FullName));
+            }
+
             AbstractSitecoreDataHandler handler = Datas.FirstOrDefault(x => x.WillHandle(property, Datas, Classes));
 
             if (handler == null)
@@ -115,6 +137,8 @@ namespace Glass.Sitecore.Mapper
             }
             else return null;
         }
+
+        public ClassManager ClassManager { get { return _manager; } set { _manager = value; } }
 
 
         #region ICloneable Members

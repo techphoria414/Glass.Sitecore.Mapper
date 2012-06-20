@@ -24,6 +24,7 @@ using System.Collections.Specialized;
 using Sitecore.Data.Items;
 using Sitecore.Web.UI.WebControls;
 using Glass.Sitecore.Mapper.Data;
+using Castle.DynamicProxy;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -51,13 +52,41 @@ namespace Glass.Sitecore.Mapper
             _db = database;
         }
 
+
         /// <summary>
         /// Makes the field editable using the Sitecore Page Editor. Using the specifed service to write data.
         /// </summary>
-        /// <typeparam name="T">A class loaded by Class.Sitecore.Mapper</typeparam>
+        /// <typeparam name="T">A class loaded by Glass.Sitecore.Mapper</typeparam>
         /// <param name="field">The field that should be made editable</param>
         /// <param name="target">The target object that contains the item to be edited</param>
         /// <returns>HTML output to either render the editable controls or normal HTML</returns>
+        public string Editable<T>(T target, Expression<Func<T, object>> field)
+        {
+            return MakeEditable<T>(field, null, target, _db);
+        }
+
+        /// <summary>
+        /// Makes the field editable using the Sitecore Page Editor.  Using the specifed service to write data.
+        /// </summary>
+        /// <typeparam name="T">A class loaded by Glass.Sitecore.Mapper</typeparam>
+        /// <param name="field">The field that should be made editable</param>
+        /// <param name="target">The target object that contains the item to be edited</param>
+        /// <param name="standardOutput">The output to display when the Sitecore Page Editor is not being used</param>
+        /// <param name="service">The service that will be used to load and save data</param>
+        /// <returns>HTML output to either render the editable controls or normal HTML</returns>
+        public string Editable<T>(T target, Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput)
+        {
+            return MakeEditable<T>(field, standardOutput, target, _db);
+        }
+
+        /// <summary>
+        /// Makes the field editable using the Sitecore Page Editor. Using the specifed service to write data.
+        /// </summary>
+        /// <typeparam name="T">A class loaded by Glass.Sitecore.Mapper</typeparam>
+        /// <param name="field">The field that should be made editable</param>
+        /// <param name="target">The target object that contains the item to be edited</param>
+        /// <returns>HTML output to either render the editable controls or normal HTML</returns>
+        [Obsolete("Use Editable<T>(T target, Expression<Func<T, object>> field)") ]
         public string Editable<T>(Expression<Func<T, object>> field, T target)
         {
             return MakeEditable<T>(field, null, target, _db);
@@ -65,12 +94,13 @@ namespace Glass.Sitecore.Mapper
         /// <summary>
         /// Makes the field editable using the Sitecore Page Editor.  Using the specifed service to write data.
         /// </summary>
-        /// <typeparam name="T">A class loaded by Class.Sitecore.Mapper</typeparam>
+        /// <typeparam name="T">A class loaded by Glass.Sitecore.Mapper</typeparam>
         /// <param name="field">The field that should be made editable</param>
         /// <param name="target">The target object that contains the item to be edited</param>
         /// <param name="standardOutput">The output to display when the Sitecore Page Editor is not being used</param>
         /// <param name="service">The service that will be used to load and save data</param>
         /// <returns>HTML output to either render the editable controls or normal HTML</returns>
+        [Obsolete("Use Editable<T>(T target, Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput)") ]
         public string Editable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target)
         {
             return MakeEditable<T>(field, standardOutput, target, _db);
@@ -201,8 +231,28 @@ namespace Glass.Sitecore.Mapper
                     if (field.Parameters.Count > 1)
                         throw new MapperException("To many parameters in linq expression {0}".Formatted(field.Body));
 
+
+                    if (!(field.Body is MemberExpression))
+                    {
+                        throw new MapperException("Expression doesn't evaluate to a member {0}".Formatted(field.Body));
+                    }
+
+
+                    //we have to deconstruct the lambda expression to find the 
+                    //correct target object
+                    //For example if we have the lambda expression x =>x.Children.First().Content
+                    //we have to evaluate what the first Child object is, then evaluate the field to edit from there.
+                    var memberExpression = (MemberExpression)field.Body;
+                    //this contains the expression that will evaluate to the object containing the property
+                    var objectExpression =  memberExpression.Expression;
+
+                    var finalTarget = Expression.Lambda(objectExpression, field.Parameters).Compile().DynamicInvoke(target);
+
                     var site = global::Sitecore.Context.Site;
-                    Type type = typeof(T);
+
+
+                    //if the class a proxy then we have to get it's base type
+                    Type type = finalTarget is IProxyTargetAccessor ? finalTarget.GetType().BaseType : finalTarget.GetType();
 
                     InstanceContext context = Context.GetContext();
 
@@ -210,18 +260,18 @@ namespace Glass.Sitecore.Mapper
 
                     try
                     {
-                        id = context.GetClassId(type, target);
+                        id = context.GetClassId(type, finalTarget);
                     }
                     catch (SitecoreIdException ex)
                     {
                         throw new MapperException("Page editting error. Type {0} can not be used for editing. Could not find property with SitecoreID attribute. See inner exception".Formatted(typeof(T).FullName), ex);
                     }
 
-                    var scClass = context.GetSitecoreClass(typeof(T));
+                    var scClass = context.GetSitecoreClass(type);
 
-                    var prop = Utility.GetPropertyInfo(type, field.Body);
+                    var prop = memberExpression.Member;
 
-                    if (prop == null) throw new MapperException("Page editting error. Could not find property {0} on type {1}".Formatted(field.Body, type.FullName));
+                    if (prop == null) throw new MapperException("Page editting error. Could not find property {0} on type {1}".Formatted(memberExpression.Member.Name, type.FullName));
 
                     var dataHandler = scClass.DataHandlers.FirstOrDefault(x => x.Property == prop);
 

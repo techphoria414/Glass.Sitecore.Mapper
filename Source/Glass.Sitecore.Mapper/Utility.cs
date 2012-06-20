@@ -60,6 +60,13 @@ namespace Glass.Sitecore.Mapper
             });
         }
 
+        public static object InvokeMethod(string methodName, object target, params object [] parameters)
+        {
+            MethodInfo method = target.GetType().GetMethod(methodName);
+
+                return method.Invoke(target, parameters);
+        }
+
         /// <summary>
         /// Creates a generic type via reflection
         /// </summary>
@@ -87,6 +94,11 @@ namespace Glass.Sitecore.Mapper
             return obj;
             
         }
+
+
+     
+
+
 
         /// <summary>
         /// Checks if a method is a set property method
@@ -247,7 +259,13 @@ namespace Glass.Sitecore.Mapper
                 new SitecoreParentHandler(),
                 new SitecoreQueryHandler(),
                 new SitecoreItemHandler(),
-                new SitecoreLinkedHandler()
+                new SitecoreLinkedHandler(),
+                new SitecoreFieldNullableHandler<DateTime?, SitecoreFieldDateTimeHandler>(),
+                new SitecoreFieldNullableHandler<decimal?, SitecoreFieldDecimalHandler>(),
+                new SitecoreFieldNullableHandler<double?, SitecoreFieldDoubleHandler>(),
+                new SitecoreFieldNullableHandler<float?, SitecoreFieldFloatHandler>(),
+                new SitecoreFieldNullableHandler<Guid?, SitecoreFieldGuidHandler>(),
+                new SitecoreFieldNullableHandler<int?, SitecoreFieldIntegerHandler>()
             };
         }
 
