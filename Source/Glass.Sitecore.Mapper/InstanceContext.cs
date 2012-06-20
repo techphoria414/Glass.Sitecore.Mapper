@@ -63,6 +63,26 @@ namespace Glass.Sitecore.Mapper
         /// <param name="property"></param>
         public AbstractSitecoreDataHandler GetDataHandler(SitecoreProperty property)
         {
+
+            if (property.Attribute.DataHandler != null)
+            {
+                Type dataType = property.Attribute.DataHandler;
+                if (typeof(AbstractSitecoreDataHandler).IsAssignableFrom(dataType))
+                {
+                    try
+                    {
+                        return (AbstractSitecoreDataHandler)dataType.Assembly.CreateInstance(dataType.FullName);
+                    }
+                    catch (Exception ex)
+                    {
+                        throw new MapperException("Failed to create instance of the data handler {0} configured on property {0} on class {1}"
+                            .Formatted(dataType.FullName, property.Property.Name, property.Property.ReflectedType.FullName), ex);
+                    }
+                }
+                else
+                    throw new MapperException("Custom data handler does not inherit from AbstractSitecoreDataHandler for {0} on class".Formatted(property.Property.Name, property.Property.ReflectedType.FullName));
+            }
+
             AbstractSitecoreDataHandler handler = Datas.FirstOrDefault(x => x.WillHandle(property, Datas, Classes));
 
             if (handler == null)
