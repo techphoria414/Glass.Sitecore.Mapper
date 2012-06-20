@@ -258,6 +258,24 @@ namespace Glass.Sitecore.Mapper.Tests
             //Assert
         }
 
+        [Test]
+        [ExpectedException(typeof(MapperException))]
+        public void GetDataHandler_HandlerFromDataHandlerCorrectClassButErrorWhenIfnstantiated_ThrowsException()
+        {
+            //Assign
+            InstanceContext context = new InstanceContext(new Dictionary<Type, SitecoreClassConfig>(), Utility.GetDefaultDataHanlders());
+            SitecoreProperty property = new SitecoreProperty();
+            property.Attribute = new SitecoreFieldAttribute();
+            property.Property = typeof(InstanceContextFixtureNS.GetDataHandlerClass).GetProperty("IntProperty");
+            property.Attribute.DataHandler = typeof(InstanceContextFixtureNS.GetDataHandlerClassErroring);
+
+            //Act
+            var result = context.GetDataHandler(property);
+
+            //Assert
+        }
+
+
         #endregion
 
     }
@@ -299,6 +317,15 @@ namespace Glass.Sitecore.Mapper.Tests
         {
             public virtual int IntProperty { get; set; }
         }
+
+        public class GetDataHandlerClassErroring
+        {
+            public GetDataHandlerClassErroring(){
+                throw new ApplicationException();
+            }
+            public virtual int IntProperty { get; set; }
+        }
+
         public class CustomDataHandler : AbstractSitecoreDataHandler
         {
             public override bool WillHandle(SitecoreProperty property, IEnumerable<AbstractSitecoreDataHandler> datas, Dictionary<Type, SitecoreClassConfig> classes)
