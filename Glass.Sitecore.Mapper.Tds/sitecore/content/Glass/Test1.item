@@ -1,0 +1,263 @@
+----item----
+version: 1
+id: {BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}
+database: master
+path: /sitecore/content/Glass/Test1
+parent: {D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}
+name: Test1
+master: {00000000-0000-0000-0000-000000000000}
+template: {1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}
+templatekey: BasicTemplate
+
+----version----
+language: en
+version: 1
+revision: ce586b1a-a841-4c79-9ddb-90722f5c9a11
+
+----field----
+field: {8F5E6072-3AFB-4387-8469-DF5330FBB088}
+name: Checkbox
+key: checkbox
+content-length: 1
+
+1
+----field----
+field: {3E242D79-CCCF-483D-80EA-6AB7E71DCC27}
+name: Date
+key: date
+content-length: 15
+
+20110501T000000
+----field----
+field: {3462785E-A14E-4B2C-B701-5BBDB2494AA2}
+name: DateTime
+key: datetime
+content-length: 15
+
+20110601T063000
+----field----
+field: {64D29D77-B64F-46DE-83A9-462A26080C82}
+name: File
+key: file
+content-length: 97
+
+<file mediaid="{368A358E-5835-458B-AFE6-BA5F80334F5A}" src="~/media/Files/SimpleTextFile.ashx" />
+----field----
+field: {9ECB8CB2-0181-4BE7-8E11-A7DFCC194899}
+name: Image
+key: image
+content-length: 194
+
+<image mediaid="{223EEAE5-DF4C-4E30-95AC-17BE2F00E2CD}" mediapath="/Files/Kitten1" src="~/media/Files/Kitten1.ashx" alt="Alternate Text  Test" height="540" width="720" hspace="50" vspace="60" />
+----field----
+field: {DF9C751A-9C30-4B97-8903-90B2DCC8B270}
+name: Integer
+key: integer
+content-length: 3
+
+456
+----field----
+field: {AD283B02-7220-40C4-B826-576CA51628B6}
+name: MultiLineText
+key: multilinetext
+content-length: 20
+
+Multi Line Text Test
+----field----
+field: {28A98C25-7F6C-41C2-8612-F5142450E374}
+name: Number
+key: number
+content-length: 3
+
+789
+----field----
+field: {AB505631-5093-4A66-B109-87F417474B6A}
+name: Password
+key: password
+content-length: 13
+
+Password Test
+----field----
+field: {F6AF465C-0997-4C1D-81AD-9978B1B845A6}
+name: RichText
+key: richtext
+content-length: 27
+
+
+		<p>Rich Text Test</p>
+
+----field----
+field: {9D57BA8A-604A-4F0A-BEDD-A346567075D3}
+name: SingleLineText
+key: singlelinetext
+content-length: 21
+
+Single Line Text Test
+----field----
+field: {27069338-677F-4CE9-844C-15F8B5700364}
+name: Float
+key: float
+content-length: 3
+
+456
+----field----
+field: {E0DBC32D-8D84-4EAC-BC3C-F5BA5BF33662}
+name: Double
+key: double
+content-length: 3
+
+456
+----field----
+field: {4D53B750-299A-4CA2-9955-B464573E9CE9}
+name: Decimal
+key: decimal
+content-length: 3
+
+456
+----field----
+field: {2CF44C1D-E54A-4E0D-8367-47BEE8F7F77B}
+name: Checklist
+key: checklist
+content-length: 77
+
+{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}|{8A317CBA-81D4-4F9E-9953-64C4084AECCA}
+----field----
+field: {EB9712E3-5D61-4A85-985D-F1EAD465857B}
+name: Droplist
+key: droplist
+content-length: 5
+
+Test1
+----field----
+field: {80A93C3A-A5D4-4699-8D3A-FA72BBF4D8AA}
+name: GroupedDroplink
+key: groupeddroplink
+content-length: 38
+
+{BEBE9B65-CD0D-4ADD-A7D8-2B013D63CC87}
+----field----
+field: {89607708-E39B-4810-A9B2-2A3A9CEC40A5}
+name: GroupedDroplist
+key: groupeddroplist
+content-length: 5
+
+Test3
+----field----
+field: {F3618FC8-F95D-45A7-84E3-7A54E29A2A23}
+name: Multilist
+key: multilist
+content-length: 38
+
+{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}
+----field----
+field: {2FC540E3-BC4A-4353-8861-4CA426E4B0D5}
+name: Treelist
+key: treelist
+content-length: 38
+
+{BEBE9B65-CD0D-4ADD-A7D8-2B013D63CC87}
+----field----
+field: {4DDE0B02-CB51-4C93-AF28-6F0D8C7ED9EB}
+name: TreelistEx
+key: treelistex
+content-length: 38
+
+{8A317CBA-81D4-4F9E-9953-64C4084AECCA}
+----field----
+field: {4E26FBE8-457F-4AB9-AA37-44B59FC63CF8}
+name: Droplink
+key: droplink
+content-length: 38
+
+{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}
+----field----
+field: {77477398-6BCF-4581-B30F-C020430C463A}
+name: Droptree
+key: droptree
+content-length: 38
+
+{BD193B3A-D3CA-49B4-BF7A-2A61ED77F19D}
+----field----
+field: {D25F4F0B-32BA-46F0-BC86-8CDAC9FB1FC8}
+name: GeneralLink
+key: generallink
+content-length: 164
+
+<link text="Link Description Test" linktype="external" url="http://www.google.com" anchor="" title="Alternate Text Test" class="Style Class Test" target="_blank" />
+----field----
+field: {BEE212D8-4603-487F-97A1-C6D25287C61A}
+name: GeneralLinkInternal
+key: generallinkinternal
+content-length: 121
+
+<link linktype="internal" url="/Glass/Test2.aspx" querystring="" target="" id="{8A317CBA-81D4-4F9E-9953-64C4084AECCA}" />
+----field----
+field: {C071BFBF-62A5-460B-B682-768B8DC3358D}
+name: GeneralLinkMedia
+key: generallinkmedia
+content-length: 100
+
+<link linktype="media" url="/Files/Kitten1" target="" id="{223EEAE5-DF4C-4E30-95AC-17BE2F00E2CD}" />
+----field----
+field: {E71FA370-3063-4B7F-94D7-AAD7F99FB935}
+name: Icon
+key: icon
+content-length: 60
+
+/sitecore/shell/Themes/Standard/Applications/48x48/about.png
+----field----
+field: {D29565D2-1298-4BDB-92F1-8658B9D456DB}
+name: Tristate
+key: tristate
+content-length: 1
+
+0
+----field----
+field: {52807595-0F8F-4B20-8D2A-CB71D28C6103}
+name: __Owner
+key: __owner
+content-length: 14
+
+sitecore\admin
+----field----
+field: {25BED78C-4957-4165-998A-CA1B52F67497}
+name: __Created
+key: __created
+content-length: 15
+
+20110501T132800
+----field----
+field: {5DD74568-4D4B-44C1-B513-0AF5F4CDA34F}
+name: __Created by
+key: __created by
+content-length: 14
+
+sitecore\admin
+----field----
+field: {8CDC337E-A112-42FB-BBB4-4143751E123F}
+name: __Revision
+key: __revision
+content-length: 36
+
+ce586b1a-a841-4c79-9ddb-90722f5c9a11
+----field----
+field: {D9CF14B1-FA16-4BA6-9288-E8A174D4D522}
+name: __Updated
+key: __updated
+content-length: 34
+
+20110724T100301:634470985818432452
+----field----
+field: {BADD9CF9-53E0-4D0C-BCC0-2D784C282F6A}
+name: __Updated by
+key: __updated by
+content-length: 14
+
+sitecore\admin
+----field----
+field: {001DD393-96C5-490B-924A-B0F25CD9EFD8}
+name: __Lock
+key: __lock
+content-length: 51
+
+<r owner="sitecore\admin" date="20110501T132810" />

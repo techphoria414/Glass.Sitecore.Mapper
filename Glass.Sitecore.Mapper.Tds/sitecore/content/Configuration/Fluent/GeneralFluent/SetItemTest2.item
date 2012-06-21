@@ -1,0 +1,247 @@
+----item----
+version: 1
+id: {A456ECE1-C72C-4762-A18B-12FE1BD90922}
+database: master
+path: /sitecore/content/Configuration/Fluent/GeneralFluent/SetItemTest2
+parent: {9381B706-5B81-40BA-A1EB-4751F98EBB36}
+name: SetItemTest2
+master: {00000000-0000-0000-0000-000000000000}
+template: {1D0EE1F5-21E0-4C5B-8095-EDE2AF3D3300}
+templatekey: BasicTemplate
+
+----version----
+language: en
+version: 1
+revision: 1ea8a561-d736-47a1-99d0-99a691be8e07
+
+----field----
+field: {8F5E6072-3AFB-4387-8469-DF5330FBB088}
+name: Checkbox
+key: checkbox
+content-length: 1
+
+1
+----field----
+field: {3E242D79-CCCF-483D-80EA-6AB7E71DCC27}
+name: Date
+key: date
+content-length: 15
+
+20110228T000000
+----field----
+field: {3462785E-A14E-4B2C-B701-5BBDB2494AA2}
+name: DateTime
+key: datetime
+content-length: 15
+
+20110304T152312
+----field----
+field: {64D29D77-B64F-46DE-83A9-462A26080C82}
+name: File
+key: file
+content-length: 98
+
+<file mediaid="{B89EA3C6-C947-44AF-9AEF-7EF89CEB0A4B}" src="~/media/Files/SimpleTextFile2.ashx" />
+----field----
+field: {9ECB8CB2-0181-4BE7-8E11-A7DFCC194899}
+name: Image
+key: image
+content-length: 161
+
+<image class="Test Class" height="487" width="26" vspace="32" mediaid="{0CF0A6D0-8A2B-479B-AD8F-14938135174A}" hspace="52" border="Test Border" alt="Test Alt" />
+----field----
+field: {DF9C751A-9C30-4B97-8903-90B2DCC8B270}
+name: Integer
+key: integer
+content-length: 3
+
+659
+----field----
+field: {AD283B02-7220-40C4-B826-576CA51628B6}
+name: MultiLineText
+key: multilinetext
+content-length: 18
+
+Test MultiLineText
+----field----
+field: {28A98C25-7F6C-41C2-8612-F5142450E374}
+name: Number
+key: number
+content-length: 3
+
+986
+----field----
+field: {AB505631-5093-4A66-B109-87F417474B6A}
+name: Password
+key: password
+content-length: 13
+
+test password
+----field----
+field: {F6AF465C-0997-4C1D-81AD-9978B1B845A6}
+name: RichText
+key: richtext
+content-length: 14
+
+test Rich Text
+----field----
+field: {9D57BA8A-604A-4F0A-BEDD-A346567075D3}
+name: SingleLineText
+key: singlelinetext
+content-length: 21
+
+test single line text
+----field----
+field: {27069338-677F-4CE9-844C-15F8B5700364}
+name: Float
+key: float
+content-length: 5
+
+458.7
+----field----
+field: {E0DBC32D-8D84-4EAC-BC3C-F5BA5BF33662}
+name: Double
+key: double
+content-length: 5
+
+789.5
+----field----
+field: {4D53B750-299A-4CA2-9955-B464573E9CE9}
+name: Decimal
+key: decimal
+content-length: 5
+
+986.4
+----field----
+field: {2CF44C1D-E54A-4E0D-8367-47BEE8F7F77B}
+name: Checklist
+key: checklist
+content-length: 77
+
+{68B87391-CFF7-4FF2-848E-90C8FD8336A2}|{154CABCB-9B04-449A-9F6F-8FD2AD0783D9}
+----field----
+field: {EB9712E3-5D61-4A85-985D-F1EAD465857B}
+name: Droplist
+key: droplist
+content-length: 5
+
+Test3
+----field----
+field: {80A93C3A-A5D4-4699-8D3A-FA72BBF4D8AA}
+name: GroupedDroplink
+key: groupeddroplink
+content-length: 38
+
+{BEBE9B65-CD0D-4ADD-A7D8-2B013D63CC87}
+----field----
+field: {89607708-E39B-4810-A9B2-2A3A9CEC40A5}
+name: GroupedDroplist
+key: groupeddroplist
+content-length: 5
+
+Test3
+----field----
+field: {F3618FC8-F95D-45A7-84E3-7A54E29A2A23}
+name: Multilist
+key: multilist
+content-length: 77
+
+{1BE4FAC5-90C2-4A5E-952C-071ECD7DA957}|{6127B3E3-B2EB-4B96-AE6D-51DF0212C0EA}
+----field----
+field: {2FC540E3-BC4A-4353-8861-4CA426E4B0D5}
+name: Treelist
+key: treelist
+content-length: 77
+
+{35E0CE21-2651-46CD-B87D-0B34216D3137}|{F52A1B3B-356E-45A4-B06C-DFAE28B6D78A}
+----field----
+field: {4DDE0B02-CB51-4C93-AF28-6F0D8C7ED9EB}
+name: TreelistEx
+key: treelistex
+content-length: 38
+
+{35E0CE21-2651-46CD-B87D-0B34216D3137}
+----field----
+field: {4E26FBE8-457F-4AB9-AA37-44B59FC63CF8}
+name: Droplink
+key: droplink
+content-length: 38
+
+{BEBE9B65-CD0D-4ADD-A7D8-2B013D63CC87}
+----field----
+field: {77477398-6BCF-4581-B30F-C020430C463A}
+name: Droptree
+key: droptree
+content-length: 38
+
+{BEBE9B65-CD0D-4ADD-A7D8-2B013D63CC87}
+----field----
+field: {D25F4F0B-32BA-46F0-BC86-8CDAC9FB1FC8}
+name: GeneralLink
+key: generallink
+content-length: 140
+
+<link title="test title" target="test target" linktype="external" url="test url" anchor="test anchor" class="test class" text="test text" />
+----field----
+field: {E71FA370-3063-4B7F-94D7-AAD7F99FB935}
+name: Icon
+key: icon
+content-length: 9
+
+test icon
+----field----
+field: {D29565D2-1298-4BDB-92F1-8658B9D456DB}
+name: Tristate
+key: tristate
+content-length: 1
+
+1
+----field----
+field: {B5E02AD9-D56F-4C41-A065-A133DB87BDEB}
+name: __Display name
+key: __display name
+content-length: 12
+
+SetItemTest2
+----field----
+field: {52807595-0F8F-4B20-8D2A-CB71D28C6103}
+name: __Owner
+key: __owner
+content-length: 0
+
+
+----field----
+field: {25BED78C-4957-4165-998A-CA1B52F67497}
+name: __Created
+key: __created
+content-length: 34
+
+20120620T211852:634758239324984781
+----field----
+field: {5DD74568-4D4B-44C1-B513-0AF5F4CDA34F}
+name: __Created by
+key: __created by
+content-length: 18
+
+extranet\Anonymous
+----field----
+field: {8CDC337E-A112-42FB-BBB4-4143751E123F}
+name: __Revision
+key: __revision
+content-length: 36
+
+1ea8a561-d736-47a1-99d0-99a691be8e07
+----field----
+field: {D9CF14B1-FA16-4BA6-9288-E8A174D4D522}
+name: __Updated
+key: __updated
+content-length: 34
+
+20120620T211853:634758239333235253
+----field----
+field: {BADD9CF9-53E0-4D0C-BCC0-2D784C282F6A}
+name: __Updated by
+key: __updated by
+content-length: 18
+
+extranet\Anonymous
