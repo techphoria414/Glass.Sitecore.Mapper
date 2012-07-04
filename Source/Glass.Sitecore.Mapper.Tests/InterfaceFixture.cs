@@ -85,8 +85,10 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
-
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            }
             //Assert
             Assert.IsNotNull(inter);
 
@@ -99,8 +101,10 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
-
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            }
             //Assert
             Assert.IsNotNull(inter);
 
@@ -114,8 +118,10 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
-
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            }
             //Assert
             Assert.IsNotNull(inter);
 
@@ -131,8 +137,10 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
-
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            }
             //Assert
             Assert.IsNotNull(inter);
 
@@ -196,8 +204,10 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
-
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            }
             //Assert
             Assert.IsNotNull(inter);
 

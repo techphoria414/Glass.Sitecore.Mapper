@@ -24,6 +24,7 @@ using System.Collections;
 using Glass.Sitecore.Mapper.Data.QueryParameters;
 using Glass.Sitecore.Mapper.Configuration;
 using Sitecore.Data.Query;
+using Sitecore.Globalization;
 
 namespace Glass.Sitecore.Mapper.Data
 {
@@ -85,7 +86,7 @@ namespace Glass.Sitecore.Mapper.Data
                     {
                         getItems = new Func<IEnumerable<Item>>(() =>
                         {
-                            return item.Axes.SelectItems(query);
+                            return GetLanguageItems(item.Axes.SelectItems(query), item.Language);
                         });
                     }
                     else
@@ -104,12 +105,14 @@ namespace Glass.Sitecore.Mapper.Data
                                 if (contextArray == null)
                                     contextArray = new QueryContext[] { context };
 
-                                return contextArray.Select(x => item.Database.GetItem(x.ID));
+                                return GetLanguageItems(contextArray.Select(x => item.Database.GetItem(x.ID)), item.Language);
                             }
                             else
-                                return item.Database.SelectItems(query);
+                                return GetLanguageItems(item.Database.SelectItems(query), item.Language);
                         });
                     }
+                    var array = getItems.Invoke().ToArray();
+                        
 
                     return service.CreateClasses(IsLazy, InferType, genericType, getItems);
                 }
@@ -120,15 +123,29 @@ namespace Glass.Sitecore.Mapper.Data
                 Item result = null;
                 if (IsRelative)
                 {
-                    result = item.Axes.SelectSingleItem(query);
+                    result = GetLanguageItem(item.Axes.SelectSingleItem(query), item.Language);
                 }
                 else
                 {
-                    result = item.Database.SelectSingleItem(query);
+                    result = GetLanguageItem(item.Database.SelectSingleItem(query), item.Language);
                 }
                 return service.CreateClass(IsLazy, InferType, Property.PropertyType, result);
             }
 
+        }
+
+        private Item GetLanguageItem(Item foundItem, Language language)
+        {
+            var item = foundItem.Database.GetItem(foundItem.ID, language);
+            if (item.Versions.Count > 0)
+                return item;
+            else
+                return null;
+        }
+
+        private IEnumerable<Item> GetLanguageItems(IEnumerable<Item> foundItems, Language language)
+        {
+            return foundItems.Select(x=> GetLanguageItem(x, language)).Where(x => x != null);
         }
 
         public string ParseQuery(string query, Item item)
