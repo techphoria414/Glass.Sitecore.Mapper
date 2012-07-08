@@ -232,17 +232,29 @@ namespace Glass.Sitecore.Mapper
                         throw new MapperException("To many parameters in linq expression {0}".Formatted(field.Body));
 
 
-                    if (!(field.Body is MemberExpression))
+
+                    MemberExpression memberExpression;
+
+                    if (field.Body is UnaryExpression)
+                    {
+                        memberExpression = ((UnaryExpression)field.Body).Operand as MemberExpression;
+                    }
+                    else if (!(field.Body is MemberExpression))
                     {
                         throw new MapperException("Expression doesn't evaluate to a member {0}".Formatted(field.Body));
                     }
+                    else
+                    {
+                        memberExpression = (MemberExpression)field.Body;
+                    }
+
 
 
                     //we have to deconstruct the lambda expression to find the 
                     //correct target object
                     //For example if we have the lambda expression x =>x.Children.First().Content
                     //we have to evaluate what the first Child object is, then evaluate the field to edit from there.
-                    var memberExpression = (MemberExpression)field.Body;
+                    
                     //this contains the expression that will evaluate to the object containing the property
                     var objectExpression =  memberExpression.Expression;
 
