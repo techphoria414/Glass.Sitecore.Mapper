@@ -42,23 +42,22 @@ namespace Glass.Sitecore.Mapper.Data
         public override object GetFieldValue(string fieldValue, Item item, ISitecoreService service)
         {
             Item target = null;
-            
+
             if (fieldValue.IsNullOrEmpty()) return null;
-            
-            try
+
+            Guid id = Guid.Empty;
+            if (Guid.TryParse(fieldValue, out id))
             {
-                Guid id = Guid.Empty;
-                id = new Guid(fieldValue);
-                target = item.Database.GetItem(new ID(id));
+                target = item.Database.GetItem(new ID(id), item.Language);
             }
-            catch (Exception ex)
+            else
             {
-                target = item.Database.GetItem(fieldValue);
+                target = item.Database.GetItem(fieldValue, item.Language);
             }
 
             if (target == null) return null;
-                        return service.CreateClass(IsLazy, InferType, Property.PropertyType, target);
-            
+            return service.CreateClass(IsLazy, InferType, Property.PropertyType, target);
+
         }
 
         public override string SetFieldValue(object value, ISitecoreService service)
