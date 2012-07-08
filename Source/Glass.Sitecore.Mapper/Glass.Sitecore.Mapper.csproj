@@ -62,6 +62,9 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ClassManager.cs" />
+    <Compile Include="CodeFirst\FieldInfo.cs" />
+    <Compile Include="CodeFirst\GlassDataProvider.cs" />
+    <Compile Include="CodeFirst\SectionInfo.cs" />
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoader.cs" />
     <Compile Include="Configuration\Attributes\SitecoreChildrenAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreClassAttribute.cs" />
@@ -74,6 +77,7 @@
     <Compile Include="Configuration\Attributes\SitecoreIdAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreParentAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreInfoAttribute.cs" />
+    <Compile Include="Configuration\SitecoreFieldType.cs" />
     <Compile Include="Configuration\SitecoreInfoType.cs" />
     <Compile Include="Configuration\Attributes\SitecoreQueryAttribute.cs" />
     <Compile Include="Configuration\Fluent\FluentConfigurationLoader.cs" />
