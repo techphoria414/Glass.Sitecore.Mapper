@@ -71,6 +71,7 @@ namespace Glass.Sitecore.Mapper.Tests
         {
             //Assign 
             //clear all fields
+            MiscFixtureNS.BasicTemplate test = null;
             using (new SecurityDisabler())
             {
                 _test2.BeginEdit();
@@ -81,11 +82,11 @@ namespace Glass.Sitecore.Mapper.Tests
                 _test2["GroupedDropList"] = "Test2";
                 _test2["DropList"] = "Test2";
                 _test2.EndEdit();
+
+
+                test =
+                    _sitecore.GetItem<MiscFixtureNS.BasicTemplate>("/sitecore/content/Glass/Test2");
             }
-            
-            MiscFixtureNS.BasicTemplate test = 
-                _sitecore.GetItem<MiscFixtureNS.BasicTemplate>("/sitecore/content/Glass/Test2");
-            
             //Simple Types
 
             test.Checkbox = true;
