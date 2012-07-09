@@ -202,7 +202,7 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
             foreach (var field in fields)
             {
-                if (field.Property.DeclaringType != field.Property.ReflectedType)
+                if (field.Property.DeclaringType != cls.Type)
                     continue;
 
                 var attr = field.Attribute as SitecoreFieldAttribute;

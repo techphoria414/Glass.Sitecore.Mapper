@@ -176,9 +176,9 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
                 var interfaces = info.DeclaringType.GetInterfaces();
                 foreach (var inter in interfaces)
                 {
-                    var prop = inter.GetProperty(info.Name);
-                    if (prop != null)
-                        attr = GetSitecoreAttribute(prop);
+                    info = inter.GetProperty(info.Name);
+                    if (info != null)
+                        attr = GetSitecoreAttribute(info);
 
                     if (attr != null) break;
                 }
