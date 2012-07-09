@@ -137,23 +137,25 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
 
             _sitecore = new SitecoreService("master");
             _db = global::Sitecore.Configuration.Factory.GetDatabase("master");
+            using (new SecurityDisabler())
+            {
+                _query1 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item1");
+                _query2 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item2");
+                _test3 = _db.GetItem("/sitecore/content/Glass/Test1/Test3");
 
-            _query1 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item1");
-            _query2 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/Query/Item2");
-            _test3 = _db.GetItem("/sitecore/content/Glass/Test1/Test3");
+                _check1 = _db.GetItem("/sitecore/content/Lookups/CheckList/Check1");
+                _check2 = _db.GetItem("/sitecore/content/Lookups/CheckList/Check2");
 
-            _check1 = _db.GetItem("/sitecore/content/Lookups/CheckList/Check1");
-            _check2 = _db.GetItem("/sitecore/content/Lookups/CheckList/Check2");
+                _multiList1 = _db.GetItem("/sitecore/content/Lookups/Multilist/MultiList1");
+                _multiList2 = _db.GetItem("/sitecore/content/Lookups/Multilist/MultiList2");
 
-            _multiList1 = _db.GetItem("/sitecore/content/Lookups/Multilist/MultiList1");
-            _multiList2 = _db.GetItem("/sitecore/content/Lookups/Multilist/MultiList2");
+                _treeList1 = _db.GetItem("/sitecore/content/Lookups/TreeList/TreeList1");
+                _treeList2 = _db.GetItem("/sitecore/content/Lookups/TreeList/TreeList2");
 
-            _treeList1 = _db.GetItem("/sitecore/content/Lookups/TreeList/TreeList1");
-            _treeList2 = _db.GetItem("/sitecore/content/Lookups/TreeList/TreeList2");
-
-            _link1 = _db.GetItem("/sitecore/content/Lookups/Links/Link1");
-            _link2 = _db.GetItem("/sitecore/content/Lookups/Links/Link2");
-            _link3 = _db.GetItem("/sitecore/content/Lookups/Links/Link3");
+                _link1 = _db.GetItem("/sitecore/content/Lookups/Links/Link1");
+                _link2 = _db.GetItem("/sitecore/content/Lookups/Links/Link2");
+                _link3 = _db.GetItem("/sitecore/content/Lookups/Links/Link3");
+            }
         }
 
         #region Item Test1
@@ -166,7 +168,10 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
             GeneralFluentFixtureNS.BasicTemplate test = null;
 
             //Act
-            test = _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Configuration/Fluent/GeneralFluent/GetItemTest1");
+            using (new SecurityDisabler())
+            {
+                test = _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Configuration/Fluent/GeneralFluent/GetItemTest1");
+            }
             var getTestItem1 = _db.GetItem("/sitecore/content/Configuration/Fluent/GeneralFluent/GetItemTest1");
             //Assert
 
@@ -368,9 +373,13 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Fluent
                 clearItem.EndEdit();
             }
 
-            GeneralFluentFixtureNS.BasicTemplate test =
-                _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Configuration/Fluent/GeneralFluent/SetItemTest2");
-            
+            GeneralFluentFixtureNS.BasicTemplate test;
+            using (new SecurityDisabler())
+            {
+               test =
+                    _sitecore.GetItem<GeneralFluentFixtureNS.BasicTemplate>("/sitecore/content/Configuration/Fluent/GeneralFluent/SetItemTest2");
+
+            }
             //Simple Types
 
             test.Checkbox = true;
