@@ -166,8 +166,25 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
         public static SitecoreProperty GetProperty(PropertyInfo info)
         {
-            var attrs = info.GetCustomAttributes(true);
-            var attr = attrs.FirstOrDefault(y => y is AbstractSitecorePropertyAttribute) as AbstractSitecorePropertyAttribute;
+
+            var attr = GetSitecoreAttribute(info);
+
+            // if we can't get a Sitecore attribute from current property we search down the 
+            // inheritence chain to find the first declared attribute.
+            if (attr == null)
+            {
+                var interfaces = info.DeclaringType.GetInterfaces();
+                foreach (var inter in interfaces)
+                {
+                    var prop = inter.GetProperty(info.Name);
+                    if (prop != null)
+                        attr = GetSitecoreAttribute(prop);
+
+                    if (attr != null) break;
+                }
+
+               
+            }
 
             if (attr != null)
             {
@@ -179,7 +196,12 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             }
             else return null;
         }
-
+        public static AbstractSitecorePropertyAttribute GetSitecoreAttribute(PropertyInfo info)
+        {
+            var attrs = info.GetCustomAttributes(true);
+            var attr = attrs.FirstOrDefault(y => y is AbstractSitecorePropertyAttribute) as AbstractSitecorePropertyAttribute;
+            return attr;
+        }
 
 
 
@@ -196,7 +218,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
                         if (predicate(x))
                         {
                             IEnumerable<object> attrs = x.GetCustomAttributes(true);
-                            SitecoreClassAttribute attr = attrs.FirstOrDefault(y => y is SitecoreClassAttribute) as SitecoreClassAttribute;
+                            SitecoreClassAttribute  attr = attrs.FirstOrDefault(y => y is SitecoreClassAttribute) as SitecoreClassAttribute;
 
                             if (attr != null)
                             {
