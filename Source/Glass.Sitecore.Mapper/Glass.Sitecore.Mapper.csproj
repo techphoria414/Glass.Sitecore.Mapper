@@ -61,7 +61,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClassManager.cs" />
+    <Compile Include="ObjectCaching\CacheableObject.cs" />
+    <Compile Include="ObjectCaching\CachedObjectInformation.cs" />
+    <Compile Include="ObjectCaching\CacheListInformation.cs" />
+    <Compile Include="ObjectCaching\Events\CachePublishItemProcessingEvent.cs" />
+    <Compile Include="ObjectCaching\ICacheableObject.cs" />
+    <Compile Include="ObjectCaching\Implementations\HttpRuntimeCache.cs" />
+    <Compile Include="ObjectCaching\IObjectCache.cs" />
+    <Compile Include="ObjectCaching\ObjectCache.cs" />
+    <Compile Include="ObjectCaching\Implementations\SitecoreCache.cs" />
+    <Compile Include="ObjectCaching\ObjectCacheFactory.cs" />
+    <Compile Include="Configuration\GlassConfiguration.cs" />
+    <Compile Include="ObjectCreation\IObjectManager.cs" />
+    <Compile Include="ObjectCreation\ObjectManager.cs" />
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoader.cs" />
     <Compile Include="Configuration\Attributes\SitecoreChildrenAttribute.cs" />
     <Compile Include="Configuration\Attributes\SitecoreClassAttribute.cs" />
@@ -78,7 +90,7 @@
     <Compile Include="Configuration\Attributes\SitecoreQueryAttribute.cs" />
     <Compile Include="Configuration\Fluent\FluentConfigurationLoader.cs" />
     <Compile Include="Configuration\Fluent\SitecoreClass.cs" />
-    <Compile Include="Configuration\AbstractConfigurationLoader.cs" />
+    <Compile Include="Configuration\Fluent\AbstractConfigurationLoader.cs" />
     <Compile Include="Configuration\Attributes\SitecoreLinkedAttribute.cs" />
     <Compile Include="Configuration\SitecoreInfoUrlOptions.cs" />
     <Compile Include="Configuration\SitecoreLinkedOptions.cs" />
@@ -135,6 +147,9 @@
     <Compile Include="Enumerable.cs" />
     <Compile Include="ItemExtensions.cs" />
     <Compile Include="NullLog.cs" />
+    <Compile Include="ObjectCreation\Implementations\CacheObjectManager.cs" />
+    <Compile Include="ObjectCreation\Implementations\ClassManager.cs" />
+    <Compile Include="ObjectCreation\ObjectManagerFactory.cs" />
     <Compile Include="PersistenceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\InterfaceMethodInterceptor.cs" />
@@ -168,8 +183,10 @@
     <Compile Include="Configuration\Fluent\SitecoreQuery.cs" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Glass.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

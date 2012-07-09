@@ -22,22 +22,26 @@ using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Data;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using System.Reflection.Emit;
+using Glass.Sitecore.Mapper.ObjectCreation;
 
 namespace Glass.Sitecore.Mapper
 {
+    /// <summary>
+    /// 
+    /// </summary>
     public class Context
     {
 
-        public ClassManager ClassManager
+        public IObjectManager ClassManager
         {
             get
             {
-                return StaticContext.ClassManager;
+                return StaticContext.ObjectManager;
             }
-            set
-            {
-                StaticContext.ClassManager = value;
-            }
+            //set
+            //{
+            //    StaticContext.ObjectManager = value;
+            //}
         }
 
         #region STATICS
