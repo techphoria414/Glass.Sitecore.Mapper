@@ -69,9 +69,9 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// </summary>
         public string SectionName { get; set; }
 
-       
+
         /// <summary>
-        /// The name of the field  to use if it is different to the property name
+        /// The Id (Guid) of the field to load
         /// </summary>
         public string FieldName { get; set; }
         /// <summary>
@@ -94,9 +94,6 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// </summary>
         public string FieldSource { get; set; }
   
-        /// <summary>
-        /// The Id (Guid) of the field to load
-        /// </summary>
-        public string FieldId { get; set; }
+      
     }
 }
