@@ -41,6 +41,11 @@ namespace Glass.Sitecore
         {
             return string.IsNullOrEmpty(target);
         }
+
+        public static bool IsNotNullOrEmpty(this string target)
+        {
+            return !string.IsNullOrEmpty(target);
+        }
         public static bool GuidTryParse(this string target, out Guid guid)
         {
 

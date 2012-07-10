@@ -93,5 +93,10 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// The source for the field if using Code First
         /// </summary>
         public string FieldSource { get; set; }
+  
+        /// <summary>
+        /// The Id (Guid) of the field to load
+        /// </summary>
+        public string FieldId { get; set; }
     }
 }

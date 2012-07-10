@@ -77,15 +77,29 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assert
             Assert.IsFalse(result);
         }
+
+        [Test]
+        public void SetValue_FieldDoesntExist()
+        {
+            //Assign
+            
+
+
+            //Act
+
+            //Assert
+        }
     }
 
     namespace AbstractSitecoreFieldFixtureNS
     {
         public class TestClass : AbstractSitecoreField
         {
+            public object SetValue { get; set; }
+
             public override object GetFieldValue(string fieldValue, global::Sitecore.Data.Items.Item item , ISitecoreService service)
             {
-                throw new NotImplementedException();
+                return SetValue;
             }
 
             public override string SetFieldValue(object value, ISitecoreService service)
