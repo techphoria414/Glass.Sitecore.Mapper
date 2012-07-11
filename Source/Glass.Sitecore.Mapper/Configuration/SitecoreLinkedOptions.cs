@@ -23,8 +23,11 @@ namespace Glass.Sitecore.Mapper.Configuration
 {
     public enum SitecoreLinkedOptions
     {
+        [DisplayName("All")]
         All,
+        [DisplayName("References")]
         References,
+        [DisplayName("Referrers")]
         Referrers
     }
 }

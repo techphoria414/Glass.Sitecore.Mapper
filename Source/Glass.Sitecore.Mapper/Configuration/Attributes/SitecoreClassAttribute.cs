@@ -34,6 +34,12 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         public SitecoreClassAttribute()
         {
         }
+
+        public SitecoreClassAttribute(bool codeFirst, string templateId)
+        {
+            TemplateId = templateId;
+            CodeFirst = codeFirst;
+        }
         
         /// <summary>
         /// Indicates the template to use when trying to create an item
@@ -43,5 +49,10 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// Indicates the branch to use when trying to create and item. If a template id is also specified the template Id will be use instead.
         /// </summary>
         public string BranchId { get; set; }
+
+        /// <summary>
+        /// Indicates that the class is used in a code first scenario.
+        /// </summary>
+        public bool CodeFirst { get; set; }
     }
 }

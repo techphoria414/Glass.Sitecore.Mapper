@@ -80,6 +80,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CodeFirst\GlassDataProviderFixture.cs" />
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoaderFixture.cs" />
     <Compile Include="Configuration\Fluent\FluentConfigurationLoaderFixture.cs" />
     <Compile Include="Configuration\Fluent\GeneralFluentFixture.cs" />
@@ -288,6 +289,7 @@
     <None Include="packages.config" />
     <None Include="Readme.textile" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

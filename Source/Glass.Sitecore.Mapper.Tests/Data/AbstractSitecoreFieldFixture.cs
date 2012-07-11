@@ -22,6 +22,9 @@ using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
+using Sitecore.Data;
+using Sitecore.Data.Fields;
+using Sitecore.Data.Items;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -29,12 +32,13 @@ namespace Glass.Sitecore.Mapper.Tests.Data
     public class AbstractSitecoreFieldFixture
     {
         AbstractSitecoreFieldFixtureNS.TestClass testClass;
+        Database _database;
 
         [SetUp]
         public void Setup()
         {
             testClass = new Glass.Sitecore.Mapper.Tests.Data.AbstractSitecoreFieldFixtureNS.TestClass();
-
+            _database = global::Sitecore.Configuration.Factory.GetDatabase("master");
         }
 
         [Test]
@@ -77,15 +81,56 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assert
             Assert.IsFalse(result);
         }
+
+        [Test]
+        public void GetField_UsingFieldId_ReturnsFieldValue()
+        {
+            //Assign
+
+            AbstractSitecoreFieldFixtureNS.TestClass attr = new AbstractSitecoreFieldFixtureNS.TestClass();
+            attr.FieldId = new ID("{9D57BA8A-604A-4F0A-BEDD-A346567075D3}");
+
+            var item = _database.GetItem("/sitecore/content/Data/AbstractSitecoreField/Item1");
+
+            //Act
+            var field = attr.GetField(item);
+            
+            //Assert
+            Assert.AreEqual("Test Single", field.Value);
+
+
+        }
+
+        [Test]
+        public void GetField_UsingFieldIdAndName_FieldIDIsUsedOverName()
+        {
+            //Assign
+
+            AbstractSitecoreFieldFixtureNS.TestClass attr = new AbstractSitecoreFieldFixtureNS.TestClass();
+            attr.FieldId = new ID("{9D57BA8A-604A-4F0A-BEDD-A346567075D3}");
+            attr.FieldName = "randomvalue";
+
+            var item = _database.GetItem("/sitecore/content/Data/AbstractSitecoreField/Item1");
+
+            //Act
+            var field = attr.GetField(item);
+
+            //Assert
+            Assert.AreEqual("Test Single", field.Value);
+
+
+        }
     }
 
     namespace AbstractSitecoreFieldFixtureNS
     {
         public class TestClass : AbstractSitecoreField
         {
+            public object SetValue { get; set; }
+
             public override object GetFieldValue(string fieldValue, global::Sitecore.Data.Items.Item item , ISitecoreService service)
             {
-                throw new NotImplementedException();
+                return SetValue;
             }
 
             public override string SetFieldValue(object value, ISitecoreService service)
@@ -96,6 +141,11 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             public override Type TypeHandled
             {
                 get { throw new NotImplementedException(); }
+            }
+
+            public Field GetField(Item item)
+            {
+                return base.GetField(item);
             }
         }
     }

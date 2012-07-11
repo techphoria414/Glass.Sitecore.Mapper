@@ -199,6 +199,76 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Attributes
 
         #endregion
 
+        [Test]
+        public void GetProperty_AttributeInheritedFromInterface(){
+
+            //Assign
+            var prop = typeof(AttributeConfigurationLoaderFixtureNS.GetProperty.Concrete).GetProperty("Prop1");
+
+            //Act
+            var result = AttributeConfigurationLoader.GetProperty(prop);
+
+            //Assert
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Attribute is SitecoreFieldAttribute);
+
+        }
+
+        [Test]
+        public void GetProperty_AttributeInheritedFromInterface_MultipleInheritenceChain()
+        {
+
+            //Assign
+            var prop = typeof(AttributeConfigurationLoaderFixtureNS.GetProperty.Concrete).GetProperty("Prop2");
+
+            //Act
+            var result = AttributeConfigurationLoader.GetProperty(prop);
+
+            //Assert
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Attribute is SitecoreFieldAttribute);
+
+        }
+
+    }
+
+    namespace AttributeConfigurationLoaderFixtureNS.GetProperty
+    {
+
+        public interface IBase1
+        {
+            [SitecoreField]
+            string Prop1 { get; set; }
+
+            [SitecoreField]
+            string Prop2 { get; set; }
+        }
+
+        public interface IBase2
+        {
+            [SitecoreField]
+            string Prop2 { get; set; }
+
+        }
+
+        public class Concrete : IBase1, IBase2
+        {
+            public string Prop1
+            {
+                get;
+                set;
+            }
+
+            public string Prop2
+            {
+                get;
+                set;
+            }
+        }
+
+
     }
 
     namespace AttributeConfigurationLoaderFixtureNS.TestSet1

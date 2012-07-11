@@ -140,7 +140,7 @@ namespace Glass.Sitecore.Mapper.Tests
         {
             //Assign
             TestInterface inter = null;
-
+            
             //Act 
             using (new SecurityDisabler())
             {
