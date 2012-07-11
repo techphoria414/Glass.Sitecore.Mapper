@@ -18,12 +18,14 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 {
     public class GlassDataProvider : DataProvider
     {
-        #region Standard ID
+        #region  IDs
         /// <summary>
         /// Taken from sitecore database
         /// </summary>
         private static readonly ID TemplateFolderId = new ID("{3C1715FE-6A13-4FCF-845F-DE308BA9741D}");
 
+
+        #region Templates
         /// <summary>
         /// /sitecore/templates/System/Templates/Template section
         /// </summary>
@@ -31,6 +33,23 @@ namespace Glass.Sitecore.Mapper.CodeFirst
         private static readonly ID FieldTemplateId = new ID("{455A3E98-A627-4B40-8035-E683A0331AC7}");
         private static readonly ID TemplateTemplateId = new ID("{AB86861A-6030-46C5-B394-E8F99E8B87DB}");
         private static readonly ID FolderTemplateId = new ID("{A87A00B1-E6DB-45AB-8B54-636FEC3B5523}");
+
+        #endregion
+
+        #region Fields
+
+        // /sitecore/templates/System/Templates/Template field/Data/Title
+        private static readonly ID TitleFieldId = new ID("{19A69332-A23E-4E70-8D16-B2640CB24CC8}");
+        // /sitecore/templates/System/Templates/Template field/Data/Type
+        private static readonly ID TypeFieldId = new ID("{AB162CC0-DC80-4ABF-8871-998EE5D7BA32}");
+        // /sitecore/templates/System/Templates/Template/Data/__Base template
+        private static readonly ID BaseTemplatesFieldId = new ID("{12C33F3F-86C5-43A5-AEB4-5598CEC45116}");
+        // /sitecore/templates/System/Templates/Template field/Data/Source
+        private static readonly ID SourceFieldId = new ID("{1EB8AE32-E190-44A6-968D-ED904C794EBF}");
+        // /sitecore/templates/System/Templates/Sections/Appearance/Appearance/__Read Only
+        private static readonly ID ReadOnlyFieldId = new ID("{9C6106EA-7A5A-48E2-8CAD-F0F693B1E2D4}");
+        #endregion
+
 
         #endregion
 
@@ -106,44 +125,23 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
         private void GetStandardFields(FieldList fields)
         {
-            // /sitecore/templates/System/Templates/Sections/Appearance/Appearance/__Read Only
-            ID  readOnly = new ID("{9C6106EA-7A5A-48E2-8CAD-F0F693B1E2D4}");
-            fields.Add(readOnly, "1");
+   
+            fields.Add(ReadOnlyFieldId, "1");
         }
 
         private void GetFieldFields(FieldInfo info, FieldList fields){
 
-            // /sitecore/templates/System/Templates/Sections/Appearance/Appearance/__Display name
-            ID title = new ID("{19A69332-A23E-4E70-8D16-B2640CB24CC8}");
-            fields.Add(title, info.Title ?? string.Empty);
+            
+            fields.Add(TitleFieldId, info.Title ?? string.Empty);
 
-            // /sitecore/templates/System/Templates/Template field/Data/Type
-            ID type = new ID("{AB162CC0-DC80-4ABF-8871-998EE5D7BA32}");
-            fields.Add(type, FieldInfo.GetFieldType(info.Type));
+         
+            fields.Add(TypeFieldId, FieldInfo.GetFieldType(info.Type));
 
-            // /sitecore/templates/System/Templates/Template field/Data/Source
-            ID source = new ID("{1EB8AE32-E190-44A6-968D-ED904C794EBF}");
-            fields.Add(source, info.Source ?? string.Empty);
+            
+            fields.Add(SourceFieldId, info.Source ?? string.Empty);
         }
 
         #endregion
-
-        // This method must return first version for every language to make info appear in content editor.
-        public override VersionUriList GetItemVersions(ItemDefinition itemDefinition, CallContext context)
-        {
-            //if (itemDefinition.ID.Guid == GlassFolderId)
-            //{
-            //    VersionUriList versionUriList = new VersionUriList();
-            //    foreach (var language in LanguageManager.GetLanguages(Database))
-            //    {
-            //        versionUriList.Add(language, global::Sitecore.Data.Version.First);
-            //    }
-            //    context.Abort();
-            //    return versionUriList;
-            //}
-
-            return base.GetItemVersions(itemDefinition, context);
-        }
 
         #region GetChildIDs
 
@@ -170,7 +168,10 @@ namespace Glass.Sitecore.Mapper.CodeFirst
             IDList fields = new IDList();
 
             List<string> processed = new List<string>();
-            var sections = template.Properties.Select(x=>x.Attribute).OfType<SitecoreFieldAttribute>().Select(x => x.SectionName);
+            var sections = template.Properties
+                .Where(x=>x.Property.DeclaringType == template.Type)
+                .Select(x=>x.Attribute).OfType<SitecoreFieldAttribute>()
+                .Select(x => x.SectionName);
 
             foreach (var section in sections)
             {
@@ -235,11 +236,6 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
         public override global::Sitecore.Data.ID GetParentID(global::Sitecore.Data.ItemDefinition itemDefinition, CallContext context)
         {
-
-            //if(Classes.Any(x=>x.Value.TemplateId ==itemDefinition.ID.Guid)){
-            //    return GlassFolderId;
-            //}
-
             var section = SectionTable.FirstOrDefault(x => x.SectionId == itemDefinition.ID);
 
             if (section != null)
@@ -307,16 +303,8 @@ namespace Glass.Sitecore.Mapper.CodeFirst
                  }
 
 
-
                  foreach (var cls in Context.StaticContext.Classes.Where(x => x.Value.ClassAttribute.CodeFirst))
                  {
-
-
-
-
-
-
-
                      var clsTemplate = provider.GetItemDefinition(new ID(cls.Value.TemplateId), context);
 
                      if (clsTemplate == ItemDefinition.Empty || clsTemplate == null)
@@ -350,9 +338,6 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
                          }
 
-
-
-
                          provider.CreateItem(new ID(cls.Value.TemplateId), cls.Key.Name, TemplateTemplateId, containing, context);
                          clsTemplate = provider.GetItemDefinition(new ID(cls.Value.TemplateId), context);
                      }
@@ -370,23 +355,54 @@ namespace Glass.Sitecore.Mapper.CodeFirst
              }
          }
 
-         private void RemoveDeletedClasses(ItemDefinition folder, DataProvider provider, CallContext context)
+        /// <summary>
+        /// Check a folder and all sub folders in Sitecore for templates
+        /// </summary>
+        /// <param name="folder"></param>
+        /// <param name="provider"></param>
+        /// <param name="context"></param>
+        /// <returns>True of the folder is deleted itself.</returns>
+         private bool RemoveDeletedClasses(ItemDefinition folder, DataProvider provider, CallContext context)
          {
              var childIds = provider.GetChildIDs(folder, context);
-
-             foreach (ID childId in childIds)
+             
+             //check child items
+             foreach (ID childId in childIds.ToArray())
              {
                  var childDefinition = provider.GetItemDefinition(childId, context);
 
+                 //if child is template check the template still exists in the code base
                  if (childDefinition.TemplateID == TemplateTemplateId)
                  {
-                     if (Classes.Any(x => x.Value.TemplateId == childDefinition.ID.Guid))
+                     if (Classes.Any(x => x.Value.TemplateId == childDefinition.ID.Guid && x.Value.ClassAttribute.CodeFirst))
                          continue;
 
                      provider.DeleteItem(childDefinition, context);
+                     childIds.Remove(childDefinition.ID);
                  }
-
+                 // if the child is a folder check the children of the folder
+                 else if (childDefinition.TemplateID == FolderTemplateId)
+                 {
+                     //if the folder itself is deleted then remove from the parent
+                     if (RemoveDeletedClasses(childDefinition, provider, context))
+                     {
+                         childIds.Remove(childDefinition.ID);
+                     }
+                 }
              }
+
+             //if there are no children left delete the folder 
+             if (childIds.Count == 0)
+             {
+                 provider.DeleteItem(folder, context);
+                 return true;
+             }
+             else
+             {
+                 return false;
+             }
+
+             
 
          }
 
@@ -394,13 +410,12 @@ namespace Glass.Sitecore.Mapper.CodeFirst
          {
              //check base templates
 
-             // /sitecore/templates/System/Templates/Template/Data/__Base template
-             ID baseTemplatesFieldId = new ID("{12C33F3F-86C5-43A5-AEB4-5598CEC45116}");
+            
 
              var templateItem = Database.GetItem(template.ID);
 
 
-             var baseTemplatesField = templateItem[baseTemplatesFieldId];
+             var baseTemplatesField = templateItem[BaseTemplatesFieldId];
              StringBuilder sb = new StringBuilder(baseTemplatesField);
 
              global::Sitecore.Diagnostics.Log.Info("Type {0}".Formatted(config.Type.FullName), this);
@@ -438,7 +453,7 @@ namespace Glass.Sitecore.Mapper.CodeFirst
              if (baseTemplatesField != sb.ToString())
              {
                  templateItem.Editing.BeginEdit();
-                 templateItem[baseTemplatesFieldId] = sb.ToString();
+                 templateItem[BaseTemplatesFieldId] = sb.ToString();
                  templateItem.Editing.EndEdit();
              }
 

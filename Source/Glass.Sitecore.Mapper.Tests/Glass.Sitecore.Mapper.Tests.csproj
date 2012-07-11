@@ -80,7 +80,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CodeFirst\CodeFirstException.cs" />
     <Compile Include="CodeFirst\GlassDataProviderFixture.cs" />
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoaderFixture.cs" />
     <Compile Include="Configuration\Fluent\FluentConfigurationLoaderFixture.cs" />
