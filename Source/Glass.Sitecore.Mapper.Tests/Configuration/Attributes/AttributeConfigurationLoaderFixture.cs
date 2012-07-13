@@ -232,6 +232,23 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Attributes
 
         }
 
+        [Test]
+        public void GetProperty_AttributeInheritedFromInterface_MultipleInheritenceChain_PropertyDoesntExistOnOneInterface()
+        {
+
+            //Assign
+            var prop = typeof(AttributeConfigurationLoaderFixtureNS.GetProperty.Concrete).GetProperty("Prop3");
+
+            //Act
+            var result = AttributeConfigurationLoader.GetProperty(prop);
+
+            //Assert
+
+            Assert.IsNotNull(result);
+            Assert.IsTrue(result.Attribute is SitecoreFieldAttribute);
+
+        }
+
     }
 
     namespace AttributeConfigurationLoaderFixtureNS.GetProperty
@@ -250,6 +267,8 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Attributes
         {
             [SitecoreField]
             string Prop2 { get; set; }
+            [SitecoreField]
+            string Prop3 { get; set; }
 
         }
 
@@ -262,6 +281,13 @@ namespace Glass.Sitecore.Mapper.Tests.Configuration.Attributes
             }
 
             public string Prop2
+            {
+                get;
+                set;
+            }
+
+
+            public string Prop3
             {
                 get;
                 set;
