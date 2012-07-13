@@ -84,6 +84,35 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         }
 
+        [Test]
+        public void GetValue_NoField_ReturnsNull()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Image), "NoField")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            //Act
+            var result = _handler.GetValue(item,
+                 null) as Image;
+
+            //Assert
+
+            Assert.IsNull(result);
+            
+
+            // Unsure how to test below
+            // result.Border 
+            // result.Class
+            // result.MediaItem
+
+        }
+
         #endregion
 
         #region  SetValue
@@ -227,6 +256,36 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 item.Editing.CancelEdit();
             }
 
+
+
+        }
+
+        [Test]
+        public void SetValue_NoField_DoesNothing()
+        {
+            //Assign
+            // /sitecore/media library/Files/DSC01034
+            ID newMediaId = new ID(new Guid("{210FAF49-5AA4-471E-BBFE-B4D3ACB6ADC0}"));
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Image), "NoField")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+
+            Item item = _db.GetItem(new ID(_itemId));
+
+            Image img = new Image();
+
+
+            //Act
+            _handler.SetValue(item, img, null);
+
+
+            //Assert
+            //nothing to test but and error shouldn't have been thrown.
 
 
         }

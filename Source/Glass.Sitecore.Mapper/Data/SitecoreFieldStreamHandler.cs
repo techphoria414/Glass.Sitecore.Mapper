@@ -32,7 +32,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override object GetValue( global::Sitecore.Data.Items.Item item,  ISitecoreService service)
         {
-            var itemField = item.Fields[FieldName];
+            var itemField = base.GetField(item);
 
             if (itemField == null) return null;
 
@@ -44,8 +44,10 @@ namespace Glass.Sitecore.Mapper.Data
         public override void SetValue(Item item, object value, ISitecoreService service)
         {
             if (value == null) return;
-         
-            Field field = item.Fields[FieldName];
+
+            Field field = base.GetField(item);
+
+            if (field == null) return;
 
             field.SetBlobStream(value as Stream);
         }

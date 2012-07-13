@@ -82,21 +82,42 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.IsFalse(result);
         }
 
+      
+
         [Test]
-        public void GetField_UsingFieldId_ReturnsFieldValue()
+        public void GetField_UsingFieldName_InvalidIdReturnsNull()
         {
             //Assign
 
             AbstractSitecoreFieldFixtureNS.TestClass attr = new AbstractSitecoreFieldFixtureNS.TestClass();
-            attr.FieldId = new ID("{9D57BA8A-604A-4F0A-BEDD-A346567075D3}");
+            attr.FieldName = "no field here";
 
             var item = _database.GetItem("/sitecore/content/Data/AbstractSitecoreField/Item1");
 
             //Act
             var field = attr.GetField(item);
-            
+
             //Assert
-            Assert.AreEqual("Test Single", field.Value);
+            Assert.IsNull(field);
+
+
+        }
+
+        [Test]
+        public void GetField_UsingFieldId_InvalidIdReturnsNull()
+        {
+            //Assign
+
+            AbstractSitecoreFieldFixtureNS.TestClass attr = new AbstractSitecoreFieldFixtureNS.TestClass();
+            attr.FieldId = new ID("{AAAAAAAA-604A-4F0A-BEDD-A346567075D3}");
+
+            var item = _database.GetItem("/sitecore/content/Data/AbstractSitecoreField/Item1");
+
+            //Act
+            var field = attr.GetField(item);
+
+            //Assert
+            Assert.IsNull(field);
 
 
         }

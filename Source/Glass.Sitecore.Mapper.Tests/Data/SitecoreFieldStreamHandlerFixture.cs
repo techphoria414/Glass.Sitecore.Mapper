@@ -60,14 +60,51 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 Property = new FakePropertyInfo(typeof(Stream), "Attachment")
             };
 
+
+
+            _handler.ConfigureDataHandler(property);
+
+            using (new SecurityDisabler())
+            {
+                string testString = "Hello World" + DateTime.Now.ToString();
+                MemoryStream stream = new MemoryStream();
+                byte[] data = UTF8Encoding.UTF8.GetBytes(testString);
+                stream.Write(data, 0, data.Length);
+
+                item.Editing.BeginEdit();
+                item.Fields["Attachment"].SetBlobStream(stream);
+
+                //Act
+                Stream result = _handler.GetValue(item, null) as Stream;
+
+
+                //Assert
+                Assert.IsNotNull(result);
+
+                item.Editing.CancelEdit();
+            }
+        }
+
+        [Test]
+        public void GetValue_FieldDoesNotExist_ReturnsNull()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Stream), "No field")
+            };
+
             _handler.ConfigureDataHandler(property);
             //Act
-            Stream stream = _handler.GetValue( item, null) as Stream;
+            Stream stream = _handler.GetValue(item, null) as Stream;
 
             //Assert
             Assert.IsNull(stream);
 
         }
+
 
         #endregion
         #region SetValue
@@ -109,6 +146,47 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
                 Assert.AreEqual(testString, text);
 
+                //tidy up
+                item.Editing.CancelEdit();
+
+
+            }
+
+
+        }
+
+        [Test]
+        public void SetValue_FieldDoesNotExist()
+        {
+
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Stream), "Does not exist")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            string testString = "Hello World" + DateTime.Now.ToString();
+            MemoryStream stream = new MemoryStream();
+            byte[] data = UTF8Encoding.UTF8.GetBytes(testString);
+            stream.Write(data, 0, data.Length);
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                //Act
+                _handler.SetValue(item, stream, null);
+
+                //Assert
+
+                Stream result = item.Fields["Attachment"].GetBlobStream();
+                Assert.IsNull(result);
+
+               
                 //tidy up
                 item.Editing.CancelEdit();
 
