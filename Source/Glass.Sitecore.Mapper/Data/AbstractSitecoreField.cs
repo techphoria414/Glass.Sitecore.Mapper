@@ -21,11 +21,15 @@ using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Data;
+using Sitecore.Data.Fields;
 
 namespace Glass.Sitecore.Mapper.Data
 {
     public abstract class AbstractSitecoreField : AbstractSitecoreDataHandler
     {
+
+        public ID FieldId { get; set; }
 
         public string FieldName { get; set; }
 
@@ -38,17 +42,42 @@ namespace Glass.Sitecore.Mapper.Data
 
         public abstract string SetFieldValue(object value, ISitecoreService service);
 
-   
+
+        protected Field GetField(Item item)
+        {
+            Field field = null;
+           
+            if (ID.IsNullOrEmpty(FieldId))
+            {
+                field =  item.Fields[FieldName];
+            }
+            else
+            {
+                field = item.Fields[FieldId];
+            }
+
+            if (field == null) throw new NullReferenceException("Could not find field with Id {0} or name {1}".Formatted(FieldId.ToString(), FieldName));
+
+            return field;
+        }
 
         public override void SetValue(Item item, object value, ISitecoreService service)
         {
+            var field = GetField(item);
+
+
             string fieldValue = SetFieldValue(value,  service);
-            item[FieldName] = fieldValue;
+
+            field.Value = fieldValue;
+            
         }
 
         public override  object GetValue(Item item, ISitecoreService service)
         {
-            string fieldValue = item[FieldName];
+            var field = GetField(item);
+
+            string fieldValue = field.Value;
+
             return GetFieldValue(fieldValue, item, service);
         }
 
@@ -78,6 +107,21 @@ namespace Glass.Sitecore.Mapper.Data
             ReadOnly = attr.ReadOnly;
 
             Setting = attr.Setting;
+
+            if (attr.FieldId.IsNotNullOrEmpty())
+            {
+                Guid id = Guid.Empty;
+
+                if (Guid.TryParse(attr.FieldId, out id))
+                {
+                    FieldId = new ID(id);
+                }
+                else
+                    throw new MapperException("The field Id {0} on property {1} in class {2} isn't in the correct format".Formatted(
+                        attr.FieldId, scProperty.Property.Name, scProperty.Property.ReflectedType.FullName));
+
+
+            }
             
             base.ConfigureDataHandler(scProperty);
         }

@@ -20,6 +20,7 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Globalization;
 
 namespace Glass.Sitecore.Mapper.Tests.Domain
 {
@@ -31,5 +32,9 @@ namespace Glass.Sitecore.Mapper.Tests.Domain
 
         [SitecoreInfo(SitecoreInfoType.Path)]
         public virtual string Path { get; set; }
+
+        [SitecoreInfo(SitecoreInfoType.Language)]
+        public virtual Language Language { get; set; }
+
     }
 }

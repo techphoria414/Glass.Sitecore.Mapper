@@ -71,11 +71,14 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
-            //Assert
-            Assert.IsNotNull(inter);
-            Assert.AreEqual(_test1.ID.Guid, inter.Id);
+                //Assert
+                Assert.IsNotNull(inter);
+                Assert.AreEqual(_test1.ID.Guid, inter.Id);
+            }
         }
 
         [Test]
@@ -85,12 +88,15 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
-            //Assert
-            Assert.IsNotNull(inter);
+                //Assert
+                Assert.IsNotNull(inter);
 
-            Assert.AreEqual(_test1.ID.Guid, inter.DropLink.Id);
+                Assert.AreEqual(_test1.ID.Guid, inter.DropLink.Id);
+            }
         }
         [Test]
         public void Interface_MultiList()
@@ -99,12 +105,15 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
-            //Assert
-            Assert.IsNotNull(inter);
+                //Assert
+                Assert.IsNotNull(inter);
 
-            Assert.AreEqual(_test1.ID.Guid, inter.MultiList.First().Id);
+                Assert.AreEqual(_test1.ID.Guid, inter.MultiList.First().Id);
+            }
         }
 
         [Test]
@@ -114,14 +123,16 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
-            //Assert
-            Assert.IsNotNull(inter);
+                //Assert
+                Assert.IsNotNull(inter);
 
-            Assert.AreEqual(_test1.Children.Count, inter.Children.Count());
-            Assert.AreEqual(_test3.ID.Guid, inter.Children.First().Id);
-
+                Assert.AreEqual(_test1.Children.Count, inter.Children.Count());
+                Assert.AreEqual(_test3.ID.Guid, inter.Children.First().Id);
+            }
         }
 
         [Test]
@@ -129,14 +140,17 @@ namespace Glass.Sitecore.Mapper.Tests
         {
             //Assign
             TestInterface inter = null;
-
+            
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
-            //Assert
-            Assert.IsNotNull(inter);
+                //Assert
+                Assert.IsNotNull(inter);
 
-            Assert.AreEqual(_test1.ParentID.Guid, inter.Parent.Id);
+                Assert.AreEqual(_test1.ParentID.Guid, inter.Parent.Id);
+            }
         }
 
         [Test]
@@ -166,12 +180,15 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
-            //Assert
-            Assert.IsNotNull(inter);
+                //Assert
+                Assert.IsNotNull(inter);
 
-            Assert.AreEqual(_test3.ID.Guid, inter.Treelist.First().Id);
+                Assert.AreEqual(_test3.ID.Guid, inter.Treelist.First().Id);
+            }
         }
 
         [Test]
@@ -180,13 +197,16 @@ namespace Glass.Sitecore.Mapper.Tests
             //Assign
             TestInterface inter = null;
 
-            //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            //Act
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
-            //Assert
-            Assert.IsNotNull(inter);
+                //Assert
+                Assert.IsNotNull(inter);
 
-            Assert.AreEqual(_test2.ID.Guid, inter.TreeListEx.First().Id);
+                Assert.AreEqual(_test2.ID.Guid, inter.TreeListEx.First().Id);
+            }
         }
 
         [Test]
@@ -196,14 +216,18 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
+            using (new SecurityDisabler())
+            {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test1");
 
-            //Assert
-            Assert.IsNotNull(inter);
+                //Assert
+                Assert.IsNotNull(inter);
 
-            Assert.AreEqual("Multi Line Text Test", inter.MultiLineText);
+                Assert.AreEqual("Multi Line Text Test", inter.MultiLineText);
 
-            Assert.AreEqual(789, inter.Number);
+                Assert.AreEqual(789, inter.Number);
+            }
+
         }
 
 
@@ -214,23 +238,23 @@ namespace Glass.Sitecore.Mapper.Tests
             TestInterface inter = null;
 
             //Act 
-            inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test2");
-
-            inter.MultiLineText = "Test MultiLineText";
-            inter.Number = 986;
-
             using (new SecurityDisabler())
             {
+                inter = _sitecore.GetItem<TestInterface>("/sitecore/content/InterfaceFixture/Test2");
+
+                inter.MultiLineText = "Test MultiLineText";
+                inter.Number = 986;
+
                 _sitecore.Save<TestInterface>(inter);
+
+                //Assert
+                Assert.IsNotNull(inter);
+
+                Item result = _db.GetItem(_test2.ID);
+
+                Assert.AreEqual("Test MultiLineText", result["MultiLineText"]);
+                Assert.AreEqual("986", result["Number"]);
             }
-
-            //Assert
-            Assert.IsNotNull(inter);
-
-            Item result = _db.GetItem(_test2.ID);
-
-            Assert.AreEqual("Test MultiLineText", result["MultiLineText"]);
-            Assert.AreEqual("986", result["Number"]);
         }
 
         

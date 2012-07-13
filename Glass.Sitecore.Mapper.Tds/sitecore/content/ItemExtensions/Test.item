@@ -1,0 +1,79 @@
+----item----
+version: 1
+id: {79E29B29-890F-4F87-A091-2B8AC9462DE6}
+database: master
+path: /sitecore/content/ItemExtensions/Test
+parent: {D636AB93-C8D5-4034-BB19-1E1B3CE74005}
+name: Test
+master: {00000000-0000-0000-0000-000000000000}
+template: {F0CD7A02-3B01-49CF-A673-A5526D002164}
+templatekey: ItemExtensions
+
+----version----
+language: en
+version: 1
+revision: e04c07c8-2858-48b2-a604-601c913e1327
+
+----field----
+field: {FE4BBC06-787F-4F6E-B3A5-ADC5307E04D5}
+name: SingleLineText
+key: singlelinetext
+content-length: 12
+
+test content
+----field----
+field: {71444C20-1424-45C4-98F1-B1BC3107DCC0}
+name: DateTime
+key: datetime
+content-length: 15
+
+20120215T023000
+----field----
+field: {961C9C56-DF0C-430F-845C-AE324B0F50F1}
+name: Link
+key: link
+content-length: 38
+
+{C242F703-3A7F-4BF5-967A-A7831F34FA00}
+----field----
+field: {52807595-0F8F-4B20-8D2A-CB71D28C6103}
+name: __Owner
+key: __owner
+content-length: 14
+
+sitecore\admin
+----field----
+field: {25BED78C-4957-4165-998A-CA1B52F67497}
+name: __Created
+key: __created
+content-length: 15
+
+20120212T103400
+----field----
+field: {5DD74568-4D4B-44C1-B513-0AF5F4CDA34F}
+name: __Created by
+key: __created by
+content-length: 14
+
+sitecore\admin
+----field----
+field: {8CDC337E-A112-42FB-BBB4-4143751E123F}
+name: __Revision
+key: __revision
+content-length: 36
+
+e04c07c8-2858-48b2-a604-601c913e1327
+----field----
+field: {D9CF14B1-FA16-4BA6-9288-E8A174D4D522}
+name: __Updated
+key: __updated
+content-length: 34
+
+20120212T104231:634646401518205815
+----field----
+field: {BADD9CF9-53E0-4D0C-BCC0-2D784C282F6A}
+name: __Updated by
+key: __updated by
+content-length: 14
+
+sitecore\admin

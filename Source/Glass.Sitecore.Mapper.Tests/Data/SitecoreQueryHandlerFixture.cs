@@ -25,6 +25,7 @@ using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Data;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Tests.Domain;
+using Sitecore.Globalization;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -36,7 +37,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         SitecoreQueryHandler _handler;
         Guid _itemId;
         Item _item;
-
+        Item _langItem;
         [SetUp]
         public void Setup()
         {
@@ -50,6 +51,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler = new SitecoreQueryHandler();
 
             _item = _db.GetItem("/sitecore/content/Data/SitecoreQueryHandler");
+            _langItem = _db.GetItem("/sitecore/content/Data/SitecoreQueryHandler", Language.Parse("af-ZA"));
         }
 
         #region GetValue
@@ -146,6 +148,31 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.AreEqual(typeof(EmptyTemplate1), result.GetType());
 
         }
+
+        [Test]
+        public void GetValue_ReturnsResults_LazyLoad_SecondLanguage()
+        {
+
+            //Assign
+            string query = "/sitecore/content/Data/SitecoreQueryHandler/*";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreQueryAttribute(query) { IsLazy = true },
+                Property = new FakePropertyInfo(typeof(IEnumerable<EmptyTemplate1>))
+            };
+
+            _handler.ConfigureDataHandler(property);
+            //Act
+            var result = _handler.GetValue(_langItem, _service) as IEnumerable<EmptyTemplate1>;
+
+            //Assert
+            Assert.AreEqual(2, result.Count());
+            Assert.AreNotEqual(typeof(EmptyTemplate1), result.First().GetType());
+            Assert.IsTrue(result.First() is EmptyTemplate1);
+
+        }
+
         #endregion
 
         #region SetValue

@@ -25,6 +25,7 @@ using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Data;
 using Sitecore.Data.Items;
 using Glass.Sitecore.Mapper.Tests.Domain;
+using Sitecore.Data.Managers;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -264,6 +265,32 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.IsNotNull(root.LazyLoaded);
             //should not be equal because of proxy class
             Assert.AreEqual(typeof(EmptyTemplate1), root.LazyLoaded.GetType());
+        }
+
+        [Test]
+        public void GetFieldValue_IsLazyFalse_ReturnsConcrete_LanguageSpecific()
+        {
+            //Assign
+            Item item = _db.GetItem(_item1Path, LanguageManager.GetLanguage("af-ZA"));
+            SitecoreProperty property = AttributeConfigurationLoader.GetProperty(typeof(RootClass).GetProperty("NotLazyLoaded"));
+
+            _handler.ConfigureDataHandler(property);
+            RootClass root = new RootClass();
+
+
+            //Act
+            var result = _handler.GetFieldValue(
+                item.ID.ToString(),
+                item,
+                _service);
+
+            root.LazyLoaded = result as EmptyTemplate1;
+
+            //Assert
+            Assert.IsNotNull(root.LazyLoaded);
+            //should not be equal because of proxy class
+            Assert.AreEqual(typeof(EmptyTemplate1), root.LazyLoaded.GetType());
+            Assert.AreEqual(LanguageManager.GetLanguage("af-ZA"), root.LazyLoaded.Language);
         }
 
         [Test]

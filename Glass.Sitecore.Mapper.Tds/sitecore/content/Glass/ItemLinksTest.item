@@ -1,0 +1,65 @@
+----item----
+version: 1
+id: {D7BF1862-7F8F-42BC-B990-2478945E94E9}
+database: master
+path: /sitecore/content/Glass/ItemLinksTest
+parent: {D22C2A23-DF8A-4EC1-AD52-AE15FE63F937}
+name: ItemLinksTest
+master: {00000000-0000-0000-0000-000000000000}
+template: {C867D02D-103C-404A-B008-4A3E6B8B6F51}
+templatekey: LinkTests
+
+----version----
+language: en
+version: 1
+revision: 79d2bce1-a80d-4e79-8018-837f8712f662
+
+----field----
+field: {97C8229F-935C-4696-A772-E98309490914}
+name: Multilist
+key: multilist
+content-length: 38
+
+{0BF70E18-7464-4241-8F9A-B0DCE3F10219}
+----field----
+field: {52807595-0F8F-4B20-8D2A-CB71D28C6103}
+name: __Owner
+key: __owner
+content-length: 14
+
+sitecore\admin
+----field----
+field: {25BED78C-4957-4165-998A-CA1B52F67497}
+name: __Created
+key: __created
+content-length: 15
+
+20110703T151000
+----field----
+field: {5DD74568-4D4B-44C1-B513-0AF5F4CDA34F}
+name: __Created by
+key: __created by
+content-length: 14
+
+sitecore\admin
+----field----
+field: {8CDC337E-A112-42FB-BBB4-4143751E123F}
+name: __Revision
+key: __revision
+content-length: 36
+
+79d2bce1-a80d-4e79-8018-837f8712f662
+----field----
+field: {D9CF14B1-FA16-4BA6-9288-E8A174D4D522}
+name: __Updated
+key: __updated
+content-length: 34
+
+20110703T151103:634453026630562449
+----field----
+field: {BADD9CF9-53E0-4D0C-BCC0-2D784C282F6A}
+name: __Updated by
+key: __updated by
+content-length: 14
+
+sitecore\admin

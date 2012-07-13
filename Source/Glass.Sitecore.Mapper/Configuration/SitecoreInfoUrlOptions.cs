@@ -25,36 +25,51 @@ namespace Glass.Sitecore.Mapper.Configuration
     [Flags]
     public enum SitecoreInfoUrlOptions
     {
+        [DisplayName("Default")]
         Default = 0x00,
+        
+        [DisplayName("Add aspx")]
         AddAspxExtension = 0x01,
+
+        [DisplayName("Include server url")]
         AlwaysIncludeServerUrl = 0x02,
+
+        [DisplayName("Encode name")]
         EncodeNames = 0x04,
       
         /// <summary>
         /// Do not use with LanguageEmbeddingAsNeeded, LanguageEmbeddingNever
         /// </summary>
-        LanguageEmbeddingAlways= 0x08,
+        [DisplayName("Embed language always")]
+        LanguageEmbeddingAlways = 0x08,
         /// <summary>
         /// Do not use with LanguageEmbeddingAlways, LanguageEmbeddingNever
         /// </summary>
-        LanguageEmbeddingAsNeeded=0x16,
+        [DisplayName("Embed language as needed")]
+        LanguageEmbeddingAsNeeded = 0x16,
         /// <summary>
         /// Do not use with LanguageEmbeddingAlways, LanguageEmbeddingAsNeeded
         /// </summary>
-        LanguageEmbeddingNever=0x32,
+        [DisplayName("Never embed language")]
+        LanguageEmbeddingNever = 0x32,
 
         /// <summary>
         /// Do not use with LanguageLocationQueryString
         /// </summary>
+        [DisplayName("Language in file path")]
         LanguageLocationFilePath = 0x64,
         /// <summary>
         /// Do not use with LanguageLocationFilePath
         /// </summary>
+        [DisplayName("Language in query string")]
         LanguageLocationQueryString = 0x128,
 
 
+        [DisplayName("Shorten URLs")]
         ShortenUrls = 0x256,
+        [DisplayName("Site resolving")]
         SiteResolving = 0x512,
+        [DisplayName("Use display name")]
         UseUseDisplayName = 0x1024
         
 

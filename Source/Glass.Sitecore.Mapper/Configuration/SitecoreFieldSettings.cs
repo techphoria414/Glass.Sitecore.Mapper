@@ -27,19 +27,23 @@ namespace Glass.Sitecore.Mapper.Configuration
         /// <summary>
         /// The field carries out its default behaviour
         /// </summary>
+        [DisplayName("Default")]
         Default = 0x0,
         /// <summary>
         /// If used on a Rich Text field it stops the contents going through the render process 
         /// and returns the raw HTML of the field
         /// </summary>
+        [DisplayName("Rich text raw")]
         RichTextRaw = 0x1,
         /// <summary>
         /// If the property type is another classes loaded by the  Mapper, indicates that the class should not be lazy loaded.
         /// </summary>
+        [DisplayName("Don't load lazily")]
         DontLoadLazily = 0x2,
         /// <summary>
         /// Indicates the type should be inferred from the item template
         /// </summary>
+        [DisplayName("Infer type")]
         InferType = 0x4
 
     }
