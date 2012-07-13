@@ -56,7 +56,9 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
         public SitecoreFieldType FieldType { get; set; }
 
-
+        /// <summary>
+        /// Indicates the field should be used as part of a code first template
+        /// </summary>
         public bool CodeFirst { get; set; }
 
         /// <summary>

@@ -36,7 +36,7 @@ namespace Glass.Sitecore.Mapper.Tests
     [TestFixture]
     public class MiscFixture
     {
-
+        
 
         SitecoreService _sitecore;
         Context _context;
