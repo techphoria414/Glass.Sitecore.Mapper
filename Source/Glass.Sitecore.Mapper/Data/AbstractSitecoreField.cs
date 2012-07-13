@@ -55,8 +55,7 @@ namespace Glass.Sitecore.Mapper.Data
             {
                 field = item.Fields[FieldId];
             }
-
-            if (field == null) throw new NullReferenceException("Could not find field with Id {0} or name {1}".Formatted(FieldId.ToString(), FieldName));
+         
 
             return field;
         }
@@ -64,7 +63,7 @@ namespace Glass.Sitecore.Mapper.Data
         public override void SetValue(Item item, object value, ISitecoreService service)
         {
             var field = GetField(item);
-
+            if (field == null) return;
 
             string fieldValue = SetFieldValue(value,  service);
 
@@ -76,7 +75,7 @@ namespace Glass.Sitecore.Mapper.Data
         {
             var field = GetField(item);
 
-            string fieldValue = field.Value;
+            string fieldValue = field == null ? string.Empty : field.Value ;
 
             return GetFieldValue(fieldValue, item, service);
         }

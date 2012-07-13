@@ -30,23 +30,33 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
-            if (item.Fields[FieldName] != null && item.Fields[FieldName].Type.StartsWith("Rich Text") && Setting != SitecoreFieldSettings.RichTextRaw)
+            var field = base.GetField(item);
+
+            if (field == null)
+                return string.Empty;
+
+            if (field.Type.StartsWith("Rich Text") && Setting != SitecoreFieldSettings.RichTextRaw)
             {
                 FieldRenderer renderer = new FieldRenderer();
                 renderer.Item = item;
-                renderer.FieldName = FieldName;
+                renderer.FieldName = field.Name;
                 renderer.Parameters = string.Empty;
                 return renderer.Render();
             }
-            else return item[FieldName];
+            else return field.Value ;
         }
 
 
 
         public override void SetValue( Item item, object value, ISitecoreService service)
         {
+            var field = base.GetField(item);
 
-            if (item.Fields[FieldName] != null && item.Fields[FieldName].Type.StartsWith("Rich Text") && Setting != SitecoreFieldSettings.RichTextRaw)
+            if (field == null)
+            {
+                return;
+            }
+            else if (field.Type.StartsWith("Rich Text") && Setting != SitecoreFieldSettings.RichTextRaw)
             {
                 throw new NotSupportedException("It is not possible to save data from a rich text field when the data isn't raw."
                     + "Set the SitecoreFieldAttribute setting property to SitecoreFieldSettings.RichTextRaw for property {0} on type {1}".Formatted(Property.Name, Property.ReflectedType.FullName));
