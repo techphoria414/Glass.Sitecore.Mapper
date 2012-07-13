@@ -33,7 +33,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override object GetValue(global::Sitecore.Data.Items.Item item,  ISitecoreService service)
         {
-            var itemField = item.Fields[FieldName];
+            var itemField = base.GetField(item);
 
             if (itemField == null) return null;
 
@@ -66,7 +66,12 @@ namespace Glass.Sitecore.Mapper.Data
         {
 
             Image img = value as Image;
-            ImageField scImg = new ImageField(item.Fields[FieldName]);
+
+            Field itemField = base.GetField(item);
+
+            if (itemField == null) return;
+
+            ImageField scImg = new ImageField(itemField);
 
             if (img == null)
             {

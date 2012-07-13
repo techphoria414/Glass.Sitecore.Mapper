@@ -69,9 +69,58 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         }
 
+        [Test]
+        public void GetValue_NoField_ReturnsNull()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(File), "NoField")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            //Act
+            var result = _handler.GetValue(item, null) as File;
+
+            //Assert
+            Assert.IsNull(result);
+
+        }
+
         #endregion
 
         #region SetValue
+
+
+        [Test]
+        public void SetValue_NoField_DoesNothing()
+        {
+            //Assign
+            Guid id = new Guid("{B89EA3C6-C947-44AF-9AEF-7EF89CEB0A4B}");
+            Item item = _db.GetItem(new ID(_itemId));
+
+            File file = new File();
+            file.Id = id;
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(File), "NoField")
+            };
+            _handler.ConfigureDataHandler(property);
+
+           
+
+                //Act
+                _handler.SetValue(item, file, null);
+
+                //Assert
+               //Does nothing but shouldn't error
+
+        }
 
         [Test]
         public void SetValue_UpdatesWithNewFile()

@@ -34,7 +34,7 @@ namespace Glass.Sitecore.Mapper.Data
         public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
 
-            var itemField = item.Fields[FieldName];
+            var itemField = base.GetField(item);
 
             if (itemField == null) return null;
 
@@ -51,6 +51,11 @@ namespace Glass.Sitecore.Mapper.Data
         {
 
             File  file = value as File;
+
+            Field itemField = base.GetField(item);
+
+            if (itemField == null) return;
+
             FileField field = new FileField(item.Fields[FieldName]);
 
             if (file == null)
