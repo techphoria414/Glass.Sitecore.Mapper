@@ -169,14 +169,18 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
             var attr = GetSitecoreAttribute(info);
 
+            
+
             // if we can't get a Sitecore attribute from current property we search down the 
             // inheritence chain to find the first declared attribute.
             if (attr == null)
             {
                 var interfaces = info.DeclaringType.GetInterfaces();
+                string propertyName = info.Name;
+
                 foreach (var inter in interfaces)
                 {
-                    info = inter.GetProperty(info.Name);
+                    info = inter.GetProperty(propertyName);
                     if (info != null)
                         attr = GetSitecoreAttribute(info);
 

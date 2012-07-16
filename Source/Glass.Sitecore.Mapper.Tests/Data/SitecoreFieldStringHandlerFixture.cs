@@ -100,6 +100,30 @@ namespace Glass.Sitecore.Mapper.Tests.Data
         }
 
         [Test]
+        public void GetValue_NoFieldReturnsEmptyString()
+        {
+            //Assign
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(string), "NoField")
+            };
+            _handler.ConfigureDataHandler(property);
+
+            using (new SecurityDisabler())
+            {
+
+                //Act
+                var result = _handler.GetValue(_item, null);
+
+                //Assert
+                Assert.IsNullOrEmpty((string) result);
+
+            }
+
+        }
+
+        [Test]
         public void GetValue_RichText_GetsModifiedString()
         {
             //Assign
@@ -213,6 +237,31 @@ namespace Glass.Sitecore.Mapper.Tests.Data
                 _item.Editing.EndEdit();
 
             }
+        }
+
+        [Test]
+        public void SetValue_NoFieldExists_DoesNothing()
+        {
+            //Assign
+            string value = "some test string";
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(string), "No field"),
+                Attribute = new SitecoreFieldAttribute()
+                {
+                    Setting = SitecoreFieldSettings.RichTextRaw
+                }
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            //Act
+
+            _handler.SetValue(_item, value, null);
+
+            //Assert
+            //nothing to test
+
         }
 
         [Test]

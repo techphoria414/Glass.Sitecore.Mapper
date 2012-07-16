@@ -309,6 +309,34 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.AreEqual("~/media/Files/Kitten1.ashx", result.Url);
         }
 
+        [Test]
+        public void GetValue_NoField_ReturnsNull()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "NoField")
+            };
+
+            _handler.ConfigureDataHandler(property);
+
+            //Act
+            Link result = _handler.GetValue(item, null) as Link;
+
+            //Assert
+            //Assert.AreEqual("", result.Anchor);
+            //Assert.AreEqual("Style Class Test", result.Class);
+            //Assert.AreEqual("_blank", result.Target);
+            //Assert.AreEqual(Guid.Empty, result.TargetId);
+            //Assert.AreEqual("Link Description Test", result.Text);
+            //Assert.AreEqual("Alternate Text Test", result.Title);
+            Assert.IsNull(result);
+        }
+
         #endregion
         #region SetValue
 
@@ -685,6 +713,31 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             //Assert
 
             Assert.AreEqual(expected, result);
+
+        }
+
+        [Test]
+        public void SetValue_NoField()
+        {
+            //Assign
+            Item item = _db.GetItem(new ID(_itemId));
+
+            string expected = "";
+
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Attribute = new SitecoreFieldAttribute(),
+                Property = new FakePropertyInfo(typeof(Link), "NoField")
+            };
+            _handler.ConfigureDataHandler(property);
+
+            Link link = new Link();
+
+                //Act
+                _handler.SetValue(item, link, null);
+
+            //Assert
+            //should be no errors, but nothing to test
 
         }
 
