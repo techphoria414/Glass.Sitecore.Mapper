@@ -89,7 +89,11 @@
     <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClassConfig.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Dashboard\ClassDetailsResponse.cs" />
+    <Compile Include="Dashboard\ClassListResponse.cs" />
+    <Compile Include="Dashboard\DashboardHandler.cs" />
     <Compile Include="Data\QueryParameters\ItemEscapedPathParameter.cs" />
+    <Compile Include="Data\SitecoreFieldNameValueCollectionHandler.cs" />
     <Compile Include="Data\SitecoreFieldNullableHandler.cs" />
     <Compile Include="Data\SitecoreItemHandler.cs" />
     <Compile Include="Data\SitecoreLinkedHandler.cs" />
@@ -176,6 +180,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Dashboard\AbstractResponse.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
