@@ -28,6 +28,7 @@ using System.Linq.Expressions;
 using Sitecore.Links;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Data;
+using System.IO;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -243,7 +244,17 @@ namespace Glass.Sitecore.Mapper
                 return sb.ToString(0, sb.Length - 1);
 
             return String.Empty;
-        } 
+        }
+
+        public static string GetResource(string name)
+        {
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
+            TextReader reader =   new StreamReader(stream);
+            string content = reader.ReadToEnd();
+            reader.Close();
+            reader.Dispose();
+            return content;
+        }
 
         public static IEnumerable<AbstractSitecoreDataHandler> GetDefaultDataHanlders()
         {

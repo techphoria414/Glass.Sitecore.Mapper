@@ -92,6 +92,7 @@
     <Compile Include="Dashboard\ClassDetailsResponse.cs" />
     <Compile Include="Dashboard\ClassListResponse.cs" />
     <Compile Include="Dashboard\DashboardHandler.cs" />
+    <Compile Include="Dashboard\Html\Tables.cs" />
     <Compile Include="Data\QueryParameters\ItemEscapedPathParameter.cs" />
     <Compile Include="Data\SitecoreFieldNameValueCollectionHandler.cs" />
     <Compile Include="Data\SitecoreFieldNullableHandler.cs" />
@@ -184,6 +185,10 @@
   <ItemGroup>
     <Compile Include="Dashboard\AbstractResponse.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Dashboard.css" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

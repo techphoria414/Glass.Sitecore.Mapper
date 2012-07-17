@@ -19,7 +19,9 @@ namespace Glass.Sitecore.Mapper.Dashboard
             StringBuilder sb = new StringBuilder();
             sb.Append("<html>");
             sb.Append("<head>");
+            sb.Append("<link rel='stylesheet' href='http://current.bootstrapcdn.com/bootstrap-v204/css/bootstrap-combined.min.css' />");
             sb.AppendFormat("<title>Glass {0}</title>", Title);
+            sb.AppendFormat("<style>{0}</style>", GetCSS());
             sb.Append("</head>");
             sb.Append("<body>");
             return sb.ToString();
@@ -83,12 +85,9 @@ namespace Glass.Sitecore.Mapper.Dashboard
             return name;
         }
 
-        public string CSS()
+        public string GetCSS()
         {
-            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Glass.Sitecore.Mapper.Dashboard.Dashboard.css");
-            
-
+            return Utility.GetResource("Glass.Sitecore.Mapper.Dashboard.Dashboard.css");
         }
-
 	}
 }
