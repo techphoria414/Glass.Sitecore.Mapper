@@ -29,6 +29,7 @@ using Sitecore.Caching;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Sitecore.Data.Items;
+using Sitecore.SecurityModel;
 
 namespace Glass.Sitecore.Mapper.CodeFirst
 {
@@ -354,8 +355,18 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
                          }
 
+                         //create the template in Sitecore
                          provider.CreateItem(new ID(cls.Value.TemplateId), cls.Key.Name, TemplateTemplateId, containing, context);
                          clsTemplate = provider.GetItemDefinition(new ID(cls.Value.TemplateId), context);
+                         //Assign the base template
+                         var templateItem  = Database.GetItem(clsTemplate.ID);
+
+                         using (new SecurityDisabler())
+                         {
+                             templateItem.Editing.BeginEdit();
+                             templateItem["__Base template"] = "{1930BBEB-7805-471A-A3BE-4858AC7CF696}";
+                             templateItem.Editing.EndEdit();
+                         }
                      }
 
 
