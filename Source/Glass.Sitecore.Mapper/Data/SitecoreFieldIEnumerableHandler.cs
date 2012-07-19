@@ -48,7 +48,7 @@ namespace Glass.Sitecore.Mapper.Data
 
             IEnumerable<object> items = parts.Select(x => EnumSubHandler.GetFieldValue(x, item, service)).ToArray();
             var list = Utility.CreateGenericType(typeof(List<>), new Type[] { pType }) ;
-            Utility.CallAddMethod(items, list);
+            Utility.CallAddMethod(items.Where(x=>x != null), list);
 
             return list;
             
