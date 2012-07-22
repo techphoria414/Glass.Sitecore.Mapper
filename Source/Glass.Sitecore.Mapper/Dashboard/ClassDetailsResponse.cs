@@ -32,9 +32,9 @@ namespace Glass.Sitecore.Mapper.Dashboard
             var cls = results.First();
             var idProp = cls.Value.Properties.Where(x=>x.Attribute is SitecoreIdAttribute);
 
-            sb.AppendFormat("<h3>{0}</h3>", clsName);
+            sb.AppendFormat("<h2>{0}</h2>", clsName);
 
-            sb.Append("<h4>Details</h4>");            
+            sb.Append("<h3>Details</h3>");            
             sb.Append(Tables.TableOpen());
             sb.AppendFormat("<tr><th>Inherits</th><td>{0}</td></tr>", GetInheritedMembers(cls.Key));
             sb.AppendFormat("<tr><th>Sub-Types</th><td>{0}</td></tr>", GetDerivedTypes(cls.Key));
@@ -51,50 +51,19 @@ namespace Glass.Sitecore.Mapper.Dashboard
             sb.Append("</table>");
 
 
-            sb.Append("<div class='row'>");
-            sb.Append("<div class='span12'>");
             GetFields(sb, cls);
-            sb.Append("</div>");
-            sb.Append("</div>");
 
-            sb.Append("<div class='row'>");
-            sb.Append("<div class='span12'>");
             GetInformation(sb, cls);
-            sb.Append("</div>");
-            sb.Append("</div>");
 
-            sb.Append("<div class='row'>");
-            sb.Append("<div class='span12'>");
             GetItems(sb, cls);
-            sb.Append("</div>");
-            sb.Append("</div>");
-
-            sb.Append("<div class='row'>");
-            sb.Append("<div class='span12'>");
+            
             GetLinked(sb, cls);
-            sb.Append("</div>");
-            sb.Append("</div>");
 
-            sb.Append("<div class='row'>");
-            sb.Append("<div class='span12'>");
             GetParents(sb, cls);
-            sb.Append("</div>");
-            sb.Append("</div>");
 
-            sb.Append("<div class='row'>");
-            sb.Append("<div class='span12'>");
             GetChildren(sb, cls);
-            sb.Append("</div>");
-            sb.Append("</div>");
 
-            sb.Append("<div class='row'>");
-            sb.Append("<div class='span12'>");
              GetQuery(sb, cls);
-             sb.Append("</div>");
-             sb.Append("</div>");
-
-           
-          
 
             return sb.ToString();
 
@@ -106,7 +75,7 @@ namespace Glass.Sitecore.Mapper.Dashboard
             
             if(!scProps.Any()) return;
 
-            sb.Append("<h4>Fields</h4>");
+            sb.Append("<h3>Fields</h3>");
             sb.Append(Tables.TableOpen());
             sb.Append("<tr><th>Property Name</th><th>Field Name</th><th>Return Name</th><th>Field Id</th><th>Read Only</th><th>Code First</th><th>Section Name</th><th>Type</th><th>Field Title</th><th>Field Source</th></tr>");
 
@@ -139,7 +108,7 @@ namespace Glass.Sitecore.Mapper.Dashboard
 
             if (!scProps.Any()) return;
 
-            sb.Append("<h4>Items</h4>");
+            sb.Append("<h3>Items</h3>");
             sb.Append(Tables.TableOpen());
 
             sb.AppendFormat("<tr><th>Property Name</th><th>Return Type</th><th>Id</th><th>Path</th><th>Lazy</th></tr>");
@@ -164,7 +133,7 @@ namespace Glass.Sitecore.Mapper.Dashboard
             var scProps = cls.Value.Properties.Where(x => x.Attribute is SitecoreLinkedAttribute);
             if (!scProps.Any()) return;
 
-            sb.Append("<h4>Linked</h4>");
+            sb.Append("<h3>Linked</h3>");
             sb.Append(Tables.TableOpen());
 
             sb.AppendFormat("<tr><th>Property Name</th><th>Return Type</th><th>Option</th><th>InferType</th><th>Lazy</th></tr>");
@@ -189,7 +158,7 @@ namespace Glass.Sitecore.Mapper.Dashboard
             var scProps = cls.Value.Properties.Where(x => x.Attribute is SitecoreParentAttribute);
             if (!scProps.Any()) return;
 
-            sb.Append("<h4>Parent</h4>");
+            sb.Append("<h3>Parent</h3>");
             sb.Append(Tables.TableOpen());
 
             sb.AppendFormat("<tr><th>Property Name</th><th>Return Type</th><th>InferType</th><th>Lazy</th></tr>");
@@ -214,7 +183,7 @@ namespace Glass.Sitecore.Mapper.Dashboard
             if (!scProps.Any()) return;
 
 
-            sb.Append("<h4>Children</h4>");
+            sb.Append("<h3>Children</h3>");
             sb.Append(Tables.TableOpen());
 
             sb.AppendFormat("<tr><th>Property Name</th><th>Return Type</th><th>InferType</th><th>Lazy</th></tr>");
@@ -239,7 +208,7 @@ namespace Glass.Sitecore.Mapper.Dashboard
             if (!scProps.Any()) return;
 
 
-            sb.Append("<h4>Query</h4>");
+            sb.Append("<h3>Query</h3>");
             sb.Append(Tables.TableOpen());
 
             sb.AppendFormat("<tr><th>Property Name</th><th>Return Type</th><th>InferType</th><th>Lazy</th><th>Is Relative</th><th>Query</th><th>Use Query Context</th></tr>");
@@ -267,7 +236,7 @@ namespace Glass.Sitecore.Mapper.Dashboard
             if (!scProps.Any()) return;
 
 
-            sb.Append("<h4>Information</h4>");
+            sb.Append("<h3>Information</h3>");
             sb.Append(Tables.TableOpen());
 
             sb.AppendFormat("<tr><th>Property Name</th><th>Return Type</th><th>Type</th></tr>");

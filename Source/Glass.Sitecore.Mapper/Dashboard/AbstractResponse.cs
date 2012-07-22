@@ -26,6 +26,25 @@ namespace Glass.Sitecore.Mapper.Dashboard
             sb.Append("<body>");
             return sb.ToString();
         }
+
+        public string NavBar()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("<div class='navbar navbar-fixed-top'><div class='navbar-inner'><div class='container'>");
+            sb.Append("<ul class='nav'>");
+
+            string page = Request.Path;
+
+            sb.AppendFormat("<li><a href='{0}'>Class List</a></li>", page);
+
+            sb.Append("</ul>");
+            sb.Append("</div></div></div>");
+
+            return sb.ToString();
+
+        }
+
         public string Footer()
         {
             StringBuilder sb = new StringBuilder();
@@ -40,7 +59,12 @@ namespace Glass.Sitecore.Mapper.Dashboard
         {
             StringBuilder sb = new StringBuilder();
             sb.Append(Header());
+            sb.Append(NavBar());
+            sb.Append("<div class='container'>");
+            sb.Append("<div class='row'>");
             sb.Append(Content());
+            sb.Append("</div>");
+            sb.Append("</div>");
             sb.Append(Footer());
 
             return sb.ToString();
