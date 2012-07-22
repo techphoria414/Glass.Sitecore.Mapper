@@ -160,6 +160,7 @@
     <Compile Include="Web\Ui\GlassDynamicUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\Ui\GlassEditFrame.cs" />
     <Compile Include="Web\Ui\GlassUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
