@@ -37,6 +37,7 @@ namespace Glass.Sitecore.Mapper.Dashboard
             string page = Request.Path;
 
             sb.AppendFormat("<li><a href='{0}'>Class List</a></li>", page);
+            sb.AppendFormat("<li><a href=?query'>Query Sitecore</a></li>", page);
 
             sb.Append("</ul>");
             sb.Append("</div></div></div>");

@@ -89,10 +89,13 @@
     <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClassConfig.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Dashboard\AbstractController.cs" />
     <Compile Include="Dashboard\ClassDetailsResponse.cs" />
     <Compile Include="Dashboard\ClassListResponse.cs" />
     <Compile Include="Dashboard\DashboardHandler.cs" />
     <Compile Include="Dashboard\Html\Tables.cs" />
+    <Compile Include="Dashboard\ListController.cs" />
+    <Compile Include="Dashboard\QueryResponse.cs" />
     <Compile Include="Data\QueryParameters\ItemEscapedPathParameter.cs" />
     <Compile Include="Data\SitecoreFieldNameValueCollectionHandler.cs" />
     <Compile Include="Data\SitecoreFieldNullableHandler.cs" />
