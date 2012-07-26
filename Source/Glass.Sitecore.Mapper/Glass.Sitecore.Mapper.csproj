@@ -51,6 +51,7 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -89,13 +90,44 @@
     <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClassConfig.cs" />
     <Compile Include="Context.cs" />
-    <Compile Include="Dashboard\AbstractController.cs" />
-    <Compile Include="Dashboard\ClassDetailsResponse.cs" />
-    <Compile Include="Dashboard\ClassListResponse.cs" />
-    <Compile Include="Dashboard\DashboardHandler.cs" />
-    <Compile Include="Dashboard\Html\Tables.cs" />
-    <Compile Include="Dashboard\ListController.cs" />
-    <Compile Include="Dashboard\QueryResponse.cs" />
+    <Compile Include="Dashboard\Controllers\DetailsController.cs" />
+    <Compile Include="Dashboard\Controllers\ListController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Controllers\StaticController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\DashboardHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\DashboardUtilities.cs" />
+    <Compile Include="Dashboard\DashboardExtensionMethods.cs" />
+    <Compile Include="Dashboard\Model\GlassChildren.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassClass.cs" />
+    <Compile Include="Dashboard\Model\GlassClassSummary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassField.cs" />
+    <Compile Include="Dashboard\Model\GlassInfo.cs" />
+    <Compile Include="Dashboard\Model\GlassItem.cs" />
+    <Compile Include="Dashboard\Model\GlassLinked.cs" />
+    <Compile Include="Dashboard\Model\GlassParent.cs" />
+    <Compile Include="Dashboard\Model\GlassQuery.cs" />
+    <Compile Include="Dashboard\Web\AbstractController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Web\AbstractView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Web\HtmlView.cs" />
+    <Compile Include="Dashboard\Web\JsonView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Web\ManifestView.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Data\QueryParameters\ItemEscapedPathParameter.cs" />
     <Compile Include="Data\SitecoreFieldNameValueCollectionHandler.cs" />
     <Compile Include="Data\SitecoreFieldNullableHandler.cs" />
@@ -186,12 +218,27 @@
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Dashboard\AbstractResponse.cs" />
+    <Folder Include="Dashboard\List\" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Css\Dashboard.css" />
     <EmbeddedResource Include="Dashboard\Dashboard.css" />
+    <EmbeddedResource Include="Dashboard\Html\List.htm" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Js\List.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Html\HtmlHeader.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Html\HtmlFooter.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Html\Details.htm" />
+    <EmbeddedResource Include="Dashboard\Js\Details.js" />
+    <EmbeddedResource Include="Dashboard\Js\General.js" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

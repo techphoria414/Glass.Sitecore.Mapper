@@ -246,6 +246,11 @@ namespace Glass.Sitecore.Mapper
             return String.Empty;
         }
 
+        /// <summary>
+        /// Gets an embedded manifest resource in the assembly
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public static string GetResource(string name)
         {
             var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);

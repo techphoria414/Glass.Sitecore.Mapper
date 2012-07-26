@@ -5,6 +5,7 @@ using System.Text;
 using System.Web;
 using System.Reflection;
 using System.Collections.Specialized;
+using Glass.Sitecore.Mapper.Dashboard.Web;
 
 namespace Glass.Sitecore.Mapper.Dashboard
 {
@@ -33,13 +34,16 @@ namespace Glass.Sitecore.Mapper.Dashboard
             controller.Context = context;
             controller.GlassContext = Context.StaticContext;
 
-            InvokeAction(controller, actionName, context.Request.QueryString);
+            var view = InvokeAction(controller, actionName, context.Request.QueryString);
+
+            view.Response(context.Response);
+
 
         }
 
         private static readonly Type _controllerBase = typeof(AbstractController);
 
-        public void InvokeAction(AbstractController controller, string action, NameValueCollection parameters)
+        public AbstractView InvokeAction(AbstractController controller, string action, NameValueCollection parameters)
         {
             Type cType = controller.GetType();
             var method = cType.GetMethods().FirstOrDefault(x => x.Name.ToLower() == action.ToLower());
@@ -66,7 +70,12 @@ namespace Glass.Sitecore.Mapper.Dashboard
                     throw new HttpException(404, "Not Found");
             }
 
-            method.Invoke(controller, finalParams.ToArray());
+            var view = method.Invoke(controller, finalParams.ToArray());
+
+            if (view is AbstractView)
+                return view as AbstractView;
+            else
+                throw new HttpException(500, "Incorrect view");
 
         }
 
