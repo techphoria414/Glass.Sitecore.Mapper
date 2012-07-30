@@ -220,6 +220,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dashboard\List\" />
+    <Folder Include="Dashboard\Model\Data\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Dashboard\Css\Dashboard.css" />

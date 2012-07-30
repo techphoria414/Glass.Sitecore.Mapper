@@ -81,7 +81,7 @@ namespace Glass.Sitecore.Mapper
                                                 
                         var classes = configs.ToDictionary();
 
-                        InstanceContext instance = new InstanceContext(classes, dataHandlers);
+                        InstanceContext instance = new InstanceContext(classes, dataHandlers, loaders);
                         StaticContext = instance;
 
                         //now assign a data handler to each property
@@ -144,6 +144,9 @@ namespace Glass.Sitecore.Mapper
 
             AbstractConfigurationLoader _loader;
 
+            private static readonly Guid _id = new Guid("{60782D9C-C145-4C12-AC68-9C328B085F64}");
+
+
             public TemporaryConfigurationLoader(AbstractConfigurationLoader loader, IEnumerable<AbstractSitecoreDataHandler> datas)
             {
                 _loader = loader;
@@ -160,7 +163,12 @@ namespace Glass.Sitecore.Mapper
                 return _loader.Load();
             }
 
-           
+
+
+            public override Guid Id
+            {
+                get { return _id; }
+            }
         }
 
         /// <summary>

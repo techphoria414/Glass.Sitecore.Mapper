@@ -36,8 +36,12 @@ namespace Glass.Sitecore.Mapper
         public Dictionary<Type, SitecoreClassConfig> Classes { get; private set; }
         public IEnumerable<AbstractSitecoreDataHandler> Datas { get; private set; }
 
-        public InstanceContext(Dictionary<Type, SitecoreClassConfig> classes, IEnumerable<AbstractSitecoreDataHandler> datas)
+        public IEnumerable<AbstractConfigurationLoader> Loaders { get; private set; }
+
+        public InstanceContext(Dictionary<Type, SitecoreClassConfig> classes, IEnumerable<AbstractSitecoreDataHandler> datas, IEnumerable<AbstractConfigurationLoader> loaders)
         {
+            this.Loaders = loaders;
+
             //This needs reworking
             //this will be simplified to remove the need for three sets of data
 
