@@ -7,6 +7,7 @@ using Glass.Sitecore.Mapper.Dashboard.Model;
 using System.Web;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Data;
+using Glass.Sitecore.Mapper.Dashboard.Model.Data;
 
 namespace Glass.Sitecore.Mapper.Dashboard.Controllers
 {
@@ -38,19 +39,39 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
             model.Items = GetItems(result);
             model.Fields = GetFields(result);
             
-            model.TemplateId = result.Value.TemplateId;
             model.BranchId = result.Value.BranchId;
             model.CodeFirst = result.Value.ClassAttribute.CodeFirst;
             if (result.Value.IdProperty != null)
                 model.Id = result.Value.IdProperty.Property.Name;
-            
 
 
+            model.Template = new GlassTemplate();
+            model.Template.Id = result.Value.TemplateId;
+
+            if (GlassContext.Loaders.Any(x => x.Id == DashboardLoader.IdValue))
+            {
+                ISitecoreService master = new SitecoreService("master");
+
+                model.Template.Checked = true;
+
+                if ( model.Template.Id != Guid.Empty)
+                {
+                    var temp = master.GetItem<TemplateData>( model.Template.Id);
+                    if (temp != null)
+                    {
+                        model.Template.Exists= true;
+                        model.Template.Url = DashboardGlobals.TemplateUrl.Formatted(model.Template.Id.ToString("D"));
+                    }
+                }
+
+            }
 
 
             return new JsonView(model);
 
         }
+        
+
 
         private IEnumerable<GlassField> GetFields(KeyValuePair<Type, Configuration.SitecoreClassConfig> cls)
         {
@@ -266,5 +287,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
             return queries;
 
         }
+
+        public object TemplateData { get; set; }
     }
 }

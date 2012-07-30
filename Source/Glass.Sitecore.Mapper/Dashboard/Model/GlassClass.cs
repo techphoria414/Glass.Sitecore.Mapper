@@ -32,6 +32,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Model
 
         public Guid BranchId { get; set; }
 
-        public Guid TemplateId { get; set; }
+
+        public GlassTemplate Template { get; set; }
     }
 }

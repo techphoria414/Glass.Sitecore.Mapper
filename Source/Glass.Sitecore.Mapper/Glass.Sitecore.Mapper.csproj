@@ -97,12 +97,14 @@
     <Compile Include="Dashboard\Controllers\StaticController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Dashboard\DashboardGlobals.cs" />
     <Compile Include="Dashboard\DashboardHandler.cs">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="Dashboard\DashboardLoader.cs" />
     <Compile Include="Dashboard\DashboardUtilities.cs" />
     <Compile Include="Dashboard\DashboardExtensionMethods.cs" />
+    <Compile Include="Dashboard\Model\Data\TemplateData.cs" />
     <Compile Include="Dashboard\Model\GlassChildren.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -116,6 +118,7 @@
     <Compile Include="Dashboard\Model\GlassLinked.cs" />
     <Compile Include="Dashboard\Model\GlassParent.cs" />
     <Compile Include="Dashboard\Model\GlassQuery.cs" />
+    <Compile Include="Dashboard\Model\GlassTemplate.cs" />
     <Compile Include="Dashboard\Web\AbstractController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -220,7 +223,6 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Dashboard\List\" />
-    <Folder Include="Dashboard\Model\Data\" />
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Dashboard\Css\Dashboard.css" />

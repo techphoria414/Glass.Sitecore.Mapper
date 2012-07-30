@@ -4,10 +4,17 @@
 <h3>Details</h3>
 
 <table class="table-bordered table-striped">
-    <thead>
-        <tr>
+        <tr data-bind="with: Template">
             <th>TemplateId</th>
-            <td data-bind="text: TemplateId"></td>
+                        
+            <td>
+                <span  data-bind="if:Exists">
+                    <a data-bind="attr: { href: Url}, text: Id" target="_blank"></a> - Exists in Sitecore
+                </span>
+                <span data-bind="ifnot:Exists">
+                    <span data-bind="text: Id"></span><span data-bind="if: Checked">  - Missing in Sitecore</span>
+                </span>
+            </td>
         </tr>
         <tr>
             <th>BranchId</th>
@@ -38,25 +45,8 @@
                 </span>
             </td>
         </tr>
-        <tr>
-            <th>Exists in Sitecore</th>
-            <td data-bind="foreach:Exists">
-            
-            
-            </td>
-        </tr>
-    </thead>
-    <tbody>
-        <tr>
-            
-            <td data-bind="text: SectionName"></td>
-            <td data-bind="text: FieldName"></td>
-            <td data-bind="text: FieldId"></td>
-            <td data-bind="text: FieldTitle"></td>
-            <td data-bind="text: FieldType"></td>
-            <td data-bind="text: FieldSource"></td>
-        </tr>
-    </tbody>
+       
+    
 </table>
 
 <hr />
