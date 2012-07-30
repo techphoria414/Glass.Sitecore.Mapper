@@ -3,4 +3,16 @@
     padding-top:50px;
 }
 
- 
+table
+{
+    font-size:13px;
+}
+th
+{
+    text-align:left;
+}
+td, th
+{
+    padding-left:5px;
+    padding-right:5px;
+}

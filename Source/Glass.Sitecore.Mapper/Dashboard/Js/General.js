@@ -23,8 +23,12 @@ function GlassDetails(model) {
 function GlassField(model) {
     var self = this;
     self.codeFirst = model.CodeFirst;
-    self.fieldId = model.fieldId;
-    self.fieldName = model.fieldName;
-   // self.fieldSource =
+    self.fieldId = model.FieldId;
+    self.fieldName = model.FieldName;
+    self.fieldSource = model.FieldSource;
+    self.fieldTitle = model.FieldTitle;
+    self.fieldType = model.FieldType;
+    self.name = model.Name;
+
 
 }

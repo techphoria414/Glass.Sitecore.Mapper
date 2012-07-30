@@ -8,7 +8,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Model
     public class GlassInfo
     {
         public string Name { get; set; }
-        public string Type { get; set; }
+        public GlassClassSummary Type { get; set; }
         public string InfoType { get; set; }
     }
 }

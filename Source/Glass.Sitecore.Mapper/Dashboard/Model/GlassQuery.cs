@@ -21,6 +21,6 @@ namespace Glass.Sitecore.Mapper.Dashboard.Model
 
         public bool UseQueryContext { get; set; }
 
-        public string Type{ get; set; }
+        public GlassClassSummary Type { get; set; }
     }
 }

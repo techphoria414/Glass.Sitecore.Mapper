@@ -37,6 +37,16 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
             model.Links = GetLinked(result);
             model.Items = GetItems(result);
             model.Fields = GetFields(result);
+            
+            model.TemplateId = result.Value.TemplateId;
+            model.BranchId = result.Value.BranchId;
+            model.CodeFirst = result.Value.ClassAttribute.CodeFirst;
+            if (result.Value.IdProperty != null)
+                model.Id = result.Value.IdProperty.Property.Name;
+            
+
+
+
 
             return new JsonView(model);
 
@@ -63,7 +73,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
                    field.ReadOnly = fieldAttr.ReadOnly;
                    field.CodeFirst = fieldAttr.CodeFirst;
                    field.SectionName = fieldAttr.SectionName;
-                   field.FieldType = fieldAttr.FieldType;
+                   field.FieldType = fieldAttr.FieldType.ToString();
                    field.FieldTitle = fieldAttr.FieldTitle;
                   field.FieldSource = fieldAttr.FieldSource;
 
@@ -85,7 +95,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
                 var propAttr = scProp.Attribute as SitecoreItemAttribute;
                 var item = new GlassItem();
                    item.Name = scProp.Property.Name;
-                   item.GetType = DashboardUtilities.GetTypeName(scProp.Property.PropertyType);
+                   item.Type = DashboardUtilities.GetTypeName(scProp.Property.PropertyType);
                    item.Id = propAttr.Id;
                    item.Path = propAttr.Path;
                    item.IsLazy = propAttr.IsLazy;
@@ -112,7 +122,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
                 var link = new GlassLinked();
 
                 link.Name = scProp.Property.Name;
-                link.GetType = DashboardUtilities.GetTypeName(scProp.Property.PropertyType);
+                link.Type = DashboardUtilities.GetTypeName(scProp.Property.PropertyType);
                 link.Option = propAttr.Option.ToString();
                 link.InferType = propAttr.InferType;
                 link.IsLazy = propAttr.IsLazy;
@@ -137,7 +147,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
                 var parent = new GlassParent();
 
                 parent.Name = scProp.Property.Name;
-                parent.GetType = DashboardUtilities.GetTypeName(scProp.Property.PropertyType);
+                parent.Type = DashboardUtilities.GetTypeName(scProp.Property.PropertyType);
                 parent.InferType = propAttr.InferType;
                 parent.IsLazy = propAttr.IsLazy;
 
@@ -176,7 +186,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
             List<GlassClassSummary> classes = new List<GlassClassSummary>();
             
             if (GlassContext.Classes.Any(x => x.Key == type.BaseType))
-                classes.Add(new GlassClassSummary() { Name = DashboardUtilities.GetTypeName(type.BaseType) });
+                classes.Add(DashboardUtilities.GetTypeName(type.BaseType));
 
             var interfaces = type.GetInterfaces();
 
@@ -184,7 +194,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
             {
                 foreach (var superType in interfaces.OrderBy(x => x.Name))
                 {
-                    classes.Add(new GlassClassSummary() { Name = DashboardUtilities.GetTypeName(superType) });
+                    classes.Add(DashboardUtilities.GetTypeName(superType));
                 }
             }
 
@@ -223,7 +233,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
             {
                
                 if (type.IsAssignableFrom(clsType.Key) && clsType.Key != type)
-                    classes.Add(new GlassClassSummary() { Name = DashboardUtilities.GetTypeName(clsType.Key) });
+                    classes.Add(DashboardUtilities.GetTypeName(clsType.Key) );
 
             }
 

@@ -25,5 +25,13 @@ namespace Glass.Sitecore.Mapper.Dashboard.Model
         public IEnumerable<GlassItem> Items { get; set; }
 
         public IEnumerable<GlassField> Fields { get; set; }
+
+        public string Id { get; set; }
+
+        public bool CodeFirst { get; set; }
+
+        public Guid BranchId { get; set; }
+
+        public Guid TemplateId { get; set; }
     }
 }

@@ -2,22 +2,12 @@
 /// <reference path='http://code.jquery.com/jquery.min.js' />
 
 $(function () {
-
-    function ViewModel() {
-        var self = this;
-
-        self.details = ko.observable(null);
-
-    }
-
-    var view = new ViewModel();
-    ko.applyBindings(view);
-
     var cls = getParameterByName("cls");
 
 
     $.getJSON("/Details/Get.gls?name=" + cls, function (data) {
-        view.details = GlassDetails(data);
+        var viewModel = ko.mapping.fromJS(data);
+        ko.applyBindings(viewModel);
     });
 
 });

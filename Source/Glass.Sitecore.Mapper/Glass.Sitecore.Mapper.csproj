@@ -100,6 +100,7 @@
     <Compile Include="Dashboard\DashboardHandler.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Dashboard\DashboardLoader.cs" />
     <Compile Include="Dashboard\DashboardUtilities.cs" />
     <Compile Include="Dashboard\DashboardExtensionMethods.cs" />
     <Compile Include="Dashboard\Model\GlassChildren.cs">

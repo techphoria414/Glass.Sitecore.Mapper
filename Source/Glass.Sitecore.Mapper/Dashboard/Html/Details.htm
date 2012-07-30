@@ -1,4 +1,242 @@
 ﻿<script type="text/javascript" src="/static.gls?file=Js.Details.js"></script>
-<h2 data-bind="text:name">
-      
-</h2>
+<h2 data-bind="text:Name"></h2>
+
+<h3>Details</h3>
+
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>TemplateId</th>
+            <td data-bind="text: TemplateId"></td>
+        </tr>
+        <tr>
+            <th>BranchId</th>
+            <td data-bind="html: BranchId"></td>
+        </tr>
+        <tr>
+            <th>Id Property</th>
+            <td data-bind="text: Id"></td>
+        </tr>
+
+        <tr>
+            <th>Code First</th>
+            <td data-bind="text: CodeFirst"></td>
+        </tr>
+        <tr>
+            <th>Inherited</th>
+            <td>
+                <span data-bind="foreach: Inherited">
+                    <a data-bind="attr: { href: Url}, text: Name"></a>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>Derived</th>
+            <td>
+                <span data-bind="foreach: Derived">
+                    <a data-bind="attr: { href: Url}, text: Name"></a>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>Exists in Sitecore</th>
+            <td data-bind="foreach:Exists">
+            
+            
+            </td>
+        </tr>
+    </thead>
+    <tbody>
+        <tr>
+            
+            <td data-bind="text: SectionName"></td>
+            <td data-bind="text: FieldName"></td>
+            <td data-bind="text: FieldId"></td>
+            <td data-bind="text: FieldTitle"></td>
+            <td data-bind="text: FieldType"></td>
+            <td data-bind="text: FieldSource"></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+<h3>
+    Fields
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Read Only</th>
+            <th>Code First</th>
+            <th>Section Name</th>
+            <th>Field Name</th>
+            <th>Field Id</th>
+            <th>Field Title</th>
+            <th>Field Type</th>
+            <th>Field Source</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Fields" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="html: Type"></td>
+            <td data-bind="text: ReadOnly"></td>
+            <td data-bind="text: CodeFirst"></td>
+            <td data-bind="text: SectionName"></td>
+            <td data-bind="text: FieldName"></td>
+            <td data-bind="text: FieldId"></td>
+            <td data-bind="text: FieldTitle"></td>
+            <td data-bind="text: FieldType"></td>
+            <td data-bind="text: FieldSource"></td>
+        </tr>
+    </tbody>
+</table>
+
+
+<hr />
+<h3>
+    Information
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Info Type</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Info" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="text: Type"></td>
+            <td data-bind="text: InfoType"></td>          
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+<h3>
+    Children
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Infer Type</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Children" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="html: Type"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: InferType"></td>
+        </tr>
+    </tbody>
+</table>
+           
+<hr />
+<h3>
+    Parents
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Infer Type</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Parents" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="html: Type"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: InferType"></td>
+        </tr>
+    </tbody>
+</table>  
+           
+<hr />
+<h3>
+    Queries
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Infer Type</th>
+            <th>Is Relative</th>
+            <th>Use Query Context</th>
+            <th>Query</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Queries" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="html: Type"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: InferType"></td>
+            <td data-bind="text: IsRelative"></td>
+            <td data-bind="text: UseQueryContext"></td>
+            <td data-bind="text: Query"></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+<h3>
+    Links
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Infer Type</th>
+            <th>Option</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Links" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="html: Type"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: InferType"></td>
+            <td data-bind="text: Option"></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+<h3>
+    Items
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Id</th>
+            <th>Path</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Items" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="html: Type"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: Id"></td>
+            <td data-bind="text: Path"></td>
+        </tr>
+    </tbody>
+</table>

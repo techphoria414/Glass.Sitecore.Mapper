@@ -11,7 +11,7 @@ namespace Glass.Sitecore.Mapper.Dashboard.Model
 
         public bool InferType { get; set; }
 
-        public string GetType { get; set; }
+        public GlassClassSummary Type { get; set; }
 
         public string Name { get; set; }
     }

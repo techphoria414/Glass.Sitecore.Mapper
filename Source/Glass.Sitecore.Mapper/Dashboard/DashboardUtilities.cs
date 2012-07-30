@@ -2,13 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Glass.Sitecore.Mapper.Dashboard.Model;
 
 namespace Glass.Sitecore.Mapper.Dashboard
 {
     public static class DashboardUtilities
     {
-        public static string GetTypeName(Type type)
+        public static GlassClassSummary GetTypeName(Type type)
         {
+            var summary = new GlassClassSummary();
+
             if (type.IsGenericType)
             {
                 StringBuilder sb = new StringBuilder();
@@ -28,22 +31,28 @@ namespace Glass.Sitecore.Mapper.Dashboard
 
                 sb.Append("&gt;");
 
-                return sb.ToString();
+                summary.Name = sb.ToString();
+
 
             }
+            else 
+                summary.Name = GetTypeNameLink(type);
 
-            return GetTypeNameLink(type);
+            if (Context.StaticContext.Classes.Any(x => x.Key == type))
+            {
+                summary.Url = "/details.gls?cls={0}".Formatted(type.FullName);
+                summary.IsGlass = true;
+            }
+            return summary;
+
 
         }
 
         public static string GetTypeNameLink(Type type)
         {
-            string name = type.Name.Split('`')[0];
-            if (Context.StaticContext.Classes.Any(x => x.Key == type))
-            {
-                return "<a href='?class={0}'>{1}</a>".Formatted(type.FullName, name);
-            }
-            return name;
+            return  type.Name.Split('`')[0];
         }
+
+        
     }
 }
