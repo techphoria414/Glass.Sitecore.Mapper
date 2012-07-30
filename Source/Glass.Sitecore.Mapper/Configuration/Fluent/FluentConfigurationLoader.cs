@@ -23,11 +23,12 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
 {
     public class FluentConfigurationLoader :AbstractConfigurationLoader
     {
+        Guid _id;
         IEnumerable<ISitecoreClass> _configs;
         public FluentConfigurationLoader(params ISitecoreClass [] configs)
         {
             _configs = configs;
-
+            _id = Guid.NewGuid();
         }
         #region AbstractConfigurationLoader Members
 
@@ -38,5 +39,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Fluent
         
         #endregion
 
+
+
+        public override Guid Id
+        {
+            get {return _id; }
+        }
     }
 }

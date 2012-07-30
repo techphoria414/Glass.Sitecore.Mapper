@@ -24,7 +24,8 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 {
     public class AttributeConfigurationLoader : AbstractConfigurationLoader
     {
-       
+
+        Guid _id;
 
         IEnumerable<string> _namespaces;
 
@@ -44,6 +45,7 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         public AttributeConfigurationLoader(params string [] namespaces)
         {
             _namespaces = namespaces;
+            _id = Guid.NewGuid();
         }
 
         #region AbstractConfigurationLoader Members
@@ -254,6 +256,11 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
             }
         }
 
-    
+
+
+        public override Guid Id
+        {
+            get { return _id ; }
+        }
     }
 }
