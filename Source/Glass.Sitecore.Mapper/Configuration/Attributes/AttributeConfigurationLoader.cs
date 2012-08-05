@@ -168,36 +168,39 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
 
         public static SitecoreProperty GetProperty(PropertyInfo info)
         {
+            //we have to get the property definition fromt he declaring type so that 
+            //we can set private setters.
+            var finalInfo = Utility.GetProperty(info.DeclaringType, info.Name);
 
-            var attr = GetSitecoreAttribute(info);
+            var attr = GetSitecoreAttribute(finalInfo);
 
             
 
-            // if we can't get a Sitecore attribute from current property we search down the 
+            //if we can't get a Sitecore attribute from current property we search down the 
             // inheritence chain to find the first declared attribute.
             if (attr == null)
             {
-                var interfaces = info.DeclaringType.GetInterfaces();
-                string propertyName = info.Name;
+                var interfaces = finalInfo.DeclaringType.GetInterfaces();
+                string propertyName = finalInfo.Name;
 
                 foreach (var inter in interfaces)
                 {
-                    info = inter.GetProperty(propertyName);
-                    if (info != null)
-                        attr = GetSitecoreAttribute(info);
+                    finalInfo = inter.GetProperty(propertyName);
+                    if (finalInfo != null)
+                        attr = GetSitecoreAttribute(finalInfo);
 
                     if (attr != null) break;
                 }
 
                
             }
-
+                                                  
             if (attr != null)
             {
                 return new SitecoreProperty()
                 {
                     Attribute = attr,
-                    Property = info
+                    Property = finalInfo
                 };
             }
             else return null;

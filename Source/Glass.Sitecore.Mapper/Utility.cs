@@ -175,7 +175,7 @@ namespace Glass.Sitecore.Mapper
 
             foreach (Type interfaceType in typeList)
             {
-                foreach (PropertyInfo property in interfaceType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy|BindingFlags.Instance))
+                foreach (PropertyInfo property in interfaceType.GetProperties(Flags))
                 {
                     propertyList.Add(property);
                 }
@@ -183,6 +183,14 @@ namespace Glass.Sitecore.Mapper
 
             return propertyList.ToArray();
         }
+
+        public static BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Instance;
+
+        public static PropertyInfo GetProperty(Type type, string name)
+        {
+            return type.GetProperty(name, Flags);
+        }
+
 
         /// <summary>
         /// Converts a NameValueCollection in to HTML attributes
