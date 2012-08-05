@@ -94,6 +94,7 @@
     <Compile Include="Dashboard\Controllers\ListController.cs">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Dashboard\Controllers\QueryController.cs" />
     <Compile Include="Dashboard\Controllers\StaticController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -104,21 +105,40 @@
     <Compile Include="Dashboard\DashboardLoader.cs" />
     <Compile Include="Dashboard\DashboardUtilities.cs" />
     <Compile Include="Dashboard\DashboardExtensionMethods.cs" />
-    <Compile Include="Dashboard\Model\Data\TemplateData.cs" />
+    <Compile Include="Dashboard\Model\Data\TemplateData.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Dashboard\Model\GlassChildren.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dashboard\Model\GlassClass.cs" />
+    <Compile Include="Dashboard\Model\GlassClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Dashboard\Model\GlassClassSummary.cs">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="Dashboard\Model\GlassField.cs" />
-    <Compile Include="Dashboard\Model\GlassInfo.cs" />
-    <Compile Include="Dashboard\Model\GlassItem.cs" />
-    <Compile Include="Dashboard\Model\GlassLinked.cs" />
-    <Compile Include="Dashboard\Model\GlassParent.cs" />
-    <Compile Include="Dashboard\Model\GlassQuery.cs" />
-    <Compile Include="Dashboard\Model\GlassTemplate.cs" />
+    <Compile Include="Dashboard\Model\GlassField.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassLinked.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassParent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\Data\PathQuery.cs" />
+    <Compile Include="Dashboard\Model\GlassQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassTemplate.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Dashboard\Web\AbstractController.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -242,6 +262,12 @@
     <EmbeddedResource Include="Dashboard\Html\Details.htm" />
     <EmbeddedResource Include="Dashboard\Js\Details.js" />
     <EmbeddedResource Include="Dashboard\Js\General.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Html\Query.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Js\Query.js" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
