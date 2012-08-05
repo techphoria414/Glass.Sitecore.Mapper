@@ -19,29 +19,38 @@ namespace Glass.Sitecore.Mapper.Dashboard
                 sb.Append(GetTypeNameLink(type));
 
 
-                sb.Append("&lt;");
+                sb.Append("<");
 
                 foreach (var subType in type.GetGenericArguments())
                 {
                     var subName = GetTypeName(subType);
-                    sb.AppendFormat("{0},", subName);
+                    sb.AppendFormat("{0},", subName.Name);
+
+                    //TODO: this needs to be improved.
+                    if (Context.StaticContext.Classes.Any(x => x.Key == subType))
+                    {
+                        summary.Url = "/details.gls?cls={0}".Formatted(type.FullName);
+                        summary.IsGlass = true;
+                    }
                 }
 
                 sb.Remove(sb.Length - 1, 1);
 
-                sb.Append("&gt;");
+                sb.Append(">");
 
                 summary.Name = sb.ToString();
 
 
             }
-            else 
+            else
+            {
                 summary.Name = GetTypeNameLink(type);
 
-            if (Context.StaticContext.Classes.Any(x => x.Key == type))
-            {
-                summary.Url = "/details.gls?cls={0}".Formatted(type.FullName);
-                summary.IsGlass = true;
+                if (Context.StaticContext.Classes.Any(x => x.Key == type))
+                {
+                    summary.Url = "/details.gls?cls={0}".Formatted(type.FullName);
+                    summary.IsGlass = true;
+                }
             }
             return summary;
 
