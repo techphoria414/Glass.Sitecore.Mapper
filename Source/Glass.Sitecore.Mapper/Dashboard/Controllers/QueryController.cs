@@ -4,15 +4,21 @@ using System.Linq;
 using System.Text;
 using Glass.Sitecore.Mapper.Dashboard.Web;
 using Glass.Sitecore.Mapper.Dashboard.Model.Data;
+using Glass.Sitecore.Mapper.Dashboard.Model;
+using System.Collections;
 
 namespace Glass.Sitecore.Mapper.Dashboard.Controllers
 {
     public class QueryController : AbstractController
     {
+        SitecoreService _service = new SitecoreService("master");
+
         public AbstractView Index()
         {
             return new HtmlView("Html.Query.htm");
         }
+       
+
 
         public AbstractView Paths(string term)
         {
@@ -44,18 +50,30 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
             return new JsonView(result);
         }
 
-        public AbstractView Query(string cls, string query)
+        public AbstractView Query(string cls, string path)
         {
-            if (cls.IsNullOrEmpty() || query.IsNullOrEmpty()) return null;
+            if (cls.IsNullOrEmpty() || path.IsNullOrEmpty()) return null;
 
             var types = GlassContext.Classes.Where(x => x.Key.FullName == cls);
             if (types.Any()) {
                 var type = types.First();
-                SitecoreService service = new SitecoreService("master");
-                var item = service.Database.GetItem(query);
-                var result = service.CreateClass(false, false, type.Key, item);
+                var item = _service.Database.GetItem(path);
 
-                return new JsonView(result);
+                List<GlassQueryResult> results = new List<GlassQueryResult>();
+                foreach (var handler in type.Value.DataHandlers)
+                {
+                    var value = handler.GetValue(item, _service);
+                    var result = new GlassQueryResult();
+                    result.Title = handler.Property.Name;
+                    result.Value = GetValue(value);
+
+                    
+
+                    results.Add(result);
+                }
+
+
+                return new JsonView(results);
 
             
             }
@@ -63,6 +81,72 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
 
 
 
+        }
+
+        private string GetValue(object value)
+        {
+
+            if (value == null) return string.Empty;
+            Type resultType = value.GetType();
+
+            
+
+            if (GlassContext.Classes.ContainsKey(resultType))
+            {
+               return ProcessGlassType(value, resultType);
+            }
+                //this handles proxies
+            else if(GlassContext.Classes.ContainsKey(resultType.BaseType)){
+                return ProcessGlassType(value, resultType.BaseType);
+                
+            }
+            else if (value is IEnumerable && resultType.IsGenericType)
+            {
+                var collection = value as IEnumerable;
+
+                StringBuilder sb = new StringBuilder();
+
+                sb.AppendFormat("The enumeration contains {0} items of type {1}", collection.Cast<object>().Count(), resultType.GetGenericArguments().First().Name);
+
+                if (collection.Cast<object>().Any())
+                {
+
+                    sb.AppendFormat("<ul>{0}</ul>",
+                         collection
+                            .Cast<object>()
+                            .Select(x => "<li>{0}</li>".Formatted(GetValue(x)))
+                            .Aggregate((x, y) => x + y));
+
+
+                    
+                }
+                return sb.ToString();
+            }
+            else
+            {
+                return System.Web.HttpUtility.HtmlEncode(value.ToString());
+            }
+
+
+
+        }
+
+        private string ProcessGlassType(object value, Type resultType)
+        {
+            var glassDetails = GlassContext.Classes[resultType];
+            if (glassDetails.IdProperty != null)
+            {
+                Guid id = (Guid)glassDetails.IdProperty.Property.GetValue(value, null);
+                ItemData data = _service.GetItem<ItemData>(id);
+
+                if(data != null)
+                    return "<a class='queryLink' path='{0}' cls='{1}' href='#'>{2}</a> - <a href='/details.gls?cls={1}'>{1}</a>".Formatted(data.Path, resultType.FullName, data.Path);
+                else
+                    return System.Web.HttpUtility.HtmlEncode(value.ToString());
+
+            }
+            else
+                return System.Web.HttpUtility.HtmlEncode(value.ToString());
         }
     }
 }

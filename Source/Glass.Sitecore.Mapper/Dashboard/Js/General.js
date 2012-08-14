@@ -32,3 +32,11 @@ function GlassField(model) {
 
 
 }
+
+function ModalOn(){
+    $("body").addClass("loading");
+
+}
+function ModalOff() {
+    $("body").removeClass("loading");
+}

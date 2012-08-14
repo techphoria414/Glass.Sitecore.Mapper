@@ -19,7 +19,9 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
                 case "css":
                     contentType = "text/css";
                     break;
-
+                case "gif":
+                    contentType = "image/gif";
+                    break;
             }
            return new ManifestView(file, contentType);
         }

@@ -16,13 +16,9 @@ namespace Glass.Sitecore.Mapper.Dashboard.Web
         {
             response.ContentType = "text/html";
 
-            string header = ManifestView.GetFile("Html.HtmlHeader.htm");
-            string footer = ManifestView.GetFile("Html.HtmlFooter.htm");
-            string content = ManifestView.GetFile(_file);
-
-            response.Write(header);
-            response.Write(content);
-            response.Write(footer);
+            Utility.WriteToResponse(response, ManifestView.GetFile("Html.HtmlHeader.htm"));
+            Utility.WriteToResponse(response, ManifestView.GetFile(_file));
+            Utility.WriteToResponse(response, ManifestView.GetFile("Html.HtmlFooter.htm"));
         }
     }
 }

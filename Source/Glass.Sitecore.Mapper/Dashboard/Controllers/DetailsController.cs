@@ -54,15 +54,17 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
 
                 model.Template.Checked = true;
 
-                if ( model.Template.Id != Guid.Empty)
+                if (model.Template.Id != Guid.Empty)
                 {
-                    var temp = master.GetItem<TemplateData>( model.Template.Id);
+                    var temp = master.GetItem<TemplateData>(model.Template.Id);
                     if (temp != null)
                     {
-                        model.Template.Exists= true;
+                        model.Template.Exists = true;
                         model.Template.Url = DashboardGlobals.TemplateUrl.Formatted(model.Template.Id.ToString("D"));
                     }
                 }
+                else //if the ID is empty there is nothing to check
+                    model.Template.Exists = true;
 
             }
 

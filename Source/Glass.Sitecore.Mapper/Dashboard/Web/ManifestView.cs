@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.IO;
 
 namespace Glass.Sitecore.Mapper.Dashboard.Web
 {
@@ -23,12 +24,13 @@ namespace Glass.Sitecore.Mapper.Dashboard.Web
 
         public override void Response(System.Web.HttpResponse response)
         {
-            string content = GetFile(_file);           
+            Stream content = GetFile(_file);           
             response.ContentType = _contentType;
-            response.Write(content);
+
+            Utility.WriteToResponse(response, content);
         }
 
-        public  static string GetFile(string file){
+        public  static Stream GetFile(string file){
             string name = "Glass.Sitecore.Mapper.Dashboard." + file;
             return Utility.GetResource(name);
         }

@@ -6,7 +6,7 @@ $(function () {
     function ViewModel() {
         var self = this;
         self.classes = ko.observableArray([]);
-
+        
         self.AddClass = function (name) {
             var cls = new GlassClass(name);
             self.classes.push(cls);
