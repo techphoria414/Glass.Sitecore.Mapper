@@ -1,4 +1,6 @@
-﻿body
+﻿
+
+body
 {
     padding-top:50px;
 }
@@ -41,3 +43,15 @@ body.loading {
 body.loading .glassModal {
     display: block;
 }​
+
+
+#details-summary
+{
+   
+    list-style-type:none;
+}
+
+#details-summary li
+{
+     display: inline;
+}

@@ -29,7 +29,7 @@ namespace Glass.Sitecore.Mapper.Dashboard
                     //TODO: this needs to be improved.
                     if (Context.StaticContext.Classes.Any(x => x.Key == subType))
                     {
-                        summary.Url = "/details.gls?cls={0}".Formatted(type.FullName);
+                        summary.Url = "/details.gls?cls={0}".Formatted(subType.FullName);
                         summary.IsGlass = true;
                     }
                 }

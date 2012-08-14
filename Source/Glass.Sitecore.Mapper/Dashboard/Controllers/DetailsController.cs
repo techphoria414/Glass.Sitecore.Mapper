@@ -39,21 +39,22 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
             model.Items = GetItems(result);
             model.Fields = GetFields(result);
             
-            model.BranchId = result.Value.BranchId;
             model.CodeFirst = result.Value.ClassAttribute.CodeFirst;
             if (result.Value.IdProperty != null)
                 model.Id = result.Value.IdProperty.Property.Name;
 
 
-            model.Template = new GlassTemplate();
+            #region TemplateCheck
+           
+            model.Template = new GlassItemCheck();
             model.Template.Id = result.Value.TemplateId;
+
+
+            ISitecoreService master = new SitecoreService("master");
+
 
             if (GlassContext.Loaders.Any(x => x.Id == DashboardLoader.IdValue))
             {
-                ISitecoreService master = new SitecoreService("master");
-
-                model.Template.Checked = true;
-
                 if (model.Template.Id != Guid.Empty)
                 {
                     var temp = master.GetItem<TemplateData>(model.Template.Id);
@@ -62,12 +63,32 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
                         model.Template.Exists = true;
                         model.Template.Url = DashboardGlobals.TemplateUrl.Formatted(model.Template.Id.ToString("D"));
                     }
+                    model.Template.Checked = true;
                 }
-                else //if the ID is empty there is nothing to check
-                    model.Template.Exists = true;
-
             }
 
+            #endregion
+
+            #region BranchCheck
+
+            model.Branch = new GlassItemCheck();
+            model.Branch.Id = result.Value.BranchId;
+
+            if (GlassContext.Loaders.Any(x => x.Id == DashboardLoader.IdValue))
+            {
+                if (model.Branch.Id != Guid.Empty)
+                {
+                    var temp = master.GetItem<TemplateData>(model.Branch.Id);
+                    if (temp != null)
+                    {
+                        model.Branch.Exists = true;
+                        model.Branch.Url = DashboardGlobals.TemplateUrl.Formatted(model.Template.Id.ToString("D"));
+                    }
+                    model.Branch.Checked = true;
+                }
+            }
+
+            #endregion
 
             return new JsonView(model);
 

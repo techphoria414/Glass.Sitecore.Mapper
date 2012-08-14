@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Glass.Sitecore.Mapper.Dashboard.Model
 {
-    public class GlassTemplate
+    public class GlassItemCheck
     {
         public bool Exists { get; set; }
         public string Url { get; set; }

@@ -30,9 +30,10 @@ namespace Glass.Sitecore.Mapper.Dashboard.Model
 
         public bool CodeFirst { get; set; }
 
-        public Guid BranchId { get; set; }
 
 
-        public GlassTemplate Template { get; set; }
+        public GlassItemCheck Template { get; set; }
+
+        public GlassItemCheck Branch { get; set; }
     }
 }

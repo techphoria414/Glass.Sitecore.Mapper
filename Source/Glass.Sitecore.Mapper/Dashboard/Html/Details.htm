@@ -10,26 +10,71 @@
     <a data-bind="attr: { href: Url}" target="_blank">Sitecore</a> 
   </li>
   <!-- /ko -->
+  
+
 </ul>
 
 <h3>Details</h3>
 
+<ul id="details-summary">
+    <!-- ko with: Template -->
+        <li data-bind="if: Exists">
+            <span class="label label-success">Template in SC</span> 
+        </li>
+        <!-- ko ifnot: Exists -->
+            <!-- ko if: Checked -->
+                <span class="label label-important">Template not in SC</span>
+            <!-- /ko-->
+            <!-- ko ifnot: Checked -->
+                <span class="label label-info">Template not checked</span>
+            <!-- /ko -->
+        <!--/ko -->
+    <!--/ko -->
+    <!-- ko with: Branch -->
+        <li data-bind="if: Exists">
+            <span class="label label-success">Branch in SC</span> 
+        </li>
+        <!-- ko ifnot: Exists -->
+            <!-- ko if: Checked -->
+                <span class="label label-important">Branch not in SC</span>
+            <!-- /ko-->
+            <!-- ko ifnot: Checked -->
+                <span class="label label-info">Branch not checked</span>
+            <!-- /ko -->
+        <!--/ko -->
+    <!--/ko -->
+
+    <li data-bind="if: CodeFirst">
+        <span class="label label-success">Code First</span>
+    </li>
+     <li data-bind="ifnot: CodeFirst">
+        <span class="label label-info">Not Code First</span>
+    </li>
+
+</ul>
+
 <table class="table-bordered table-striped">
         <tr data-bind="with: Template">
             <th>TemplateId</th>
-                        
             <td>
                 <span  data-bind="if:Exists"  >
-                    <a data-bind="attr: { href: Url}, text: Id" target="_blank"></a> <span class="label label-success">Exists in Sitecore</span>
+                    <a data-bind="attr: { href: Url}, text: Id" target="_blank"></a> 
                 </span>
                 <span data-bind="ifnot:Exists" >
-                    <span data-bind="text: Id"></span><span data-bind="if: Checked"> <span class="label label-important">Missing in Sitecore</span></span>
+                    <span data-bind="text: Id"></span>
                 </span>
             </td>
         </tr>
-        <tr>
+        <tr data-bind="with: Branch">
             <th>BranchId</th>
-            <td data-bind="html: BranchId"></td>
+            <td>
+                <span  data-bind="if:Exists"  >
+                    <a data-bind="attr: { href: Url}, text: Id" target="_blank"></a> 
+                </span>
+                <span data-bind="ifnot:Exists" >
+                    <span data-bind="text: Id"></span>
+                </span>
+            </td>
         </tr>
         <tr>
             <th>Id Property</th>
