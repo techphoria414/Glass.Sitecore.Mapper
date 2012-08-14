@@ -354,10 +354,14 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
                          }
 
-                         provider.CreateItem(new ID(cls.Value.TemplateId), cls.Key.Name, TemplateTemplateId, containing, context);
+                         string templateName = cls.Value.ClassAttribute.TemplateName;
+
+                         if (string.IsNullOrEmpty(templateName))
+                             templateName = cls.Key.Name;
+
+                         provider.CreateItem(new ID(cls.Value.TemplateId), templateName, TemplateTemplateId, containing, context);
                          clsTemplate = provider.GetItemDefinition(new ID(cls.Value.TemplateId), context);
                      }
-
 
                      BaseTemplateChecks(clsTemplate, provider, context, cls.Value);
 
