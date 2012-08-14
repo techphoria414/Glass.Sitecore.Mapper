@@ -18,6 +18,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Sitecore;
 using Sitecore.Data.DataProviders;
 using Sitecore.Data.Templates;
 using System.Xml;
@@ -153,8 +154,12 @@ namespace Glass.Sitecore.Mapper.CodeFirst
          
             fields.Add(TypeFieldId, FieldInfo.GetFieldType(info.Type));
 
-            
+
             fields.Add(SourceFieldId, info.Source ?? string.Empty);
+
+            fields.Add(TemplateFieldIDs.Shared, info.IsShared ? "1" : "0");
+
+            fields.Add(TemplateFieldIDs.Unversioned, info.IsUnversioned ? "1" : "0");
         }
 
         #endregion
@@ -234,7 +239,7 @@ namespace Glass.Sitecore.Mapper.CodeFirst
                         if (record == null)
                         {
                             string fieldName = attr.FieldName.IsNullOrEmpty() ? field.Property.Name : attr.FieldName;
-                            record = new FieldInfo(new ID(guidId), itemDefinition.ID, fieldName, attr.FieldType, attr.FieldSource, attr.FieldTitle);
+                            record = new FieldInfo(new ID(guidId), itemDefinition.ID, fieldName, attr.FieldType, attr.FieldSource, attr.FieldTitle, attr.IsShared, attr.IsUnversioned);
                         }
 
                         fieldIds.Add(record.FieldId);
