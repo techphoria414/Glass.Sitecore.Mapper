@@ -16,11 +16,11 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using Sitecore;
 using Sitecore.Data.DataProviders;
-using Sitecore.Data.Templates;
 using System.Xml;
 using Sitecore.Collections;
 using Sitecore.Data;
@@ -29,7 +29,6 @@ using Sitecore.Configuration;
 using Sitecore.Caching;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
-using Sitecore.Data.Items;
 
 namespace Glass.Sitecore.Mapper.CodeFirst
 {
@@ -153,14 +152,13 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
         private void GetFieldFields(FieldInfo info, FieldList fields){
 
-            
-            fields.Add(TitleFieldId, info.Title ?? string.Empty);
+            if (!string.IsNullOrEmpty(info.Title))
+                fields.Add(TitleFieldId, info.Title);
 
-         
             fields.Add(TypeFieldId, FieldInfo.GetFieldType(info.Type));
 
-
-            fields.Add(SourceFieldId, info.Source ?? string.Empty);
+            if (!string.IsNullOrEmpty(info.Source))
+                fields.Add(SourceFieldId, info.Source);
 
             fields.Add(TemplateFieldIDs.Shared, info.IsShared ? "1" : "0");
 
