@@ -114,6 +114,11 @@ namespace Glass.Sitecore.Mapper.CodeFirst
             return base.GetItemDefinition(itemId, context);
         }
 
+        public override LanguageCollection GetLanguages(CallContext context)
+        {
+            return new LanguageCollection();
+        }
+
         #region GetItemFields
 
         public override global::Sitecore.Data.FieldList GetItemFields(global::Sitecore.Data.ItemDefinition itemDefinition, global::Sitecore.Data.VersionUri versionUri, CallContext context)
