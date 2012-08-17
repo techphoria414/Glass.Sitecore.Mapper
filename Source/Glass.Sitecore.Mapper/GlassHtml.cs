@@ -25,6 +25,8 @@ using Sitecore.Data.Items;
 using Sitecore.Web.UI.WebControls;
 using Glass.Sitecore.Mapper.Data;
 using Castle.DynamicProxy;
+using Glass.Sitecore.Mapper.Web.Ui;
+using System.Web;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -50,6 +52,13 @@ namespace Glass.Sitecore.Mapper
         public GlassHtml(Database database)
         {
             _db = database;
+        }
+
+        public GlassEditFrame EditFrame(string buttons)
+        {
+            var frame = new GlassEditFrame(buttons, HttpContext.Current);
+            frame.RenderFirstPart();
+            return frame;
         }
 
 

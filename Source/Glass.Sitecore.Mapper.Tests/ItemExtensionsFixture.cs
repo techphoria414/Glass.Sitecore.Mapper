@@ -54,11 +54,36 @@ namespace Glass.Sitecore.Mapper.Tests
             Assert.AreEqual("Test", testItem.Name);
             Assert.AreEqual("/sitecore/content/ItemExtensions/Test", testItem.Path);
             Assert.AreEqual(3, testItem.Children.Count());
+        }
+
+        [Test]
+        public void GlassCast_ReadsItemIntoClass_TypeInferred()
+        {
+            //Assign
+            Guid item1Id = new Guid("{C242F703-3A7F-4BF5-967A-A7831F34FA00}"); //Should result in SubClass
+            Guid item2Id = new Guid("{79E29B29-890F-4F87-A091-2B8AC9462DE6}"); //Should result in IBase
+
+            Item item1 = _db.GetItem(new ID(item1Id));
+            Item item2 = _db.GetItem(new ID(item2Id));
+            
+            //Act
+
+            var cls1 = item1.GlassCast<IBase>(true);
+            var cls2 = item2.GlassCast<IBase>(true);
 
 
+            //Assert
+            Assert.IsTrue(cls1 is IBase);
+            Assert.IsTrue(cls1 is SubClass);
+
+            Assert.IsTrue(cls2 is IBase);
+            Assert.IsFalse(cls2 is SubClass);
 
         }
-        
+
+
+
+
 
         #endregion
 
@@ -131,5 +156,25 @@ namespace Glass.Sitecore.Mapper.Tests
 
 
         }
+
+        [SitecoreClass]
+        public interface IBase
+        {
+
+            [SitecoreId]
+            Guid Id { get; set; }
+        }
+
+        [SitecoreClass(TemplateId="{D3B03F84-5DC4-4A8D-944E-F9FA9720547E}")]
+        public class SubClass : IBase
+        {
+            public virtual Guid Id
+            {
+                get;
+                set;
+            }
+        }
+
+
     }
 }

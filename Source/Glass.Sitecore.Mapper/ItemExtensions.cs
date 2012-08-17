@@ -36,6 +36,22 @@ namespace Glass.Sitecore.Mapper
             return service.CreateClass<T>(false, false, item);
         }
 
+
+        /// <summary>
+        /// Casts and item to a stongly typed. Does not infertype or lazy load.
+        /// </summary>
+        /// <typeparam name="T">Type to return</typeparam>
+        /// <param name="item">Item to read from</param>
+        /// <param name="inferType">Indicates the type should be inferred when the cast happens</param>
+        /// <returns>A strongly type class representation of the item</returns>
+        public static T GlassCast<T>(this Item item, bool inferType) where T : class
+        {
+            ISitecoreService service = new SitecoreService(item.Database);
+            return service.CreateClass<T>(false, inferType, item);
+        }
+
+
+
         /// <summary>
         /// Read from a class and write the data to an item. Ensure item is in editing state before calling.
         /// </summary>

@@ -22,6 +22,7 @@ using NUnit.Framework;
 using Glass.Sitecore.Mapper.Data;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
+using Glass.Sitecore.Mapper.Tests.Domain;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -67,6 +68,33 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             Assert.AreEqual(22, list.Last());
 
         }
+
+        [Test]
+        public void GetFieldValue_RemovesNullClasses()
+        {
+            //Assign
+            string value = "{11111111-1111-1111-1111-111111111111}|{0DE95AE4-41AB-4D01-9EB0-67441B7C2450}|{AC25A3FC-83E3-46E9-AEDA-79A1ECE3A22C}|";
+            SitecoreProperty property = new SitecoreProperty()
+            {
+                Property = new FakePropertyInfo(typeof(IEnumerable<EmptyTemplate1>)),
+                Attribute = new SitecoreFieldAttribute()
+            };
+            _handler.ConfigureDataHandler(property);
+
+            var item = _service.Database.GetItem("/sitecore");
+
+            //Act
+            var result = _handler.GetFieldValue(value, item, _service);
+
+            //Assert
+            var list = result as IEnumerable<EmptyTemplate1>;
+            Assert.AreEqual(2, list.Count());
+            Assert.IsNotNull(list.First());
+            Assert.IsNotNull(list.Last());
+
+        }
+
+
         [Test]
         [ExpectedException(typeof(NotSupportedException))]
         public void GetFieldValue_NoHandler_ThrowsException()
@@ -90,6 +118,9 @@ namespace Glass.Sitecore.Mapper.Tests.Data
 
         #endregion
         #region SetFieldValue
+
+
+       
 
         [Test]
         public void SetFieldValue_ReturnsPipeString()
