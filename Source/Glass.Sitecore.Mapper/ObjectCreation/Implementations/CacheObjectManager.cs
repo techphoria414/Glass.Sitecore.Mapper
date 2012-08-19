@@ -92,7 +92,7 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
                  SaveToCache(item, returnObject, type, key);
             }
 
-            return returnObject.CachedObject;
+            return ObjectCaching.Proxy.CacheProxyGenerator.CreateProxy(returnObject.CachedObject);
         }
 
         /// <summary>

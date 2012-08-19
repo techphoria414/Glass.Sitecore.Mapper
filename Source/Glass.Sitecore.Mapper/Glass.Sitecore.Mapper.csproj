@@ -72,6 +72,9 @@
     <Compile Include="ObjectCaching\Implementations\SitecoreCache.cs" />
     <Compile Include="ObjectCaching\ObjectCacheFactory.cs" />
     <Compile Include="Configuration\GlassConfiguration.cs" />
+    <Compile Include="ObjectCaching\Proxy\CacheMethodInterceptor.cs" />
+    <Compile Include="ObjectCaching\Proxy\CacheProxyGenerator.cs" />
+    <Compile Include="ObjectCaching\Proxy\CacheProxyGeneratorHook.cs" />
     <Compile Include="ObjectCreation\IObjectManager.cs" />
     <Compile Include="ObjectCreation\ObjectManager.cs" />
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoader.cs" />
