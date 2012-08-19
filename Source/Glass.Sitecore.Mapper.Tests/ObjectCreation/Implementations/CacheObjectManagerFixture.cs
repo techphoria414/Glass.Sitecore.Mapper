@@ -9,6 +9,9 @@ using Sitecore.Data;
 using Glass.Sitecore.Mapper.ObjectCreation.Implementations;
 using Glass.Sitecore.Mapper.Tests.Domain;
 using Sitecore.SecurityModel;
+using Glass.Sitecore.Mapper.ObjectCreation;
+using System.Timers;
+using System.Diagnostics;
 
 namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 {
@@ -199,5 +202,65 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
         #endregion
 
+        #region MISC - LoadTesting
+
+        [Test]
+        public void LoadTest_CachedVsNonCached()
+        {
+
+            //Assign
+            string path = "/sitecore/content/CacheManager/CacheItem1";
+
+            var cacheManger = new CacheObjectManager();
+            var standardManager = new ClassManager();
+            Type type = typeof(SimpleTemplate);
+            var item = _db.GetItem(path);
+
+            //Act
+
+            long cacheTotal = 0;
+            long standardTotal = 0;
+            long cacheSeconds =0; 
+            long standardSeconds = 0;
+
+            for (int j = 0; j < 10; j++)
+            {
+                Stopwatch timerCached = new Stopwatch();
+                timerCached.Start();
+
+                for (int i = 0; i < 1000; i++)
+                {
+                    var result = cacheManger.CreateClass(_sitecore, false, false, type, item, null);
+                }
+
+                timerCached.Stop();
+                cacheTotal += timerCached.ElapsedTicks;
+                cacheSeconds += timerCached.ElapsedMilliseconds;
+
+                Stopwatch timerStandard = new Stopwatch();
+                timerStandard.Start();
+
+                for (int i = 0; i < 1000; i++)
+                {
+                    var result = standardManager.CreateClass(_sitecore, false, false, type, item, null);
+                }
+
+                timerStandard.Stop();
+                standardTotal += timerStandard.ElapsedTicks;
+                standardSeconds += timerStandard.ElapsedMilliseconds;
+            }
+
+
+            Console.WriteLine("Cached Time {0}, Standard Time {1}".Formatted(cacheTotal/10, standardTotal/10));
+            Console.WriteLine("Per Class: Cached Time {0}, Standard Time {1}".Formatted(cacheTotal / 10000, standardTotal / 10000));
+            Console.WriteLine("Per Class Seconds: Cached Time {0}, Standard Time {1}".Formatted(cacheSeconds / 10000, standardSeconds / 10000));
+
+
+            Assert.IsTrue(cacheTotal < standardTotal);
+           
+
+        }
+
+        #endregion
     }
 }

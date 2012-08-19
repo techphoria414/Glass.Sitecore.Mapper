@@ -35,6 +35,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
             }
         }
 
+
         /// <summary>
         /// A list of related keys so we know what other thing in cache need to be cleared if something changes to this cache list
         /// </summary>
@@ -68,5 +69,8 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// at the same time and don't bock each other
         /// </summary>
         public ReaderWriterLockSlim ListLock = new ReaderWriterLockSlim();
+
+
+       
     }
 }
