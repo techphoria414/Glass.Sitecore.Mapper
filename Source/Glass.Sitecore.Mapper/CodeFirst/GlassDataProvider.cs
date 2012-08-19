@@ -363,9 +363,7 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
                          }
 
-                         provider.CreateItem(new ID(cls.Value.TemplateId), cls.Key.Name, TemplateTemplateId, containing, context);
                          //create the template in Sitecore
-                         provider.CreateItem(new ID(cls.Value.TemplateId), cls.Key.Name, TemplateTemplateId, containing, context);
                          string templateName = cls.Value.ClassAttribute.TemplateName;
 
                          if (string.IsNullOrEmpty(templateName))
