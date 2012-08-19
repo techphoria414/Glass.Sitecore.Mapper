@@ -136,6 +136,8 @@ namespace Glass.Sitecore.Mapper.Data
 
         private Item GetLanguageItem(Item foundItem, Language language)
         {
+            if (foundItem == null) return null;
+
             var item = foundItem.Database.GetItem(foundItem.ID, language);
             if (item.Versions.Count > 0)
                 return item;

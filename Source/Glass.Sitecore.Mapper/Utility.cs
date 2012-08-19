@@ -28,6 +28,8 @@ using System.Linq.Expressions;
 using Sitecore.Links;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Data;
+using System.IO;
+using System.Web;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -174,7 +176,7 @@ namespace Glass.Sitecore.Mapper
 
             foreach (Type interfaceType in typeList)
             {
-                foreach (PropertyInfo property in interfaceType.GetProperties(BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy|BindingFlags.Instance))
+                foreach (PropertyInfo property in interfaceType.GetProperties(Flags))
                 {
                     propertyList.Add(property);
                 }
@@ -182,6 +184,14 @@ namespace Glass.Sitecore.Mapper
 
             return propertyList.ToArray();
         }
+
+        public static BindingFlags Flags = BindingFlags.Public | BindingFlags.NonPublic | BindingFlags.FlattenHierarchy | BindingFlags.Instance;
+
+        public static PropertyInfo GetProperty(Type type, string name)
+        {
+            return type.GetProperty(name, Flags);
+        }
+
 
         /// <summary>
         /// Converts a NameValueCollection in to HTML attributes
@@ -232,6 +242,43 @@ namespace Glass.Sitecore.Mapper
 
         }
 
+        public static string ConstructQueryString(NameValueCollection parameters)
+        {
+            var sb = new StringBuilder();
+
+            foreach (String name in parameters)
+                sb.Append(String.Concat(name, "=", System.Web.HttpUtility.UrlEncode(parameters[name]), "&"));
+
+            if (sb.Length > 0)
+                return sb.ToString(0, sb.Length - 1);
+
+            return String.Empty;
+        }
+
+        /// <summary>
+        /// Gets an embedded manifest resource in the assembly
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public static Stream GetResource(string name)
+        {
+            var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream(name);
+            return stream;
+            //TextReader reader =   new StreamReader(stream);
+            //string content = reader.ReadToEnd();
+            //reader.Close();
+            //reader.Dispose();
+            //return content;
+        }
+
+        public static void WriteToResponse(HttpResponse response, Stream content)
+        {
+            byte[] data = new byte[content.Length];
+            content.Read(data, 0, data.Length);
+
+            response.OutputStream.Write(data, 0, data.Length);
+        }
+
         public static IEnumerable<AbstractSitecoreDataHandler> GetDefaultDataHanlders()
         {
 
@@ -251,6 +298,7 @@ namespace Glass.Sitecore.Mapper
                 new SitecoreFieldImageHandler(),
                 new SitecoreFieldIntegerHandler(),
                 new SitecoreFieldLinkHandler(),
+                new SitecoreFieldNameValueCollectionHandler(),
                 new SitecoreFieldStreamHandler(),
                 new SitecoreFieldStringHandler(),
                 new SitecoreFieldTriStateHandler(),

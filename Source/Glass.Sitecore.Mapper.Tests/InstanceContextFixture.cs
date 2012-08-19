@@ -212,7 +212,7 @@ namespace Glass.Sitecore.Mapper.Tests
         public void GetDataHandler_HandlerFromStandardList()
         {
             //Assign
-            InstanceContext context = new InstanceContext(new Dictionary<Type,SitecoreClassConfig>(), Utility.GetDefaultDataHanlders());
+            InstanceContext context = new InstanceContext(new Dictionary<Type,SitecoreClassConfig>(), Utility.GetDefaultDataHanlders(), null);
             SitecoreProperty property = new SitecoreProperty();
             property.Attribute = new SitecoreFieldAttribute();
             property.Property = typeof(InstanceContextFixtureNS.GetDataHandlerClass).GetProperty("IntProperty");
@@ -228,7 +228,7 @@ namespace Glass.Sitecore.Mapper.Tests
         public void GetDataHandler_HandlerFromDataHandler()
         {
             //Assign
-            InstanceContext context = new InstanceContext(new Dictionary<Type, SitecoreClassConfig>(), Utility.GetDefaultDataHanlders());
+            InstanceContext context = new InstanceContext(new Dictionary<Type, SitecoreClassConfig>(), Utility.GetDefaultDataHanlders(), null);
             SitecoreProperty property = new SitecoreProperty();
             property.Attribute = new SitecoreFieldAttribute();
             property.Property = typeof(InstanceContextFixtureNS.GetDataHandlerClass).GetProperty("IntProperty");
@@ -246,7 +246,7 @@ namespace Glass.Sitecore.Mapper.Tests
         public void GetDataHandler_HandlerFromDataHandlerNotCorrectClass_ThrowsException()
         {
             //Assign
-            InstanceContext context = new InstanceContext(new Dictionary<Type, SitecoreClassConfig>(), Utility.GetDefaultDataHanlders());
+            InstanceContext context = new InstanceContext(new Dictionary<Type, SitecoreClassConfig>(), Utility.GetDefaultDataHanlders(), null);
             SitecoreProperty property = new SitecoreProperty();
             property.Attribute = new SitecoreFieldAttribute();
             property.Property = typeof(InstanceContextFixtureNS.GetDataHandlerClass).GetProperty("IntProperty");
@@ -263,7 +263,7 @@ namespace Glass.Sitecore.Mapper.Tests
         public void GetDataHandler_HandlerFromDataHandlerCorrectClassButErrorWhenIfnstantiated_ThrowsException()
         {
             //Assign
-            InstanceContext context = new InstanceContext(new Dictionary<Type, SitecoreClassConfig>(), Utility.GetDefaultDataHanlders());
+            InstanceContext context = new InstanceContext(new Dictionary<Type, SitecoreClassConfig>(), Utility.GetDefaultDataHanlders(), null);
             SitecoreProperty property = new SitecoreProperty();
             property.Attribute = new SitecoreFieldAttribute();
             property.Property = typeof(InstanceContextFixtureNS.GetDataHandlerClass).GetProperty("IntProperty");
