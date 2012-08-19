@@ -98,7 +98,11 @@ namespace Glass.Sitecore.Mapper.Dashboard.Controllers
                 //this handles proxies
             else if(GlassContext.Classes.ContainsKey(resultType.BaseType)){
                 return ProcessGlassType(value, resultType.BaseType);
-                
+            }
+                //handles proxied interfaces
+            else if(resultType.GetInterfaces().Any(x=>GlassContext.Classes.ContainsKey(x))) {
+                var interfaceType = resultType.GetInterfaces().First(x=>GlassContext.Classes.ContainsKey(x));
+                return ProcessGlassType(value, interfaceType);
             }
             else if (value is IEnumerable && resultType.IsGenericType)
             {
