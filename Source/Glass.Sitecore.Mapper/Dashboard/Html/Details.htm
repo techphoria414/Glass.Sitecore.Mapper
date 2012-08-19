@@ -35,12 +35,14 @@
             <span class="label label-success">Branch in SC</span> 
         </li>
         <!-- ko ifnot: Exists -->
-            <!-- ko if: Checked -->
-                <span class="label label-important">Branch not in SC</span>
-            <!-- /ko-->
-            <!-- ko ifnot: Checked -->
-                <span class="label label-info">Branch not checked</span>
-            <!-- /ko -->
+            <li>
+                <!-- ko if: Checked -->
+                    <span class="label label-important">Branch not in SC</span>
+                <!-- /ko-->
+                <!-- ko ifnot: Checked -->
+                    <span class="label label-info">Branch not checked</span>
+                <!-- /ko -->
+             </li>
         <!--/ko -->
     <!--/ko -->
 
@@ -50,6 +52,13 @@
      <li data-bind="ifnot: CodeFirst">
         <span class="label label-info">Not Code First</span>
     </li>
+    <li data-bind="ifnot: hasId">
+        <span class="label label-important">No Id Property</span>
+    </li>
+     <li data-bind="if: hasId">
+        <span class="label label-success">Id Property</span>
+    </li>
+
 
 </ul>
 

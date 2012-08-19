@@ -10,6 +10,9 @@ $(function () {
         var viewModel = ko.mapping.fromJS(data);
         viewModel.QueryUrl = "/Query.gls?cls=" + viewModel.Name();
 
+        viewModel.hasId = viewModel.Id() != null;
+
+
         ko.applyBindings(viewModel);
 
         ModalOff();
