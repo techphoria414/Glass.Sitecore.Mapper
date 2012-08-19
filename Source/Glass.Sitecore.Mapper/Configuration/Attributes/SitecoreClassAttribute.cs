@@ -54,5 +54,10 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// Indicates that the class is used in a code first scenario.
         /// </summary>
         public bool CodeFirst { get; set; }
+
+        /// <summary>
+        /// Overrides the default template name when using code first
+        /// </summary>
+        public string TemplateName { get; set; }
     }
 }

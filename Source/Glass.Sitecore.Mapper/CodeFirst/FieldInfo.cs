@@ -25,7 +25,7 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 {
     public class FieldInfo
     {
-        public FieldInfo(ID fieldId, ID sectionId, string name, SitecoreFieldType type, string source, string title)
+        public FieldInfo(ID fieldId, ID sectionId, string name, SitecoreFieldType type, string source, string title, bool isShared, bool isUnversioned)
         {
             FieldId = fieldId;
             SectionId = sectionId;
@@ -33,6 +33,8 @@ namespace Glass.Sitecore.Mapper.CodeFirst
             Type = type;
             Source = source;
             Title = title;
+            IsShared = isShared;
+            IsUnversioned = isUnversioned;
         }
 
         public ID FieldId { get; set; }
@@ -41,6 +43,8 @@ namespace Glass.Sitecore.Mapper.CodeFirst
         public SitecoreFieldType Type { get; set; }
         public string Source { get; set; }
         public string Title { get; set; }
+        public bool IsShared { get; set; }
+        public bool IsUnversioned { get; set; }
 
 
         public static string GetFieldType(SitecoreFieldType type)

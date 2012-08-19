@@ -16,10 +16,11 @@
 */
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
+using Sitecore;
 using Sitecore.Data.DataProviders;
-using Sitecore.Data.Templates;
 using System.Xml;
 using Sitecore.Collections;
 using Sitecore.Data;
@@ -28,7 +29,6 @@ using Sitecore.Configuration;
 using Sitecore.Caching;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
-using Sitecore.Data.Items;
 using Sitecore.SecurityModel;
 
 namespace Glass.Sitecore.Mapper.CodeFirst
@@ -114,6 +114,11 @@ namespace Glass.Sitecore.Mapper.CodeFirst
             return base.GetItemDefinition(itemId, context);
         }
 
+        public override LanguageCollection GetLanguages(CallContext context)
+        {
+            return new LanguageCollection();
+        }
+
         #region GetItemFields
 
         public override global::Sitecore.Data.FieldList GetItemFields(global::Sitecore.Data.ItemDefinition itemDefinition, global::Sitecore.Data.VersionUri versionUri, CallContext context)
@@ -148,14 +153,17 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
         private void GetFieldFields(FieldInfo info, FieldList fields){
 
-            
-            fields.Add(TitleFieldId, info.Title ?? string.Empty);
+            if (!string.IsNullOrEmpty(info.Title))
+                fields.Add(TitleFieldId, info.Title);
 
-         
             fields.Add(TypeFieldId, FieldInfo.GetFieldType(info.Type));
 
-            
-            fields.Add(SourceFieldId, info.Source ?? string.Empty);
+            if (!string.IsNullOrEmpty(info.Source))
+                fields.Add(SourceFieldId, info.Source);
+
+            fields.Add(TemplateFieldIDs.Shared, info.IsShared ? "1" : "0");
+
+            fields.Add(TemplateFieldIDs.Unversioned, info.IsUnversioned ? "1" : "0");
         }
 
         #endregion
@@ -235,7 +243,7 @@ namespace Glass.Sitecore.Mapper.CodeFirst
                         if (record == null)
                         {
                             string fieldName = attr.FieldName.IsNullOrEmpty() ? field.Property.Name : attr.FieldName;
-                            record = new FieldInfo(new ID(guidId), itemDefinition.ID, fieldName, attr.FieldType, attr.FieldSource, attr.FieldTitle);
+                            record = new FieldInfo(new ID(guidId), itemDefinition.ID, fieldName, attr.FieldType, attr.FieldSource, attr.FieldTitle, attr.IsShared, attr.IsUnversioned);
                         }
 
                         fieldIds.Add(record.FieldId);
@@ -355,8 +363,15 @@ namespace Glass.Sitecore.Mapper.CodeFirst
 
                          }
 
+                         provider.CreateItem(new ID(cls.Value.TemplateId), cls.Key.Name, TemplateTemplateId, containing, context);
                          //create the template in Sitecore
                          provider.CreateItem(new ID(cls.Value.TemplateId), cls.Key.Name, TemplateTemplateId, containing, context);
+                         string templateName = cls.Value.ClassAttribute.TemplateName;
+
+                         if (string.IsNullOrEmpty(templateName))
+                             templateName = cls.Key.Name;
+
+                         provider.CreateItem(new ID(cls.Value.TemplateId), templateName, TemplateTemplateId, containing, context);
                          clsTemplate = provider.GetItemDefinition(new ID(cls.Value.TemplateId), context);
                          //Assign the base template
                          var templateItem  = Database.GetItem(clsTemplate.ID);
@@ -368,7 +383,6 @@ namespace Glass.Sitecore.Mapper.CodeFirst
                              templateItem.Editing.EndEdit();
                          }
                      }
-
 
                      BaseTemplateChecks(clsTemplate, provider, context, cls.Value);
 

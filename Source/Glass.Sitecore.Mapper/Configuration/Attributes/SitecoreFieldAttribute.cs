@@ -95,7 +95,15 @@ namespace Glass.Sitecore.Mapper.Configuration.Attributes
         /// The source for the field if using Code First
         /// </summary>
         public string FieldSource { get; set; }
-  
-      
+
+        /// <summary>
+        /// Sets the field as shared if using Code First
+        /// </summary>
+        public bool IsShared { get; set; }
+
+        /// <summary>
+        /// Sets the field as unversioned if using Code First
+        /// </summary>
+        public bool IsUnversioned { get; set; }
     }
 }
