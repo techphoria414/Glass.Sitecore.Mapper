@@ -132,12 +132,12 @@ namespace Glass.Sitecore.Mapper
             if (ClassesById.ContainsKey(templateId) && ClassesById[templateId] != null)
             {
                 var types = ClassesById[templateId];
-                if (types.Count == 1) return types.First();
-                else
+                if (types.Any(x => type.IsAssignableFrom(x.Type)))
                 {
                     return types.First(x => type.IsAssignableFrom(x.Type));
                 }
-                
+                else
+                    return null;
             }
             else return null;
         }
