@@ -25,6 +25,8 @@ using Sitecore.Data.Items;
 using Sitecore.Web.UI.WebControls;
 using Glass.Sitecore.Mapper.Data;
 using Castle.DynamicProxy;
+using Glass.Sitecore.Mapper.Web.Ui;
+using System.Web;
 
 namespace Glass.Sitecore.Mapper
 {
@@ -52,6 +54,13 @@ namespace Glass.Sitecore.Mapper
             _db = database;
         }
 
+        public GlassEditFrame EditFrame(string buttons)
+        {
+            var frame = new GlassEditFrame(buttons, HttpContext.Current);
+            frame.RenderFirstPart();
+            return frame;
+        }
+
 
         /// <summary>
         /// Makes the field editable using the Sitecore Page Editor. Using the specifed service to write data.
@@ -63,6 +72,19 @@ namespace Glass.Sitecore.Mapper
         public string Editable<T>(T target, Expression<Func<T, object>> field)
         {
             return MakeEditable<T>(field, null, target, _db);
+        }
+
+        /// <summary>
+        /// Makes the field editable using the Sitecore Page Editor. Using the specifed service to write data.
+        /// </summary>
+        /// <typeparam name="T">A class loaded by Glass.Sitecore.Mapper</typeparam>
+        /// <param name="field">The field that should be made editable</param>
+        /// <param name="target">The target object that contains the item to be edited</param>
+        /// <param name="parameters">Additional tag parameters, e.g. class=myCssClass </param>
+        /// <returns>HTML output to either render the editable controls or normal HTML</returns>
+        public string Editable<T>(T target, Expression<Func<T, object>> field, string parameters)
+        {
+            return MakeEditable<T>(field, null, target, _db, parameters);
         }
 
         /// <summary>
@@ -224,9 +246,12 @@ namespace Glass.Sitecore.Mapper
 
         private string MakeEditable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target, Database database)
         {
-            
+            return MakeEditable(field, standardOutput, target, database, "");
+        }
 
-                if (IsInEditingMode)
+        private string MakeEditable<T>(Expression<Func<T, object>> field, Expression<Func<T, string>> standardOutput, T target, Database database, string parameters)
+        {
+                if (standardOutput == null || IsInEditingMode)
                 {
                     if (field.Parameters.Count > 1)
                         throw new MapperException("To many parameters in linq expression {0}".Formatted(field.Body));
@@ -286,6 +311,12 @@ namespace Glass.Sitecore.Mapper
                     if (prop == null) throw new MapperException("Page editting error. Could not find property {0} on type {1}".Formatted(memberExpression.Member.Name, type.FullName));
 
                     var dataHandler = scClass.DataHandlers.FirstOrDefault(x => x.Property == prop);
+                    if (dataHandler == null)
+                    {
+                        throw new MapperException(
+                            "Page editting error. Could not find data handler for property {2} {0}.{1}".Formatted(
+                            prop.DeclaringType, prop.Name, prop.MemberType));
+                    }
 
                     var item = database.GetItem(new ID(id));
 
@@ -294,18 +325,15 @@ namespace Glass.Sitecore.Mapper
                         FieldRenderer renderer = new FieldRenderer();
                         renderer.Item = item;
                         renderer.FieldName = ((AbstractSitecoreField)dataHandler).FieldName;
-                        renderer.Parameters = "";
+                        renderer.Parameters = parameters;
                         return renderer.Render();
                     }
                 }
                 else
                 {
-                    if (standardOutput != null)
-                        return standardOutput.Compile().Invoke(target);
-                    else
-                        return field.Compile().Invoke(target).ToString();
+                    return standardOutput.Compile().Invoke(target);
                 }
-         
+                //return field.Compile().Invoke(target).ToString();
         }
 
     }

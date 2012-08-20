@@ -51,6 +51,9 @@
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
     <Reference Include="System.Web" />
+    <Reference Include="System.Web.Mvc, Version=3.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.WebPages, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System.Web.Extensions" />
     <Reference Include="System.Xml.Linq">
       <RequiredTargetFramework>3.5</RequiredTargetFramework>
     </Reference>
@@ -89,7 +92,72 @@
     <Compile Include="Configuration\SitecoreProperty.cs" />
     <Compile Include="Configuration\SitecoreClassConfig.cs" />
     <Compile Include="Context.cs" />
+    <Compile Include="Dashboard\Controllers\DetailsController.cs" />
+    <Compile Include="Dashboard\Controllers\ListController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Controllers\QueryController.cs" />
+    <Compile Include="Dashboard\Controllers\StaticController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\DashboardGlobals.cs" />
+    <Compile Include="Dashboard\DashboardHandler.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\DashboardLoader.cs" />
+    <Compile Include="Dashboard\DashboardUtilities.cs" />
+    <Compile Include="Dashboard\DashboardExtensionMethods.cs" />
+    <Compile Include="Dashboard\Model\Data\ItemData.cs" />
+    <Compile Include="Dashboard\Model\Data\TemplateData.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassChildren.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassClass.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassClassSummary.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassField.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassItem.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassLinked.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassParent.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\Data\PathQuery.cs" />
+    <Compile Include="Dashboard\Model\GlassQuery.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Model\GlassQueryResult.cs" />
+    <Compile Include="Dashboard\Model\GlassTemplate.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Web\AbstractController.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Web\AbstractView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Web\HtmlView.cs" />
+    <Compile Include="Dashboard\Web\JsonView.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Dashboard\Web\ManifestView.cs">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="Data\QueryParameters\ItemEscapedPathParameter.cs" />
+    <Compile Include="Data\SitecoreFieldNameValueCollectionHandler.cs" />
     <Compile Include="Data\SitecoreFieldNullableHandler.cs" />
     <Compile Include="Data\SitecoreItemHandler.cs" />
     <Compile Include="Data\SitecoreLinkedHandler.cs" />
@@ -141,6 +209,7 @@
     <Compile Include="ISitecoreService.cs" />
     <Compile Include="Enumerable.cs" />
     <Compile Include="ItemExtensions.cs" />
+    <Compile Include="Web\Mvc\GlassView.cs" />
     <Compile Include="NullLog.cs" />
     <Compile Include="PersistenceException.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -154,12 +223,15 @@
     <Compile Include="SitecoreIdException.cs" />
     <Compile Include="SitecoreService.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="Web\Mvc\HtmlHelperExtensions.cs" />
+    <Compile Include="Web\Mvc\MvcEditFrame.cs" />
     <Compile Include="Web\Ui\AbstractGlassUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\Ui\GlassDynamicUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
+    <Compile Include="Web\Ui\GlassEditFrame.cs" />
     <Compile Include="Web\Ui\GlassUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
@@ -176,6 +248,36 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Dashboard\List\" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Css\Dashboard.css" />
+    <EmbeddedResource Include="Dashboard\Html\List.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Js\List.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Html\HtmlHeader.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Html\HtmlFooter.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Html\Details.htm" />
+    <EmbeddedResource Include="Dashboard\Js\Details.js" />
+    <EmbeddedResource Include="Dashboard\Js\General.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Html\Query.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Js\Query.js" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Dashboard\Images\ajax-loader.gif" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

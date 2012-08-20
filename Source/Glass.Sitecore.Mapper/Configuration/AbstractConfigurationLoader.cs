@@ -44,5 +44,9 @@ namespace Glass.Sitecore.Mapper.Configuration
         {
             this._dataHandlers.Insert(0, data);
         }
+        /// <summary>
+        /// A unique identifier for this configuration. Override this in module loaders to specify a specific ID.
+        /// </summary>
+        public abstract Guid Id { get;  }
     }
 }

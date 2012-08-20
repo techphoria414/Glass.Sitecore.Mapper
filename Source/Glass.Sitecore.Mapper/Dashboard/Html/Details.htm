@@ -1,0 +1,311 @@
+﻿<script type="text/javascript" src="/static.gls?file=Js.Details.js"></script>
+<h2 data-bind="text:Name"></h2>
+
+<ul class="nav nav-pills">
+  <li class="active">
+    <a data-bind="attr: {href: QueryUrl}">Query</a>
+  </li>
+  <!-- ko with: Template -->
+  <li data-bind="if:Exists" >
+    <a data-bind="attr: { href: Url}" target="_blank">Sitecore</a> 
+  </li>
+  <!-- /ko -->
+  
+
+</ul>
+
+<h3>Details</h3>
+
+<ul id="details-summary">
+    <!-- ko with: Template -->
+        <li data-bind="if: Exists">
+            <span class="label label-success">Template in SC</span> 
+        </li>
+        <!-- ko ifnot: Exists -->
+            <!-- ko if: Checked -->
+                <span class="label label-important">Template not in SC</span>
+            <!-- /ko-->
+            <!-- ko ifnot: Checked -->
+                <span class="label label-info">Template not checked</span>
+            <!-- /ko -->
+        <!--/ko -->
+    <!--/ko -->
+    <!-- ko with: Branch -->
+        <li data-bind="if: Exists">
+            <span class="label label-success">Branch in SC</span> 
+        </li>
+        <!-- ko ifnot: Exists -->
+            <li>
+                <!-- ko if: Checked -->
+                    <span class="label label-important">Branch not in SC</span>
+                <!-- /ko-->
+                <!-- ko ifnot: Checked -->
+                    <span class="label label-info">Branch not checked</span>
+                <!-- /ko -->
+             </li>
+        <!--/ko -->
+    <!--/ko -->
+
+    <li data-bind="if: CodeFirst">
+        <span class="label label-success">Code First</span>
+    </li>
+     <li data-bind="ifnot: CodeFirst">
+        <span class="label label-info">Not Code First</span>
+    </li>
+    <li data-bind="ifnot: hasId">
+        <span class="label label-important">No Id Property</span>
+    </li>
+     <li data-bind="if: hasId">
+        <span class="label label-success">Id Property</span>
+    </li>
+
+
+</ul>
+
+<table class="table-bordered table-striped">
+        <tr data-bind="with: Template">
+            <th>TemplateId</th>
+            <td>
+                <span  data-bind="if:Exists"  >
+                    <a data-bind="attr: { href: Url}, text: Id" target="_blank"></a> 
+                </span>
+                <span data-bind="ifnot:Exists" >
+                    <span data-bind="text: Id"></span>
+                </span>
+            </td>
+        </tr>
+        <tr data-bind="with: Branch">
+            <th>BranchId</th>
+            <td>
+                <span  data-bind="if:Exists"  >
+                    <a data-bind="attr: { href: Url}, text: Id" target="_blank"></a> 
+                </span>
+                <span data-bind="ifnot:Exists" >
+                    <span data-bind="text: Id"></span>
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>Id Property</th>
+            <td data-bind="text: Id"></td>
+        </tr>
+
+        <tr>
+            <th>Code First</th>
+            <td data-bind="text: CodeFirst"></td>
+        </tr>
+        <tr>
+            <th>Inherited</th>
+            <td>
+                <span data-bind="foreach: Inherited">
+                    <!-- ko if: IsGlass -->
+                        <a data-bind="attr: { href: Url}, text: Name"></a>
+                    <!-- /ko -->
+                    <!-- ko ifnot: IsGlass -->
+                        <span data-bind="text: Name"></span>
+                    <!-- /ko -->
+                </span>
+            </td>
+        </tr>
+        <tr>
+            <th>Derived</th>
+            <td>
+                <span data-bind="foreach: Derived">
+                    <a data-bind="attr: { href: Url}, text: Name"></a>
+                </span>
+            </td>
+        </tr>
+       
+    
+</table>
+
+<hr />
+<h3>
+    Fields
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Read Only</th>
+            <th>Code First</th>
+            <th>Section Name</th>
+            <th>Field Name</th>
+            <th>Field Id</th>
+            <th>Field Title</th>
+            <th>Field Type</th>
+            <th>Field Source</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Fields" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="template: { name: 'type-template', data: Type }"></td>
+            <td data-bind="text: ReadOnly"></td>
+            <td data-bind="text: CodeFirst"></td>
+            <td data-bind="text: SectionName"></td>
+            <td data-bind="text: FieldName"></td>
+            <td data-bind="text: FieldId"></td>
+            <td data-bind="text: FieldTitle"></td>
+            <td data-bind="text: FieldType"></td>
+            <td data-bind="text: FieldSource"></td>
+        </tr>
+    </tbody>
+</table>
+
+
+<hr />
+<h3>
+    Information
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Info Type</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Info" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="template: { name: 'type-template', data: Type }"></td>
+            <td data-bind="text: InfoType"></td>          
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+<h3>
+    Children
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Infer Type</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Children" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="template: { name: 'type-template', data: Type }"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: InferType"></td>
+        </tr>
+    </tbody>
+</table>
+           
+<hr />
+<h3>
+    Parents
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Infer Type</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Parents" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="template: { name: 'type-template', data: Type }"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: InferType"></td>
+        </tr>
+    </tbody>
+</table>  
+           
+<hr />
+<h3>
+    Queries
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Infer Type</th>
+            <th>Is Relative</th>
+            <th>Use Query Context</th>
+            <th>Query</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Queries" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="template: { name: 'type-template', data: Type }"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: InferType"></td>
+            <td data-bind="text: IsRelative"></td>
+            <td data-bind="text: UseQueryContext"></td>
+            <td data-bind="text: Query"></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+<h3>
+    Links
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Infer Type</th>
+            <th>Option</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Links" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="template: { name: 'type-template', data: Type }"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: InferType"></td>
+            <td data-bind="text: Option"></td>
+        </tr>
+    </tbody>
+</table>
+
+<hr />
+<h3>
+    Items
+</h3>
+<table class="table-bordered table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Type</th>
+            <th>Is Lazy</th>
+            <th>Id</th>
+            <th>Path</th>
+        </tr>
+    </thead>
+    <tbody data-bind="foreach: Items" >
+        <tr>
+            <td data-bind="text: Name"></td>
+            <td data-bind="template: { name: 'type-template', data: Type }"></td>
+            <td data-bind="text: IsLazy"></td>
+            <td data-bind="text: Id"></td>
+            <td data-bind="text: Path"></td>
+        </tr>
+    </tbody>
+</table>
+
+<script type="text/html" id="type-template">
+                 <span data-bind="if: IsGlass">
+                    <a data-bind="attr: { href: Url}, text: Name">t</a>
+                 </span>
+                 <span data-bind="ifnot: IsGlass">
+                    <span data-bind="text: Name">test</span>
+                 </span>
+</script>

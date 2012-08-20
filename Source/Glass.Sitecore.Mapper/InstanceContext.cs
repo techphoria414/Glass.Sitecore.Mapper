@@ -36,8 +36,12 @@ namespace Glass.Sitecore.Mapper
         public Dictionary<Type, SitecoreClassConfig> Classes { get; private set; }
         public IEnumerable<AbstractSitecoreDataHandler> Datas { get; private set; }
 
-        public InstanceContext(Dictionary<Type, SitecoreClassConfig> classes, IEnumerable<AbstractSitecoreDataHandler> datas)
+        public IEnumerable<AbstractConfigurationLoader> Loaders { get; private set; }
+
+        public InstanceContext(Dictionary<Type, SitecoreClassConfig> classes, IEnumerable<AbstractSitecoreDataHandler> datas, IEnumerable<AbstractConfigurationLoader> loaders)
         {
+            this.Loaders = loaders;
+
             //This needs reworking
             //this will be simplified to remove the need for three sets of data
 
@@ -128,12 +132,12 @@ namespace Glass.Sitecore.Mapper
             if (ClassesById.ContainsKey(templateId) && ClassesById[templateId] != null)
             {
                 var types = ClassesById[templateId];
-                if (types.Count == 1) return types.First();
-                else
+                if (types.Any(x => type.IsAssignableFrom(x.Type)))
                 {
                     return types.First(x => type.IsAssignableFrom(x.Type));
                 }
-                
+                else
+                    return null;
             }
             else return null;
         }

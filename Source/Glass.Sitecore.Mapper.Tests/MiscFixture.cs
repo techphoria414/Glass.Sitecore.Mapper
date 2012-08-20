@@ -459,6 +459,36 @@ namespace Glass.Sitecore.Mapper.Tests
             }
         }
 
+        [Test]
+        public void AccessModifiers_PublicPrivatePropertiesWriteAndReadsFieldOnInheritedMember()
+        {
+            //Assign
+
+            MiscFixtureNS.AccessModifiersPublicPrivateInherited target = null;
+            Guid id = new Guid("{6FEE384F-3A05-4520-A80C-F80A6A454608}");
+
+            Item item = _db.GetItem(new ID(id));
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                item["SingleLineText"] = "pre value";
+
+                target = _sitecore.CreateClass<MiscFixtureNS.AccessModifiersPublicPrivateInherited>(false, false, item);
+
+                Assert.AreEqual("pre value", target.SingleLineText);
+
+                target.GetPrivateSingleLineText = "Protected test";
+
+                _sitecore.WriteToItem(target, item);
+
+                Assert.AreEqual("Protected test", item["SingleLineText"]);
+
+                item.Editing.CancelEdit();
+            }
+        }
+
         #endregion
 
     }
@@ -466,6 +496,11 @@ namespace Glass.Sitecore.Mapper.Tests
     namespace MiscFixtureNS
     {
 
+        [SitecoreClass]
+        public class AccessModifiersPublicPrivateInherited : AccessModifiersPublicPrivate
+        {
+        }
+       
         [SitecoreClass]
         public class AccessModifiersPublicPrivate
         {
