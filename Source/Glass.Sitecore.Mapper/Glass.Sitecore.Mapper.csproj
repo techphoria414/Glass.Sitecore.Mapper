@@ -45,6 +45,9 @@
     <Reference Include="Sitecore.Kernel">
       <HintPath>..\..\Depends\Sitecore.Kernel.dll</HintPath>
     </Reference>
+    <Reference Include="Sitecore.Mvc">
+      <HintPath>..\..\Depends\66\Sitecore.Mvc.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.configuration" />
     <Reference Include="System.Core">
@@ -209,6 +212,7 @@
     <Compile Include="ISitecoreService.cs" />
     <Compile Include="Enumerable.cs" />
     <Compile Include="ItemExtensions.cs" />
+    <Compile Include="Pipelines\Response\GetModel.cs" />
     <Compile Include="Web\Mvc\GlassView.cs" />
     <Compile Include="NullLog.cs" />
     <Compile Include="PersistenceException.cs" />
