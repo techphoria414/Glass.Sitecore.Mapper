@@ -52,7 +52,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// <value>
         /// The revision ID.
         /// </value>
-        Guid RevisionID { get; set; }
+        string RevisionID { get; set; }
 
         /// <summary>
         /// Gets or sets the type of the target.

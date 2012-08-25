@@ -309,6 +309,19 @@
     <None Include="App_Config\Sitecore.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
       <SubType>Designer</SubType>
+      <TransformOnBuild>true</TransformOnBuild>
+    </None>
+    <None Include="App_Config\Sitecore.Debug - Aaron.config">
+      <DependentUpon>Sitecore.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App_Config\Sitecore.Debug.config">
+      <DependentUpon>Sitecore.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
+    </None>
+    <None Include="App_Config\Sitecore.Release.config">
+      <DependentUpon>Sitecore.config</DependentUpon>
+      <IsTransformFile>True</IsTransformFile>
     </None>
     <None Include="App_Config\XamlSharp.config">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

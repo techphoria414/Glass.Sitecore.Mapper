@@ -24,7 +24,9 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// <summary>
         /// 
         /// </summary>
-        public static List<CacheListInformation> CacheItemList = new List<CacheListInformation>();
+        //public static List<CacheListInformation> CacheItemList = new List<CacheListInformation>();
+
+        public static GlassCachingDictionary GlassCachingDictionary = new GlassCachingDictionary();
 
         /// <summary>
         /// 
@@ -32,7 +34,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         public static ReaderWriterLockSlim CacheItemListLock = new ReaderWriterLockSlim();
 
         /// <summary>
-        /// this is used for th
+        /// this is used for the timer
         /// </summary>
         protected static readonly TimeSpan Timeout;
 
@@ -58,53 +60,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// </returns>
         public virtual object GetItemKey(Item item)
         {
-            var sb = new StringBuilder();
-            sb.AppendFormat("{0}_", BaseKey);
-            sb.AppendFormat("{0}_", item.ID);
-            sb.AppendFormat("{0}_", item.Language.Name);
-            sb.AppendFormat("{0}_", item.Database.Name);
-
-            //don't add a _ as this is the last item in the key
-            sb.AppendFormat("{0}", item.Version.Number);
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Copies the left.
-        /// </summary>
-        /// <param name="leftObject">The left object.</param>
-        /// <param name="rightObject">The right object.</param>
-        /// <returns></returns>
-        protected virtual bool CopyLeft(object leftObject, object rightObject)
-        {
-            var returnbool = true;
-            if (leftObject.GetType() == rightObject.GetType())
-            {
-                PropertyInfo[] properties = leftObject.GetType().GetProperties();
-                //loop though all the properties
-                foreach (PropertyInfo property in properties)
-                {
-                    if (property.CanWrite)
-                    {
-                        try
-                        {
-                            object leftValue = property.GetValue(leftObject, null);
-                            object rightValue = property.GetValue(rightObject, null);
-
-                            //set the properties values for the right to the left object
-                            property.SetValue(leftObject, rightValue, null);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Error(String.Format("Glass.Sitecore.Mapper.ObjectCaching.ObjectCache.CopyLeft Could not update property: {0}", property.Name), ex);
-                            returnbool = false;
-                        }
-                    }
-                }
-            }
-
-            return returnbool;
+            return GetItemDefaultKey(item.Fields["__revision"].Value);
         }
 
         /// <summary>
@@ -121,7 +77,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
             {
                 try
                 {
-                    ci = CacheItemList.SingleOrDefault(x => x.TemplateID == o.TemplateID);
+                    ci = GlassCachingDictionary.Get(o.TemplateID);
                 }
                 catch (Exception ex)
                 {
@@ -210,6 +166,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// <param name="i">The i.</param>
         /// <returns></returns>
         public abstract bool PubishEvent(Item i);
+
         /// <summary>
         /// Compares the keys.
         /// </summary>
@@ -224,6 +181,23 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// <param name="ci"></param>
         public abstract void ClearRelatedCache(CacheListInformation ci);
 
+        #endregion
+
+        #region Public Static Methods
+        public static object GetItemDefaultKey(string revision)
+        {
+            var sb = new StringBuilder();
+            sb.AppendFormat("{0}_", BaseKey);
+            //sb.AppendFormat("{0}_", item.ID);
+            //sb.AppendFormat("{0}_", item.Language.Name);
+            //sb.AppendFormat("{0}_", item.Database.Name);
+            //sb.AppendFormat("{0}_", item.Version.Number);
+
+            //don't add a _ as this is the last item in the key
+            sb.AppendFormat("{0}", revision);
+
+            return sb.ToString();
+        }
         #endregion
 
     }

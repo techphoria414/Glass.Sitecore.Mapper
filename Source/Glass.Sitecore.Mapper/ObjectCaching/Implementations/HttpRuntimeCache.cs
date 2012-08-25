@@ -155,7 +155,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching.Implementations
             {
                 try
                 {
-                    ci = CacheItemList.SingleOrDefault(x => x.TemplateID == item.TemplateID.Guid);
+                    ci = null;//CacheItemDictionary. [item.TemplateID.Guid];
                 }
                 catch (Exception ex)
                 {
@@ -184,7 +184,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching.Implementations
                             var sitecoreService = new SitecoreService(item.Database);
                             var rightObject = classManager.CreateClass(sitecoreService, false, false, ci.Type, item);
 
-                            CopyLeft(leftObject, rightObject);
+                            //CopyLeft(leftObject, rightObject);
                             returnBool = true;
                         }
                         else

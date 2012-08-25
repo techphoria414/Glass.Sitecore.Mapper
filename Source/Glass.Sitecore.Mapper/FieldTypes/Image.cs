@@ -28,7 +28,7 @@ namespace Glass.Sitecore.Mapper.FieldTypes
         public string Class { get; set; }
         public int Height { get; set; }
         public int HSpace { get; set; }
-        public string Src { get; internal set; }
+        public string Src { get; set; }
         public int VSpace { get; set; }
         public int Width { get; set; }
         public Guid MediaId { get; set; }

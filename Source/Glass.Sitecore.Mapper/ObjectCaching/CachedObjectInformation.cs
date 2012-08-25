@@ -1,6 +1,7 @@
 ﻿using System;
 using Sitecore.Data.Items;
 
+
 namespace Glass.Sitecore.Mapper.ObjectCaching
 {
     /// <summary>
@@ -23,7 +24,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// <value>
         /// The revision ID.
         /// </value>
-        public Guid RevisionID { get; set; }
+        public string RevisionID { get; set; }
 
         /// <summary>
         /// Gets or sets the template ID.
@@ -106,7 +107,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
 
             //How do i get the RevisionID??  
             //need to ref the field name
-            //RevisionID = item.
+            RevisionID = item.Fields["__Revision"].Value;
         }
     }
 }

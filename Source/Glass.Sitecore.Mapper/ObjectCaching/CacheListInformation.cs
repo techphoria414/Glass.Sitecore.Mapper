@@ -69,8 +69,5 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// at the same time and don't bock each other
         /// </summary>
         public ReaderWriterLockSlim ListLock = new ReaderWriterLockSlim();
-
-
-       
     }
 }

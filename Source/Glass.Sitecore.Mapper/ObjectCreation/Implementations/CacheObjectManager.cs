@@ -25,7 +25,7 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
         /// <summary>
         /// 
         /// </summary>
-        public static List<CacheListInformation> CacheItemList = new List<CacheListInformation>();
+        public static GlassCachingDictionary GlassCachingDictionary = new GlassCachingDictionary();
 
         #endregion
 
@@ -73,12 +73,10 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
         /// <returns></returns>
         public override object CreateClass(ISitecoreService service, bool isLazy, bool inferType, Type type, global::Sitecore.Data.Items.Item item, params object[] constructorParameters)
         {
-            ICacheableObject returnObject = null;
-
             var key = _objectCache.GetItemKey(item);
 
             //hopefully we can return the object from the cache
-            returnObject = GetFromCache(item, type, key);
+            var returnObject = _objectCache.GetObjectFromCache(key) as ICacheableObject;
 
             //if we can't
             if (returnObject == null)
@@ -89,7 +87,7 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
                 returnObject = new CacheableObject(item, createdObject, key);
 
                 //and save it to the cache
-                 SaveToCache(item, returnObject, type, key);
+                 SaveToCache(returnObject, type, key);
             }
 
             return ObjectCaching.Proxy.CacheProxyGenerator.CreateProxy(returnObject.CachedObject);
@@ -111,7 +109,7 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
             {
                 try
                 {
-                    ci = CacheItemList.SingleOrDefault(x => x.Type == type);
+                    ci = GlassCachingDictionary.Get(type);
                 }
                 catch (Exception ex)
                 {
@@ -174,7 +172,7 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
             {
                 try
                 {
-                    ci = CacheItemList.SingleOrDefault(x => x.Type == type);
+                    ci = GlassCachingDictionary.Get(type);
                 }
                 catch (Exception ex)
                 {
@@ -224,53 +222,6 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
 
         #region Private Methods
         /// <summary>
-        /// Gets from cache.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <param name="type">The type.</param>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        private ICacheableObject GetFromCache(global::Sitecore.Data.Items.Item item, Type type, object key)
-        {
-            Diagnostics.Assert.IsNotNull(item, "we need an item to check the cache or we will not be able to generate a key");
-            Diagnostics.Assert.IsNotNull(type, "we need an type to check the cache or we will not be able to generate a key");
-
-            ICacheableObject o = null;
-            CacheListInformation ci = GetCacheListInformation(item.TemplateID.Guid);
-           
-            if (ci != null)
-            {
-                CachedObjectInformation cachedObjectInformation = null;
-
-                //take out a read lock so we block any threads trying to change the collection while we are enumerating it but lets them read it
-                if (ci.ListLock.TryEnterReadLock(Timeout))
-                {
-                    try
-                    {
-                        //try and find the item in the cache
-                        cachedObjectInformation = ci.CachedObjectInformationList.SingleOrDefault(x =>_objectCache.CompareKeys(x.Key, key));
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error("Glass.Sitecore.Mapper.ObjectCreation.CacheObjectManager: Error getting object from cache", this);
-                    }
-                    finally
-                    {
-                        //release the read lock
-                        ci.ListLock.ExitReadLock();
-                    }
-                }
-
-                if (cachedObjectInformation != null)
-                {
-                    o = _objectCache.GetObjectFromCache(cachedObjectInformation.Key) as ICacheableObject;
-                }
-            }
-
-            return o;
-        }
-
-        /// <summary>
         /// Saves to cache.
         /// </summary>
         /// <param name="item">The item.</param>
@@ -278,22 +229,22 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
         /// <param name="type">The type.</param>
         /// <param name="key">The key.</param>
         /// <returns></returns>
-        private bool SaveToCache(global::Sitecore.Data.Items.Item item, ICacheableObject cacheableObject, Type type, object key)
+        private bool SaveToCache(ICacheableObject cacheableObject, Type type, object key)
         {
             //if createdObject is null stop here as there is no point caching a null object
             if (cacheableObject == null)
                 return false;
 
-            Diagnostics.Assert.IsNotNull(item, "we need an item to check the cache or we will not be able to generate a key");
+            Diagnostics.Assert.IsNotNull(cacheableObject, "we need the cacheableObject to check the cache or we will not be able to generate a key");
             Diagnostics.Assert.IsNotNull(type, "we need an type to check the cache or we will not be able to generate a key");
 
             var returnBool = true;
-            CacheListInformation ci = GetCacheListInformation(item.TemplateID.Guid);
+            CacheListInformation ci = GetCacheListInformation(cacheableObject.TemplateID);
 
             //if thi is null then there is no CacheListInformation for this type
             if (ci == null)
             {
-                ci = AddedCacheListInformation(item, type);
+                ci = AddedCacheListInformation(cacheableObject, type);
             }
 
             //only keep going if ci not not null now.  If it is not then something happened when trying to build and add it
@@ -306,11 +257,16 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
                     {
                         //once the lock is release just check that the thread before hand has not just done the work we want to do
                         //this is safe as we are in a write lock
-                        var i = ci.Ids.SingleOrDefault(x => x == item.ID.Guid);
+                        var i = ci.Ids.SingleOrDefault(x => x == cacheableObject.ItemID);
                         if (i == Guid.Empty)
                         {
                             _objectCache.SaveObjectToCache(key, cacheableObject);
-                            ci.Ids.Add(item.ID.Guid);
+                            ci.Ids.Add(cacheableObject.ItemID);
+                            ci.CachedObjectInformationList.Add(cacheableObject.ToCachedObjectInformation());
+                        }
+                        else
+                        {
+                            _objectCache.SaveObjectToCache(key, cacheableObject);
                             ci.CachedObjectInformationList.Add(cacheableObject.ToCachedObjectInformation());
                         }
                     }
@@ -346,7 +302,7 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
         /// <param name="item">The item.</param>
         /// <param name="type">The type.</param>
         /// <returns></returns>
-        private CacheListInformation AddedCacheListInformation(global::Sitecore.Data.Items.Item item, Type type)
+        private CacheListInformation AddedCacheListInformation(ICacheableObject cacheableObject, Type type)
         {
             CacheListInformation ci = null;
             if (CacheObjectManager.CacheItemListLock.TryEnterWriteLock(Timeout))
@@ -355,13 +311,13 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
                 {
                     //just check again now that we are in the read lock, it may have been added before the loc was taken out
                     // this is save as we are in a write lock
-                    ci = CacheItemList.SingleOrDefault(x => x.TemplateID == item.TemplateID.Guid);
+                    ci = GlassCachingDictionary.Get(cacheableObject.TemplateID);
                     if (ci == null)
                     {
                         ci = new CacheListInformation();
                         ci.Type = type;
-                        ci.TemplateID = item.TemplateID.Guid;
-                        CacheItemList.Add(ci);
+                        ci.TemplateID = cacheableObject.TemplateID;
+                        GlassCachingDictionary.Add(cacheableObject.TemplateID, ci);
                     }
                 }
                 catch (Exception ex)
@@ -390,11 +346,11 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
             {
                 try
                 {
-                    ci = CacheItemList.SingleOrDefault(x => x.TemplateID == templateID);
+                    ci = GlassCachingDictionary.Get(templateID);
                 }
                 catch (Exception ex)
                 {
-                    Log.Error("Glass.Sitecore.Mapper.ObjectCreation.CacheObjectManager: Error building object", this);
+                    Log.Error(String.Format("Glass.Sitecore.Mapper.ObjectCreation.CacheObjectManager: Error building object Error: {0}", ex.Message), this);
                 }
                 finally
                 {

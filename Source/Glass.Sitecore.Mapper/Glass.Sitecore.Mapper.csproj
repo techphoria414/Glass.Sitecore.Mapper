@@ -76,6 +76,7 @@
     <Compile Include="ObjectCaching\CachedObjectInformation.cs" />
     <Compile Include="ObjectCaching\CacheListInformation.cs" />
     <Compile Include="ObjectCaching\Events\CachePublishItemProcessingEvent.cs" />
+    <Compile Include="ObjectCaching\GlassCachingDictionary.cs" />
     <Compile Include="ObjectCaching\ICacheableObject.cs" />
     <Compile Include="ObjectCaching\Implementations\HttpRuntimeCache.cs" />
     <Compile Include="ObjectCaching\IObjectCache.cs" />

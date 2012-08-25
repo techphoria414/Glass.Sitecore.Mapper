@@ -12,6 +12,8 @@ using Sitecore.SecurityModel;
 using Glass.Sitecore.Mapper.ObjectCreation;
 using System.Timers;
 using System.Diagnostics;
+using Glass.Sitecore.Mapper.ObjectCaching.Implementations;
+using Glass.Sitecore.Mapper.ObjectCaching;
 
 namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 {
@@ -149,6 +151,60 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
                 item.Editing.CancelEdit();
             }
+        }
+
+
+        [Test]
+        public void CreateClass_UpdateItem_HasTwoCacheEntries_FromHttpRuntimeCacheImplementation()
+        {
+            //Assign
+            string path = "/sitecore/content/CacheManager/CacheItem1";
+
+            var item = _db.GetItem(path);
+
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                item.Fields["SingleLineText"].Value = "Text 1";
+
+                item.Editing.EndEdit();
+            }
+
+            Type type = typeof(SimpleTemplate);
+
+            //Act
+            var result = _manager.CreateClass(_sitecore, false, false, type, item, null) as SimpleTemplate;
+
+            var revisionID1 = item.Fields["__revision"].Value;
+
+            //Assert
+            using (new SecurityDisabler())
+            {
+                item.Editing.BeginEdit();
+
+                item.Fields["SingleLineText"].Value = "SomeRandomUpdate";
+
+                item.Editing.EndEdit();
+            }
+            
+            item = _db.GetItem(path);
+            result = _manager.CreateClass(_sitecore, false, false, type, item, null) as SimpleTemplate;
+
+            var revisionID2 = item.Fields["__revision"].Value;
+
+            var revision1Key = ObjectCaching.ObjectCache.GetItemDefaultKey(revisionID1);
+            var revision2Key = ObjectCaching.ObjectCache.GetItemDefaultKey(revisionID2);
+
+            var httpRuntimeCache = new HttpRuntimeCache();
+            var object1 = httpRuntimeCache.GetObjectFromCache(revision1Key) as ICacheableObject;
+            var object2 = httpRuntimeCache.GetObjectFromCache(revision2Key) as ICacheableObject;
+
+            var simepleType1 = object1.CachedObject as SimpleTemplate;
+            var simepleType2 = object2.CachedObject as SimpleTemplate;
+
+            Assert.AreEqual(simepleType1.SingleLineText, "Text 1");
+            Assert.AreEqual(simepleType2.SingleLineText, "SomeRandomUpdate");
         }
 
 

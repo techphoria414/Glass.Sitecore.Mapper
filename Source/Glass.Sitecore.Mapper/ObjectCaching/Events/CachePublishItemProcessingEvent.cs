@@ -26,7 +26,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching.Events
                 //does the item exist?
                 if (currentItem != null)
                 {
-                    var ci = ObjectCache.CacheItemList.SingleOrDefault(x => x.TemplateID == currentItem.TemplateID.Guid);
+                    var ci = GlassCachingDictionary.Get(currentItem.TemplateID.Guid);
 
                     //only try and update the cache if we have the item type in memory
                     if (ci != null)
