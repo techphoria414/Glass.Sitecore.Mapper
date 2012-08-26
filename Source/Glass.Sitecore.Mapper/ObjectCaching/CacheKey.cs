@@ -7,7 +7,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
 {
     public struct CacheKey : IEquatable<CacheKey>
     {
-        public CacheKey(Guid revisionId, string database, Type type)
+        public CacheKey(Guid revisionId, string database, Type type):this()
         {
             RevisionId = revisionId;
             Database = database;
@@ -24,7 +24,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
 
         public bool Equals(CacheKey other)
         {
-            return other.RevisionId == this.RevisionId && other.Database == this.Database && other.Type = this.Type;
+            return other.RevisionId == this.RevisionId && other.Database == this.Database && other.Type == this.Type;
         }
     }
 }

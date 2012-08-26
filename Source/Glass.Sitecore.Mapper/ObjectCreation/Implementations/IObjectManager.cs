@@ -19,7 +19,7 @@ namespace Glass.Sitecore.Mapper.ObjectCreation
         /// <param name="item">The item.</param>
         /// <param name="constructorParameters">The constructor parameters.</param>
         /// <returns></returns>
-        object CreateClass(ISitecoreService service, bool isLazy, bool inferType, Type type, Item item, params object[] constructorParameters);
+        object CreateClass(ClassLoadingState state);
         /// <summary>
         /// Reads from item.
         /// </summary>

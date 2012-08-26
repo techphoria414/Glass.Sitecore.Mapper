@@ -19,9 +19,9 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
         /// <param name="item"></param>
         /// <param name="constructorParameters"></param>
         /// <returns></returns>
-        public override object CreateClass(ISitecoreService service, bool isLazy, bool inferType, Type type, global::Sitecore.Data.Items.Item item, params object[] constructorParameters)
+        public override object CreateClass(ClassLoadingState state)
         {
-            return CreateObject(service, isLazy, inferType, type, item, constructorParameters);
+            return CreateObject(state);
         }
 
        

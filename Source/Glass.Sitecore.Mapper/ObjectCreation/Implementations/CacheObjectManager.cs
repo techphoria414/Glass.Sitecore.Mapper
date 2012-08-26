@@ -67,13 +67,13 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
         /// <param name="item"></param>
         /// <param name="constructorParameters"></param>
         /// <returns></returns>
-        public override object CreateClass(ISitecoreService service, bool isLazy, bool inferType, Type type, global::Sitecore.Data.Items.Item item, params object[] constructorParameters)
+        public override object CreateClass(ClassLoadingState state)
         {
             object returnObject = null;
 
 
             //hopefully we can return the object from the cache
-            returnObject = _objectCache.Get(item, type);
+            returnObject = _objectCache.Get(state.Item, state.Type);
 
             //if we can't
             if (returnObject == null)
@@ -88,27 +88,27 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
                 {
                     try
                     {
-                        if (_objectCache.Contains(item, type))
+                        if (_objectCache.Contains(state.Item, state.Type))
                             //check that someone else hasn't just added it
-                            returnObject = _objectCache.Get(item, type);
+                            returnObject = _objectCache.Get(state.Item, state.Type);
 
                         //do a double check encase for some reason the returned object is null
                         if (returnObject == null)
                         {
 
                             //remove any existing item
-                            _objectCache.Remove(item, type);
+                            _objectCache.Remove(state.Item, state.Type);
                             //create the new one
-                            returnObject = CreateObject(service, isLazy, inferType, type, item, constructorParameters);
+                            returnObject = CreateObject(state);
                             //and save it to the cache
-                            _objectCache.Add(item, type, returnObject);
+                            _objectCache.Add(state.Item, state.Type, returnObject,state.Related);
                         }
                     }
                     finally
                     {
                         //if all else fails just create a normal object
                         if(returnObject == null)
-                            returnObject = CreateObject(service, isLazy, inferType, type, item, constructorParameters);
+                            returnObject = CreateObject(state);
                         Lock.ExitWriteLock();
                     }
                 }

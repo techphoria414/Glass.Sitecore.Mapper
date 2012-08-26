@@ -931,7 +931,7 @@ namespace Glass.Sitecore.Mapper
         public object CreateClass(bool isLazy, bool inferType, Type type, Item item)
         {
             //we have to add null to the list of parameters otherwise we get a stack overflow
-            return  InstanceContext.ObjectManager.CreateClass(this, isLazy, inferType, type, item, null);
+            return  InstanceContext.ObjectManager.CreateClass(new ClassLoadingState(this, isLazy, inferType, type, item, Guid.Empty, null));
         }
 
        
@@ -973,7 +973,7 @@ namespace Glass.Sitecore.Mapper
         /// <returns>The item as the specified type</returns>
         public T CreateClass<T, K>(bool isLazy, bool inferType, Item item, K param1)
         {
-            return (T)InstanceContext.ObjectManager.CreateClass(this,isLazy, inferType, typeof(T), item, param1);
+            return (T)InstanceContext.ObjectManager.CreateClass(new ClassLoadingState(this,isLazy, inferType, typeof(T), item, Guid.Empty, param1));
 
         }
 
@@ -990,8 +990,8 @@ namespace Glass.Sitecore.Mapper
         /// <param name="param2">The value of the second parameter of the constructor</param>
         /// <returns>The item as the specified type</returns>
         public T CreateClass<T,K,L>(bool isLazy, bool inferType, Item item, K param1, L param2)
-        {          
-            return (T)InstanceContext.ObjectManager.CreateClass(this, isLazy, inferType, typeof(T), item, param1, param2);
+        {
+            return (T)InstanceContext.ObjectManager.CreateClass(new ClassLoadingState(this, isLazy, inferType, typeof(T), item, Guid.Empty, param1, param2));
         }
 
         /// <summary>
@@ -1010,7 +1010,7 @@ namespace Glass.Sitecore.Mapper
         /// <returns>The item as the specified type</returns>
         public T CreateClass<T, K, L, M>(bool isLazy, bool inferType, Item item, K param1, L param2, M param3)
         {
-            return (T)InstanceContext.ObjectManager.CreateClass(this, isLazy, inferType, typeof(T), item, param1, param2, param3);
+            return (T)InstanceContext.ObjectManager.CreateClass(new ClassLoadingState(this, isLazy, inferType, typeof(T), item, Guid.Empty, param1, param2, param3));
         }
 
         /// <summary>
@@ -1031,7 +1031,7 @@ namespace Glass.Sitecore.Mapper
         /// <returns>The item as the specified type</returns>
         public T CreateClass<T, K, L, M, N>(bool isLazy, bool inferType, Item item, K param1, L param2, M param3, N param4)
         {
-            return (T)InstanceContext.ObjectManager.CreateClass(this, isLazy, inferType, typeof(T), item, param1, param2, param3, param4);            
+            return (T)InstanceContext.ObjectManager.CreateClass(new ClassLoadingState(this, isLazy, inferType, typeof(T), item, Guid.Empty, param1, param2, param3, param4));           
         }
 
          

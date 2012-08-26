@@ -61,6 +61,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ClassLoadingState.cs" />
     <Compile Include="ObjectCaching\CachedObjectInformation.cs" />
     <Compile Include="ObjectCaching\CacheKey.cs" />
     <Compile Include="ObjectCaching\Implementations\CacheTable.cs" />
