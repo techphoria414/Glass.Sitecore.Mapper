@@ -10,7 +10,6 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
     public class CachedObjectInformation
     {
 
-        public const string RevisionFieldName = "__Revision";
 
         /// <summary>
         /// Gets or sets the item ID.
@@ -94,7 +93,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
             Database = item.Database.Name;
             Version = item.Version.Number;
             Type = type;
-            RevisionID = new Guid(item[RevisionFieldName]);
+            RevisionID = item.RevisionId();
             Object = o;
         }
     }

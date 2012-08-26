@@ -35,13 +35,15 @@ namespace Glass.Sitecore.Mapper
         bool _loaded = false;
         bool _isLazy = true;
         bool _inferType = false;
+        Guid _ownerId;
 
-        public Enumerable(Func<IEnumerable<Item>> getItems, ISitecoreService service, bool isLazy, bool inferType)
+        public Enumerable(Func<IEnumerable<Item>> getItems, ISitecoreService service, bool isLazy, bool inferType, Guid ownerId)
         {
             _getItems = getItems;
             _service = service;
             _isLazy = isLazy;
             _inferType = inferType;
+            _ownerId = ownerId;
         }
 
         private void LoadItems()
@@ -58,7 +60,8 @@ namespace Glass.Sitecore.Mapper
             {
                 foreach (Item item in items.Where(x => x != null))
                 {
-                    var result = _service.CreateClass<T>(_isLazy, _inferType, item);
+
+                    var result = _service.CreateClass<T>(new ClassLoadingState(_service, _isLazy, _inferType, typeof(T), item, _ownerId, null));
                     _itemList.Add(result);
                 }
             }

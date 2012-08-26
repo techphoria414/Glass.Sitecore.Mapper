@@ -75,7 +75,7 @@ namespace Glass.Sitecore.Mapper.Data
                         
                     });
 
-                return service.CreateClasses(IsLazy, InferType,  genericType, getItems);
+                    return service.CreateClasses(IsLazy, InferType, genericType, getItems, item.ID.Guid);
         }
 
         public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)

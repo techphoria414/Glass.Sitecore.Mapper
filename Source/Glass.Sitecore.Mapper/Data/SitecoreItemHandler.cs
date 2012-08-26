@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2011 Michael Edwards
  
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -48,12 +48,12 @@ namespace Glass.Sitecore.Mapper.Data
             if (Id != Guid.Empty)
             {
                 var scItem = service.Database.GetItem(new ID(Id));
-                return service.CreateClass(IsLazy, false, Property.Property.PropertyType, scItem);
+                return service.CreateClass(IsLazy, false, Property.Property.PropertyType, scItem, item.ID.Guid);
             }
             else if (!Path.IsNullOrEmpty())
             {
                 var scItem = service.Database.GetItem(Path);
-                return service.CreateClass(IsLazy, false, Property.Property.PropertyType, scItem);
+                return service.CreateClass(IsLazy, false, Property.Property.PropertyType, scItem, item.ID.Guid);
             }
             else
             {

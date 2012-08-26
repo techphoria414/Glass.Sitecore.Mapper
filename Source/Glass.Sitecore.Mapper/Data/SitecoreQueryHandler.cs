@@ -111,7 +111,9 @@ namespace Glass.Sitecore.Mapper.Data
                         });
                     }
 
-                    return service.CreateClasses(IsLazy, InferType, genericType, getItems);
+
+
+                    return service.CreateClasses(IsLazy, InferType, genericType, getItems, item.ID.Guid);
                 }
                 else throw new NotSupportedException("Generic type not supported {0}. Must be IEnumerable<>.".Formatted(outerType.FullName));
             }
@@ -126,7 +128,7 @@ namespace Glass.Sitecore.Mapper.Data
                 {
                     result = item.Database.SelectSingleItem(query);
                 }
-                return service.CreateClass(IsLazy, InferType, Property.PropertyType, result);
+                return service.CreateClass(IsLazy, InferType, Property.PropertyType, result, item.ID.Guid);
             }
 
         }

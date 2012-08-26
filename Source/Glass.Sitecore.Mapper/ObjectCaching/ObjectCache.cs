@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
@@ -35,9 +35,8 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
 
         public static CacheKey CreateKey(Item item, Type type)
         {
-            var revisionId = new Guid(item[CachedObjectInformation.RevisionFieldName]);
 
-            return new CacheKey(revisionId, item.Database.Name, type);
+            return new CacheKey(item.RevisionId(), item.Database.Name, type);
         }
 
         #endregion

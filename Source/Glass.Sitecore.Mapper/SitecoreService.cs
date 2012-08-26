@@ -931,9 +931,13 @@ namespace Glass.Sitecore.Mapper
         public object CreateClass(bool isLazy, bool inferType, Type type, Item item)
         {
             //we have to add null to the list of parameters otherwise we get a stack overflow
-            return  InstanceContext.ObjectManager.CreateClass(new ClassLoadingState(this, isLazy, inferType, type, item, Guid.Empty, null));
+            return CreateClass(isLazy, inferType, type, item, Guid.Empty);
         }
 
+        public object CreateClass(bool isLazy, bool inferType, Type type, Item item, Guid revisionId)
+        {
+            return InstanceContext.ObjectManager.CreateClass(new ClassLoadingState(this, isLazy, inferType, type, item, revisionId, null));
+        }
        
 
         /// <summary>
@@ -958,7 +962,12 @@ namespace Glass.Sitecore.Mapper
         /// <returns>An enumerable of the items as the specified type</returns>
         public IEnumerable CreateClasses(bool isLazy, bool inferType, Type type, Func<IEnumerable<Item>> getItems)
         {
-            return Utility.CreateGenericType(typeof(Enumerable<>), new Type[] { type }, getItems, this, isLazy, inferType) as IEnumerable;
+           return CreateClasses(isLazy, inferType, type, getItems, Guid.Empty);
+        }
+
+        public IEnumerable CreateClasses(bool isLazy, bool inferType, Type type, Func<IEnumerable<Item>> getItems, Guid ownerId)
+        {
+            return Utility.CreateGenericType(typeof(Enumerable<>), new Type[] { type }, getItems, this, isLazy, inferType, ownerId) as IEnumerable;
         }
 
         /// <summary>
@@ -1034,7 +1043,10 @@ namespace Glass.Sitecore.Mapper
             return (T)InstanceContext.ObjectManager.CreateClass(new ClassLoadingState(this, isLazy, inferType, typeof(T), item, Guid.Empty, param1, param2, param3, param4));           
         }
 
-         
+        public T CreateClass<T>(ClassLoadingState state)
+        {
+            return (T)InstanceContext.ObjectManager.CreateClass(state);
+        }
 
         #endregion
 

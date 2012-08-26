@@ -44,11 +44,20 @@ namespace Glass.Sitecore.Mapper
         /// <param name="target">The class to read from</param>
         public static void GlassRead<T>(this Item item, T target) where T : class
         {
-          
-
             ISitecoreService service = new SitecoreService(item.Database);
             service.WriteToItem<T>(target, item);
+        }
 
+        public static Guid RevisionId(this Item item)
+        {
+            if (item != null)
+            {
+                return new Guid(item[Settings.RevisionFieldName]);
+            }
+            else
+            {
+                return Guid.Empty;
+            }
         }
     }
 }

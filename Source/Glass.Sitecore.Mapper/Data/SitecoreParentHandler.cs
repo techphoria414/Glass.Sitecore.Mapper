@@ -1,4 +1,4 @@
-﻿/*
+/*
    Copyright 2011 Michael Edwards
  
    Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,7 +38,7 @@ namespace Glass.Sitecore.Mapper.Data
 
         public override object GetValue(global::Sitecore.Data.Items.Item item, ISitecoreService service)
         {
-            return service.CreateClass(this.IsLazy, this.InferType, Property.PropertyType, item.Parent);
+            return service.CreateClass(this.IsLazy, this.InferType, Property.PropertyType, item.Parent, item.ID.Guid);
         }
 
         public override void SetValue(global::Sitecore.Data.Items.Item item, object value, ISitecoreService service)

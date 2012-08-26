@@ -57,7 +57,7 @@ namespace Glass.Sitecore.Mapper.Data
             }
 
             if (target == null) return null;
-                        return service.CreateClass(IsLazy, InferType, Property.PropertyType, target);
+                        return service.CreateClass(IsLazy, InferType, Property.PropertyType, target, item.ID.Guid);
             
         }
 

@@ -601,6 +601,8 @@ namespace Glass.Sitecore.Mapper
         /// <returns>The item as the specified type</returns>
         object CreateClass(bool isLazy, bool inferType, Type type, Item item);
 
+        object CreateClass(bool isLazy, bool inferType, Type type, Item item, Guid revisionId);
+
         /// <summary>
         /// Create a collection of classes from the specified type
         /// </summary>
@@ -620,6 +622,10 @@ namespace Glass.Sitecore.Mapper
         /// <returns>An enumerable of the items as the specified type</returns>
         IEnumerable CreateClasses(bool isLazy, bool inferType, Type type, Func<IEnumerable<Item>> getItems);
 
+
+        IEnumerable CreateClasses(bool isLazy, bool inferType, Type type, Func<IEnumerable<Item>> getItems, Guid revisionId);
+
+
         /// <summary>
         /// Writes data from a class to a Sitecore item
         /// </summary>
@@ -627,5 +633,7 @@ namespace Glass.Sitecore.Mapper
         /// <param name="target">The class to read from</param>
         /// <param name="item">The item to write to</param>
         void WriteToItem<T>(T target, Item item);
+
+        T CreateClass<T>(ClassLoadingState state);
     }
 }

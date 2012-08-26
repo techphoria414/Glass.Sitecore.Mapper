@@ -7,6 +7,7 @@ using NUnit.Framework;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Configuration;
 using Glass.Sitecore.Mapper.Tests.Domain;
+using Sitecore.Data.Items;
 
 namespace Glass.Sitecore.Mapper.Tests.Data
 {
@@ -15,7 +16,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
     {
         SitecoreItemHandler _handler;
         ISitecoreService _service;
-        
+        Item _owner; 
         [SetUp]
         public void Setup()
         {
@@ -24,6 +25,8 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             
             var db = global::Sitecore.Configuration.Factory.GetDatabase("master");
 
+
+            _owner = db.GetItem("/sitecore");
 
             Context context = new Context(
                 new AttributeConfigurationLoader(                   
