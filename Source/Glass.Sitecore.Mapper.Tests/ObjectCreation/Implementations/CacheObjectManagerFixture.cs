@@ -100,7 +100,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
             var item = _db.GetItem(path);
             Type type = typeof(SimpleTemplate);
 
-            //Act
+            //Act 
             var result1 = _manager.CreateClass(_sitecore, false, false, type, item, null) as SimpleTemplate;
             var result2 = _manager.CreateClass(_sitecore, false, false, type, item, null) as SimpleTemplate;
 
