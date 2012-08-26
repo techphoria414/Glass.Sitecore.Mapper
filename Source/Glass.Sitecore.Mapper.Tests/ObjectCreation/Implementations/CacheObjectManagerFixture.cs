@@ -162,28 +162,28 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
             var item = _db.GetItem(path);
 
+            //Act
             using (new SecurityDisabler())
             {
                 item.Editing.BeginEdit();
 
-                item.Fields["SingleLineText"].Value = "Text 1";
+                item.Fields["SingleLineText"].Value = "SomeRandomUpdate";
 
                 item.Editing.EndEdit();
             }
 
             Type type = typeof(SimpleTemplate);
 
-            //Act
+            
             var result = _manager.CreateClass(_sitecore, false, false, type, item, null) as SimpleTemplate;
 
             var revisionID1 = item.Fields["__revision"].Value;
 
-            //Assert
             using (new SecurityDisabler())
             {
                 item.Editing.BeginEdit();
 
-                item.Fields["SingleLineText"].Value = "SomeRandomUpdate";
+                item.Fields["SingleLineText"].Value = "Text 1";
 
                 item.Editing.EndEdit();
             }
@@ -203,8 +203,9 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
             var simepleType1 = object1.CachedObject as SimpleTemplate;
             var simepleType2 = object2.CachedObject as SimpleTemplate;
 
-            Assert.AreEqual(simepleType1.SingleLineText, "Text 1");
-            Assert.AreEqual(simepleType2.SingleLineText, "SomeRandomUpdate");
+            //Assert
+            Assert.AreEqual(simepleType1.SingleLineText, "SomeRandomUpdate");
+            Assert.AreEqual(simepleType2.SingleLineText, "Text 1");
         }
 
 
