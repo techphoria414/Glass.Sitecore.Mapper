@@ -22,7 +22,7 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
         private static readonly TimeSpan Timeout;
         #endregion
 
-        public ReaderWriterLockSlim Lock = new ReaderWriterLockSlim();
+        public static ReaderWriterLockSlim Lock = new ReaderWriterLockSlim();
  
 
         #region Constructors/Destructors

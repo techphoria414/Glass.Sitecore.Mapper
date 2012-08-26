@@ -62,6 +62,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="ObjectCaching\CachedObjectInformation.cs" />
+    <Compile Include="ObjectCaching\CacheKey.cs" />
     <Compile Include="ObjectCaching\Implementations\CacheTable.cs" />
     <Compile Include="ObjectCaching\Events\CachePublishItemProcessingEvent.cs" />
     <Compile Include="ObjectCaching\ICacheableObject.cs" />
@@ -73,6 +74,7 @@
     <Compile Include="ObjectCaching\Proxy\CacheMethodInterceptor.cs" />
     <Compile Include="ObjectCaching\Proxy\CacheProxyGenerator.cs" />
     <Compile Include="ObjectCaching\Proxy\CacheProxyGeneratorHook.cs" />
+    <Compile Include="ObjectCaching\RelatedDictionary.cs" />
     <Compile Include="ObjectCreation\Implementations\IObjectManager.cs" />
     <Compile Include="ObjectCreation\ObjectManager.cs" />
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoader.cs" />

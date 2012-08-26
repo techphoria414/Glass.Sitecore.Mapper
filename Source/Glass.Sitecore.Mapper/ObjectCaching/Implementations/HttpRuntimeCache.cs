@@ -86,12 +86,12 @@ namespace Glass.Sitecore.Mapper.ObjectCaching.Implementations
         }
         #endregion
 
-        protected override CachedObjectInformation GetInternal(Tuple<Guid, string, Type> key)
+        protected override CachedObjectInformation GetInternal(CacheKey key)
         {
             return System.Web.HttpRuntime.Cache.Get(key.ToString()) as CachedObjectInformation;
         }
 
-        protected override bool AddInternal(Tuple<Guid, string, Type> key, CachedObjectInformation info)
+        protected override bool AddInternal(CacheKey key, CachedObjectInformation info)
         {
             bool returnBool = true;
             try
@@ -113,13 +113,13 @@ namespace Glass.Sitecore.Mapper.ObjectCaching.Implementations
             return returnBool;
         }
 
-        protected override bool RemoveInternal(Tuple<Guid, string, Type> key)
+        protected override bool RemoveInternal(CacheKey key)
         {
              System.Web.HttpRuntime.Cache.Remove(key.ToString());
              return true;
         }
 
-        protected override bool ContainsInternal(Tuple<Guid, string, Type> key)
+        protected override bool ContainsInternal(CacheKey key)
         {
             return GetInternal(key) != null;
         }

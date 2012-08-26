@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +12,7 @@ using Sitecore.SecurityModel;
 using Glass.Sitecore.Mapper.ObjectCreation;
 using System.Timers;
 using System.Diagnostics;
+using Sitecore.Data.Items;
 
 namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 {
@@ -197,6 +198,42 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
             var child2 = result.ChildrenByQuery.First();
 
             Assert.AreEqual(child1.SingleLineText, child2.SingleLineText);
+
+        }
+
+        static Item testItem;
+        [Test]
+        public void CreateClass_ReturnsProxyClassGetChildren_ChildrenReturned()
+        {
+            //Assign
+            string path = "/sitecore/content/CacheManager/CacheItem1";
+
+            testItem = _db.GetItem(path);
+
+
+            private void PublishItem(Sitecore.Data.Items.Item item)
+{
+&nbsp; // The publishOptions determine the source and target database,
+&nbsp; // the publish mode and language, and the publish date
+&nbsp; Sitecore.Publishing.PublishOptions publishOptions =
+&nbsp;&nbsp;&nbsp; new Sitecore.Publishing.PublishOptions(item.Database,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Database.GetDatabase("web"),
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; Sitecore.Publishing.PublishMode.SingleItem,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; item.Language,
+&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; System.DateTime.Now);&nbsp; // Create a publisher with the publishoptions
+&nbsp; Sitecore.Publishing.Publisher publisher = new Sitecore.Publishing.Publisher(publishOptions);
+
+&nbsp; // Choose where to publish from
+&nbsp; publisher.Options.RootItem = item;
+
+&nbsp; // Publish children as well?
+&nbsp; publisher.Options.Deep = true;
+
+&nbsp; // Do the publish!
+&nbsp; publisher.Publish();
+}
+
+            Assert.AreEqual(testItem["SingleLineText"], testItem["SingleLineText"]);
 
         }
 

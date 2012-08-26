@@ -23,14 +23,21 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         #region Public Properties
       
         protected static readonly TimeSpan Timeout;
+        static volatile RelatedDictionary _related = new RelatedDictionary();
 
-   
 
-        public static Tuple<Guid, string, Type> CreateKey(Item item, Type type)
+
+        private static CacheKey CreateKey(Guid revisionId, string database, Type type)
+        {
+
+            return new CacheKey(revisionId, database, type);
+        }
+
+        public static CacheKey CreateKey(Item item, Type type)
         {
             var revisionId = new Guid(item[CachedObjectInformation.RevisionFieldName]);
 
-            return new Tuple<Guid, string, Type>(revisionId, item.Database.Name, type);
+            return new CacheKey(revisionId, item.Database.Name, type);
         }
 
         #endregion
@@ -56,12 +63,22 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
             else
                 return null;
         }
+
+
       
-        public bool Add(Item item,Type type, object o){
+        public bool Add(Item item,Type type, object o, Guid relatedId){
+
+            
+
             if(Contains(item, type))
                 return false;
             else {
                 var key = CreateKey(item, type);
+                if (relatedId != Guid.Empty)
+                {
+                    _related.Add(relatedId, key);
+                    _related.Add(item.TemplateID.Guid, key);
+                }
                 return AddInternal(key, new CachedObjectInformation(item, type, o));
             }
         }
@@ -71,7 +88,8 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
             if (Contains(item, type))
             {
                 var key = CreateKey(item, type);
-                return RemoveInternal(key);
+
+                return Remove(key);
             }
             else
             {
@@ -79,6 +97,21 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
             }
 
         }
+        private bool Remove(CacheKey key)
+        {
+                var related = _related.FlushKeys(key.RevisionId);
+                
+                foreach (var relate in related)
+                {
+                    var get = GetInternal(relate);
+                    if (get != null)
+                        Remove(CreateKey(get.RevisionID, get.Database, get.Type));
+                }
+                
+                return RemoveInternal(key);
+        }
+
+
         public bool Contains(Item item, Type type){
             var key = CreateKey(item, type);
             return ContainsInternal(key);
@@ -95,7 +128,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        protected abstract CachedObjectInformation GetInternal(Tuple<Guid, string, Type> key);
+        protected abstract CachedObjectInformation GetInternal(CacheKey key);
        
         /// <summary>
         /// Saves the object to cache.
@@ -103,16 +136,16 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         /// <param name="item">The item.</param>
         /// <param name="o">The o.</param>
         /// <returns></returns>
-        protected abstract bool AddInternal(Tuple<Guid, string, Type> key, CachedObjectInformation info);
+        protected abstract bool AddInternal(CacheKey key, CachedObjectInformation info);
 
         /// <summary>
         /// Removes the oject formt he cache
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        protected abstract bool RemoveInternal(Tuple<Guid, string, Type> key);
+        protected abstract bool RemoveInternal(CacheKey key);
 
-        protected abstract bool ContainsInternal(Tuple<Guid, string, Type> key);    
+        protected abstract bool ContainsInternal(CacheKey key);    
 
         #endregion
 
