@@ -8,6 +8,8 @@ using Glass.Sitecore.Mapper.ObjectCreation.Implementations;
 using Sitecore.Data;
 using Glass.Sitecore.Mapper.Configuration.Attributes;
 using Glass.Sitecore.Mapper.Tests.Domain;
+using Glass.Sitecore.Mapper.Configuration;
+using Sitecore.Links;
 
 namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 {
@@ -41,8 +43,8 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
         public void LoadTest_CachedVsNonCached_1000()
         {
 
-            
-            Type type = typeof(SimpleTemplate);
+
+            Type type = typeof(CacheObjectManagerLoadTestingFixtureNS.Concrete);
 
             //Act
 
@@ -56,7 +58,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
         {
 
 
-            Type type = typeof(SimpleTemplate);
+            Type type = typeof(CacheObjectManagerLoadTestingFixtureNS.Concrete);
 
             //Act
 
@@ -106,8 +108,13 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
             long cacheTotal = 0;
             long standardTotal = 0;
+            long rawTotal = 0;
             long cacheSeconds = 0;
             long standardSeconds = 0;
+            long rawSeconds = 0;
+
+          
+
 
             for (int j = 0; j < iterations; j++)
             {
@@ -116,8 +123,11 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
                 for (int i = 0; i < requests; i++)
                 {
-                    var result = cacheManger.CreateClass(new ClassLoadingState( _sitecore, false, false, type, item, Guid.Empty, null));
-                    
+                    var result = cacheManger.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null)) as CacheObjectManagerLoadTestingFixtureNS.Common;
+                        var id = result.Id;
+                        var title = result.Title;
+                        var display = result.DisplayName;
+                        var url = result.Url;
                 }
 
                 timerCached.Stop();
@@ -129,17 +139,41 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
                 for (int i = 0; i < requests; i++)
                 {
-                    var result = standardManager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null));
+                    var result = standardManager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null)) as CacheObjectManagerLoadTestingFixtureNS.Common;
+                    var id = result.Id;
+                    var title = result.Title;
+                    var display = result.DisplayName;
+                    var url = result.Url;
                 }
 
                 timerStandard.Stop();
                 standardTotal += timerStandard.ElapsedTicks;
                 standardSeconds += timerStandard.ElapsedMilliseconds;
+
+                Stopwatch timerRaw = new Stopwatch();
+                timerRaw.Start();
+
+                for (int i = 0; i < requests; i++)
+                {
+                    var result = _db.GetItem(item.ID);
+                    var id = result.ID.Guid;
+                    var title = result["Title"];
+                    var display = result.DisplayName;
+                    var url = LinkManager.GetItemUrl(item) ;
+                }
+
+                timerRaw.Stop();
+                rawTotal += timerRaw.ElapsedTicks;
+                rawSeconds += timerRaw.ElapsedMilliseconds;
+            
             }
 
-            Console.WriteLine("Load Test - Requests: {0} Iterations {1}".Formatted(requests, iterations));
-            Console.WriteLine("Cached Time {0}, Standard Time {1}".Formatted(cacheTotal / iterations, standardTotal / iterations));
-            Console.WriteLine("Per Class: Cached Time {0}, Standard Time {1}".Formatted(cacheTotal / requests /iterations, standardTotal / requests/iterations));
+
+
+            Console.WriteLine("Load Test - Requests: {0} Iterations {1} ".Formatted(requests, iterations));
+            Console.WriteLine("Cached Time {0}, Standard Time {1} Raw {2}".Formatted(cacheTotal / iterations, standardTotal / iterations, rawTotal /iterations));
+            Console.WriteLine("Per Class: Cached Time {0}, Standard Time {1}, Raw Time {2}".Formatted(cacheTotal / requests / iterations, standardTotal / requests / iterations, rawTotal/requests/iterations));
+            Console.WriteLine("Per Class: Cached Seconds {0},  Standard Seconds {1},  Raw Time {2} for {3}".Formatted(cacheSeconds, standardSeconds, rawSeconds, requests * iterations));
             
 
 
@@ -150,10 +184,45 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
     namespace CacheObjectManagerLoadTestingFixtureNS
     {
         [SitecoreClass]
-        public interface ProxyCheck
+        public interface ProxyCheck : Common
         {
             [SitecoreId]
             Guid Id { get; set; }
+
+            [SitecoreField]
+             string Title { get; set; }
+
+            [SitecoreInfo(SitecoreInfoType.DisplayName)]
+             string DisplayName{get;set;}
+
+            [SitecoreInfo(SitecoreInfoType.Url)]
+            string Url { get; set; }
+        }
+
+        [SitecoreClass]
+        public class Concrete : Common
+        {
+            [SitecoreId]
+            public virtual Guid Id { get; set; }
+
+
+            [SitecoreField]
+            public virtual string Title { get; set; }
+
+            [SitecoreInfo(SitecoreInfoType.DisplayName)]
+            public virtual string DisplayName { get; set; }
+
+            [SitecoreInfo(SitecoreInfoType.Url)]
+            public virtual string Url { get; set; }
+        }
+        public interface Common
+        {
+            Guid Id { get; set; }
+            string Title { get; set; }
+
+            string DisplayName { get; set; }
+
+            string Url { get; set; }
         }
     }
 }

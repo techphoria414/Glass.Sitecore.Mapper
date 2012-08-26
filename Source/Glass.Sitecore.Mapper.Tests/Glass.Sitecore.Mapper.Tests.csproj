@@ -177,6 +177,7 @@
     <Compile Include="ItemExtensionsFixture.cs" />
     <Compile Include="LoadTesting.cs" />
     <Compile Include="MiscFixture.cs" />
+    <Compile Include="ObjectCaching\RelatedDictionaryFixture.cs" />
     <Compile Include="ObjectCreation\Implementations\CacheObjectManagerFixture.cs" />
     <Compile Include="ObjectCreation\Implementations\CacheObjectManagerLoadTestingFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -290,9 +291,7 @@
     <None Include="packages.config" />
     <None Include="Readme.textile" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="ObjectCaching\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
