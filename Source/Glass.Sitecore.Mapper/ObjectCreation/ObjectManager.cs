@@ -102,14 +102,6 @@ namespace Glass.Sitecore.Mapper.ObjectCreation
         }
 
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="group"></param>
-        /// <param name="o"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        public abstract bool AddRelatedCache(string key, string group, object o, Type type);
+       
     }
 }

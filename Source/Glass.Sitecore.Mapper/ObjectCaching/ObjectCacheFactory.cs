@@ -15,21 +15,28 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
          /// Creates this instance.
          /// </summary>
          /// <returns></returns>
-        public static IObjectCache Create()
+        public static ObjectCache Create()
         {
             return Create(GlassConfiguration.Config.ObjectCache);
         }
 
-        public static IObjectCache Create(string type)
+        public static ObjectCache Create(string type)
         {
-            IObjectCache objectCache;
+              
+
+            ObjectCache objectCache = null;
             if (type.Equals("Glass.Sitecore.Mapper.ObjectCaching.Implementations.SitecoreCache", StringComparison.InvariantCultureIgnoreCase))
             {
-                objectCache = new SitecoreCache();
+               // objectCache = new SitecoreCache();
+            }
+            else if (type.Equals("Glass.Sitecore.Mapper.ObjectCaching.Implementations.HttpRuntimeCache", StringComparison.InvariantCultureIgnoreCase))
+            {
+                objectCache = new HttpRuntimeCache();
+               
             }
             else
             {
-                objectCache = new HttpRuntimeCache();
+                objectCache = new CacheTable();
             }
 
             return objectCache;

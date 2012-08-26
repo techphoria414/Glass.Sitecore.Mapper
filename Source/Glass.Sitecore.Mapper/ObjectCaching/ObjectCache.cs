@@ -14,27 +14,24 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
     /// <summary>
     /// 
     /// </summary>
-    public abstract class ObjectCache : IObjectCache
+    public abstract class ObjectCache
     {
         #region Private Properties
         private const string BaseKey = "GLASS";
         #endregion
 
         #region Public Properties
-        /// <summary>
-        /// 
-        /// </summary>
-        public static List<CacheListInformation> CacheItemList = new List<CacheListInformation>();
-
-        /// <summary>
-        /// 
-        /// </summary>
-        public static ReaderWriterLockSlim CacheItemListLock = new ReaderWriterLockSlim();
-
-        /// <summary>
-        /// this is used for th
-        /// </summary>
+      
         protected static readonly TimeSpan Timeout;
+
+   
+
+        public static Tuple<Guid, string, Type> CreateKey(Item item, Type type)
+        {
+            var revisionId = new Guid(item[CachedObjectInformation.RevisionFieldName]);
+
+            return new Tuple<Guid, string, Type>(revisionId, item.Database.Name, type);
+        }
 
         #endregion
 
@@ -48,181 +45,74 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         }
         #endregion
 
-        #region Public Virtual Methods
-        /// <summary>
-        /// Gets the item key.
-        /// </summary>
-        /// <param name="item">The item.</param>
-        /// <returns>
-        /// a cache key for that represents an item
-        /// </returns>
-        public virtual object GetItemKey(Item item)
-        {
-            var sb = new StringBuilder();
-            sb.AppendFormat("{0}_", BaseKey);
-            sb.AppendFormat("{0}_", item.ID);
-            sb.AppendFormat("{0}_", item.Language.Name);
-            sb.AppendFormat("{0}_", item.Database.Name);
+        #region Public Methods
 
-            //don't add a _ as this is the last item in the key
-            sb.AppendFormat("{0}", item.Version.Number);
-
-            return sb.ToString();
-        }
-
-        /// <summary>
-        /// Copies the left.
-        /// </summary>
-        /// <param name="leftObject">The left object.</param>
-        /// <param name="rightObject">The right object.</param>
-        /// <returns></returns>
-        protected virtual bool CopyLeft(object leftObject, object rightObject)
-        {
-            var returnbool = true;
-            if (leftObject.GetType() == rightObject.GetType())
+        public object Get(Item item, Type type){
+            if (Contains(item, type))
             {
-                PropertyInfo[] properties = leftObject.GetType().GetProperties();
-                //loop though all the properties
-                foreach (PropertyInfo property in properties)
-                {
-                    if (property.CanWrite)
-                    {
-                        try
-                        {
-                            object leftValue = property.GetValue(leftObject, null);
-                            object rightValue = property.GetValue(rightObject, null);
-
-                            //set the properties values for the right to the left object
-                            property.SetValue(leftObject, rightValue, null);
-                        }
-                        catch (Exception ex)
-                        {
-                            Log.Error(String.Format("Glass.Sitecore.Mapper.ObjectCaching.ObjectCache.CopyLeft Could not update property: {0}", property.Name), ex);
-                            returnbool = false;
-                        }
-                    }
-                }
+                var key = CreateKey(item, type);
+                return GetInternal(key).Object;
             }
-
-            return returnbool;
+            else
+                return null;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="o"></param>
-        /// <param name="reason"></param>
-        public virtual void RemovedCallback(object key, ICacheableObject o, string reason)
-        {
-            CacheListInformation ci = null;
-            //grab the CacheListInformation object
-            if (CacheItemListLock.TryEnterReadLock(Timeout))
-            {
-                try
-                {
-                    ci = CacheItemList.SingleOrDefault(x => x.TemplateID == o.TemplateID);
-                }
-                catch (Exception ex)
-                {
-                    Log.Error(string.Format("Glass.Sitecore.Mapper.ObjectCaching.ObjectCache: Error Removing {0} form cache", key), ex);
-                }
-                finally
-                {
-                    CacheItemListLock.ExitReadLock();
-                }
-            }
-
-            if (ci != null)
-            {
-                if (ci.ListLock.TryEnterWriteLock(Timeout))
-                {
-                    try
-                    {
-                        //find the id that needs to be removed
-                        var guid = ci.Ids.SingleOrDefault(x => x == o.ItemID);
-
-                        //remove it
-                        ci.Ids.Remove(guid);
-
-                        ClearRelatedCache(ci);
-                    }
-                    catch (Exception ex)
-                    {
-                        Log.Error(string.Format("Glass.Sitecore.Mapper.ObjectCaching.ObjectCache: Error Removing {0} form cache", key), ex);
-                    }
-                    finally
-                    {
-                        ci.ListLock.ExitWriteLock();
-                    }
-                }
+      
+        public bool Add(Item item,Type type, object o){
+            if(Contains(item, type))
+                return false;
+            else {
+                var key = CreateKey(item, type);
+                return AddInternal(key, new CachedObjectInformation(item, type, o));
             }
         }
+
+        public bool Remove(Item item, Type type)
+        {
+            if (Contains(item, type))
+            {
+                var key = CreateKey(item, type);
+                return RemoveInternal(key);
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+        public bool Contains(Item item, Type type){
+            var key = CreateKey(item, type);
+            return ContainsInternal(key);
+        }
+        
+
         #endregion
-
+        
+        
         #region Public Abstract Methods
+       
         /// <summary>
         /// Gets the object from cache.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <returns></returns>
-        public abstract object GetObjectFromCache(Item item);
-        /// <summary>
-        /// Gets the object from cache.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <returns></returns>
-        public abstract object GetObjectFromCache(object key);
+        protected abstract CachedObjectInformation GetInternal(Tuple<Guid, string, Type> key);
+       
         /// <summary>
         /// Saves the object to cache.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <param name="o">The o.</param>
         /// <returns></returns>
-        public abstract bool SaveObjectToCache(Item item, ICacheableObject o);
-        /// <summary>
-        /// Saves the object to cache.
-        /// </summary>
-        /// <param name="key">The key.</param>
-        /// <param name="o">The o.</param>
-        /// <returns></returns>
-        public abstract bool SaveObjectToCache(object key, ICacheableObject o);
+        protected abstract bool AddInternal(Tuple<Guid, string, Type> key, CachedObjectInformation info);
 
         /// <summary>
-        /// 
+        /// Removes the oject formt he cache
         /// </summary>
         /// <param name="key"></param>
-        /// <param name="o"></param>
         /// <returns></returns>
-        public abstract bool SaveObjectToCache(object key, object o);
+        protected abstract bool RemoveInternal(Tuple<Guid, string, Type> key);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="o"></param>
-        /// <returns></returns>
-        public abstract object DeleteCache(object key);
-
-        /// <summary>
-        /// Pubishes the event.
-        /// </summary>
-        /// <param name="i">The i.</param>
-        /// <returns></returns>
-        public abstract bool PubishEvent(Item i);
-        /// <summary>
-        /// Compares the keys.
-        /// </summary>
-        /// <param name="leftKey">The left key.</param>
-        /// <param name="rightKey">The right key.</param>
-        /// <returns></returns>
-        public abstract bool CompareKeys(object leftKey, object rightKey);
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="ci"></param>
-        public abstract void ClearRelatedCache(CacheListInformation ci);
+        protected abstract bool ContainsInternal(Tuple<Guid, string, Type> key);    
 
         #endregion
 

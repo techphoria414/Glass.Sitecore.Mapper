@@ -9,6 +9,9 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
     [Serializable]
     public class CachedObjectInformation
     {
+
+        public const string RevisionFieldName = "__Revision";
+
         /// <summary>
         /// Gets or sets the item ID.
         /// </summary>
@@ -58,14 +61,6 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         public string Database { get; set; }
 
         /// <summary>
-        /// Gets or sets the key.
-        /// </summary>
-        /// <value>
-        /// The key.
-        /// </value>
-        public object Key { get; set; }
-
-        /// <summary>
         /// Gets or sets the version.
         /// </summary>
         /// <value>
@@ -82,18 +77,16 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         public Type Type { get; set; }
 
         /// <summary>
-        /// Initializes a new instance of the <see cref="CachedObjectInformation"/> class.
+        /// The actual object being cached.
         /// </summary>
-        public CachedObjectInformation()
-        {
-        }
+        public object Object { get; set; }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="CachedObjectInformation"/> class.
         /// </summary>
         /// <param name="item">The item.</param>
         /// <param name="type">The type.</param>
-        public CachedObjectInformation(Item item, Type type)
+        public CachedObjectInformation(Item item, Type type, object o)
         {
             ItemID = item.ID.Guid;
             TemplateID = item.TemplateID.Guid;
@@ -101,12 +94,8 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
             Database = item.Database.Name;
             Version = item.Version.Number;
             Type = type;
-            //not sure what this is??
-            //TargetType 
-
-            //How do i get the RevisionID??  
-            //need to ref the field name
-            //RevisionID = item.
+            RevisionID = new Guid(item[RevisionFieldName]);
+            Object = o;
         }
     }
 }

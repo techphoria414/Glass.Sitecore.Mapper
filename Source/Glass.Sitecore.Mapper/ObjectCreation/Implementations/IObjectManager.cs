@@ -29,14 +29,6 @@ namespace Glass.Sitecore.Mapper.ObjectCreation
         /// <param name="config">The config.</param>
         void ReadFromItem(ISitecoreService service, object target, Item item, SitecoreClassConfig config);
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="key"></param>
-        /// <param name="group"></param>
-        /// <param name="o"></param>
-        /// <param name="type"></param>
-        /// <returns></returns>
-        bool AddRelatedCache(string key, string group, object o, Type type);
+      
     }
 }

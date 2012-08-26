@@ -178,6 +178,7 @@
     <Compile Include="LoadTesting.cs" />
     <Compile Include="MiscFixture.cs" />
     <Compile Include="ObjectCreation\Implementations\CacheObjectManagerFixture.cs" />
+    <Compile Include="ObjectCreation\Implementations\CacheObjectManagerLoadTestingFixture.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Proxies\ProxyClassGeneratorFixture.cs" />
     <Compile Include="Proxies\ProxyClassInterceptorFixture.cs" />

@@ -124,66 +124,7 @@ namespace Glass.Sitecore.Mapper.ObjectCaching.Implementations
         /// <returns></returns>
         public override bool SaveObjectToCache(object key, ICacheableObject o)
         {
-            var returnBool = true;
-            long cacheSize;
-            try
-            {
-                var mem = new System.IO.MemoryStream();
-                var binFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
-                binFormatter.Serialize(mem, o);
-                cacheSize = mem.Length + 500; // increase just in case
-            }
-            catch (Exception ex)
-            {
-                cacheSize = 1500; // default size we have made it bigger than normal just in case
-
-                Log.Warn(string.Format("Cache - Size Serialize: '{0}'", key), ex, this);
-                
-                // if the object is a collection then we need to take into account the number of items it contains
-                Type tType = o.GetType();
-
-                // the type is a collection
-                if (typeof(System.Collections.ICollection).IsAssignableFrom(tType)
-                    || typeof(ICollection<>).IsAssignableFrom(tType))
-                {
-                    // we want to try and see if the item is a collection
-                    try
-                    {
-                        // set the data as ICollection so we can get the data
-                        var iEnum = (o as System.Collections.ICollection);
-
-                        // make sure it casts correctly
-                        if (iEnum != null)
-                        {
-                            // we need to set this as it will cause issues
-                            long fakeCacheSize = cacheSize;
-                            cacheSize = iEnum.Count * fakeCacheSize;
-                        }
-                    }
-                    catch (Exception exer)
-                    {
-                        cacheSize = 5000; // at least set it bigger just in case
-
-                        // do we display the logs
-                        Log.Warn(string.Format("Cache - Collection Count: '{0}'", key), exer, this);
-                    }
-                }
-            }
-
-            try
-            {
-                var cacheEntry = sitecoreCache.Add(key.ToString(),o, cacheSize, cacheItemSlidingExpiration);
-                
-                cacheEntry.AbsoluteExpiration = cacheItemLifeTime;
-                cacheEntry.EntryRemoved += CacheEntryEntryRemoved;
-
-            }
-            catch
-            {
-                returnBool = false;
-            }
-
-            return returnBool;
+           
         }
 
         /// <summary>
@@ -237,5 +178,84 @@ namespace Glass.Sitecore.Mapper.ObjectCaching.Implementations
             throw new NotImplementedException();
         }
         #endregion
+
+        protected override CachedObjectInformation GetInternal(Tuple<Guid, string, Type> key)
+        {
+            throw new NotImplementedException();
+        }
+
+        protected override bool AddInternal(Tuple<Guid, string, Type> key, CachedObjectInformation info)
+        {
+            var returnBool = true;
+            long cacheSize;
+            try
+            {
+                var mem = new System.IO.MemoryStream();
+                var binFormatter = new System.Runtime.Serialization.Formatters.Binary.BinaryFormatter();
+                binFormatter.Serialize(mem, o);
+                cacheSize = mem.Length + 500; // increase just in case
+            }
+            catch (Exception ex)
+            {
+                cacheSize = 1500; // default size we have made it bigger than normal just in case
+
+                Log.Warn(string.Format("Cache - Size Serialize: '{0}'", key), ex, this);
+
+                // if the object is a collection then we need to take into account the number of items it contains
+                Type tType = o.GetType();
+
+                // the type is a collection
+                if (typeof(System.Collections.ICollection).IsAssignableFrom(tType)
+                    || typeof(ICollection<>).IsAssignableFrom(tType))
+                {
+                    // we want to try and see if the item is a collection
+                    try
+                    {
+                        // set the data as ICollection so we can get the data
+                        var iEnum = (o as System.Collections.ICollection);
+
+                        // make sure it casts correctly
+                        if (iEnum != null)
+                        {
+                            // we need to set this as it will cause issues
+                            long fakeCacheSize = cacheSize;
+                            cacheSize = iEnum.Count * fakeCacheSize;
+                        }
+                    }
+                    catch (Exception exer)
+                    {
+                        cacheSize = 5000; // at least set it bigger just in case
+
+                        // do we display the logs
+                        Log.Warn(string.Format("Cache - Collection Count: '{0}'", key), exer, this);
+                    }
+                }
+            }
+
+            try
+            {
+                var cacheEntry = sitecoreCache.Add(key.ToString(), o, cacheSize, cacheItemSlidingExpiration);
+
+                cacheEntry.AbsoluteExpiration = cacheItemLifeTime;
+                cacheEntry.EntryRemoved += CacheEntryEntryRemoved;
+
+            }
+            catch
+            {
+                returnBool = false;
+            }
+
+            return returnBool;
+        }
+
+        protected override bool RemoveInternal(Tuple<Guid, string, Type> key)
+        {
+            throw new NotImplementedException();
+        }
+
+        public override bool ContainsInternal(Tuple<Guid, string, Type> key)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

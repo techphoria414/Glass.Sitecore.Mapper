@@ -24,9 +24,6 @@ namespace Glass.Sitecore.Mapper.ObjectCreation.Implementations
             return CreateObject(service, isLazy, inferType, type, item, constructorParameters);
         }
 
-        public override bool AddRelatedCache(string key, string group, object o, Type type)
-        {
-            return true;
-        }
+       
     }
 }

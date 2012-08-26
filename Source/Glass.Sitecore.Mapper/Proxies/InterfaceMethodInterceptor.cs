@@ -28,32 +28,32 @@ namespace Glass.Sitecore.Mapper.Proxies
 {
     public class InterfaceMethodInterceptor : IInterceptor
     {
-        SitecoreClassConfig _config;
-        Item _item;
-        ISitecoreService _service;
+        public SitecoreClassConfig Config { get; private set; }
+        public Item Item { get; private set; }
+        public ISitecoreService Service { get; private set; }
+        public Dictionary<string, object> Values { get; private set; }
 
-        Dictionary<string, object> _values;
         bool _isLoaded = false;
 
         public InterfaceMethodInterceptor(SitecoreClassConfig config, Item item, ISitecoreService service){
-            _config = config;
-            _item = item;
-            _service = service;
-            _values = new Dictionary<string, object>();
+            Config = config;
+            Item = item;
+            Service = service;
+            Values = new Dictionary<string, object>();
         }
 
         #region IInterceptor Members
 
-        public void Intercept(IInvocation invocation)
+        public virtual void Intercept(IInvocation invocation)
         {
 
             //do initial gets
             if (!_isLoaded)
             {
-                foreach (var handler in _config.DataHandlers)
+                foreach (var handler in Config.DataHandlers)
                 {
-                    var result = handler.GetValue(_item, _service);
-                    _values[handler.Property.Name] = result;
+                    var result = handler.GetValue(Item, Service);
+                    Values[handler.Property.Name] = result;
                 }
                 _isLoaded = true;
             }
@@ -66,14 +66,14 @@ namespace Glass.Sitecore.Mapper.Proxies
                     string name = invocation.Method.Name.Substring(4);
                     
                     if(method == "get_"){
-                        var result = _values[name];
+                        var result = Values[name];
                         invocation.ReturnValue = result;
                     }
                     else if(method == "set_"){
-                        _values[name] = invocation.Arguments[0];
+                        Values[name] = invocation.Arguments[0];
                     }
                     else
-                        throw new MapperException("Method with name {0}{1} on type {2} not supported.".Formatted(method,name, _config.Type.FullName));
+                        throw new MapperException("Method with name {0}{1} on type {2} not supported.".Formatted(method,name, Config.Type.FullName));
 
                     
        

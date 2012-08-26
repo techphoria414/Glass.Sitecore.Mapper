@@ -61,21 +61,19 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ObjectCaching\CacheableObject.cs" />
     <Compile Include="ObjectCaching\CachedObjectInformation.cs" />
-    <Compile Include="ObjectCaching\CacheListInformation.cs" />
+    <Compile Include="ObjectCaching\Implementations\CacheTable.cs" />
     <Compile Include="ObjectCaching\Events\CachePublishItemProcessingEvent.cs" />
     <Compile Include="ObjectCaching\ICacheableObject.cs" />
     <Compile Include="ObjectCaching\Implementations\HttpRuntimeCache.cs" />
-    <Compile Include="ObjectCaching\IObjectCache.cs" />
     <Compile Include="ObjectCaching\ObjectCache.cs" />
-    <Compile Include="ObjectCaching\Implementations\SitecoreCache.cs" />
     <Compile Include="ObjectCaching\ObjectCacheFactory.cs" />
     <Compile Include="Configuration\GlassConfiguration.cs" />
+    <Compile Include="ObjectCaching\Proxy\CacheInterfaceMethodInterceptor.cs" />
     <Compile Include="ObjectCaching\Proxy\CacheMethodInterceptor.cs" />
     <Compile Include="ObjectCaching\Proxy\CacheProxyGenerator.cs" />
     <Compile Include="ObjectCaching\Proxy\CacheProxyGeneratorHook.cs" />
-    <Compile Include="ObjectCreation\IObjectManager.cs" />
+    <Compile Include="ObjectCreation\Implementations\IObjectManager.cs" />
     <Compile Include="ObjectCreation\ObjectManager.cs" />
     <Compile Include="Configuration\Attributes\AttributeConfigurationLoader.cs" />
     <Compile Include="Configuration\Attributes\SitecoreChildrenAttribute.cs" />
