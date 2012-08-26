@@ -13,6 +13,32 @@ namespace Glass.Sitecore.Mapper.ObjectCaching
         private static Dictionary<Guid, CacheListInformation> TemplateCacheItemDictionary = new Dictionary<Guid, CacheListInformation>();
         private static Dictionary<Type, CacheListInformation> TypeCacheItemDictionary = new Dictionary<Type, CacheListInformation>();
 
+
+        public CacheListInformation this[Type key]
+        {
+            get
+            {
+                return Get(key);
+            }
+            set
+            {
+                Add(key, value);
+            }
+        }
+
+        public CacheListInformation this[Guid key]
+        {
+            get
+            {
+                return Get(key);
+            }
+            set
+            {
+                Add(key, value);
+
+            }
+        }
+
         /// <summary>
         /// 
         /// </summary>
