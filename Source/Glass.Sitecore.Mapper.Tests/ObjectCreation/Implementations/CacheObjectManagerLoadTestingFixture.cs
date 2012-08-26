@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -116,7 +116,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
                 for (int i = 0; i < requests; i++)
                 {
-                    var result = cacheManger.CreateClass(_sitecore, false, false, type, item, null);
+                    var result = cacheManger.CreateClass(new ClassLoadingState( _sitecore, false, false, type, item, Guid.Empty, null));
                     
                 }
 
@@ -129,7 +129,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
                 for (int i = 0; i < requests; i++)
                 {
-                    var result = standardManager.CreateClass(_sitecore, false, false, type, item, null);
+                    var result = standardManager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null));
                 }
 
                 timerStandard.Stop();

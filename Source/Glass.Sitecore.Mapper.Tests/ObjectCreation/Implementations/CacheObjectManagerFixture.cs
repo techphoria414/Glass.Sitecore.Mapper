@@ -75,7 +75,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
             //Act
             var result1 = _manager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item,Guid.Empty, null)) as SimpleTemplate;
-            var result2 = _manager.CreateClass(_sitecore, false, false, type, item, null) as SimpleTemplate;
+            var result2 = _manager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null)) as SimpleTemplate;
 
 
             //Assert
@@ -101,7 +101,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
 
             //Act
             var result1 = _manager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null)) as SimpleTemplate;
-            var result2 = _manager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, null) as SimpleTemplate;
+            var result2 = _manager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null)) as SimpleTemplate;
 
 
             //Assert
@@ -131,7 +131,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
             Type type = typeof(SimpleTemplate);
 
             //Act
-            var result = _manager.CreateClass(_sitecore, false, false, type, item, null) as SimpleTemplate;
+            var result = _manager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null)) as SimpleTemplate;
 
             Assert.IsNotNull(result);
             Assert.AreEqual(item["SingleLineText"], result.SingleLineText);
@@ -163,7 +163,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
             Type type = typeof(SimpleTemplate);
 
             //Act
-            var result = _manager.CreateClass(_sitecore, false, false, type, item, null) as SimpleTemplate;
+            var result = _manager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null)) as SimpleTemplate;
 
             //Assert
             Assert.IsNotNull(result);
@@ -184,7 +184,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
             Type type = typeof(SimpleTemplate);
 
             //Act
-            var result = _manager.CreateClass(_sitecore, false, false, type, item, null) as SimpleTemplate;
+            var result = _manager.CreateClass(new ClassLoadingState(_sitecore, false, false, type, item, Guid.Empty, null)) as SimpleTemplate;
 
             //Assert
             Assert.IsNotNull(result);
