@@ -159,7 +159,7 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCreation.Implementations
                     var id = result.ID.Guid;
                     var title = result["Title"];
                     var display = result.DisplayName;
-                    var url = LinkManager.GetItemUrl(item) ;
+                   // var url = LinkManager.GetItemUrl(item) ;
                 }
 
                 timerRaw.Stop();

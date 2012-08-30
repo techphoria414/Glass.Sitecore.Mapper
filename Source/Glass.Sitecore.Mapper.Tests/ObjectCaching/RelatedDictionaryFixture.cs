@@ -19,40 +19,27 @@ namespace Glass.Sitecore.Mapper.Tests.ObjectCaching
         }
 
         //[Test]
-        //[TestCase(new Guid("e4b5a23d-0d56-4912-8921-aa12bcd01bf7"), "master", typeof(CacheKey)))
-        //public void RelatedDictionary_AddRelatedKey_HasBeenAdded(Guid rivisionID, string database, Type type)
+        //[TestCase(new Guid("e4b5a23d-0d56-4912-8921-aa12bcd01bf7"), "master", typeof(CacheKey))]
+        //[TestCase(new Guid("1547e1dc-2f62-4ad3-b51d-e51c51d5b191"), "web", typeof(String))]
+        //[TestCase(new Guid("11a600cb-6bf0-48b6-a2ec-ecce13fd2368"), "staging", typeof(int))]
+        //public void RelatedDictionary_AddRelatedKey_HasBeenAdded(Guid revisionId, string database, Type type)
         //{
         //    //Assign
         //    var relatedDictionary = new RelatedDictionary();
         //    var ownerGuid = new Guid("a6c9fe7c-08c8-40cb-95d7-d40bdea31b8b");
 
-        //    var cacheKey1 = new CacheKey(rivisionID,database, type);
-
-
+        //    var cacheKey1 = new CacheKey(revisionId, database, type);
 
         //    //Act
         //    relatedDictionary.Add(ownerGuid, cacheKey1);
-
         //    var cacheKeys = relatedDictionary.FlushKeys(ownerGuid);
 
         //    //Assert
         //    Assert.IsNotEmpty(cacheKeys);
-        //    Assert.AreEqual(cacheKeys.Count, 3);
-
-        //    //assuming that the list is returning the items in the order that they were added.  Maybe each one of there should be a test case
-
-        //    Assert.AreEqual(cacheKeys[0].RevisionId, new Guid("e4b5a23d-0d56-4912-8921-aa12bcd01bf7"));
-        //    Assert.AreEqual(cacheKeys[0].Database, "master");
-        //    Assert.AreEqual(cacheKeys[0].Type, typeof(CacheKey));
-
-        //    Assert.AreEqual(cacheKeys[1].RevisionId, new Guid("1547e1dc-2f62-4ad3-b51d-e51c51d5b191"));
-        //    Assert.AreEqual(cacheKeys[1].Database, "web");
-        //    Assert.AreEqual(cacheKeys[1].Type, typeof(String));
-
-        //    Assert.AreEqual(cacheKeys[2].RevisionId, new Guid("11a600cb-6bf0-48b6-a2ec-ecce13fd2368"));
-        //    Assert.AreEqual(cacheKeys[2].Database, "staging");
-        //    Assert.AreEqual(cacheKeys[2].Type, typeof(int));
-
+        //    Assert.AreEqual(cacheKeys.Count, 1);
+        //    Assert.AreEqual(cacheKeys.First().RevisionId, revisionId);
+        //    Assert.AreEqual(cacheKeys.First().Database, database);
+        //    Assert.AreEqual(cacheKeys.First().Type, type);
 
         //}
 

@@ -91,7 +91,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(prop);
 
             //Act
-            EmptyTemplate1 result = _handler.GetValue(null, _service) as EmptyTemplate1;
+            EmptyTemplate1 result = _handler.GetValue(_owner, _service) as EmptyTemplate1;
 
 
             //Assert
@@ -113,7 +113,7 @@ namespace Glass.Sitecore.Mapper.Tests.Data
             _handler.ConfigureDataHandler(prop);
 
             //Act
-            EmptyTemplate1 result = _handler.GetValue(null, _service) as EmptyTemplate1;
+            EmptyTemplate1 result = _handler.GetValue(_owner, _service) as EmptyTemplate1;
 
 
             //Assert

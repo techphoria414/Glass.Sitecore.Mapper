@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using Sitecore.Data.Items;
 
 namespace Glass.Sitecore.Mapper.ObjectCaching
