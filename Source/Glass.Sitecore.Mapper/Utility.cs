@@ -297,6 +297,7 @@ namespace Glass.Sitecore.Mapper
                 new SitecoreFieldIEnumerableHandler(),
                 new SitecoreFieldImageHandler(),
                 new SitecoreFieldIntegerHandler(),
+                new SitecoreFieldLongHandler(),
                 new SitecoreFieldLinkHandler(),
                 new SitecoreFieldNameValueCollectionHandler(),
                 new SitecoreFieldStreamHandler(),
