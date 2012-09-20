@@ -214,6 +214,10 @@
     <Compile Include="Enumerable.cs" />
     <Compile Include="ItemExtensions.cs" />
     <Compile Include="Pipelines\Response\GetModel.cs" />
+    <Compile Include="RenderField\AbstractParameters.cs" />
+    <Compile Include="RenderField\DateParameters.cs" />
+    <Compile Include="RenderField\ImageParameters.cs" />
+    <Compile Include="RenderField\LinkParameters.cs" />
     <Compile Include="Web\Mvc\GlassView.cs" />
     <Compile Include="NullLog.cs" />
     <Compile Include="PersistenceException.cs" />
@@ -230,16 +234,22 @@
     <Compile Include="Utility.cs" />
     <Compile Include="Web\Mvc\HtmlHelperExtensions.cs" />
     <Compile Include="Web\Mvc\MvcEditFrame.cs" />
-    <Compile Include="Web\Ui\AbstractGlassPage.cs" />
+    <Compile Include="Web\Ui\AbstractGlassPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\Ui\AbstractGlassUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
-    <Compile Include="Web\Ui\GlassDynamicPage.cs" />
+    <Compile Include="Web\Ui\GlassDynamicPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\Ui\GlassDynamicUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
     <Compile Include="Web\Ui\GlassEditFrame.cs" />
-    <Compile Include="Web\Ui\GlassPage.cs" />
+    <Compile Include="Web\Ui\GlassPage.cs">
+      <SubType>ASPXCodeBehind</SubType>
+    </Compile>
     <Compile Include="Web\Ui\GlassUserControl.cs">
       <SubType>ASPXCodeBehind</SubType>
     </Compile>
