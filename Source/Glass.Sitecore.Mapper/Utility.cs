@@ -69,6 +69,8 @@ namespace Glass.Sitecore.Mapper
                 return method.Invoke(target, parameters);
         }
 
+
+
         /// <summary>
         /// Creates a generic type via reflection
         /// </summary>
@@ -303,6 +305,7 @@ namespace Glass.Sitecore.Mapper
                 new SitecoreFieldStreamHandler(),
                 new SitecoreFieldStringHandler(),
                 new SitecoreFieldTriStateHandler(),
+                new SitecoreFieldRulesHandler(),
                 new SitecoreIdDataHandler(),
                 new SitecoreInfoHandler(),
                 new SitecoreParentHandler(),
