@@ -306,7 +306,9 @@ namespace Glass.Sitecore.Mapper
 
                     var scClass = context.GetSitecoreClass(type);
 
-                    var prop = memberExpression.Member;
+                    //lambda expression does not always return expected memberinfo when inheriting
+                    //c.f. http://stackoverflow.com/questions/6658669/lambda-expression-not-returning-expected-memberinfo
+                    var prop = type.GetProperty(memberExpression.Member.Name);
 
                     if (prop == null) throw new MapperException("Page editting error. Could not find property {0} on type {1}".Formatted(memberExpression.Member.Name, type.FullName));
 
